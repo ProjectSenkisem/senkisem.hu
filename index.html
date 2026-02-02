@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Senkisem - Nem egy Brand; Üzenet | Streetwear, Könyvek, Filozófia</title>
+    
+    <!-- Basic SEO -->
+    <meta name="description" content="Senkisem - Nem egy brand; üzenet. Magyar streetwear márka limitált kollekcióval: Sakura Heritage, Phantom, Signature. Jegyzetek egy Idegentől könyv: önismereti napló digitális korhoz. Használati Útmutató az Élethez. Urban fashion, filozófia és közösség egy helyen.">
+    <meta name="keywords" content="senkisem, senkisem brand, magyar streetwear, urban fashion hungary, limitált ruházat, jegyzetek egy idegentől, önismereti könyv, Használati Útmutató az Élethez Könyv, Shadow Garden, phantom kollekció, signature edition, magyar fashion brand, streetwear budapest, cyberpunk fashion, japán stílus ruházat, kimono modern, városi divat, alternatív fashion, underground streetwear, digitális generáció, önismeret könyv 2026, Használati Útmutató az Élethez, magyar influencer brand, tiktok brand, instagram fashion, limitált darabok, exkluzív kollekció, prémium streetwear, magyar design, hazai márka, senkisem.hu, senkisem póló, senkisem pulóver, senkisem könyv, senkisem óra, senkisem kiegészítők">
+    <meta name="author" content="Senkisem">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="language" content="Hungarian">
+    <meta name="revisit-after" content="7 days">
+    <meta name="geo.region" content="HU">
+    <meta name="geo.placename" content="Hungary">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://senkisem.hu/">
+    <meta property="og:site_name" content="Senkisem">
+    <meta property="og:locale" content="hu_HU">
+    <meta property="og:title" content="Senkisem - Nem egy Brand; Üzenet | Streetwear, Könyvek, Filozófia">
+    <meta property="og:description" content="Magyar streetwear márka limitált kollekcióval (Garden, Phantom, Signature). Jegyzetek egy Idegentől: önismereti könyv a digitális korhoz. Senkisem II. része: Használati Útmutató Az élethez. Urban fashion és filozófia egy helyen.">
+    <meta property="og:image" content="https://senkisem.hu/img/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@senkisem">
+    <meta name="twitter:title" content="Senkisem - Nem egy Brand; Üzenet | Streetwear & Könyvek">
+    <meta name="twitter:description" content="Magyar streetwear márka (Sakura Heritage, Phantom, Signature) + Jegyzetek egy Idegentől könyvl. Urban fashion és filozófia.">
+    <meta name="twitter:image" content="https://senkisem.hu/img/og-image.jpg">
+    
+    <!-- Canonical & Mobile -->
+    <link rel="canonical" href="https://senkisem.hu/">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Senkisem",
+      "url": "https://senkisem.hu/",
+      "logo": "https://senkisem.hu/img/favicon.svg",
+      "description": "Magyar streetwear márka egyedi identitással. Limitált kollekciók: Sakura Heritage, Phantom, Signature.",
+      "email": "senkisem.info@gmail.com",
+      "sameAs": [
+        "https://www.instagram.com/senkisem.hu/",
+        "https://www.tiktok.com/@senkisem.hu"
+      ]
+    }
+    </script>
+    
+    <style>
+      :root {
+        --primary-dark: #0a0a0a;
+        --text-primary: #ffffff;
+      }
+
+      .loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--primary-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.6s ease;
+        flex-direction: column;
+      }
+
+      .loading.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .loading-content {
+        text-align: center;
+        animation: fadeIn 1.8s ease forwards;
+      }
+
+      .loading-text {
+        color: var(--text-primary);
+        font-size: 2rem;
+        font-weight: 500;
+        letter-spacing: 0.4em;
+        animation: pulse 2.4s ease-in-out infinite;
+        text-transform: uppercase;
+      }
+
+      .loading-subtext {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        font-weight: 300;
+        letter-spacing: 0.15em;
+        background: linear-gradient(90deg, #ffffff, #b8b8b8, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        opacity: 0;
+        animation: fadeInSub 3s ease forwards 1.5s;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 0.4; text-shadow: 0 0 6px rgba(255,255,255,0.2); }
+        50% { opacity: 1; text-shadow: 0 0 12px rgba(255,255,255,0.6); }
+      }
+
+      @keyframes fadeInSub {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 0.9; transform: translateY(0); }
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      /* Scrollbar elrejtése minden böngészőben */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE és Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+    </style>
+  </head>
+  <body>
+    <div class="loading" id="loading">
+      <div class="loading-content">
+        <div class="loading-text">SENKISEM</div>
+        <div class="loading-subtext">Nem egy Brand;<br>Üzenet.</div>
+      </div>
+    </div>
+
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      window.loadingDone = false;
+      const minimumLoadingTime = window.innerWidth <= 768 ? 2500 : 4000;
+
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          const loading = document.getElementById("loading");
+          if (loading) {
+            loading.classList.add("hidden");
+            setTimeout(() => {
+              loading.remove();
+              window.loadingDone = true;
+            }, 600);
+          } else {
+            window.loadingDone = true;
+          }
+        }, minimumLoadingTime);
+      });
+    </script>
+  </body>
+</html>

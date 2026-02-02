@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senkisem - Fizetés (Digitális)</title>
+    <link rel="stylesheet" href="./assets/css/checkout.css">
+    <meta name="description" content="Fizetési oldal a Senkisem - Jegyzetek egy Idegentől E-könyv megrendeléséhez. Töltsd ki adataidat a gyors és egyszerű vásárláshoz.">
+    <meta name="keywords" content="fizetés, e-könyv vásárlás, Senkisem, megrendelés, letöltés, online fizetés">
+</head>
+
+<body>
+
+    <div class="container">
+        <form id="checkout-form">
+            <div class="row">
+                <div class="column">
+                    <h3 class="title">Számlázási és Szállítási Adatok</h3>
+                    <p>A rendelt terméket a megadott e-mail címre küldjük a fizetés után.</p>
+
+                    <div class="input-box">
+                        <span>Teljes Név :</span>
+                        <input type="text" name="fullName" placeholder="Teljes Név" required>
+                    </div>
+                    <div class="input-box">
+                        <span>Email Cím :</span>
+                        <input type="email" name="email" placeholder="email@email.com" required>
+                    </div>
+                    <div class="input-box">
+                        <span>Lakcím (utca, házszám):</span>
+                        <input type="text" name="address" placeholder="Utca, Házszám">
+                    </div>
+                    <div class="input-box">
+                        <span>Város :</span>
+                        <input type="text" name="city" placeholder="Város">
+                    </div>
+
+                    <div class="flex">
+                        <div class="input-box">
+                            <span>Ország :</span>
+                            <input type="text" name="country" placeholder="Magyarország">
+                        </div>
+                        <div class="input-box">
+                            <span>Irányítószám :</span>
+                            <input type="number" name="zip" placeholder="1234">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="cart-section">
+                <h3 class="title">Kosár Tartalma</h3>
+                <a href="index.html" class="back-btn">Vissza a főoldalra</a>
+                <div id="cart-items" class="cart-items"></div>
+
+                <h3 class="title">Szállítási Díj</h3>
+                <div id="shipping-fee" class="shipping-fee"></div> <h3 class="title">Végösszeg</h3>
+                <div id="total-price" class="total-price">0 Ft</div>
+            </div>
+
+            <div class="terms-acceptance">
+  <label class="terms-checkbox">
+    <input type="checkbox" id="terms-agree" name="terms-agree" required>
+    <span class="checkmark"></span>
+    <span class="terms-text">
+      Elolvastam és elfogadom az 
+      <a href="assets/ÁSZF.pdf" target="_blank" class="terms-link">Általános Szerződési Feltételeket</a>
+    </span>
+  </label>
+</div>
+
+            <button type="submit" class="btn">Megrendelés Leadása és Fizetés</button>
+        </form>
+    </div>
+
+<!-- ÚJ (beilleszteni): -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cartItemsContainer = document.getElementById('cart-items');
+    const totalPriceElement = document.getElementById('total-price');
+    const shippingFeeElement = document.getElementById('shipping-fee');
+    const checkoutForm = document.getElementById('checkout-form');
+
+    let cart = [];
+    let totalPrice = 0;
+    const shippingCost = 0; // E-könyv esetén 0
+
+    try {
+        const storedCart = localStorage.getItem('cart');
+        if (storedCart) {
+            cart = JSON.parse(storedCart);
+        }
+    } catch (e) {
+        console.error('Hiba a kosár betöltésekor:', e);
+        cart = []; 
+    }
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>A kosarad üres. <a href='index.html'>Vissza a főoldalra</a></p>";
+        shippingFeeElement.textContent = '0 Ft (Digitális termék)';
+        totalPriceElement.textContent = "0 Ft";
+        if (checkoutForm.querySelector('.btn')) {
+            checkoutForm.querySelector('.btn').disabled = true; 
+        }
+        return;
+    }
+
+    cart.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('item'); 
+        
+        itemElement.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+            <div class="item-details">
+                <p class="item-name"><strong>${item.name}</strong></p>
+                <p class="item-price">${typeof item.price === 'string' ? item.price : item.price + ' Ft'}</p>
+            </div>
+        `;
+        cartItemsContainer.appendChild(itemElement);
+
+        // Ár kalkuláció javítás
+        const numericPrice = typeof item.price === 'string' ? 
+            parseInt(item.price.replace(/\D/g, '')) : item.price;
+        totalPrice += numericPrice;
+    });
+
+    shippingFeeElement.textContent = `${shippingCost.toLocaleString('hu-HU')} Ft (Digitális termék)`;
+    totalPriceElement.textContent = `${totalPrice.toLocaleString('hu-HU')} Ft`;
+
+    checkoutForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const termsCheckbox = document.getElementById('terms-agree');
+    if (!termsCheckbox.checked) {
+        alert('Kérjük, fogadd el az Általános Szerződési Feltételeket a folytatáshoz!');
+        termsCheckbox.focus();
+        return; // Itt return, nem return false
+    }
+
+        const formData = new FormData(checkoutForm);
+        const customerData = {
+            fullName: formData.get('fullName'),
+            email: formData.get('email'),
+            address: formData.get('address'), 
+            city: formData.get('city'),
+            country: formData.get('country'),
+            zip: formData.get('zip'),
+        };
+
+        if (!customerData.fullName || !customerData.email) {
+            alert('Kérjük, töltse ki a teljes nevét és az e-mail címét!');
+            return;
+        }
+
+        const cartForPayment = cart.map(item => ({
+            id: item.id, 
+            name: item.name,
+            price: typeof item.price === 'string' ? 
+                parseInt(item.price.replace(/\D/g, '')) : item.price,
+            image: item.image
+        }));
+
+        try {
+            const response = await fetch('https://senkisem.onrender.com/create-payment-session', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cart: cartForPayment,
+                    customerData: customerData
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.payment_url) {
+                window.location.href = data.payment_url;
+                localStorage.removeItem('cart');
+            } else {
+                console.error('Hiba:', data.error);
+                alert(`Hiba történt: ${data.error || 'Ismeretlen hiba'}`);
+            }
+        } catch (error) {
+            console.error('Hálózati hiba:', error);
+            alert('Hálózati hiba történt. Próbálja újra!');
+        }
+    });
+});
+
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Senkisem - Fizetés</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #000000 0%, #111111 25%, #1a1a1a 50%, #0f0f0f 100%);
+      min-height: 100vh;
+      color: #ffffff;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(20px);
+    }
+
+    .checkout-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .checkout-header h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+
+    .checkout-header p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.1rem;
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .form-section {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .input-group input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .flex {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Szállítási opciók */
+    .shipping-options {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .shipping-option {
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .shipping-option:hover {
+      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .shipping-option.selected {
+      border-color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .shipping-option-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .shipping-option-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #ffffff;
+    }
+
+    .shipping-option-price {
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .shipping-option-desc {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    /* Csomagpont kereső */
+    .pickup-point-selector {
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .pickup-point-selector.active {
+      display: block;
+    }
+
+    .pickup-search {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .pickup-search input {
+      padding-right: 3rem;
+    }
+
+    .pickup-search button {
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      padding: 0.5rem;
+      border-radius: 6px;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .pickup-search button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .pickup-points-list {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .pickup-point {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .pickup-point:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .pickup-point.selected {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .pickup-point:last-child {
+      border-bottom: none;
+    }
+
+    .pickup-point-name {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #ffffff;
+    }
+
+    .pickup-point-address {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 0.3rem;
+    }
+
+    .pickup-point-info {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Házhozszállítási cím */
+    .home-delivery-address {
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .home-delivery-address.active {
+      display: block;
+    }
+
+    /* Rendelés összesítő */
+    .order-summary {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 2rem;
+      position: sticky;
+      top: 2rem;
+    }
+
+    .order-summary h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      color: #ffffff;
+    }
+
+    .cart-items {
+      margin-bottom: 1.5rem;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .cart-item-details {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+      color: #ffffff;
+    }
+
+    .cart-item-price {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .size-selector {
+      margin-top: 0.5rem;
+    }
+
+    .size-selector select {
+      padding: 0.3rem 0.5rem;
+      font-size: 0.9rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .order-totals {
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding-top: 1rem;
+    }
+
+    .order-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .order-line.total {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #ffffff;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding-top: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .back-links {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .preorder-notice {
+      background: rgba(255, 193, 7, 0.1);
+      border: 1px solid rgba(255, 193, 7, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      color: #ffffff;
+    }
+
+    .preorder-notice strong {
+      color: #ffc107;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1.2rem;
+      background: linear-gradient(135deg, #ffffff, #f0f0f0);
+      color: #000000;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .order-summary {
+        position: static;
+      }
+
+      .flex {
+        grid-template-columns: 1fr;
+      }
+
+      .back-links {
+        flex-direction: column;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+    }
+
+    /* ÁSZF elfogadás */
+.terms-acceptance {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.terms-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.terms-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.terms-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.terms-link {
+  color: #ffffff;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: opacity 0.3s ease;
+}
+
+.terms-link:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .terms-acceptance {
+    margin: 1rem 0;
+    padding: 0.75rem;
+  }
+  
+  .terms-text {
+    font-size: 0.9rem;
+  }
+  
+  .terms-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="checkout-header">
+      <h1>Rendelés véglegesítése</h1>
+      <p>Válaszd ki a szállítási módot és add meg az adataidat</p>
+    </div>
+
+    <div class="back-links">
+      <a href="index.html" class="back-btn">
+        ← Vissza a főoldalra
+      </a>
+      <a href="index.html#clothing" class="back-btn">
+        🛒 Kosár módosítása
+      </a>
+    </div>
+
+    <form id="checkout-form">
+      <div class="checkout-grid">
+        <div class="left-column">
+          <!-- Számlázási adatok -->
+          <div class="form-section">
+            <h3 class="section-title">
+              📋 Számlázási adatok
+            </h3>
+            
+            <div class="input-group">
+              <label for="fullName">Teljes név *</label>
+              <input type="text" id="fullName" name="fullName" required placeholder="Teljes név">
+            </div>
+            
+            <div class="input-group">
+              <label for="email">Email cím *</label>
+              <input type="email" id="email" name="email" required placeholder="email@example.com">
+            </div>
+
+            <div class="input-group">
+              <label for="phone">Telefonszám</label>
+              <input type="text" id="phone" name="phone" placeholder="+36 30 123 4567 vagy bármilyen formátum">
+            </div>
+            
+            
+            <div class="flex">
+              <div class="input-group">
+                <label for="country">Ország *</label>
+                <select id="country" name="country" required>
+                  <option value="Magyarország">Magyarország</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="zip">Irányítószám *</label>
+                <input type="text" id="zip" name="zip" required placeholder="1234" pattern="[0-9]{4}">
+              </div>
+            </div>
+            
+            <div class="input-group">
+              <label for="city">Város *</label>
+              <input type="text" id="city" name="city" required placeholder="Budapest">
+            </div>
+            
+            <div class="input-group">
+              <label for="address">Lakcím *</label>
+              <input type="text" id="address" name="address" required placeholder="Utca, házszám (épület, emelet, ajtó)">
+            </div>
+          </div>
+
+          <!-- Szállítási opciók -->
+          <div class="form-section">
+            <h3 class="section-title">
+              🚚 Szállítási mód
+            </h3>
+            
+            <div class="shipping-options">
+              <div class="shipping-option" data-shipping="pickup" data-price="899">
+                <div class="shipping-option-header">
+                  <span class="shipping-option-title">📦 Foxpost csomagpont</span>
+                  <span class="shipping-option-price">899 Ft</span>
+                </div>
+                <div class="shipping-option-desc">
+                  Átvétel bármelyik Foxpost automatánál vagy partnerponton. 
+                  Kényelmes és rugalmas átvétel hét közben és hétvégén is.
+                </div>
+              </div>
+              
+              <div class="shipping-option" data-shipping="home" data-price="2590">
+                <div class="shipping-option-header">
+                  <span class="shipping-option-title">🏠 Házhozszállítás</span>
+                  <span class="shipping-option-price">2 590 Ft</span>
+                </div>
+                <div class="shipping-option-desc">
+                  Kiszállítás a megadott címre munkanapokon 8-17 óra között. 
+                  A futár telefonon egyeztet a pontos időpontról.
+                </div>
+              </div>
+            </div>
+
+            <!-- Csomagpont kereső -->
+            <div class="pickup-point-selector" id="pickup-selector">
+              <div class="pickup-search">
+                <input type="text" id="pickup-search" placeholder="Keress cím vagy irányítószám alapján...">
+                <button type="button" onclick="searchPickupPoints()">🔍</button>
+              </div>
+              
+              <div class="pickup-points-list" id="pickup-points">
+                <div style="padding: 2rem; text-align: center; color: rgba(255,255,255,0.6);">
+                  Add meg a keresési feltételt a csomagpontok megjelenítéséhez
+                </div>
+              </div>
+            </div>
+
+            <!-- Házhozszállítási cím -->
+            <div class="home-delivery-address" id="delivery-address">
+              <div class="input-group">
+                <label for="deliveryAddress">Szállítási cím</label>
+                <input type="text" id="deliveryAddress" name="deliveryAddress" 
+                       placeholder="Ha eltér a számlázási címtől">
+              </div>
+              <div class="flex">
+                <div class="input-group">
+                  <label for="deliveryCity">Város</label>
+                  <input type="text" id="deliveryCity" name="deliveryCity">
+                </div>
+                <div class="input-group">
+                  <label for="deliveryZip">Irányítószám</label>
+                  <input type="text" id="deliveryZip" name="deliveryZip" pattern="[0-9]{4}">
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="deliveryNote">Futárnak szóló üzenet</label>
+                <input type="text" id="deliveryNote" name="deliveryNote" 
+                       placeholder="pl. csengesd meg 2x, nagy kutya van">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-column">
+          <!-- Rendelés összesítő -->
+          <div class="order-summary">
+            <h3>Rendelés összesítő</h3>
+            
+            <div class="cart-items" id="cart-items-summary">
+              <div class="loading">Kosár betöltése...</div>
+            </div>
+            
+            <div class="order-totals">
+              <div class="order-line">
+                <span>Termékek összesen:</span>
+                <span id="subtotal">0 Ft</span>
+              </div>
+              <div class="order-line">
+                <span>Szállítási díj:</span>
+                <span id="shipping-cost">0 Ft</span>
+              </div>
+              <div class="order-line total">
+                <span>Végösszeg:</span>
+                <span id="total-price">0 Ft</span>
+              </div>
+            </div>
+
+            <div class="terms-acceptance">
+  <label class="terms-checkbox">
+    <input type="checkbox" id="terms-agree" name="terms-agree" required>
+    <span class="checkmark"></span>
+    <span class="terms-text">
+      Elolvastam és elfogadom az 
+      <a href="assets/ÁSZF.pdf" target="_blank" class="terms-link">Általános Szerződési Feltételeket</a>
+    </span>
+  </label>
+</div>
+
+            <button type="submit" class="submit-btn">
+              Megrendelés leadása
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Global variables
+    let cart = [];
+    let selectedShipping = null;
+    let selectedPickupPoint = null;
+    let foxpostPoints = [];
+    const FOXPOST_API_BASE = 'https://webapi.foxpost.hu/api';
+    const FOXPOST_AUTH = {
+      username: 'ecomm_beller_zoltan_ezra_1425338',
+      password: 'B3t2X08d5zBf',
+      apiKey: 'kmpLskKYe4WcTeU7kcLr'
+    };
+
+    // Initialize checkout
+    document.addEventListener('DOMContentLoaded', function() {
+      loadCart();
+      setupEventListeners();
+      loadFoxpostPoints();
+    });
+
+    function loadCart() {
+      const cartData = localStorage.getItem('cart');
+      cart = cartData ? JSON.parse(cartData) : [];
+      
+      if (cart.length === 0) {
+        showEmptyCart();
+        return;
+      }
+
+      renderCartSummary();
+      calculateTotals();
+    }
+
+    function showEmptyCart() {
+      const cartSummary = document.getElementById('cart-items-summary');
+      cartSummary.innerHTML = `
+        <div style="text-align: center; padding: 2rem; color: rgba(255, 255, 255, 0.6);">
+          <p>A kosár üres</p>
+          <a href="index.html" style="color: #ffffff; text-decoration: underline;">
+            Vissza a főoldalra
+          </a>
+        </div>
+      `;
+      document.querySelector('.submit-btn').disabled = true;
+    }
+
+    function renderCartSummary() {
+    const cartSummary = document.getElementById('cart-items-summary');
+    const ebookId = 2;
+    const physicalBookId = 1;
+    
+    cartSummary.innerHTML = cart.map(item => {
+        const price = typeof item.price === 'string' ? 
+            parseInt(item.price.replace(/\D/g, '')) : item.price;
+        const quantity = item.quantity || 1; // ÚJ SOR
+        const totalPrice = price * quantity; // ÚJ SOR
+        
+        // E-könyv esetén
+        if (item.id === ebookId) {
+            return `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name} ${quantity > 1 ? `(${quantity} db)` : ''}</div>
+                        <div class="cart-item-price">${totalPrice.toLocaleString('hu-HU')} Ft</div>
+                        <span style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">Digitális termék</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Fizikai könyv esetén (ID = 1)
+        if (item.id === physicalBookId) {
+            return `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name} ${quantity > 1 ? `(${quantity} db)` : ''}</div>
+                        <div class="cart-item-price">${totalPrice.toLocaleString('hu-HU')} Ft</div>
+                        <span style="font-size: 0.85rem; color: rgba(255,255,255,0.7); font-weight: 500;">
+                            📏 Méret: A5 (14.8 x 21 cm)
+                        </span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Ruházati termékek esetén
+        return `
+            <div class="cart-item">
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-item-details">
+                    <div class="cart-item-name">${item.name} ${quantity > 1 ? `(${quantity} db)` : ''}</div>
+                    <div class="cart-item-price">${totalPrice.toLocaleString('hu-HU')} Ft</div>
+                    ${item.size ? 
+                        `<span style="font-size: 0.85rem; color: rgba(255,255,255,0.7); font-weight: 500;">
+                            📏 Méret: ${item.size}
+                        </span>` 
+                        : 
+                        `<div class="size-selector">
+                            <select class="size-select" data-id="${item.id}" required>
+                                <option value="">Válassz méretet</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                            </select>
+                        </div>`
+                    }
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+    function setupEventListeners() {
+      // Szállítási mód választás
+      document.querySelectorAll('.shipping-option').forEach(option => {
+        option.addEventListener('click', function() {
+          selectShippingOption(this);
+        });
+      });
+
+      // Form submit
+      document.getElementById('checkout-form').addEventListener('submit', handleFormSubmit);
+
+      // Irányítószám alapú keresés
+      document.getElementById('pickup-search').addEventListener('input', debounce(searchPickupPoints, 500));
+      
+      // Számlázási cím másolása szállításhoz
+      document.getElementById('zip').addEventListener('change', function() {
+        if (!document.getElementById('deliveryZip').value) {
+          document.getElementById('deliveryZip').value = this.value;
+        }
+      });
+      
+      document.getElementById('city').addEventListener('change', function() {
+        if (!document.getElementById('deliveryCity').value) {
+          document.getElementById('deliveryCity').value = this.value;
+        }
+      });
+    }
+
+    function selectShippingOption(element) {
+      // Remove previous selection
+      document.querySelectorAll('.shipping-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      
+      // Select current option
+      element.classList.add('selected');
+      selectedShipping = element.dataset.shipping;
+      
+      // Show/hide relevant sections
+      const pickupSelector = document.getElementById('pickup-selector');
+      const deliveryAddress = document.getElementById('delivery-address');
+      
+      if (selectedShipping === 'pickup') {
+        pickupSelector.classList.add('active');
+        deliveryAddress.classList.remove('active');
+      } else {
+        pickupSelector.classList.remove('active');
+        deliveryAddress.classList.add('active');
+      }
+      
+      calculateTotals();
+    }
+
+    async function loadFoxpostPoints() {
+      try {
+        const response = await fetch('https://cdn.foxpost.hu/foxplus.json');
+        const data = await response.json();
+        foxpostPoints = data.filter(point => 
+          point.country === 'HU' && 
+          point.name && 
+          point.address
+        );
+        console.log(`Loaded ${foxpostPoints.length} Foxpost points`);
+      } catch (error) {
+        console.error('Error loading Foxpost points:', error);
+        foxpostPoints = [];
+      }
+    }
+
+    function searchPickupPoints() {
+      const query = document.getElementById('pickup-search').value.trim();
+      if (!query || query.length < 3) return;
+
+      const filtered = foxpostPoints.filter(point => {
+        const searchText = `${point.name} ${point.address} ${point.city} ${point.zip}`.toLowerCase();
+        return searchText.includes(query.toLowerCase());
+      }).slice(0, 20); // Limit to 20 results
+
+      renderPickupPoints(filtered);
+    }
+
+    function renderPickupPoints(points) {
+      const container = document.getElementById('pickup-points');
+      
+      if (points.length === 0) {
+        container.innerHTML = `
+          <div style="padding: 2rem; text-align: center; color: rgba(255,255,255,0.6);">
+            Nem található csomagpont a keresési feltételekkel.
+            <br><br>
+            Próbáld meg más kulcsszóval vagy irányítószámmal.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = points.map(point => `
+        <div class="pickup-point" data-point='${JSON.stringify(point)}' onclick="selectPickupPoint(${JSON.stringify(point).replace(/"/g, '&quot;')})">
+          <div class="pickup-point-name">${point.name}</div>
+          <div class="pickup-point-address">${point.zip} ${point.city}, ${point.address}</div>
+          <div class="pickup-point-info">
+            ${point.variant || ''} ${point.cardPayment ? '• Bankkártya' : ''} ${point.cashPayment ? '• Készpénz' : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectPickupPoint(point) {
+      // Remove previous selection
+      document.querySelectorAll('.pickup-point').forEach(p => {
+        p.classList.remove('selected');
+      });
+      
+      // Find the clicked element (handle event bubbling)
+      let clickedElement = event.target;
+      while (!clickedElement.classList.contains('pickup-point') && clickedElement.parentNode) {
+        clickedElement = clickedElement.parentNode;
+      }
+      
+      // Select current point
+      if (clickedElement.classList.contains('pickup-point')) {
+        clickedElement.classList.add('selected');
+        selectedPickupPoint = point;
+        
+        // Update UI to show selection
+        const selectedText = document.createElement('div');
+        selectedText.className = 'selected-pickup-info';
+        selectedText.innerHTML = `
+          <strong>Kiválasztott csomagpont:</strong><br>
+          ${point.name}<br>
+          ${point.zip} ${point.city}, ${point.address}
+        `;
+        selectedText.style.cssText = `
+          margin-top: 1rem;
+          padding: 1rem;
+          background: rgba(76, 175, 80, 0.1);
+          border: 1px solid rgba(76, 175, 80, 0.3);
+          border-radius: 8px;
+          color: #4CAF50;
+          font-size: 0.9rem;
+        `;
+        
+        // Remove previous selection info
+        const existing = document.querySelector('.selected-pickup-info');
+        if (existing) existing.remove();
+        
+        // Add new selection info
+        document.getElementById('pickup-selector').appendChild(selectedText);
+        
+        console.log('Selected pickup point:', point);
+      }
+    }
+
+    function calculateTotals() {
+      const ebookId = 2;
+      const subtotal = cart.reduce((sum, item) => {
+        const price = typeof item.price === 'string' ? 
+          parseInt(item.price.replace(/\D/g, '')) : item.price;
+        return sum + price;
+      }, 0);
+      
+      let shippingCost = 0;
+      const hasPhysicalProducts = cart.some(item => item.id !== ebookId);
+      
+      if (hasPhysicalProducts && selectedShipping) {
+        if (selectedShipping === 'pickup') {
+          shippingCost = 899; // Foxpost csomagpont M méret
+        } else if (selectedShipping === 'home') {
+          shippingCost = 2590; // Házhozszállítás M méret
+        }
+      }
+      
+      const total = subtotal + shippingCost;
+      
+      document.getElementById('subtotal').textContent = `${subtotal.toLocaleString('hu-HU')} Ft`;
+      document.getElementById('shipping-cost').textContent = `${shippingCost.toLocaleString('hu-HU')} Ft`;
+      document.getElementById('total-price').textContent = `${total.toLocaleString('hu-HU')} Ft`;
+    }
+
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      if (!validateForm()) return;
+      
+      const submitBtn = document.querySelector('.submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Feldolgozás...';
+      
+      try {
+        const orderData = collectOrderData();
+        await processOrder(orderData);
+      } catch (error) {
+        console.error('Order processing failed:', error);
+        alert('Hiba történt a megrendelés feldolgozása során. Kérjük, próbáld újra!');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Megrendelés leadása';
+      }
+    }
+
+    function validateForm() {
+      const requiredFields = ['fullName', 'email', 'address', 'city', 'country', 'zip'];
+      let isValid = true;
+      
+      // Check required fields
+      requiredFields.forEach(field => {
+        const element = document.getElementById(field);
+        if (!element.value.trim()) {
+          element.style.borderColor = '#ff4444';
+          isValid = false;
+        } else {
+          element.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        }
+      });
+
+      const termsCheckbox = document.getElementById('terms-agree');
+  if (!termsCheckbox.checked) {
+    alert('Kérjük, fogadd el az Általános Szerződési Feltételeket a folytatáshoz!');
+    termsCheckbox.focus();
+    return false;
+  }
+      
+      // Check shipping method selection
+      if (!selectedShipping) {
+        alert('Kérjük, válassz szállítási módot!');
+        return false;
+      }
+      
+      // Check pickup point selection for pickup delivery
+      if (selectedShipping === 'pickup' && !selectedPickupPoint) {
+        alert('Kérjük, válassz csomagpontot!');
+        document.getElementById('pickup-selector').scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+        return false;
+      }
+      
+      // Check size selection for physical products
+// Check size selection for physical products (excluding book ID = 1)
+const ebookId = 2;
+const physicalBookId = 1;
+const sizeSelects = document.querySelectorAll('.size-select');
+const hasClothingProducts = cart.some(item => item.id !== ebookId && item.id !== physicalBookId);
+
+const needsSizeSelection = cart.some(item => 
+    item.id !== ebookId && 
+    item.id !== physicalBookId && 
+    !item.size
+);
+
+if (needsSizeSelection) {
+    let allSizesSelected = true;
+    sizeSelects.forEach(select => {
+        if (!select.value) {
+            select.style.borderColor = '#ff4444';
+            allSizesSelected = false;
+        } else {
+            select.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        }
+    });
+    
+    if (!allSizesSelected) {
+        alert('Kérjük, válassz méretet minden ruházati termékhez!');
+        return false;
+    }
+}
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const email = document.getElementById('email').value;
+      if (!emailRegex.test(email)) {
+        document.getElementById('email').style.borderColor = '#ff4444';
+        alert('Kérjük, adj meg érvényes email címet!');
+        return false;
+      }
+      
+      // ZIP code validation
+      const zipRegex = /^[0-9]{4}$/;
+      const zip = document.getElementById('zip').value;
+      if (!zipRegex.test(zip)) {
+        document.getElementById('zip').style.borderColor = '#ff4444';
+        alert('Kérjük, adj meg érvényes irányítószámot (4 számjegy)!');
+        return false;
+      }
+      
+      return isValid;
+    }
+
+    function collectOrderData() {
+      const form = document.getElementById('checkout-form');
+      const formData = new FormData(form);
+      const ebookId = 2;
+      
+     // Collect size selections
+const physicalBookId = 1;
+const sizeMap = {};
+
+// Fizikai könyv automatikus A5 méret
+// Fizikai könyv automatikus A5 méret
+cart.forEach(item => {
+    if (item.id === physicalBookId) {
+        sizeMap[physicalBookId] = 'A5';
+    }
+    // Ha már van size az elemben (index.html-ből jött), használjuk azt
+    if (item.size) {
+        sizeMap[item.id] = item.size;
+    }
+});
+
+// Ruházati termékek méretválasztása (ha nincs előre kiválasztva)
+document.querySelectorAll('.size-select').forEach(select => {
+    if (select.value) {
+        sizeMap[select.dataset.id] = select.value;
+    }
+});
+      
+      // Prepare customer data
+      const customerData = {
+        fullName: formData.get('fullName'),
+        email: formData.get('email'),
+        phone: formData.get('phone') || '', // ÚJ SOR
+        address: formData.get('address'),
+        city: formData.get('city'),
+        country: formData.get('country'),
+        zip: formData.get('zip'),
+        shippingMethod: selectedShipping,
+        pickupPoint: selectedPickupPoint,
+        deliveryAddress: formData.get('deliveryAddress'),
+        deliveryCity: formData.get('deliveryCity'),
+        deliveryZip: formData.get('deliveryZip'),
+        deliveryNote: formData.get('deliveryNote')
+      };
+      
+      // Prepare cart for payment
+      // Prepare cart for payment
+const cartForPayment = cart.map(item => {
+  const baseItem = {
+    id: item.id,
+    name: item.name,
+    price: typeof item.price === 'string' ? 
+      parseInt(item.price.replace(/\D/g, '')) : item.price,
+    image: item.image,
+    quantity: item.quantity || 1 // ÚJ SOR
+  };
+  
+  if (item.id !== ebookId && sizeMap[item.id]) {
+    baseItem.size = sizeMap[item.id];
+  }
+  
+  return baseItem;
+});
+      
+      return {
+        cart: cartForPayment,
+        customerData: customerData
+      };
+    }
+
+    async function processOrder(orderData) {
+      try {
+        // Create Foxpost parcel if pickup method selected
+        let foxpostTrackingId = null;
+        if (orderData.customerData.shippingMethod === 'pickup' && selectedPickupPoint) {
+          foxpostTrackingId = await createFoxpostParcel(orderData);
+        }
+        
+        // Add tracking ID to order data
+        if (foxpostTrackingId) {
+          orderData.foxpostTrackingId = foxpostTrackingId;
+        }
+        
+        // Create Stripe payment session
+        const response = await fetch('https://senkisem.onrender.com/create-payment-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(orderData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.payment_url) {
+          // Clear cart and redirect to payment
+          localStorage.removeItem('cart');
+          window.location.href = data.payment_url;
+        } else {
+          throw new Error(data.error || 'Payment session creation failed');
+        }
+      } catch (error) {
+        console.error('Order processing error:', error);
+        throw error;
+      }
+    }
+
+    async function createFoxpostParcel(orderData) {
+      const { customerData, cart } = orderData;
+      const ebookId = 2;
+      const physicalProducts = cart.filter(item => item.id !== ebookId);
+      
+      if (physicalProducts.length === 0) {
+        return null; // No physical products, no need for Foxpost
+      }
+      
+      try {
+        const parcelData = [{
+          recipientName: customerData.fullName,
+          recipientPhone: customerData.phone || '+36301234567', // Default phone if not provided
+          recipientEmail: customerData.email,
+          destination: selectedPickupPoint.operator_id || selectedPickupPoint.place_id,
+          size: 'M', // Default size, will be determined at warehouse
+          cod: 0, // No cash on delivery
+          comment: `Senkisem rendelés - ${physicalProducts.map(p => p.name).join(', ')}`,
+          refCode: `SENKISEM-${Date.now()}` // Unique reference code
+        }];
+        
+        // Create basic auth header
+        const auth = btoa(`${FOXPOST_AUTH.username}:${FOXPOST_AUTH.password}`);
+        
+        const response = await fetch(`${FOXPOST_API_BASE}/parcel?isWeb=false`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${auth}`,
+            'Api-key': FOXPOST_AUTH.apiKey,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(parcelData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.length > 0 && result[0].clFoxId) {
+          console.log('Foxpost parcel created:', result[0].clFoxId);
+          return result[0].clFoxId;
+        } else {
+          console.error('Foxpost parcel creation failed:', result);
+          throw new Error('Foxpost parcel creation failed');
+        }
+      } catch (error) {
+        console.error('Foxpost API error:', error);
+        // Don't fail the entire order if Foxpost fails
+        return null;
+      }
+    }
+
+    // Utility function for debouncing search
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Auto-search on ZIP code change and additional helper functions
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('zip').addEventListener('change', function() {
+        if (this.value.length === 4 && selectedShipping === 'pickup') {
+          document.getElementById('pickup-search').value = this.value;
+          searchPickupPoints();
+        }
+      });
+    });
+
+    // Load nearby pickup points based on ZIP code
+    function loadNearbyPickupPoints() {
+      const zipCode = document.getElementById('zip').value;
+      if (zipCode && zipCode.length === 4) {
+        document.getElementById('pickup-search').value = zipCode;
+        searchPickupPoints();
+      } else {
+        // Show some default points if no ZIP code
+        if (foxpostPoints.length > 0) {
+          const defaultPoints = foxpostPoints.slice(0, 10);
+          renderPickupPoints(defaultPoints);
+        }
+      }
+    }
+
+    // Validate pickup point selection
+    function validatePickupSelection() {
+      if (selectedShipping === 'pickup' && !selectedPickupPoint) {
+        alert('Kérjük, válassz csomagpontot a folytatáshoz!');
+        document.getElementById('pickup-selector').scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>
