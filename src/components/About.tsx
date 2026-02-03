@@ -58,7 +58,7 @@ const About = () => {
       <div className="h-screen w-screen" id="clip">
         <div className="mask-clip-path about-image relative overflow-hidden">
           <img
-            src="images/about.png"
+            src="videos/about.png"
             alt="About"
             className="absolute left-0 top-0 size-full object-cover border border-black"
           />

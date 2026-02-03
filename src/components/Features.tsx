@@ -4,6 +4,7 @@ interface bentoProsp {
   src: string;
   title: ReactElement;
   description: string;
+  imageStyle?: React.CSSProperties;
 }
 
 interface bentoTiltProps {
@@ -49,13 +50,14 @@ const BentoTilt = ({ children, className = "" }: bentoTiltProps) => {
 };
 
 // Ez a standard card: fekete bg + kép rajta
-const BentoCard = ({ src, title, description }: bentoProsp) => {
+const BentoCard = ({ src, title, description, imageStyle }: bentoProsp) => {
   return (
     <div className="relative size-full bg-black">
       <img
         src={src}
         alt=""
-        className="absolute left-0 top-0 size-full object-cover object-center"
+        className="absolute left-0 top-0 size-full object-cover"
+        style={imageStyle}
       />
       {/* Gradient overlay: alul sötétít, hogy a szöveg olvasható legyen */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
@@ -110,6 +112,7 @@ const Features = () => {
               </>
             }
             description="Minden darab egy történet. Minden történet egy élmény. Nem logókat viselsz – hanem üzeneteket."
+            imageStyle={{ objectPosition: "center 30%" }}
           />
         </BentoTilt>
 
@@ -121,7 +124,7 @@ const Features = () => {
               src="videos/jgybg.png"
               title={
                 <>
-                  districte<b> Egy</b> Idegentől
+                  Jegyzetek<b> Egy</b> Idegentől
                 </>
               }
               description="Egy idegen jegyzetei, aki talán épp ugyan azon, ment keresztül, mint te. Vagy Pont máson. De ez most nem számít. Mert ez a könyv nem rólam szól... Rólad."
