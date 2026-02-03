@@ -112,7 +112,7 @@ const Features = () => {
               </>
             }
             description="Minden darab egy történet. Minden történet egy élmény. Nem logókat viselsz – hanem üzeneteket."
-            imageStyle={{ objectPosition: "center 30%" }}
+            imageStyle={{ objectPosition: "center 60%" }}
           />
         </BentoTilt>
 
@@ -153,7 +153,7 @@ const Features = () => {
                     Használati Útmutató <br /> Az Élethez
                   </h1>
                   <p className="mt-3 max-w-64 text-xs md:text-base">
-                    A Notes folytatása. Valódi olvasói válaszok alapján készült rendszerdiagnosztika. Nem megoldásokat ad : állapotot jelez. Senkisem módra
+                    A Jegyzetek folytatása. Valódi olvasói válaszok alapján készült rendszerdiagnosztika. Nem megoldásokat ad : állapotot jelez. Senkisem módra
                   </p>
                 </div>
               </div>
