@@ -70,7 +70,7 @@ function getGoogleAuth() {
 async function getSheet(sheetId) {
   const doc = new GoogleSpreadsheet(sheetId, getGoogleAuth());
   await doc.loadInfo();
-  return doc.sheetsByIndex[0];
+  return doc.sheetsByIndex['2026'];
 }
 
 // ============================================
