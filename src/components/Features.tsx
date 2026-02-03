@@ -1,191 +1,145 @@
-import React, { MouseEvent, ReactElement, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
 
-interface bentoProsp {
-  src: string;
-  title: ReactElement;
-  description: string;
-  imageStyle?: React.CSSProperties;
-}
+gsap.registerPlugin(ScrollTrigger);
 
-interface bentoTiltProps {
-  children: React.ReactNode;
-  className?: string;
-}
+const Hero = () => {
+  const [showScrollHint, setShowScrollHint] = useState(false);
+  const [videoStartTime, setVideoStartTime] = useState<number | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-const BentoTilt = ({ children, className = "" }: bentoTiltProps) => {
-  const [transformStyle, setTransformStyle] = useState<string>("");
-  const itemRef = useRef<HTMLDivElement | null>(null);
+  // Eszköz méret detektálás
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!itemRef.current) return;
+  // Video betöltés és lejátszás optimalizálás
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
 
-    const { left, top, width, height } =
-      itemRef.current.getBoundingClientRect();
+    // Előtöltés indítása
+    video.load();
 
-    const relativeX = (e.clientX - left) / width;
-    const relativeY = (e.clientY - top) / height;
+    const checkLoading = () => {
+      if ((window as any).loadingDone) {
+        // Próbáld elindítani a videót
+        const playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              // Siker - állítsd be a start time-ot
+              setVideoStartTime(Date.now());
+            })
+            .catch((err) => {
+              console.log("Video autoplay delayed:", err);
+              // Ha nem sikerül, próbáld újra kicsit később
+              setTimeout(() => {
+                video.play()
+                  .then(() => {
+                    setVideoStartTime(Date.now());
+                  })
+                  .catch(() => {
+                    console.log("Video autoplay failed, waiting for user interaction");
+                  });
+              }, 100);
+            });
+        }
+      } else {
+        requestAnimationFrame(checkLoading);
+      }
+    };
+    
+    checkLoading();
+  }, []);
 
-    const tiltX = (relativeX - 0.5) * 50;
-    const tiltY = (relativeY - 0.5) * -50;
-    const newTransform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(0.98, 0.98, 0.98)`;
+  useEffect(() => {
+    if (videoStartTime) {
+      const timer = setTimeout(() => setShowScrollHint(true), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [videoStartTime]);
 
-    setTransformStyle(newTransform);
-  };
+  useGSAP(() => {
+    if (showScrollHint) {
+      gsap.fromTo(
+        "#scroll-hint",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+      );
+    }
+  }, [showScrollHint]);
 
-  const handleMouseLeave = () => {
-    setTransformStyle("");
-  };
+  // GSAP animáció CSAK PC-n
+  useGSAP(() => {
+    if (!isDesktop) return;
+
+    gsap.set("#video-frame", {
+      clipPath: "polygon(14% 0%, 72% 0%, 88% 90%, 0% 95%)",
+      borderRadius: "0 0 10% 10%",
+    });
+
+    gsap.from("#video-frame", {
+      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+      borderRadius: "0 0 0 0",
+      scrollTrigger: {
+        trigger: "#video-frame",
+        start: "center center",
+        end: "bottom center",
+        scrub: true,
+      },
+    });
+  }, [isDesktop]);
 
   return (
-    <div
-      className={`${className} duration-[0.2s]`}
-      ref={itemRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ transform: transformStyle }}
-    >
-      {children}
-    </div>
-  );
-};
+    <div className="relative h-dvh w-screen overflow-x-hidden">
+      <div
+        id="video-frame"
+        className="relative z-10 h-dvh w-screen overflow-hidden bg-black"
+      >
+        {/* HERO VIDEO */}
+        <video
+          ref={videoRef}
+          src="videos/hero-1.mp4"
+          loop
+          muted
+          playsInline
+          preload="auto"
+          webkit-playsinline="true"
+          className="
+            absolute left-1/2 top-1/2
+            -translate-x-1/2 -translate-y-1/2
+            w-[140%] h-[45%]
+            object-fill
+            bg-black
+            md:w-full md:h-full md:object-cover
+          "
+        />
 
-// Ez a standard card: fekete bg + kép rajta
-const BentoCard = ({ src, title, description, imageStyle }: bentoProsp) => {
-  return (
-    <div className="relative size-full bg-black">
-      <img
-        src={src}
-        alt=""
-        className="absolute left-0 top-0 size-full object-cover"
-        style={imageStyle}
-      />
-      {/* Gradient overlay: alul sötétít, hogy a szöveg olvasható legyen */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-      <div className="relative z-10 flex size-full flex-col justify-between p-5 text-blue-50">
-        <div>
-          <h1 className="bento-title special-font">{title}</h1>
-          {description && (
-            <p className="mt-3 max-w-64 text-xs md:text-base">{description}</p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Features = () => {
-  return (
-    <section id="features" className="bg-black pb-0">
-      <div className="container mx-auto px-3 md:px-10">
-        {/* Scrolling Text Section */}
-        <div className="py-32">
-          <p className="font-circular-web text-lg text-blue-50 text-center mb-8">
-            A Senkisem nem csak egy Márka.
-          </p>
-
-          <div className="relative overflow-hidden hidden">
-            <div className="flex whitespace-nowrap animate-scroll">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="flex items-center">
-                  <h2 className="font-circular-web text-4xl md:text-6xl text-blue-50 mx-8">
-                    ÜZENET.
-                  </h2>
-                  <h2 className="font-circular-web text-4xl md:text-6xl text-blue-50 mx-8">
-                    MOZGALOM.
-                  </h2>
-                  <h2 className="font-circular-web text-4xl md:text-6xl text-blue-50 mx-8">
-                    EMLÉKEZTETŐ.
-                  </h2>
-                </div>
-              ))}
-            </div>
+        {/* SCROLL HINT */}
+        {showScrollHint && (
+          <div className="pointer-events-none absolute bottom-8 left-1/2 z-50 -translate-x-1/2">
+            <p
+              id="scroll-hint"
+              className="text-sm font-light tracking-wide text-neutral-300"
+            >
+              Lapozz a további tartalomért
+            </p>
           </div>
-        </div>
-
-        {/* Nagy felső card: herop.png */}
-        <BentoTilt className="border-hsla relative mb-7 h-96 w-full overflow-hidden rounded-md md:h-[65vh]">
-          <BentoCard
-            src="videos/herop.png"
-            title={
-              <>
-                Már<b>ka</b>bolt
-              </>
-            }
-            description="Minden darab egy történet. Minden történet egy élmény. Nem logókat viselsz – hanem üzeneteket."
-            imageStyle={{ objectPosition: "center: 33%" }}
-          />
-        </BentoTilt>
-
-        {/* Grid: 3 alsó card */}
-        <div className="grid h-[135vh] grid-cols-2 grid-rows-3 gap-7">
-          {/* CARD 1: jgybg.png — standard BentoCard */}
-          <BentoTilt className="bento-tilt_1 row-span-1 md:col-span-1 md:row-span-2">
-            <BentoCard
-              src="videos/jgybg.png"
-              title={
-                <>
-                  Jegyzetek<b> Egy</b> Idegentől
-                </>
-              }
-              description="Egy idegen jegyzetei, aki talán épp ugyan azon, ment keresztül, mint te. Vagy Pont máson. De ez most nem számít. Mert ez a könyv nem rólam szól... Rólad."
-            />
-          </BentoTilt>
-
-          {/* CARD 2: huae.png — custom design, fekete bg, gradient overlay a fehér kép felett */}
-          <BentoTilt className="bento-tilt_1 row-span-1 md:col-span-1 md:ms-0">
-            <div className="relative size-full bg-black">
-              {/* Kép: object-contain, jobbra igazítva, hogy a bal oldalon legyen hely a szövegnek */}
-              <img
-                src="videos/huae.png"
-                alt=""
-                className="absolute left-0 top-0 size-full object-contain"
-                style={{
-                  objectPosition: "70% center",
-                }}
-              />
-              {/* Erős bal oldali gradient: a fehér kép felett is olvasható lesz a szöveg */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
-              {/* Egy kis alul gradient is, telefon-biztos */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <div className="relative z-10 flex size-full flex-col justify-between p-5 text-blue-50">
-                <div>
-                  <h1 className="bento-title special-font">
-                    Használati Útmutató <br /> Az Élethez
-                  </h1>
-                  <p className="mt-3 max-w-64 text-xs md:text-base">
-                    A Jegyzetek folytatása. Valódi olvasói válaszok alapján készült rendszerdiagnosztika. Nem megoldásokat ad : állapotot jelez. Senkisem módra
-                  </p>
-                </div>
-              </div>
-            </div>
-          </BentoTilt>
-
-          {/* CARD 3: feature-4.png — standard BentoCard */}
-          <BentoTilt className="bento-tilt_1 md:col-span-1 md:me-0">
-            <BentoCard
-              src="videos/feature-4.png"
-              title={
-                <>
-                  Valami <b></b>Új Jön
-                </>
-              }
-              description="?????????"
-            />
-          </BentoTilt>
-        </div>
+        )}
       </div>
-
-      {/* CSS Animation */}
-      <style>
-{`
-  @keyframes scrollLeft {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-33.333%); }
-  }
-`}
-</style>
-    </section>
+    </div>
   );
 };
 
-export default Features;
+export default Hero;

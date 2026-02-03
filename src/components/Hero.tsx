@@ -14,7 +14,7 @@ const Hero = () => {
   // Eszköz méret detektálás
   useEffect(() => {
     const checkDevice = () => {
-      setIsDesktop(window.innerWidth >= 1024); // lg breakpoint
+      setIsDesktop(window.innerWidth >= 1024);
     };
     
     checkDevice();
@@ -22,15 +22,44 @@ const Hero = () => {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
+  // Video betöltés és lejátszás optimalizálás
   useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Előtöltés indítása
+    video.load();
+
     const checkLoading = () => {
-      if ((window as any).loadingDone && videoRef.current) {
-        videoRef.current.play().catch(() => {});
-        setVideoStartTime(Date.now());
+      if ((window as any).loadingDone) {
+        // Próbáld elindítani a videót
+        const playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              // Siker - állítsd be a start time-ot
+              setVideoStartTime(Date.now());
+            })
+            .catch((err) => {
+              console.log("Video autoplay delayed:", err);
+              // Ha nem sikerül, próbáld újra kicsit később
+              setTimeout(() => {
+                video.play()
+                  .then(() => {
+                    setVideoStartTime(Date.now());
+                  })
+                  .catch(() => {
+                    console.log("Video autoplay failed, waiting for user interaction");
+                  });
+              }, 100);
+            });
+        }
       } else {
         requestAnimationFrame(checkLoading);
       }
     };
+    
     checkLoading();
   }, []);
 
@@ -85,6 +114,8 @@ const Hero = () => {
           loop
           muted
           playsInline
+          preload="auto"
+          webkit-playsinline="true"
           className="
             absolute left-1/2 top-1/2
             -translate-x-1/2 -translate-y-1/2
