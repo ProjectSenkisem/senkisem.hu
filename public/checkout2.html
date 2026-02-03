@@ -133,27 +133,30 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         const termsCheckbox = document.getElementById('terms-agree');
-    if (!termsCheckbox.checked) {
-        alert('Kérjük, fogadd el az Általános Szerződési Feltételeket a folytatáshoz!');
-        termsCheckbox.focus();
-        return; // Itt return, nem return false
-    }
+        if (!termsCheckbox.checked) {
+            alert('Kérjük, fogadd el az Általános Szerződési Feltételeket a folytatáshoz!');
+            termsCheckbox.focus();
+            return;
+        }
 
+        // ✅ ÍGY JÓ: FormData létrehozása
+        const formData = new FormData(checkoutForm);
+        
         const customerData = {
-        fullName: formData.get('fullName'),
-        email: formData.get('email'),
-        phone: '', // Digitális terméknél nem kötelező
-        address: formData.get('address') || '-', 
-        city: formData.get('city') || '-',
-        country: formData.get('country') || 'Magyarország',
-        zip: formData.get('zip') || '-',
-        shippingMethod: 'digital', // ✅ ÚJ: Jelzés, hogy digitális
-        pickupPoint: null,
-        deliveryAddress: '',
-        deliveryCity: '',
-        deliveryZip: '',
-        deliveryNote: ''
-    };
+            fullName: formData.get('fullName'),
+            email: formData.get('email'),
+            phone: '', // Digitális terméknél nem kötelező
+            address: formData.get('address') || '-', 
+            city: formData.get('city') || '-',
+            country: formData.get('country') || 'Magyarország',
+            zip: formData.get('zip') || '-',
+            shippingMethod: 'digital', // ✅ Jelzés, hogy digitális
+            pickupPoint: null,
+            deliveryAddress: '',
+            deliveryCity: '',
+            deliveryZip: '',
+            deliveryNote: ''
+        };
 
         if (!customerData.fullName || !customerData.email) {
             alert('Kérjük, töltse ki a teljes nevét és az e-mail címét!');
@@ -165,7 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
             name: item.name,
             price: typeof item.price === 'string' ? 
                 parseInt(item.price.replace(/\D/g, '')) : item.price,
-            image: item.image
+            image: item.image,
+            quantity: item.quantity || 1 // ✅ Darabszám
         }));
 
         try {
@@ -183,8 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (response.ok && data.payment_url) {
-                window.location.href = data.payment_url;
                 localStorage.removeItem('cart');
+                window.location.href = data.payment_url;
             } else {
                 console.error('Hiba:', data.error);
                 alert(`Hiba történt: ${data.error || 'Ismeretlen hiba'}`);
@@ -195,9 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-
-
 </script>
 
 </body>
