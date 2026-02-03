@@ -8,7 +8,19 @@ gsap.registerPlugin(ScrollTrigger);
 const Hero = () => {
   const [showScrollHint, setShowScrollHint] = useState(false);
   const [videoStartTime, setVideoStartTime] = useState<number | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Eszköz méret detektálás
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsDesktop(window.innerWidth >= 1024); // lg breakpoint
+    };
+    
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
 
   useEffect(() => {
     const checkLoading = () => {
@@ -39,7 +51,10 @@ const Hero = () => {
     }
   }, [showScrollHint]);
 
+  // GSAP animáció CSAK PC-n
   useGSAP(() => {
+    if (!isDesktop) return;
+
     gsap.set("#video-frame", {
       clipPath: "polygon(14% 0%, 72% 0%, 88% 90%, 0% 95%)",
       borderRadius: "0 0 10% 10%",
@@ -55,7 +70,7 @@ const Hero = () => {
         scrub: true,
       },
     });
-  });
+  }, [isDesktop]);
 
   return (
     <div className="relative h-dvh w-screen overflow-x-hidden">
