@@ -70,14 +70,7 @@ const Hero = () => {
           loop
           muted
           playsInline
-          className="
-            absolute left-1/2 top-1/2
-            -translate-x-1/2 -translate-y-1/2
-            w-[150%] h-[90%]
-            object-fill
-            bg-black
-            md:w-full md:h-full md:object-cover
-          "
+          className=""
         />
 
         {/* SCROLL HINT */}
