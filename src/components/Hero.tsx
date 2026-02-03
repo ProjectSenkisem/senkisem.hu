@@ -1,60 +1,61 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const [showScrollHint, setShowScrollHint] = useState(false);
-  const [videoReady, setVideoReady] = useState(false);
+  const [videoStartTime, setVideoStartTime] = useState<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const hintTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Videó betöltési handler
-  const handleCanPlayThrough = useCallback(() => {
-    if (!videoRef.current) return;
-
-    // Videót elindítjuk
-    videoRef.current.play().catch(() => {});
-
-    // Jelezzük az index.html-nek, hogy a videó ready
-    if (typeof (window as any).notifyVideoReady === "function") {
-      (window as any).notifyVideoReady();
-    }
-
-    setVideoReady(true);
-  }, []);
-
-  // Amikor a preloader eltűnt és a videó is ready, indul a scroll hint timer
   useEffect(() => {
-    if (!videoReady) return;
-
-    // Várunk a loadingDone-ra (preloader fadeout-ja befejeződött)
-    const waitForLoader = () => {
-      if ((window as any).loadingDone) {
-        // Videó kezdetétől számolunk 5s-et
-        hintTimerRef.current = setTimeout(() => {
-          setShowScrollHint(true);
-        }, 5000);
+    const checkLoading = () => {
+      if ((window as any).loadingDone && videoRef.current) {
+        videoRef.current.play().catch(() => {});
+        setVideoStartTime(Date.now());
       } else {
-        requestAnimationFrame(waitForLoader);
+        requestAnimationFrame(checkLoading);
       }
     };
-    waitForLoader();
+    checkLoading();
+  }, []);
 
-    return () => {
-      if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
-    };
-  }, [videoReady]);
-
-  // Scroll hint fade-in CSS-szel, nem GSAP
   useEffect(() => {
-    if (!showScrollHint) return;
-    const el = document.getElementById("scroll-hint");
-    if (el) {
-      // Egy frame delay, hogy a browser a rendered állapotot rögzítse
-      requestAnimationFrame(() => {
-        el.style.opacity = "1";
-        el.style.transform = "translateX(-50%) translateY(0)";
-      });
+    if (videoStartTime) {
+      const timer = setTimeout(() => setShowScrollHint(true), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [videoStartTime]);
+
+  useGSAP(() => {
+    if (showScrollHint) {
+      gsap.fromTo(
+        "#scroll-hint",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+      );
     }
   }, [showScrollHint]);
+
+  useGSAP(() => {
+    gsap.set("#video-frame", {
+      clipPath: "polygon(14% 0%, 72% 0%, 88% 90%, 0% 95%)",
+      borderRadius: "0 0 10% 10%",
+    });
+
+    gsap.from("#video-frame", {
+      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+      borderRadius: "0 0 0 0",
+      scrollTrigger: {
+        trigger: "#video-frame",
+        start: "center center",
+        end: "bottom center",
+        scrub: true,
+      },
+    });
+  });
 
   return (
     <div className="relative h-dvh w-screen overflow-x-hidden">
@@ -69,29 +70,22 @@ const Hero = () => {
           loop
           muted
           playsInline
-          preload="auto"
-          onCanPlayThrough={handleCanPlayThrough}
           className="
-            absolute inset-0
-            w-full h-full
-            object-cover
+            absolute left-1/2 top-1/2
+            -translate-x-1/2 -translate-y-1/2
+            w-[140%] h-[70%]
+            object-fill
+            bg-black
+            md:w-full md:h-full md:object-cover
           "
-          style={{
-            objectPosition: "center center",
-          }}
         />
 
-        {/* SCROLL HINT — CSS transition, nem GSAP */}
+        {/* SCROLL HINT */}
         {showScrollHint && (
-          <div className="pointer-events-none absolute bottom-8 left-1/2 z-50">
+          <div className="pointer-events-none absolute bottom-8 left-1/2 z-50 -translate-x-1/2">
             <p
               id="scroll-hint"
               className="text-sm font-light tracking-wide text-neutral-300"
-              style={{
-                opacity: 0,
-                transform: "translateX(-50%) translateY(20px)",
-                transition: "opacity 1.5s ease, transform 1.5s ease",
-              }}
             >
               Lapozz a további tartalomért
             </p>

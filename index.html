@@ -156,39 +156,22 @@ html, body {
     
     <script>
       window.loadingDone = false;
-      window.videoCanPlay = false;
-      const minimumLoadingTime = window.innerWidth <= 768 ? 2500 : 3200;
+      const minimumLoadingTime = window.innerWidth <= 768 ? 2500 : 4000;
 
-      // Ez fut, amikor a React mount-olja a videót és a ref elérhető lesz
-      // A Hero.tsx fog calling-nak, de a fallback itt van, ha valami nem indul
-      window.notifyVideoReady = function() {
-        window.videoCanPlay = true;
-        tryDismissLoader();
-      };
-
-      let loaderMinTimePassed = false;
-
-      // Minimum idő: a preloader legalább ennyig forog
-      setTimeout(() => {
-        loaderMinTimePassed = true;
-        tryDismissLoader();
-      }, minimumLoadingTime);
-
-      function tryDismissLoader() {
-        // Mindkét feltételnek teljesülnie kell: min idő + videó ready
-        if (!loaderMinTimePassed || !window.videoCanPlay) return;
-
-        const loading = document.getElementById("loading");
-        if (loading) {
-          loading.classList.add("hidden");
-          setTimeout(() => {
-            loading.remove();
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          const loading = document.getElementById("loading");
+          if (loading) {
+            loading.classList.add("hidden");
+            setTimeout(() => {
+              loading.remove();
+              window.loadingDone = true;
+            }, 600);
+          } else {
             window.loadingDone = true;
-          }, 600);
-        } else {
-          window.loadingDone = true;
-        }
-      }
+          }
+        }, minimumLoadingTime);
+      });
     </script>
   </body>
 </html>
