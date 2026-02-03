@@ -9,7 +9,6 @@ const Hero = () => {
   const [showScrollHint, setShowScrollHint] = useState(false);
   const [videoStartTime, setVideoStartTime] = useState<number | null>(null);
   const [isDesktop, setIsDesktop] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Eszköz méret detektálás
@@ -23,38 +22,46 @@ const Hero = () => {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // Video előtöltés és lejátszás
+  // Video betöltés és lejátszás optimalizálás
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const handleCanPlay = () => {
-      setVideoLoaded(true);
-    };
-
-    video.addEventListener("canplaythrough", handleCanPlay);
+    // Előtöltés indítása
+    video.load();
 
     const checkLoading = () => {
-      if ((window as any).loadingDone && videoLoaded) {
-        video.play().catch((err) => {
-          console.log("Video autoplay prevented:", err);
-          // Fallback: próbáld újra kicsit később
-          setTimeout(() => {
-            video.play().catch(() => {});
-          }, 100);
-        });
-        setVideoStartTime(Date.now());
+      if ((window as any).loadingDone) {
+        // Próbáld elindítani a videót
+        const playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              // Siker - állítsd be a start time-ot
+              setVideoStartTime(Date.now());
+            })
+            .catch((err) => {
+              console.log("Video autoplay delayed:", err);
+              // Ha nem sikerül, próbáld újra kicsit később
+              setTimeout(() => {
+                video.play()
+                  .then(() => {
+                    setVideoStartTime(Date.now());
+                  })
+                  .catch(() => {
+                    console.log("Video autoplay failed, waiting for user interaction");
+                  });
+              }, 100);
+            });
+        }
       } else {
         requestAnimationFrame(checkLoading);
       }
     };
     
     checkLoading();
-
-    return () => {
-      video.removeEventListener("canplaythrough", handleCanPlay);
-    };
-  }, [videoLoaded]);
+  }, []);
 
   useEffect(() => {
     if (videoStartTime) {
@@ -108,6 +115,7 @@ const Hero = () => {
           muted
           playsInline
           preload="auto"
+          webkit-playsinline="true"
           className="
             absolute left-1/2 top-1/2
             -translate-x-1/2 -translate-y-1/2
