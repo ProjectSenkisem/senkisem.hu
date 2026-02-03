@@ -112,7 +112,7 @@ const Features = () => {
               </>
             }
             description="Minden darab egy történet. Minden történet egy élmény. Nem logókat viselsz – hanem üzeneteket."
-            imageStyle={{ objectPosition: "center 60%" }}
+            imageStyle={{ objectPosition: "center -30%" }}
           />
         </BentoTilt>
 
