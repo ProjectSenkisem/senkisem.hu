@@ -1649,6 +1649,11 @@ grid-template-columns: repeat(3, 1fr);
 }
 }
 @media (max-width: 1024px) {
+
+    .hero-bg-video {
+        display: none;
+    }
+
 .products-grid {
 grid-template-columns: repeat(2, 1fr);
 gap: 1.5rem;
@@ -4120,7 +4125,7 @@ padding: 0.8rem;
     <div class="hero-background">
         <canvas class="background-watermark"></canvas>
         <video class="hero-bg-video" autoplay muted loop playsinline>
-            <source src="assets/img/" type="video/mp4">
+            <source src="">
         </video>
     </div>
     
@@ -4483,6 +4488,19 @@ Egy világban, ahol a technológia és a kultúra brutális erővel ütközik, m
 </div>
 
 <script>
+    (function() {
+    const video = document.querySelector('.hero-bg-video');
+    if (!video) return;
+
+    // Csak 1025px-nél és fölebb töltjük be a videót
+    if (window.innerWidth >= 1025) {
+        const source = document.createElement('source');
+        source.setAttribute('src', 'assets/img/merchvid.mp4');
+        source.setAttribute('type', 'video/mp4');
+        video.appendChild(source);
+        video.load(); // Indit el a dowloadot + playbackot
+    }
+})();
     const products = [
     // ========================================
     // KIEGÉSZÍTŐK

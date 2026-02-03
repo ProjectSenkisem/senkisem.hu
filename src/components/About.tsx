@@ -40,7 +40,7 @@ const About = () => {
             title={`Nem<b> Egy</b> Brand;`}
             containerClass="mt-5 text-center !text-black animate-title"
           />
-          
+
           <AnimateTitle
             sectionId="about-message"
             title={`Üzenet.`}
@@ -54,16 +54,12 @@ const About = () => {
         </div>
       </div>
 
-      {/* VIDEO CLIP SECTION */}
+      {/* IMAGE CLIP SECTION */}
       <div className="h-screen w-screen" id="clip">
         <div className="mask-clip-path about-image relative overflow-hidden">
-          <video
-            src="videos/feature-1.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
+          <img
+            src="images/about.png"
+            alt="About"
             className="absolute left-0 top-0 size-full object-cover border border-black"
           />
         </div>

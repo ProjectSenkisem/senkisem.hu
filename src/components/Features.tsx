@@ -13,7 +13,6 @@ interface bentoTiltProps {
 
 const BentoTilt = ({ children, className = "" }: bentoTiltProps) => {
   const [transformStyle, setTransformStyle] = useState<string>("");
-
   const itemRef = useRef<HTMLDivElement | null>(null);
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -27,7 +26,7 @@ const BentoTilt = ({ children, className = "" }: bentoTiltProps) => {
 
     const tiltX = (relativeX - 0.5) * 50;
     const tiltY = (relativeY - 0.5) * -50;
-    const newTransform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(0.98, 0.98, 0.98 )`;
+    const newTransform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(0.98, 0.98, 0.98)`;
 
     setTransformStyle(newTransform);
   };
@@ -49,16 +48,17 @@ const BentoTilt = ({ children, className = "" }: bentoTiltProps) => {
   );
 };
 
+// Ez a standard card: fekete bg + kép rajta
 const BentoCard = ({ src, title, description }: bentoProsp) => {
   return (
-    <div className="relative size-full">
-      <video
+    <div className="relative size-full bg-black">
+      <img
         src={src}
-        loop
-        muted
-        autoPlay
+        alt=""
         className="absolute left-0 top-0 size-full object-cover object-center"
       />
+      {/* Gradient overlay: alul sötétít, hogy a szöveg olvasható legyen */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
       <div className="relative z-10 flex size-full flex-col justify-between p-5 text-blue-50">
         <div>
           <h1 className="bento-title special-font">{title}</h1>
@@ -77,12 +77,10 @@ const Features = () => {
       <div className="container mx-auto px-3 md:px-10">
         {/* Scrolling Text Section */}
         <div className="py-32">
-          {/* Static centered text – MARAD */}
           <p className="font-circular-web text-lg text-blue-50 text-center mb-8">
             A Senkisem nem csak egy Márka.
           </p>
 
-          {/* Scrolling animated text – ELTŰNIK */}
           <div className="relative overflow-hidden hidden">
             <div className="flex whitespace-nowrap animate-scroll">
               {[...Array(3)].map((_, i) => (
@@ -102,9 +100,10 @@ const Features = () => {
           </div>
         </div>
 
+        {/* Nagy felső card: herop.png */}
         <BentoTilt className="border-hsla relative mb-7 h-96 w-full overflow-hidden rounded-md md:h-[65vh]">
           <BentoCard
-            src="videos/feature-6.mp4"
+            src="images/herop.png"
             title={
               <>
                 Már<b>ka</b>bolt
@@ -114,52 +113,54 @@ const Features = () => {
           />
         </BentoTilt>
 
+        {/* Grid: 3 alsó card */}
         <div className="grid h-[135vh] grid-cols-2 grid-rows-3 gap-7">
-          {/* Jegyzetek Egy Idegentől */}
+          {/* CARD 1: jgybg.png — standard BentoCard */}
           <BentoTilt className="bento-tilt_1 row-span-1 md:col-span-1 md:row-span-2">
             <BentoCard
-              src="videos/hero-3.mp4"
+              src="images/jgybg.png"
               title={
                 <>
-                  Jegyzetek<b> Egy</b> Idegentől
+                  districte<b> Egy</b> Idegentől
                 </>
               }
               description="Egy idegen jegyzetei, aki talán épp ugyan azon, ment keresztül, mint te. Vagy Pont máson. De ez most nem számít. Mert ez a könyv nem rólam szól... Rólad."
             />
           </BentoTilt>
 
-          {/* Használati Útmutató Az Élethez */}
-          <BentoTilt className="bento-tilt_1 row-span-1 ms-32 md:col-span-1 md:ms-0">
-            <div className="relative size-full">
-              <video
-                src="videos/feature-3.mp4"
-                loop
-                muted
-                autoPlay
-                className="absolute left-0 top-0 size-full object-contain object-right"
+          {/* CARD 2: huae.png — custom design, fekete bg, gradient overlay a fehér kép felett */}
+          <BentoTilt className="bento-tilt_1 row-span-1 md:col-span-1 md:ms-0">
+            <div className="relative size-full bg-black">
+              {/* Kép: object-contain, jobbra igazítva, hogy a bal oldalon legyen hely a szövegnek */}
+              <img
+                src="images/huae.png"
+                alt=""
+                className="absolute left-0 top-0 size-full object-contain"
                 style={{
-                  objectPosition: '80% center',
-                  transform: 'scale(0.7)',
-                  transformOrigin: 'right center'
+                  objectPosition: "70% center",
                 }}
               />
+              {/* Erős bal oldali gradient: a fehér kép felett is olvasható lesz a szöveg */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+              {/* Egy kis alul gradient is, telefon-biztos */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="relative z-10 flex size-full flex-col justify-between p-5 text-blue-50">
                 <div>
                   <h1 className="bento-title special-font">
                     Használati Útmutató <br /> Az Élethez
                   </h1>
                   <p className="mt-3 max-w-64 text-xs md:text-base">
-                    A Jegyzetek folytatása. Valódi olvasói válaszok alapján készült rendszerdiagnosztika. Nem megoldásokat ad : állapotot jelez. Senkisem módra
+                    A Notes folytatása. Valódi olvasói válaszok alapján készült rendszerdiagnosztika. Nem megoldásokat ad : állapotot jelez. Senkisem módra
                   </p>
                 </div>
               </div>
             </div>
           </BentoTilt>
 
-          {/* Valami Új Jön */}
-          <BentoTilt className="bento-tilt_1 me-14 md:col-span-1 md:me-0">
+          {/* CARD 3: feature-4.png — standard BentoCard */}
+          <BentoTilt className="bento-tilt_1 md:col-span-1 md:me-0">
             <BentoCard
-              src="videos/feature-4.mp4"
+              src="images/feature-4.png"
               title={
                 <>
                   Valami <b></b>Új Jön

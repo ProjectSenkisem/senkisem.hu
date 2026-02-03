@@ -71,12 +71,14 @@ const Hero = () => {
           muted
           playsInline
           className="
-            absolute left-1/2 top-1/2
-            -translate-x-1/2 -translate-y-1/2
-            w-[140%] h-[70%]
-            object-fill
+            absolute inset-0
+            w-full h-full
+            object-cover
             bg-black
-            md:w-full md:h-full md:object-cover
+            md:absolute md:left-1/2 md:top-1/2
+            md:-translate-x-1/2 md:-translate-y-1/2
+            md:w-[140%] md:h-[70%]
+            md:object-fill
           "
         />
 
