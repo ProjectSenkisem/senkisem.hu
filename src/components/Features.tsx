@@ -103,7 +103,7 @@ const Features = () => {
         {/* Nagy felső card: herop.png */}
         <BentoTilt className="border-hsla relative mb-7 h-96 w-full overflow-hidden rounded-md md:h-[65vh]">
           <BentoCard
-            src="images/herop.png"
+            src="videos/herop.png"
             title={
               <>
                 Már<b>ka</b>bolt
@@ -118,7 +118,7 @@ const Features = () => {
           {/* CARD 1: jgybg.png — standard BentoCard */}
           <BentoTilt className="bento-tilt_1 row-span-1 md:col-span-1 md:row-span-2">
             <BentoCard
-              src="images/jgybg.png"
+              src="videos/jgybg.png"
               title={
                 <>
                   districte<b> Egy</b> Idegentől
@@ -133,7 +133,7 @@ const Features = () => {
             <div className="relative size-full bg-black">
               {/* Kép: object-contain, jobbra igazítva, hogy a bal oldalon legyen hely a szövegnek */}
               <img
-                src="images/huae.png"
+                src="videos/huae.png"
                 alt=""
                 className="absolute left-0 top-0 size-full object-contain"
                 style={{
@@ -160,7 +160,7 @@ const Features = () => {
           {/* CARD 3: feature-4.png — standard BentoCard */}
           <BentoTilt className="bento-tilt_1 md:col-span-1 md:me-0">
             <BentoCard
-              src="images/feature-4.png"
+              src="videos/feature-4.png"
               title={
                 <>
                   Valami <b></b>Új Jön
