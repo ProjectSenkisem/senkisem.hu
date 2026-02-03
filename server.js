@@ -37,14 +37,10 @@ const CONFIG = {
     ORDERS: '1ysbyF0uCl1W03aGArpFYDIU6leFFRJb0R1AaadVarGk',
   },
   FOXPOST: {
-    API_URL:  'https://webapi.foxpost.hu/api',
+    API_URL: 'https://webapi.foxpost.hu/api',
     USERNAME: process.env.FOXPOST_USERNAME,
     PASSWORD: process.env.FOXPOST_PASSWORD,
-    API_KEY:  process.env.FOXPOST_API_KEY,
-  },
-  SHIPPING: {
-    FOXPOST_COST: 899,    // Ft
-    HOME_COST:    2590,   // Ft
+    API_KEY: process.env.FOXPOST_API_KEY,
   }
 };
 
@@ -58,7 +54,6 @@ try {
   console.log(`✅ ${products.length} termék betöltve`);
 } catch (err) {
   console.error('❌ product.json hiba:', err.message);
-  process.exit(1);
 }
 
 // ============================================
@@ -67,64 +62,64 @@ try {
 function getGoogleAuth() {
   return new JWT({
     email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-    key:   process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 }
 
 async function getSheet(sheetId) {
-  console.log(`ℹ️  Sheet megnyitása: ${sheetId}`);
   const doc = new GoogleSpreadsheet(sheetId, getGoogleAuth());
   await doc.loadInfo();
-
-  console.log(`🔍 Elérhető sheetek: ${Object.keys(doc.sheetsByTitle).join(', ')}`);
-
+  
+  // Név alapján keresés (biztonságosabb)
   const sheet = doc.sheetsByTitle['2026'];
+  
   if (!sheet) {
-    throw new Error(`❌ "2026" sheet nem található! Elérhető: ${Object.keys(doc.sheetsByTitle).join(', ')}`);
+    throw new Error('❌ 2026-os munkalap nem található!');
   }
-  console.log('✅ "2026" sheet megnyitva');
+  
+  console.log(`✅ Munkalap betöltve: ${sheet.title}`);
   return sheet;
 }
 
 // ============================================
-// FOXPOST CSOMAG CREAR
+// FOXPOST CSOMAG LÉTREHOZÁS
 // ============================================
 async function createFoxpostParcel(orderData) {
   const { customerData, cart } = orderData;
-  const physicalProducts = cart.filter(item => item.id !== 2 && item.id !== 4 && item.id !== 300);
-
+  const physicalProducts = cart.filter(item => item.id !== 2 && item.id !== 4);
+  
   if (physicalProducts.length === 0 || customerData.shippingMethod !== 'pickup') {
     return null;
   }
 
   try {
     const auth = Buffer.from(`${CONFIG.FOXPOST.USERNAME}:${CONFIG.FOXPOST.PASSWORD}`).toString('base64');
-
+    
     const { data } = await axios.post(
       `${CONFIG.FOXPOST.API_URL}/parcel?isWeb=false`,
       [{
-        recipientName:  customerData.fullName,
+        recipientName: customerData.fullName,
         recipientPhone: customerData.phone || '+36301234567',
         recipientEmail: customerData.email,
-        destination:    customerData.pickupPoint?.operator_id || customerData.pickupPoint?.place_id,
-        size:           'M',
-        cod:            0,
-        comment:        `Senkisem - ${physicalProducts.map(p => p.name).join(', ')}`,
-        refCode:        `SNK-${Date.now()}`
+        destination: customerData.pickupPoint?.operator_id || customerData.pickupPoint?.place_id,
+        size: 'M',
+        cod: 0,
+        comment: `Senkisem - ${physicalProducts.map(p => p.name).join(', ')}`,
+        refCode: `SNK-${Date.now()}`
       }],
       {
         headers: {
           'Authorization': `Basic ${auth}`,
-          'Api-key':       CONFIG.FOXPOST.API_KEY,
-          'Content-Type':  'application/json'
+          'Api-key': CONFIG.FOXPOST.API_KEY,
+          'Content-Type': 'application/json'
         }
       }
     );
 
     if (data?.[0]?.clFoxId) {
-      console.log('✅ Foxpost csomag créálva:', data[0].clFoxId);
-      return { trackingId: data[0].clFoxId };
+      console.log('✅ Foxpost csomag:', data[0].clFoxId);
+      return data[0].clFoxId;
     }
     return null;
   } catch (error) {
@@ -134,79 +129,218 @@ async function createFoxpostParcel(orderData) {
 }
 
 // ============================================
-// RENDELÉS MENTÉSE SHEETS — mind a 21 mező
+// RENDELÉS MENTÉSE SHEETS-BE (2026 MEZŐK)
 // ============================================
-async function saveOrder(orderData) {
-  console.log('ℹ️  Rendelés mentése kezdődik...');
-
+async function saveOrderToSheets(orderData, sessionId, foxpostTrackingId = null) {
   try {
     const sheet = await getSheet(CONFIG.SHEETS.ORDERS);
-
-    const totalAmount = orderData.items.reduce((sum, i) => sum + i.price, 0); // Ft-ban
-    const isEbook = orderData.items.every(i => i.id === 2 || i.id === 4 || i.id === 300);
-
-    // Shipping logic
-    let shippingMethod  = '-';
-    let shippingAddress = '-';
-    let shippingCost    = 0;
-    let pickupPointName = '-';
-    let foxpostTracking = '-';
-
-    if (isEbook) {
-      shippingMethod  = 'Digitális letöltés';
-      shippingAddress = 'E-mail küldés';
-    } else if (orderData.shippingMethod === 'pickup') {
-      shippingMethod  = 'Foxpost Csomagpont';
-      shippingAddress = orderData.shippingAddress || '-';
-      shippingCost    = CONFIG.SHIPPING.FOXPOST_COST;
-      pickupPointName = orderData.pickupPointName || '-';
-      foxpostTracking = orderData.foxpostTrackingId || '-';
-    } else {
-      shippingMethod  = 'Házhozszállítás';
-      shippingAddress = orderData.shippingAddress || '-';
-      shippingCost    = CONFIG.SHIPPING.HOME_COST;
+    
+    const { cart, customerData } = orderData;
+    
+    // Összegek számítása
+    const productTotal = cart.reduce((sum, item) => {
+      const price = typeof item.price === 'string' ? 
+        parseInt(item.price.replace(/\D/g, '')) : item.price;
+      const quantity = item.quantity || 1;
+      return sum + (price * quantity);
+    }, 0);
+    
+    const shippingCost = calculateShippingCost(cart, customerData.shippingMethod);
+    const totalAmount = productTotal + shippingCost;
+    
+    // Terméknevek és méretek összegyűjtése
+    const productNames = cart.map(item => {
+      const quantity = item.quantity || 1;
+      return quantity > 1 ? `${item.name} (${quantity} db)` : item.name;
+    }).join(', ');
+    
+    const sizes = cart.map(item => item.size || '-').join(', ');
+    
+    // Típus meghatározása
+    const isEbook = cart.every(item => item.id === 2 || item.id === 4);
+    const productType = isEbook ? 'E-könyv' : 'Fizikai';
+    
+    // Szállítási mód szövegesen
+    let shippingMethodText = '-';
+    if (customerData.shippingMethod === 'pickup') {
+      shippingMethodText = 'Foxpost csomagpont';
+    } else if (customerData.shippingMethod === 'home') {
+      shippingMethodText = 'Házhozszállítás';
+    } else if (isEbook) {
+      shippingMethodText = 'Digitális';
     }
-
-    // Build the row — ALL 21 columns, '-' fallback everywhere
-    const rowData = {
-      'Dátum':                 new Date().toLocaleString('hu-HU'),
-      'Név':                   orderData.customerName    || '-',
-      'Email':                 orderData.customerEmail   || '-',
-      'Cím':                   orderData.customerAddress || '-',
-      'Város':                 orderData.customerCity    || '-',
-      'Ország':                orderData.customerCountry || '-',
-      'Irányítószám':          orderData.customerZip     || '-',
-      'Termékek':              orderData.items.map(i => i.name).join(', ') || '-',
-      'Méretek':               orderData.items.map(i => i.size || 'N/A').join(', ') || '-',
-      'Összeg':                `${totalAmount.toLocaleString('hu-HU')} Ft`,
-      'Típus':                 isEbook ? 'E-könyv' : 'Fizikai termék',
-      'Szállítási mód':        shippingMethod,
-      'Szállítási cím':        shippingAddress,
-      'Csomagpont név':        pickupPointName,
-      'Szállítási díj':        `${shippingCost.toLocaleString('hu-HU')} Ft`,
-      'Végösszeg':             `${(totalAmount + shippingCost).toLocaleString('hu-HU')} Ft`,
-      'Foxpost követés':       foxpostTracking,
-      'Rendelés ID':           orderData.sessionId || '-',
-      'Státusz':               'Fizetés Teljesítve',
-      'Szállítási megjegyzés': orderData.deliveryNote || '-',
-      'Telefonszám':           orderData.phone || '-'
-    };
-
-    console.log('🔍 Mentendő sor:', JSON.stringify(rowData, null, 2));
-
-    await sheet.addRow(rowData);
-
-    console.log('✅ Sheets mentés OK –', orderData.sessionId);
+    
+    // Szállítási cím (csak házhozszállításnál)
+    let deliveryAddress = '-';
+    if (customerData.shippingMethod === 'home') {
+      const addr = customerData.deliveryAddress || customerData.address;
+      const city = customerData.deliveryCity || customerData.city;
+      const zip = customerData.deliveryZip || customerData.zip;
+      deliveryAddress = `${zip} ${city}, ${addr}`;
+    }
+    
+    // Csomagpont neve (csak Foxpost esetén)
+    let pickupPointName = '-';
+    if (customerData.shippingMethod === 'pickup' && customerData.pickupPoint) {
+      pickupPointName = `${customerData.pickupPoint.name} (${customerData.pickupPoint.zip} ${customerData.pickupPoint.city})`;
+    }
+    
+    // Excel sor hozzáadása - MINDEN MEZŐ A 2026-OS STRUKTÚRA SZERINT
+    await sheet.addRow({
+      'Dátum': new Date().toLocaleString('hu-HU', { timeZone: 'Europe/Budapest' }),
+      'Név': customerData.fullName || '-',
+      'Email': customerData.email || '-',
+      'Cím': customerData.address || '-',
+      'Város': customerData.city || '-',
+      'Ország': customerData.country || 'Magyarország',
+      'Irányítószám': customerData.zip || '-',
+      'Termékek': productNames,
+      'Méretek': sizes,
+      'Összeg': `${productTotal.toLocaleString('hu-HU')} Ft`,
+      'Típus': productType,
+      'Szállítási mód': shippingMethodText,
+      'Szállítási cím': deliveryAddress,
+      'Csomagpont név': pickupPointName,
+      'Szállítási díj': `${shippingCost.toLocaleString('hu-HU')} Ft`,
+      'Végösszeg': `${totalAmount.toLocaleString('hu-HU')} Ft`,
+      'Foxpost követés': foxpostTrackingId || '-',
+      'Rendelés ID': sessionId || '-',
+      'Státusz': 'Fizetésre vár',
+      'Szállítási megjegyzés': customerData.deliveryNote || '-',
+      'Telefonszám': customerData.phone || '-'
+    });
+    
+    console.log('✅ Sheets mentés OK - Rendelés ID:', sessionId);
   } catch (error) {
-    console.error('❌ Sheets mentés hiba:', error.message);
+    console.error('⚠️ Sheets mentés hiba:', error.message);
     throw error;
   }
 }
 
 // ============================================
-// WEBHOOK — MUST BE BEFORE express.json()!
+// SZÁLLÍTÁSI KÖLTSÉG SZÁMÍTÁS
 // ============================================
-app.post('/webhook/stripe', express.raw({type: 'application/json'}), async (req, res) => {
+function calculateShippingCost(cart, shippingMethod) {
+  const ebookId = 2;
+  const digitalBookId = 4;
+  const isAllDigital = cart.every(item => item.id === ebookId || item.id === digitalBookId);
+  
+  if (isAllDigital) {
+    return 0;
+  }
+  
+  if (shippingMethod === 'pickup') {
+    return 899;
+  } else if (shippingMethod === 'home') {
+    return 2590;
+  }
+  
+  return 0;
+}
+
+// ============================================
+// MIDDLEWARE
+// ============================================
+app.use(cors());
+app.use('/webhook/stripe', express.raw({type: 'application/json'}));
+app.use(express.json());
+
+// ============================================
+// ROUTES
+// ============================================
+
+// Stripe session létrehozás + AZONNALI SHEETS MENTÉS
+app.post('/create-payment-session', async (req, res) => {
+  const { cart, customerData } = req.body;
+
+  try {
+    const isEbook = cart.every(item => item.id === 2 || item.id === 4);
+
+    // 1. FOXPOST CSOMAG LÉTREHOZÁS (ha szükséges)
+    let foxpostTrackingId = null;
+    if (!isEbook && customerData.shippingMethod === 'pickup') {
+      foxpostTrackingId = await createFoxpostParcel({ cart, customerData });
+    }
+
+    // 2. STRIPE LINE ITEMS ÖSSZEÁLLÍTÁS
+    const lineItems = cart.map(item => {
+      const product = products.find(p => p.id === parseInt(item.id));
+      if (!product) throw new Error(`Termék nem található: ${item.id}`);
+      
+      const quantity = item.quantity || 1;
+      
+      return {
+        price_data: {
+          currency: 'huf',
+          product_data: { 
+            name: product.name,
+            metadata: { productId: product.id }
+          },
+          unit_amount: product.price * 100,
+        },
+        quantity: quantity,
+      };
+    });
+
+    // Szállítási díj hozzáadása
+    if (!isEbook) {
+      if (customerData.shippingMethod === 'pickup') {
+        lineItems.push({
+          price_data: {
+            currency: 'huf',
+            product_data: { name: 'Foxpost Csomagpont' },
+            unit_amount: 899 * 100,
+          },
+          quantity: 1,
+        });
+      } else if (customerData.shippingMethod === 'home') {
+        lineItems.push({
+          price_data: {
+            currency: 'huf',
+            product_data: { name: 'Házhozszállítás' },
+            unit_amount: 2590 * 100,
+          },
+          quantity: 1,
+        });
+      }
+    }
+
+    // 3. STRIPE SESSION LÉTREHOZÁS
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items: lineItems,
+      success_url: `${process.env.DOMAIN}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.DOMAIN}/cancel.html`,
+      metadata: {
+        customerName: customerData.fullName,
+        customerEmail: customerData.email,
+        shippingMethod: customerData.shippingMethod || 'digital',
+        foxpostTrackingId: foxpostTrackingId || '',
+      },
+      customer_email: customerData.email,
+    });
+
+    // 4. AZONNAL MENTÉS GOOGLE SHEETS-BE (még fizetés előtt)
+    await saveOrderToSheets(
+      { cart, customerData }, 
+      session.id, 
+      foxpostTrackingId
+    );
+
+    // 5. Válasz a frontendnek
+    res.json({ payment_url: session.url });
+
+  } catch (error) {
+    console.error('❌ Session/Sheets hiba:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ============================================
+// WEBHOOK (státusz frissítés fizetés után)
+// ============================================
+app.post('/webhook/stripe', async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
 
@@ -217,206 +351,28 @@ app.post('/webhook/stripe', express.raw({type: 'application/json'}), async (req,
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  if (event.type !== 'checkout.session.completed') {
-    return res.json({ received: true });
-  }
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    console.log('✅ Fizetés befejezve:', session.id);
 
-  const session = event.data.object;
-  console.log('✅ Fizetés OK:', session.id);
-  console.log('🔍 Session metadata:', JSON.stringify(session.metadata, null, 2));
-
-  try {
-    // 1. Line items lekérdezés
-    const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
-    console.log('🔍 Raw line items:', JSON.stringify(lineItems.data, null, 2));
-
-    // Parse — size a price.metadata.size-ból
-    const items = lineItems.data.map(item => ({
-      id:       parseInt(item.price.metadata?.productId || 0),
-      name:     item.description,
-      price:    item.amount_total / 100,   // centet vissza Ft-ba (Stripe 100x)
-      quantity: item.quantity,
-      size:     item.price.metadata?.size || '-'
-    }));
-
-    console.log('🔍 Parsed items:', JSON.stringify(items, null, 2));
-
-    // 2. Szállítás szétválasztása
-    const shippingItem = items.find(i =>
-      i.name.includes('Foxpost') ||
-      i.name.includes('Házhozszállítás') ||
-      i.name.includes('Home Delivery')
-    );
-    const productItems = items.filter(i =>
-      !i.name.includes('Foxpost') &&
-      !i.name.includes('Házhozszállítás') &&
-      !i.name.includes('Home Delivery')
-    );
-
-    console.log('🔍 Product items:', JSON.stringify(productItems, null, 2));
-    console.log('🔍 Shipping item:', JSON.stringify(shippingItem, null, 2));
-
-    // 3. Rendelés adatok — minden field metadata-ból, fallback '-'
-    const orderData = {
-      sessionId:          session.id,
-      customerName:       session.metadata.customerName    || '-',
-      customerEmail:      session.customer_email           || '-',
-      customerAddress:    session.metadata.customerAddress || '-',
-      customerCity:       session.metadata.customerCity    || '-',
-      customerZip:        session.metadata.customerZip     || '-',
-      customerCountry:    session.metadata.customerCountry || '-',
-      phone:              session.metadata.phone           || '-',
-      items:              productItems,
-      shippingCost:       shippingItem?.price || 0,
-      shippingMethod:     session.metadata.shippingMethod  || '-',
-      shippingAddress:    session.metadata.deliveryAddress || '-',
-      pickupPointName:    session.metadata.pickupPointName || '-',
-      foxpostTrackingId:  session.metadata.foxpostTrackingId || '-',
-      deliveryNote:       session.metadata.deliveryNote    || '-'
-    };
-
-    console.log('🔍 Order data:', JSON.stringify(orderData, null, 2));
-
-    // 4. Sheets mentés
-    await saveOrder(orderData);
-
-    console.log('✅ Rendelés feldolgozva:', session.id);
-
-  } catch (error) {
-    console.error('❌ Webhook hiba:', error.message, error.stack);
-    // Still return 200 — Stripe ne retryoljon
+    try {
+      // Státusz frissítés Sheets-ben
+      const sheet = await getSheet(CONFIG.SHEETS.ORDERS);
+      const rows = await sheet.getRows();
+      
+      const orderRow = rows.find(row => row.get('Rendelés ID') === session.id);
+      
+      if (orderRow) {
+        orderRow.set('Státusz', 'Fizetve');
+        await orderRow.save();
+        console.log('✅ Státusz frissítve: Fizetve');
+      }
+    } catch (error) {
+      console.error('⚠️ Webhook státusz frissítés hiba:', error.message);
+    }
   }
 
   res.json({ received: true });
-});
-
-// ============================================
-// MIDDLEWARE
-// ============================================
-app.use(cors());
-app.use(express.json());
-
-// ============================================
-// ROUTES
-// ============================================
-
-// Stripe session létrehozás
-app.post('/create-payment-session', async (req, res) => {
-  console.log('ℹ️  Payment session kérés érkezett');
-  console.log('🔍 Request body:', JSON.stringify(req.body, null, 2));
-
-  const { cart, customerData } = req.body;
-
-  if (!Array.isArray(cart) || cart.length === 0) {
-    console.warn('⚠️ Cart üres');
-    return res.status(400).json({ error: 'Cart is empty' });
-  }
-
-  if (!customerData) {
-    console.warn('⚠️ Customer data hiányzik');
-    return res.status(400).json({ error: 'Missing customer data' });
-  }
-
-  try {
-    const isOnlyEbook = cart.every(item =>
-      parseInt(item.id) === 2 ||
-      parseInt(item.id) === 4 ||
-      parseInt(item.id) === 300
-    );
-
-    console.log('🔍 isOnlyEbook:', isOnlyEbook);
-
-    // Foxpost csomag (ha fizikai + pickup)
-    let foxpostResult = null;
-    if (!isOnlyEbook && customerData.shippingMethod === 'pickup') {
-      foxpostResult = await createFoxpostParcel({ cart, customerData });
-    }
-
-    // Stripe line items
-    const lineItems = cart.map(item => {
-      const product = products.find(p => p.id === parseInt(item.id));
-      if (!product) throw new Error(`Termék nem található: ${item.id}`);
-
-      return {
-        price_data: {
-          currency: 'huf',
-          product_data: {
-            name: product.name,
-            metadata: {
-              productId: product.id.toString(),
-              size:      item.size || 'N/A'
-            }
-          },
-          unit_amount: Math.round(product.price * 100), // Stripe 100x-os
-        },
-        quantity: item.quantity || 1,
-      };
-    });
-
-    // Szállítás line item
-    if (!isOnlyEbook) {
-      if (customerData.shippingMethod === 'pickup') {
-        lineItems.push({
-          price_data: {
-            currency: 'huf',
-            product_data: { name: 'Foxpost Csomagpont' },
-            unit_amount: CONFIG.SHIPPING.FOXPOST_COST * 100,
-          },
-          quantity: 1,
-        });
-      } else {
-        lineItems.push({
-          price_data: {
-            currency: 'huf',
-            product_data: { name: 'Házhozszállítás' },
-            unit_amount: CONFIG.SHIPPING.HOME_COST * 100,
-          },
-          quantity: 1,
-        });
-      }
-    }
-
-    console.log('🔍 Final line items:', JSON.stringify(lineItems, null, 2));
-
-    // Success URL
-    const successUrl = isOnlyEbook
-      ? `${process.env.DOMAIN}/success2.html?session_id={CHECKOUT_SESSION_ID}`
-      : `${process.env.DOMAIN}/success.html?session_id={CHECKOUT_SESSION_ID}`;
-
-    // Stripe session
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      line_items: lineItems,
-      success_url: successUrl,
-      cancel_url:  `${process.env.DOMAIN}/cancel.html`,
-      metadata: {
-        customerName:       customerData.fullName        || '',
-        customerEmail:      customerData.email           || '',
-        customerAddress:    customerData.address         || '',
-        customerCity:       customerData.city            || '',
-        customerZip:        customerData.zip             || '',
-        customerCountry:    customerData.country         || '',
-        phone:              customerData.phone           || '',
-        shippingMethod:     customerData.shippingMethod  || 'digital',
-        deliveryAddress:    !isOnlyEbook
-          ? `${customerData.deliveryZip || customerData.zip || ''} ${customerData.deliveryCity || customerData.city || ''}, ${customerData.deliveryAddress || customerData.address || ''}, ${customerData.deliveryCountry || customerData.country || ''}`
-          : 'E-mail küldés',
-        pickupPointName:    customerData.pickupPointName || '',
-        foxpostTrackingId:  foxpostResult?.trackingId    || '',
-        deliveryNote:       customerData.deliveryNote    || '',
-        orderType:          isOnlyEbook ? 'ebook' : 'physical'
-      },
-      customer_email: customerData.email,
-    });
-
-    console.log('✅ Stripe session OK:', session.id);
-    res.json({ payment_url: session.url });
-
-  } catch (error) {
-    console.error('❌ Session hiba:', error.message);
-    res.status(500).json({ error: error.message });
-  }
 });
 
 // Foxpost csomagpontok
@@ -437,31 +393,27 @@ app.get('/health', (req, res) => {
 // ============================================
 // STATIKUS FÁJLOK
 // ============================================
-app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
-app.use('/img',    express.static(path.join(__dirname, 'public/img')));
 app.use(express.static(path.join(__dirname, 'dist')));
-
-// SPA routing
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // ============================================
-// SZERVER INDÍTÁS
+// SZERVER
 // ============================================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`
-╔═══════════════════════════════════════════════════╗
-║   🚀 SENKISEM SZERVER INDULT (HU / HUF)         ║
-╠═══════════════════════════════════════════════════╣
-║   Port:     ${PORT}                               ║
-║   URL:      http://localhost:${PORT}              ║
-╠═══════════════════════════════════════════════════╣
-║   ✅ Stripe + Webhook                            ║
-║   ✅ Google Sheets → 2026                        ║
-║   ✅ Foxpost integráció                          ║
-║   ✅ Mind a 21 oszlop kitöltve                   ║
-╚═══════════════════════════════════════════════════╝
+╔═══════════════════════════════════════╗
+║   🚀 SENKISEM SZERVER INDULT         ║
+╠═══════════════════════════════════════╣
+║   Port: ${PORT}                       ║
+║   URL:  http://localhost:${PORT}      ║
+╠═══════════════════════════════════════╣
+║   ✅ Stripe + Webhook                ║
+║   ✅ Google Sheets (2026 mezők)      ║
+║   ✅ Foxpost integráció              ║
+║   ✅ AZONNALI mentés checkout után   ║
+╚═══════════════════════════════════════╝
   `);
 });
