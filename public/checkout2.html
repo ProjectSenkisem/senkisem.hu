@@ -71,6 +71,15 @@
   </label>
 </div>
 
+<div class="terms-acceptance" style="margin-top: 1rem;">
+  <label class="terms-checkbox">
+    <input type="checkbox" id="email-consent" name="email-consent" required>
+    <span class="checkmark"></span>
+    <span class="terms-text">
+Hozzájárulok, hogy e-mailben kapcsolatba lépjenek velem a rendelésem kapcsán (rendelés visszaigazolása, szállítási frissítések és kézbesítési értesítések).    </span>
+  </label>
+</div>
+
             <button type="submit" class="btn">Megrendelés Leadása és Fizetés</button>
         </form>
     </div>
@@ -138,6 +147,14 @@ document.addEventListener('DOMContentLoaded', () => {
             termsCheckbox.focus();
             return;
         }
+
+        // Check email consent
+const emailConsent = document.getElementById('email-consent');
+if (!emailConsent.checked) {
+  alert('Kérjük, fogadd el az e-mailes kommunikációt, hogy megkaphasd a digitális termékedet!');
+  emailConsent.focus();
+  return;
+}
 
         // ✅ ÍGY JÓ: FormData létrehozása
         const formData = new FormData(checkoutForm);

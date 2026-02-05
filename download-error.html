@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Error - Senkisem</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: grey;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .header {
+      background-color: #000000;
+      padding: 40px 30px;
+      text-align: center;
+    }
+
+    .brand-name {
+      color: #ffffff;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+    }
+
+    .brand-tagline {
+      color: #999999;
+      font-size: 12px;
+      font-style: italic;
+    }
+
+    .content {
+      padding: 50px 40px;
+      text-align: center;
+    }
+
+    .error-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+
+    .error-title {
+      color: #d32f2f;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .error-message {
+      color: #666666;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .error-details {
+      background-color: #f5f5f5;
+      border-left: 4px solid #d32f2f;
+      padding: 20px;
+      margin: 30px 0;
+      text-align: left;
+      border-radius: 4px;
+    }
+
+    .error-details h3 {
+      color: #d32f2f;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .error-details ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .error-details li {
+      color: #666666;
+      font-size: 14px;
+      margin-bottom: 8px;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .error-details li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #d32f2f;
+      font-weight: bold;
+    }
+
+    .solution-box {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 20px;
+      margin: 30px 0;
+      text-align: left;
+      border-radius: 4px;
+    }
+
+    .solution-box h3 {
+      color: #1565c0;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .solution-box p {
+      color: #0d47a1;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .button-group {
+      margin-top: 40px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 30px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: #f5f5f5;
+      color: #333333;
+      border: 2px solid #e0e0e0;
+    }
+
+    .btn-secondary:hover {
+      background-color: #e0e0e0;
+    }
+
+    .contact-email {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .contact-email:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      background-color: #f5f5f5;
+      padding: 20px;
+      text-align: center;
+      color: #999999;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .content {
+        padding: 40px 20px;
+      }
+
+      .error-title {
+        font-size: 24px;
+      }
+
+      .error-message {
+        font-size: 14px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="brand-name">SENKISEM</div>
+      <div class="brand-tagline">Nem egy Brand; <br> Üzenet.</div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="error-icon" id="errorIcon">⚠️</div>
+      <h1 class="error-title" id="errorTitle">Letöltési Link Hiba</h1>
+      <p class="error-message" id="errorMessage">
+        Nem sikerült feldolgozni a letöltési kérelmedet.
+      </p>
+
+      <div class="error-details" id="errorDetails">
+        <h3>Lehetséges okok:</h3>
+        <ul id="reasonsList">
+          <li>A letöltési link lejárt (a linkek 7 napig érvényesek)</li>
+          <li>A letöltési linket már felhasználták (csak egyszeri használatra)</li>
+          <li>A letöltési link érvénytelen vagy sérült</li>
+          <li>Technikai probléma a rendszerünkben</li>
+        </ul>
+      </div>
+
+      <div class="solution-box">
+        <h3>📧 Mit tegyek most:</h3>
+        <p>
+          <strong>Ellenőrizd az emailedet:</strong> Keresd meg az eredeti rendelési visszaigazolást a Senkisem.hu-tól. 
+          Győződj meg róla, hogy a helyes letöltési linket használod.<br><br>
+          <strong>Ügyfélszolgálat:</strong> Ha a probléma továbbra is fennáll, kérjük, lépj velünk kapcsolatba a 
+          <a href="mailto:orders@senkisem.hu" class="contact-email">rendeles@senkisem.hu</a> 
+          címen, és új letöltési linket küldünk.
+        </p>
+      </div>
+
+      <div class="button-group">
+        <a href="/" class="btn btn-primary">Vissza a főoldalra</a>
+        <a href="mailto:orders@senkisem.hu" class="btn btn-secondary">Ügyfélszolgálat</a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      © 2026 Senkisem | Minden jog fenntartva
+    </div>
+  </div>
+
+  <script>
+    // URL paraméterek feldolgozása
+    const urlParams = new URLSearchParams(window.location.search);
+    const reason = urlParams.get('reason');
+
+    // Tartalom frissítése a hiba oka alapján
+    const errorIcon = document.getElementById('errorIcon');
+    const errorTitle = document.getElementById('errorTitle');
+    const errorMessage = document.getElementById('errorMessage');
+    const reasonsList = document.getElementById('reasonsList');
+
+    switch(reason) {
+      case 'invalid':
+        errorIcon.textContent = '🔗';
+        errorTitle.textContent = 'Érvénytelen Letöltési Link';
+        errorMessage.textContent = 'Ez a letöltési link nem érvényes. Kérjük, ellenőrizd az emailedben a helyes linket.';
+        reasonsList.innerHTML = `
+          <li>Lehet, hogy egy hibás vagy csonka linkre kattintottál</li>
+          <li>A link rosszul lett kimásolva</li>
+          <li>A link nem létezik a rendszerünkben</li>
+        `;
+        break;
+
+      case 'already-used':
+        errorIcon.textContent = '✅';
+        errorTitle.textContent = 'Link Már Felhasználva';
+        errorMessage.textContent = 'Ezt a letöltési linket már felhasználták. Biztonsági okokból minden link csak egyszer használható.';
+        reasonsList.innerHTML = `
+          <li>Már letöltötted ezt az e-könyvet</li>
+          <li>Minden letöltési link csak egyszeri használatra szól</li>
+          <li>Ellenőrizd a letöltések mappádban a korábban letöltött fájlt</li>
+        `;
+        break;
+
+      case 'expired':
+        errorIcon.textContent = '⏰';
+        errorTitle.textContent = 'Link Lejárt';
+        errorMessage.textContent = 'Ez a letöltési link lejárt. A letöltési linkek a vásárlás dátumától számított 7 napig érvényesek.';
+        reasonsList.innerHTML = `
+          <li>A letöltési linked 7 nappal a vásárlás után lejárt</li>
+          <li>Ez egy biztonsági intézkedés a vásárlásod védelmére</li>
+          <li>Lépj kapcsolatba az ügyfélszolgálattal új letöltési linkért</li>
+        `;
+        break;
+
+      case 'server-error':
+        errorIcon.textContent = '⚙️';
+        errorTitle.textContent = 'Szerver Hiba';
+        errorMessage.textContent = 'Technikai hiba történt a kérés feldolgozása során. Kérjük, próbáld újra néhány pillanat múlva.';
+        reasonsList.innerHTML = `
+          <li>Átmeneti szerver probléma</li>
+          <li>Adatbázis kapcsolati hiba</li>
+          <li>Kérjük, próbáld újra néhány perc múlva</li>
+        `;
+        break;
+
+      default:
+        errorIcon.textContent = '⚠️';
+        errorTitle.textContent = 'Letöltési Link Hiba';
+        errorMessage.textContent = 'Nem sikerült feldolgozni a letöltési kérelmedet. Kérjük, ellenőrizd a linket vagy lépj kapcsolatba az ügyfélszolgálattal.';
+    }
+  </script>
+</body>

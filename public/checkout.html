@@ -670,6 +670,15 @@
   </label>
 </div>
 
+<div class="terms-acceptance" style="margin-top: 1rem;">
+  <label class="terms-checkbox">
+    <input type="checkbox" id="email-consent" name="email-consent" required>
+    <span class="checkmark"></span>
+    <span class="terms-text">
+Hozzájárulok, hogy e-mailben kapcsolatba lépjenek velem a rendelésem kapcsán (rendelés visszaigazolása, szállítási frissítések és kézbesítési értesítések).    </span>
+  </label>
+</div>
+
             <button type="submit" class="submit-btn">
               Megrendelés leadása
             </button>
@@ -1014,6 +1023,14 @@
     termsCheckbox.focus();
     return false;
   }
+
+  // Check email consent
+const emailConsent = document.getElementById('email-consent');
+if (!emailConsent.checked) {
+  alert('Kérjük, fogadd el az e-mailes kommunikációt a rendeléseddel kapcsolatos értesítések fogadásához!');
+  emailConsent.focus();
+  return false;
+}
       
       // Check shipping method selection
       if (!selectedShipping) {
