@@ -9,7 +9,7 @@ const { JWT } = require('google-auth-library');
 const { Resend } = require('resend');
 const rateLimit = require('express-rate-limit');
 
-// Import new modules
+// Import modules
 const { 
   determineEmailTemplate, 
   generateEmail 
@@ -57,11 +57,12 @@ const CONFIG = {
     ORDERS: '1ysbyF0uCl1W03aGArpFYDIU6leFFRJb0R1AaadVarGk',
   },
   SHIPPING: {
-    FOXPOST_COST: 899, // 899 Ft
-    HOME_DELIVERY_COST: 2590, // 2590 Ft
+    FOXPOST_COST: 899,
+    HOME_DELIVERY_COST: 2590,
   },
   EMAIL: {
     FROM: process.env.RESEND_FROM_EMAIL,
+    BCC: 'bellerzoltanezra@gmail.com', // ⚠️ ÚJ: Rejtett másolat mindig ide megy
   },
   DOMAIN: process.env.DOMAIN
 };
@@ -79,7 +80,7 @@ try {
 }
 
 // ============================================
-// GOOGLE KLIENS LÉTREHOZÁS
+// GOOGLE KLIENS
 // ============================================
 function getGoogleAuth() {
   return new JWT({
@@ -99,29 +100,24 @@ async function getSheet(sheetId) {
     throw new Error('❌ 2026-os munkalap nem található!');
   }
   
-  console.log(`✅ Munkalap betöltve: ${sheet.title}`);
   return sheet;
 }
 
 // ============================================
-// KÖVETKEZŐ SZÁMLA SZÁM GENERÁLÁS
+// SZÁMLASZÁM GENERÁLÁS
 // ============================================
 async function generateNextInvoiceNumber() {
   try {
     const sheet = await getSheet(CONFIG.SHEETS.ORDERS);
     const rows = await sheet.getRows();
     
-    // Meglévő számlaszámok keresése
     const invoiceNumbers = rows
       .map(row => row.get('Számla Szám'))
       .filter(num => num && num.startsWith('E-SEN-2026-'))
       .map(num => parseInt(num.replace('E-SEN-2026-', '')))
       .filter(num => !isNaN(num));
     
-    // Legmagasabb szám megkeresése
     const maxNumber = invoiceNumbers.length > 0 ? Math.max(...invoiceNumbers) : 0;
-    
-    // Következő szám generálása
     const nextNumber = maxNumber + 1;
     const invoiceNumber = `E-SEN-2026-${String(nextNumber).padStart(3, '0')}`;
     
@@ -130,7 +126,6 @@ async function generateNextInvoiceNumber() {
     
   } catch (error) {
     console.error('❌ Számlaszám generálási hiba:', error);
-    // Fallback timestamp-alapú számra
     return `E-SEN-2026-${String(Date.now()).slice(-3)}`;
   }
 }
@@ -158,28 +153,26 @@ function calculateShippingCost(cart, shippingMethod) {
 }
 
 // ============================================
-// RENDELÉS EMAIL KÜLDÉS PDF SZÁMLÁVAL
+// ⚠️ MÓDOSÍTVA: EMAIL KÜLDÉS BCC-VEL
 // ============================================
 async function sendOrderEmail(orderData, totalAmount, invoiceNumber, downloadLinks = null) {
   try {
     const { customerData, cart } = orderData;
     
-    // Email sablon típus meghatározása
     const templateType = determineEmailTemplate(cart);
     console.log(`📧 Email sablon használata: ${templateType}`);
     
-    // PDF számla generálása
     console.log('📄 PDF számla generálása...');
     const pdfBuffer = await generateInvoicePDF(orderData, totalAmount, invoiceNumber);
     console.log('✅ PDF számla generálva');
     
-    // Email tartalom generálása
     const { subject, html } = generateEmail(templateType, orderData, totalAmount, downloadLinks);
     
-    // Email küldése PDF melléklettel
+    // ⚠️ ÚJ: BCC hozzáadva
     const result = await resend.emails.send({
       from: `Senkisem.hu <${CONFIG.EMAIL.FROM}>`,
-      to: customerData.email,
+      to: customerData.email, // Vevő email címe
+      bcc: CONFIG.EMAIL.BCC, // ⚠️ REJTETT MÁSOLAT IDE MEGY!
       subject: subject,
       html: html,
       attachments: [
@@ -190,7 +183,8 @@ async function sendOrderEmail(orderData, totalAmount, invoiceNumber, downloadLin
       ]
     });
     
-    console.log('✅ Email sikeresen elküldve:', result.id);
+    console.log('✅ Email sikeresen elküldve:', customerData.email);
+    console.log(`📬 BCC másolat elküldve: ${CONFIG.EMAIL.BCC}`);
     return result;
     
   } catch (error) {
@@ -200,7 +194,7 @@ async function sendOrderEmail(orderData, totalAmount, invoiceNumber, downloadLin
 }
 
 // ============================================
-// RENDELÉS MENTÉSE SHEETS-BE + EMAIL KÜLDÉS
+// RENDELÉS MENTÉSE (EMAIL NÉLKÜL!)
 // ============================================
 async function saveOrderToSheets(orderData, sessionId) {
   try {
@@ -222,7 +216,7 @@ async function saveOrderToSheets(orderData, sessionId) {
     const shippingCost = calculateShippingCost(cart, customerData.shippingMethod);
     const totalAmount = productTotal + shippingCost;
     
-    // Terméknevek és méretek
+    // Terméknevek
     const productNames = cart.map(item => {
       const quantity = item.quantity || 1;
       return quantity > 1 ? `${item.name} (${quantity} db)` : item.name;
@@ -230,11 +224,9 @@ async function saveOrderToSheets(orderData, sessionId) {
     
     const sizes = cart.map(item => item.size || '-').join(', ');
     
-    // Termék típus
     const isEbook = cart.every(item => item.id === 2 || item.id === 4 || item.id === 300);
     const productType = isEbook ? 'E-könyv' : 'Fizikai';
     
-    // Szállítási mód szövegesen
     let shippingMethodText = '-';
     if (customerData.shippingMethod === 'pickup') {
       shippingMethodText = 'Foxpost csomagpont';
@@ -244,7 +236,6 @@ async function saveOrderToSheets(orderData, sessionId) {
       shippingMethodText = 'Digitális';
     }
     
-    // Szállítási cím (csak házhozszállításnál)
     let deliveryAddress = '-';
     if (customerData.shippingMethod === 'home') {
       const addr = customerData.deliveryAddress || customerData.address;
@@ -254,13 +245,12 @@ async function saveOrderToSheets(orderData, sessionId) {
       deliveryAddress = `${zip} ${city}, ${addr}, ${country}`;
     }
     
-    // Csomagpont neve (csak Foxpost esetén)
     let pickupPointName = '-';
     if (customerData.shippingMethod === 'pickup' && customerData.pickupPoint) {
       pickupPointName = `${customerData.pickupPoint.name} (${customerData.pickupPoint.zip} ${customerData.pickupPoint.city})`;
     }
     
-    // ✅ SOR HOZZÁADÁSA GOOGLE SHEETS-HEZ
+    // ✅ RENDELÉS MENTÉSE SHEETS-BE
     await sheet.addRow({
       'Dátum': new Date().toLocaleString('hu-HU', { timeZone: 'Europe/Budapest' }),
       'Név': customerData.fullName || '-',
@@ -286,34 +276,13 @@ async function saveOrderToSheets(orderData, sessionId) {
       'Számla Szám': invoiceNumber
     });
     
-    console.log('✅ Sheets mentés OK - Rendelés ID:', sessionId, 'Számla:', invoiceNumber);
-    
-    // ✅ LETÖLTÉSI LINKEK GENERÁLÁSA (ha digitális termék)
-    let downloadLinks = null;
-    const hasDigitalProducts = cart.some(item => [2, 4, 300].includes(item.id));
-    
-    if (hasDigitalProducts) {
-      console.log('📥 Letöltési linkek generálása...');
-      downloadLinks = await generateDownloadLinks(
-        cart, 
-        customerData.email, 
-        invoiceNumber,
-        CONFIG.DOMAIN
-      );
-      console.log('✅ Letöltési linkek generálva');
-    }
-    
-    // ✅ VISSZAIGAZOLÓ EMAIL KÜLDÉSE PDF-fel ÉS LETÖLTÉSI LINKEKKEL
-    try {
-      await sendOrderEmail(orderData, totalAmount, invoiceNumber, downloadLinks);
-      console.log('✅ Visszaigazoló email elküldve:', customerData.email);
-    } catch (emailError) {
-      console.error('⚠️ Email küldés sikertelen (de a rendelés mentve):', emailError.message);
-      // Ne dobjon hibát - a rendelés már mentve van a sheets-be
-    }
+    console.log('✅ Rendelés mentve Sheets-be (Email NÉLKÜL)');
+    console.log(`   - Session ID: ${sessionId}`);
+    console.log(`   - Számlaszám: ${invoiceNumber}`);
+    console.log(`   - Státusz: Fizetésre vár`);
     
   } catch (error) {
-    console.error('⚠️ Sheets mentési hiba:', error.message);
+    console.error('❌ Sheets mentési hiba:', error.message);
     throw error;
   }
 }
@@ -322,14 +291,17 @@ async function saveOrderToSheets(orderData, sessionId) {
 // MIDDLEWARE
 // ============================================
 app.use(cors());
+
+// ⚠️ FONTOS: Webhook endpoint-hoz RAW body kell!
 app.use('/webhook/stripe', express.raw({type: 'application/json'}));
+
 app.use(express.json());
 
-// Rate limiting letöltési végpontra
+// Rate limiting
 const downloadLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 perc
-  max: 5, // 5 kérés percenként IP-nként
-  message: 'Túl sok letöltési kísérlet. Kérjük, próbálja újra később.',
+  windowMs: 1 * 60 * 1000,
+  max: 5,
+  message: 'Túl sok letöltési kísérlet.',
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -338,7 +310,7 @@ const downloadLimiter = rateLimit({
 // ROUTES
 // ============================================
 
-// Stripe fizetési session létrehozása + AZONNALI SHEETS MENTÉS + EMAIL
+// Stripe session létrehozása + SHEETS MENTÉS (EMAIL NÉLKÜL)
 app.post('/create-payment-session', async (req, res) => {
   const { cart, customerData } = req.body;
 
@@ -346,7 +318,7 @@ app.post('/create-payment-session', async (req, res) => {
     const ebookIds = [2, 4, 300];
     const isEbook = cart.every(item => ebookIds.includes(item.id));
 
-    // ✅ STRIPE LINE ITEMS ÖSSZEÁLLÍTÁSA
+    // Line items
     const lineItems = cart.map(item => {
       const product = products.find(p => p.id === parseInt(item.id));
       if (!product) throw new Error(`Termék nem található: ${item.id}`);
@@ -366,7 +338,7 @@ app.post('/create-payment-session', async (req, res) => {
       };
     });
 
-    // Szállítási díj hozzáadása fizikai termékekhez
+    // Szállítási díj
     if (!isEbook) {
       if (customerData.shippingMethod === 'pickup') {
         lineItems.push({
@@ -389,7 +361,7 @@ app.post('/create-payment-session', async (req, res) => {
       }
     }
 
-    // ✅ STRIPE SESSION LÉTREHOZÁSA
+    // ⚠️ FONTOS: Rendelés adatait JSON string-ként metadata-ba mentjük
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
@@ -399,26 +371,125 @@ app.post('/create-payment-session', async (req, res) => {
         : `${process.env.DOMAIN}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.DOMAIN}/cancel.html`,
       metadata: {
-        customerName: customerData.fullName,
-        customerEmail: customerData.email,
-        shippingMethod: customerData.shippingMethod || 'digital',
+        orderData: JSON.stringify({ cart, customerData })
       },
       customer_email: customerData.email,
     });
 
-    // ✅ AZONNALI MENTÉS GOOGLE SHEETS-BE + EMAIL KÜLDÉS PDF-fel ÉS LETÖLTÉSI LINKEKKEL
-    await saveOrderToSheets(
-      { cart, customerData }, 
-      session.id
-    );
+    // ✅ Rendelés mentése AZONNAL (email nélkül)
+    await saveOrderToSheets({ cart, customerData }, session.id);
 
-    // ✅ Válasz a frontendnek
     res.json({ payment_url: session.url });
 
   } catch (error) {
-    console.error('❌ Session/Sheets/Email hiba:', error);
+    console.error('❌ Session létrehozási hiba:', error);
     res.status(500).json({ error: error.message });
   }
+});
+
+// ============================================
+// ⚠️ WEBHOOK - ITT TÖRTÉNIK AZ EMAIL KÜLDÉS!
+// ============================================
+app.post('/webhook/stripe', async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    // Webhook signature ellenőrzése
+    event = stripe.webhooks.constructEvent(
+      req.body, 
+      sig, 
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    console.error('❌ Webhook signature hiba:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // ✅ SIKERES FIZETÉS ESEMÉNY
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    
+    console.log('\n🎉 ========================================');
+    console.log('✅ SIKERES FIZETÉS ÉRKEZETT!');
+    console.log('🎉 ========================================');
+    console.log(`   Session ID: ${session.id}`);
+    console.log(`   Email: ${session.customer_email}`);
+    console.log(`   Összeg: ${session.amount_total / 100} Ft`);
+
+    try {
+      // 1️⃣ STÁTUSZ FRISSÍTÉSE SHEETS-BEN
+      const sheet = await getSheet(CONFIG.SHEETS.ORDERS);
+      const rows = await sheet.getRows();
+      
+      const orderRow = rows.find(row => row.get('Rendelés ID') === session.id);
+      
+      if (!orderRow) {
+        console.error('❌ Rendelés nem található a Sheets-ben:', session.id);
+        return res.json({ received: true });
+      }
+
+      // Státusz frissítése
+      orderRow.set('Státusz', 'Fizetve ✅');
+      await orderRow.save();
+      console.log('✅ Státusz frissítve: Fizetve ✅');
+
+      // 2️⃣ RENDELÉS ADATOK VISSZAOLVASÁSA
+      const orderDataJSON = session.metadata.orderData;
+      
+      if (!orderDataJSON) {
+        console.error('❌ Nincs orderData a session metadata-ban!');
+        return res.json({ received: true });
+      }
+
+      const orderData = JSON.parse(orderDataJSON);
+      const { cart, customerData } = orderData;
+      
+      // 3️⃣ SZÁMLA SZÁM ÉS ÖSSZEG KISZÁMÍTÁSA
+      const invoiceNumber = orderRow.get('Számla Szám');
+      
+      const productTotal = cart.reduce((sum, item) => {
+        const price = typeof item.price === 'string' ? 
+          parseInt(item.price.replace(/\D/g, '')) : item.price;
+        const quantity = item.quantity || 1;
+        return sum + (price * quantity);
+      }, 0);
+      
+      const shippingCost = calculateShippingCost(cart, customerData.shippingMethod);
+      const totalAmount = productTotal + shippingCost;
+
+      // 4️⃣ LETÖLTÉSI LINKEK GENERÁLÁSA (ha digitális)
+      let downloadLinks = null;
+      const hasDigitalProducts = cart.some(item => [2, 4, 300].includes(item.id));
+      
+      if (hasDigitalProducts) {
+        console.log('📥 Letöltési linkek generálása...');
+        downloadLinks = await generateDownloadLinks(
+          cart, 
+          customerData.email, 
+          invoiceNumber,
+          CONFIG.DOMAIN
+        );
+        console.log('✅ Letöltési linkek generálva');
+      }
+
+      // 5️⃣ EMAIL KÜLDÉSE (PDF SZÁMLÁVAL, LETÖLTÉSI LINKEKKEL ÉS BCC-VEL!)
+      console.log('📧 Email küldése...');
+      await sendOrderEmail(orderData, totalAmount, invoiceNumber, downloadLinks);
+      console.log('✅ Email sikeresen elküldve:', customerData.email);
+      console.log(`📬 BCC másolat elküldve: ${CONFIG.EMAIL.BCC}`);
+      
+      console.log('🎉 ========================================');
+      console.log('✅ RENDELÉS TELJES FELDOLGOZÁSA KÉSZ!');
+      console.log('🎉 ========================================\n');
+
+    } catch (error) {
+      console.error('❌ Webhook feldolgozási hiba:', error);
+      // Ne dobjunk hibát - a Stripe újra próbálkozik
+    }
+  }
+
+  res.json({ received: true });
 });
 
 // ============================================
@@ -431,7 +502,6 @@ app.get('/download/:token', downloadLimiter, async (req, res) => {
   console.log(`📥 Letöltési kísérlet - Token: ${token.substring(0, 8)}... IP: ${ipAddress}`);
   
   try {
-    // Token validálás
     const validation = await validateDownloadToken(token, ipAddress);
     
     if (!validation.valid) {
@@ -439,7 +509,6 @@ app.get('/download/:token', downloadLimiter, async (req, res) => {
       return res.redirect(`/download-error.html?reason=${validation.reason}`);
     }
     
-    // Termékfájl elérési út lekérése
     const filePath = getProductFilePath(validation.productId);
     
     if (!filePath || !fs.existsSync(filePath)) {
@@ -447,13 +516,10 @@ app.get('/download/:token', downloadLimiter, async (req, res) => {
       return res.redirect('/download-error.html?reason=server-error');
     }
     
-    // Token megjelölése használtként
     await markTokenAsUsed(validation.tokenRow, ipAddress);
     
-    // Letöltési fájlnév lekérése
     const fileName = getProductFileName(validation.productId);
     
-    // Fájl küldése
     console.log(`✅ Fájl küldése: ${fileName}`);
     res.download(filePath, fileName, (err) => {
       if (err) {
@@ -462,7 +528,7 @@ app.get('/download/:token', downloadLimiter, async (req, res) => {
           res.redirect('/download-error.html?reason=server-error');
         }
       } else {
-        console.log(`✅ Letöltés kész: ${fileName} - ${validation.email}`);
+        console.log(`✅ Letöltés kész: ${fileName}`);
       }
     });
     
@@ -472,58 +538,15 @@ app.get('/download/:token', downloadLimiter, async (req, res) => {
   }
 });
 
-// ============================================
-// WEBHOOK (státusz frissítés fizetés után)
-// ============================================
-app.post('/webhook/stripe', async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  let event;
-
-  try {
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-  } catch (err) {
-    console.error('❌ Webhook signature hiba:', err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    console.log('✅ Fizetés befejezve:', session.id);
-
-    try {
-      // Státusz frissítés Sheets-ben
-      const sheet = await getSheet(CONFIG.SHEETS.ORDERS);
-      const rows = await sheet.getRows();
-      
-      const orderRow = rows.find(row => row.get('Rendelés ID') === session.id);
-      
-      if (orderRow) {
-        orderRow.set('Státusz', 'Fizetve');
-        await orderRow.save();
-        console.log('✅ Státusz frissítve: Fizetve');
-      }
-    } catch (error) {
-      console.error('⚠️ Webhook státusz frissítési hiba:', error.message);
-    }
-  }
-
-  res.json({ received: true });
-});
-
 // Health check
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'OK', 
     timestamp: new Date().toISOString(),
-    currency: 'HUF',
-    shipping: {
-      foxpost: '899 Ft',
-      home: '2590 Ft'
-    },
-    email_enabled: true,
-    pdf_invoice_enabled: true,
-    download_links_enabled: true,
-    templates: ['digitalProduct1', 'digitalProduct2', 'digitalBundle', 'physicalProduct']
+    webhook_enabled: true,
+    email_on_payment_only: true,
+    bcc_enabled: true,
+    bcc_address: CONFIG.EMAIL.BCC
   });
 });
 
@@ -532,7 +555,6 @@ app.get('/health', (req, res) => {
 // ============================================
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// download-error.html kiszolgálása a gyökérkönyvtárból
 app.get('/download-error.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'download-error.html'));
 });
@@ -548,24 +570,21 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║   🚀 SENKISEM.HU SZERVER - REFACTORED V2.0           ║
+║   🚀 SENKISEM.HU SZERVER - WEBHOOK + BCC VERSION     ║
 ╠═══════════════════════════════════════════════════════╣
 ║   Port: ${PORT}                                       ║
-║   Pénznem: HUF (Ft)                                   ║
-║   Szállítás: Foxpost 899 Ft | Házhozszállítás 2590 Ft║
+║   Webhook: ✅ AKTÍV                                  ║
+║   Email: ✅ Csak sikeres fizetés után!               ║
+║   BCC: ✅ ${CONFIG.EMAIL.BCC}        ║
 ╠═══════════════════════════════════════════════════════╣
-║   ✅ Stripe + Webhook                                ║
-║   ✅ Google Sheets (Rendelések + Letöltési linkek)  ║
-║   ✅ Professzionális Email sablonok (4 típus)       ║
-║   ✅ Újratervezett PDF számla (PDFKit)              ║
-║   ✅ Letöltési link rendszer (UUID + 7 napos lejárat)║
-║   ✅ IP naplózás + Egyszeri használat biztonsága    ║
-║   ✅ Rate limiting (5 kérés/perc letöltésekre)      ║
-╠═══════════════════════════════════════════════════════╣
-║   📧 Sablon A: Digitális termék 1 (ID 2)            ║
-║   📧 Sablon B: Digitális termék 2 (ID 4)            ║
-║   📧 Sablon C: Digitális csomag (ID 300)            ║
-║   📧 Sablon D: Fizikai termékek                      ║
+║   🔄 FOLYAMAT:                                       ║
+║   1. Rendelés → Sheets mentés (Fizetésre vár)       ║
+║   2. Stripe fizetés                                  ║
+║   3. Webhook → Státusz frissítés (Fizetve ✅)       ║
+║   4. Webhook → Email kiküldése:                      ║
+║      - TO: Vevő email címe                           ║
+║      - BCC: bellerzoltanezra@gmail.com (rejtett)     ║
+║      - Csatolmány: PDF számla + letöltési linkek    ║
 ╚═══════════════════════════════════════════════════════╝
   `);
 });
