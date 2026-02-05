@@ -88,7 +88,7 @@ async function generateDownloadToken(email, productId, invoiceNumber) {
       'Invoice_Number': invoiceNumber
     });
     
-    console.log(`✅ Letöltési token generálva a ${productId} termékhez:`, token.substring(0, 8) + '...');
+    console.log(`✅ Token generálva [Product ${productId}]:`, token.substring(0, 8) + '...');
     
     return token;
     
@@ -103,6 +103,11 @@ async function generateDownloadToken(email, productId, invoiceNumber) {
  */
 async function generateDownloadLinks(cart, email, invoiceNumber, domain) {
   try {
+    console.log('🔗 Letöltési linkek generálása kezdődik...');
+    console.log('   - Email:', email);
+    console.log('   - Számla:', invoiceNumber);
+    console.log('   - Domain:', domain);
+    
     const links = {};
     
     // Ellenőrizd, mely termékekhez kell letöltési link
@@ -110,18 +115,30 @@ async function generateDownloadLinks(cart, email, invoiceNumber, domain) {
     const hasProduct4 = cart.some(item => item.id === 4);
     const hasBundle = cart.some(item => item.id === 300);
     
-    // Token generálás
+    console.log('   - Termékek:', {
+      hasProduct2,
+      hasProduct4,
+      hasBundle
+    });
+    
+    // Token generálás Product 2-höz
     if (hasProduct2 || hasBundle) {
+      console.log('   📥 Product 2 token generálása...');
       const token2 = await generateDownloadToken(email, 2, invoiceNumber);
       links.product2 = `${domain}/download/${token2}`;
+      console.log('   ✅ Product 2 link:', links.product2.substring(0, 60) + '...');
     }
     
+    // Token generálás Product 4-hez
     if (hasProduct4 || hasBundle) {
+      console.log('   📥 Product 4 token generálása...');
       const token4 = await generateDownloadToken(email, 4, invoiceNumber);
       links.product4 = `${domain}/download/${token4}`;
+      console.log('   ✅ Product 4 link:', links.product4.substring(0, 60) + '...');
     }
     
-    console.log('✅ Letöltési linkek generálva:', Object.keys(links));
+    console.log('✅ Letöltési linkek kész:', Object.keys(links));
+    console.log('   Teljes objektum:', JSON.stringify(links, null, 2));
     
     return links;
     
@@ -229,7 +246,7 @@ function getProductFilePath(productId) {
 function getProductFileName(productId) {
   const nameMap = {
     2: 'Senkisem - Jegyzetek egy Idegentől.pdf',
-    4: 'Senkisem - Használati Útmutato az Élethez.pdf'
+    4: 'Senkisem - Használati Útmutató az Élethez.pdf'
   };
   
   return nameMap[productId] || 'ebook.pdf';

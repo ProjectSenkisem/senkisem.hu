@@ -122,6 +122,18 @@ function generateProductRows(cart) {
  * Letöltés gomb komponens
  */
 function getDownloadButton(downloadUrl, buttonText = 'E-könyv Letöltése') {
+  // Biztonsági ellenőrzés - ha nincs URL, ne jelenítsen meg gombot
+  if (!downloadUrl || downloadUrl === '#' || downloadUrl === 'undefined') {
+    console.warn('⚠️ Hiányzó letöltési URL a gombhoz:', buttonText);
+    return `
+      <div style="background-color: #ffebee; border-left: 4px solid #f44336; padding: 15px; margin: 25px 0; border-radius: 4px;">
+        <p style="margin: 0; color: #c62828; font-size: 14px;">
+          ⚠️ Hiba történt a letöltési link generálása során. Kérjük, lépj kapcsolatba az ügyfélszolgálattal.
+        </p>
+      </div>
+    `;
+  }
+  
   return `
     <div style="text-align: center; margin: 30px 0;">
       <a href="${downloadUrl}" 
@@ -138,9 +150,16 @@ function getDownloadButton(downloadUrl, buttonText = 'E-könyv Letöltése') {
 /**
  * SABLON A: Digitális Termék 1 - Jegyzetek Egy Idegentől (ID 2)
  */
-function templateDigitalProduct1(orderData, totalAmount, downloadLink) {
+function templateDigitalProduct1(orderData, totalAmount, downloadLinks) {
   const { customerData, cart } = orderData;
   const productRows = generateProductRows(cart);
+  
+  // ✅ Letöltési link kinyerése (objektumból vagy stringből)
+  const downloadLink = typeof downloadLinks === 'string' 
+    ? downloadLinks 
+    : (downloadLinks?.product2 || '#');
+  
+  console.log('📧 [Sablon A] Letöltési link:', downloadLink?.substring(0, 50) + '...');
   
   const content = `
     <div style="padding: 40px 30px;">
@@ -217,9 +236,16 @@ function templateDigitalProduct1(orderData, totalAmount, downloadLink) {
 /**
  * SABLON B: Digitális Termék 2 - Használati Útmutató Az Élethez (ID 4)
  */
-function templateDigitalProduct2(orderData, totalAmount, downloadLink) {
+function templateDigitalProduct2(orderData, totalAmount, downloadLinks) {
   const { customerData, cart } = orderData;
   const productRows = generateProductRows(cart);
+  
+  // ✅ Letöltési link kinyerése (objektumból vagy stringből)
+  const downloadLink = typeof downloadLinks === 'string' 
+    ? downloadLinks 
+    : (downloadLinks?.product4 || '#');
+  
+  console.log('📧 [Sablon B] Letöltési link:', downloadLink?.substring(0, 50) + '...');
   
   const content = `
     <div style="padding: 40px 30px;">
@@ -300,6 +326,18 @@ function templateDigitalBundle(orderData, totalAmount, downloadLinks) {
   const { customerData, cart } = orderData;
   const productRows = generateProductRows(cart);
   
+  // ✅ Biztonsági ellenőrzések
+  if (!downloadLinks || typeof downloadLinks !== 'object') {
+    console.error('❌ [Sablon C] Hiányzó vagy hibás downloadLinks objektum:', downloadLinks);
+    downloadLinks = { product2: '#', product4: '#' };
+  }
+  
+  const link2 = downloadLinks.product2 || '#';
+  const link4 = downloadLinks.product4 || '#';
+  
+  console.log('📧 [Sablon C] Link 2:', link2?.substring(0, 50) + '...');
+  console.log('📧 [Sablon C] Link 4:', link4?.substring(0, 50) + '...');
+  
   const content = `
     <div style="padding: 40px 30px;">
       <!-- Üdvözlés -->
@@ -314,13 +352,13 @@ function templateDigitalBundle(orderData, totalAmount, downloadLinks) {
           📚 E-könyveid Letöltése
         </h3>
         
-        ${getDownloadButton(downloadLinks.product2, '"Jegyzetek Egy Idegentől" Letöltése')}
+        ${getDownloadButton(link2, '"Jegyzetek Egy Idegentől" Letöltése')}
         
         <div style="text-align: center; margin: 20px 0; color: #999999; font-size: 14px;">
           ━━━━━━━━━━━━━━━━
         </div>
         
-        ${getDownloadButton(downloadLinks.product4, '"Használati Útmutató Az Élethez" Letöltése')}
+        ${getDownloadButton(link4, '"Használati Útmutató Az Élethez" Letöltése')}
       </div>
       
       <!-- Figyelmeztetés -->
@@ -500,6 +538,11 @@ function determineEmailTemplate(cart) {
  * Email generálása sablon típus alapján
  */
 function generateEmail(templateType, orderData, totalAmount, downloadLinks = null) {
+  console.log('📧 Email generálás:', {
+    templateType,
+    downloadLinks: downloadLinks ? Object.keys(downloadLinks) : 'null'
+  });
+  
   switch (templateType) {
     case 'digitalProduct1':
       return {
