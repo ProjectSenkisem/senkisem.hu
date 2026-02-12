@@ -21,7 +21,7 @@ const INVOICE_CONFIG = {
   },
   BRAND: {
     NAME: 'Senkisem',
-    TAGLINE: 'Nem egy Brand;<br> Üzenet.'
+    TAGLINE: 'Nem egy Brand; Üzenet.'
   },
   COLORS: {
     BLACK: '#000000',
