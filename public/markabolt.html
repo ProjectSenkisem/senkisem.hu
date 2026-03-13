@@ -4961,11 +4961,11 @@ const stockHTML = product.sectionId === 'id-senkisem' ? '' : `
                     </button>
                 ` : `
                     <button class="btn btn-primary" onclick="addToCartFromCard(${product.id}, this)">
-                        Kosárba
+                        <i class="ri-shopping-cart-line"></i>
                     </button>
                 `}
                 <button class="btn btn-secondary" onclick="addToWishlist(${JSON.stringify(product).replace(/"/g, '&quot;')})">
-                    Kedvencek
+                    <i class="ri-heart-line"></i>
                 </button>
             </div>
         </div>
