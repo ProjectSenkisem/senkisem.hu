@@ -62,7 +62,7 @@ const CONFIG = {
   },
   EMAIL: {
     FROM: process.env.RESEND_FROM_EMAIL,
-    BCC: 'bellerzoltanezra@gmail.com', // ⚠️ ÚJ: Rejtett másolat mindig ide megy
+    BCC: 'bellerzoltanezra@gmail.com',
   },
   DOMAIN: process.env.DOMAIN
 };
@@ -153,7 +153,7 @@ function calculateShippingCost(cart, shippingMethod) {
 }
 
 // ============================================
-// ⚠️ MÓDOSÍTVA: EMAIL KÜLDÉS BCC-VEL
+// EMAIL KÜLDÉS BCC-VEL
 // ============================================
 async function sendOrderEmail(orderData, totalAmount, invoiceNumber, downloadLinks = null) {
   try {
@@ -168,11 +168,10 @@ async function sendOrderEmail(orderData, totalAmount, invoiceNumber, downloadLin
     
     const { subject, html } = generateEmail(templateType, orderData, totalAmount, downloadLinks);
     
-    // ⚠️ ÚJ: BCC hozzáadva
     const result = await resend.emails.send({
       from: `Senkisem.hu <${CONFIG.EMAIL.FROM}>`,
-      to: customerData.email, // Vevő email címe
-      bcc: CONFIG.EMAIL.BCC, // ⚠️ REJTETT MÁSOLAT IDE MEGY!
+      to: customerData.email,
+      bcc: CONFIG.EMAIL.BCC,
       subject: subject,
       html: html,
       attachments: [
@@ -194,7 +193,8 @@ async function sendOrderEmail(orderData, totalAmount, invoiceNumber, downloadLin
 }
 
 // ============================================
-// RENDELÉS MENTÉSE (EMAIL NÉLKÜL!)
+// RENDELÉS MENTÉSE SHEETS-BE (EMAIL NÉLKÜL!)
+// ✅ FIX: orderData JSON mentése a Sheets-be a Stripe metadata helyett
 // ============================================
 async function saveOrderToSheets(orderData, sessionId) {
   try {
@@ -251,6 +251,7 @@ async function saveOrderToSheets(orderData, sessionId) {
     }
     
     // ✅ RENDELÉS MENTÉSE SHEETS-BE
+    // ✅ FIX: 'Order Data JSON' oszlopba mentjük az orderData-t (Stripe metadata helyett)
     await sheet.addRow({
       'Dátum': new Date().toLocaleString('hu-HU', { timeZone: 'Europe/Budapest' }),
       'Név': customerData.fullName || '-',
@@ -273,7 +274,8 @@ async function saveOrderToSheets(orderData, sessionId) {
       'Státusz': 'Fizetésre vár',
       'Szállítási megjegyzés': customerData.deliveryNote || '-',
       'Telefonszám': customerData.phone || '-',
-      'Számla Szám': invoiceNumber
+      'Számla Szám': invoiceNumber,
+      'Order Data JSON': JSON.stringify({ cart, customerData }), // ✅ FIX: itt tároljuk a teljes adatot
     });
     
     console.log('✅ Rendelés mentve Sheets-be (Email NÉLKÜL)');
@@ -361,7 +363,7 @@ app.post('/create-payment-session', async (req, res) => {
       }
     }
 
-    // ⚠️ FONTOS: Rendelés adatait JSON string-ként metadata-ba mentjük
+    // ✅ FIX: metadata-ban csak rövid azonosító van, az orderData a Sheets-ben van tárolva
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
@@ -371,12 +373,12 @@ app.post('/create-payment-session', async (req, res) => {
         : `${process.env.DOMAIN}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.DOMAIN}/cancel.html`,
       metadata: {
-        orderData: JSON.stringify({ cart, customerData })
+        source: 'senkisem.hu' // ✅ FIX: rövid jelölő, nem tároljuk itt az orderData-t
       },
       customer_email: customerData.email,
     });
 
-    // ✅ Rendelés mentése AZONNAL (email nélkül)
+    // ✅ Rendelés mentése AZONNAL Sheets-be (email nélkül, orderData JSON-nal együtt)
     await saveOrderToSheets({ cart, customerData }, session.id);
 
     res.json({ payment_url: session.url });
@@ -418,7 +420,7 @@ app.post('/webhook/stripe', async (req, res) => {
     console.log(`   Összeg: ${session.amount_total / 100} Ft`);
 
     try {
-      // 1️⃣ STÁTUSZ FRISSÍTÉSE SHEETS-BEN
+      // 1️⃣ STÁTUSZ FRISSÍTÉSE ÉS ORDERDATA VISSZAOLVASÁSA SHEETS-BŐL
       const sheet = await getSheet(CONFIG.SHEETS.ORDERS);
       const rows = await sheet.getRows();
       
@@ -434,11 +436,12 @@ app.post('/webhook/stripe', async (req, res) => {
       await orderRow.save();
       console.log('✅ Státusz frissítve: Fizetve ✅');
 
-      // 2️⃣ RENDELÉS ADATOK VISSZAOLVASÁSA
-      const orderDataJSON = session.metadata.orderData;
+      // 2️⃣ RENDELÉS ADATOK VISSZAOLVASÁSA SHEETS-BŐL
+      // ✅ FIX: Sheets-ből olvassuk vissza az orderData-t, nem a Stripe metadata-ból
+      const orderDataJSON = orderRow.get('Order Data JSON');
       
       if (!orderDataJSON) {
-        console.error('❌ Nincs orderData a session metadata-ban!');
+        console.error('❌ Nincs Order Data JSON a Sheets-ben a rendeléshez:', session.id);
         return res.json({ received: true });
       }
 
