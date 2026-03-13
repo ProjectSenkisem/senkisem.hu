@@ -5660,11 +5660,11 @@ function addLimitedProduct(productId, variant) {
         }];
         localStorage.setItem('cart', JSON.stringify(cart));
         window.location.href = 'checkout2.html';
-    } else if (productId === 301 && variant === 'physical') {
+    } else if (productId === 311 && variant === 'physical') {
         cart = [{
-            id: 301,
+            id: 311,
             name: "Teljes Fizikai Kollekció (Jegyzetek + Használati Útmutató)",
-            price: 12582,
+            price: 10000,
             image: "./assets/img/ketkonyv.png",
             size: "A5",
             quantity: 1,
