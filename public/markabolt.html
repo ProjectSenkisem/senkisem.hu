@@ -4165,11 +4165,15 @@ padding: 0.8rem;
 }
 
 /* ---- SMALL CARDS (ID: Senkisem) ---- */
+/* ---- SMALL CARDS (ID: Senkisem) ---- */
 .limited-grid-small {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
     margin-bottom: 1rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .limited-card-small {
@@ -4189,10 +4193,10 @@ padding: 0.8rem;
 }
 
 .limited-small-img {
-    width: 110px;
-    height: 110px;
+    width: 140px;
+    height: 140px;
     object-fit: contain;
-    margin: 0.8rem auto 0.5rem;
+    margin: 0.6rem auto 0.5rem;
     display: block;
     border-radius: 6px;
 }
@@ -4205,10 +4209,12 @@ padding: 0.8rem;
     line-height: 1.3;
 }
 
+/* ÚJ: */
 @media (max-width: 480px) {
     .limited-grid-small {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.7rem;
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+        max-width: 100%;
     }
 
     .limited-small-img {
