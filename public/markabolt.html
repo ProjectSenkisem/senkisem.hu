@@ -4122,11 +4122,110 @@ padding: 0.8rem;
     /* MEGTARTJUK: merch-more (typing section) animációkat */
     /* Ez marad, ahogy van - nincs módosítás */
 }
+/* ---- POPUP TABS ---- */
+.popup-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.popup-tab {
+    padding: 0.5rem 1.2rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.55);
+    border-radius: 20px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+}
+
+.popup-tab:hover {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.85);
+}
+
+.popup-tab.active {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.3);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.popup-tab-content {
+    display: none;
+}
+
+.popup-tab-content.active {
+    display: block;
+}
+
+/* ---- SMALL CARDS (ID: Senkisem) ---- */
+.limited-grid-small {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.limited-card-small {
+    background: rgba(255,0,110,0.04);
+    border: 1px solid rgba(255,0,110,0.2);
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.limited-card-small:hover {
+    border-color: rgba(255,0,110,0.45);
+    box-shadow: 0 6px 24px rgba(255,0,110,0.15);
+    transform: translateY(-2px);
+}
+
+.limited-small-img {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    margin: 0.8rem auto 0.5rem;
+    display: block;
+    border-radius: 6px;
+}
+
+.limited-small-title {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.92);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+}
+
+@media (max-width: 480px) {
+    .limited-grid-small {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.7rem;
+    }
+
+    .limited-small-img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .popup-tab {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.9rem;
+    }
+}
 </style>
 </head>
 <body>
 
-    <!-- LIMITÁLT KÉSZLET POP-UP -->
+<!-- LIMITÁLT KÉSZLET POP-UP -->
 <div class="limited-popup" id="limited-popup">
     <div class="limited-popup-overlay"></div>
     <div class="limited-popup-content">
@@ -4135,76 +4234,183 @@ padding: 0.8rem;
         </button>
 
         <div class="limited-header">
-    <div class="limited-warning">⚠</div>
-    <h2 class="limited-title">Exkluzív Ajánlat</h2>
-    <p class="limited-subtitle">
-    Ezek a csomagok kizárólag ezen a felületen érhetők el.<br>
-    Más útvonalon nem.
-</p>
-</div>
+            <div class="limited-warning">⚠</div>
+            <h2 class="limited-title">Exkluzív Ajánlat</h2>
+            <p class="limited-subtitle">
+                Ezek a csomagok kizárólag ezen a felületen érhetők el.<br>
+                Más útvonalon nem.
+            </p>
+            <!-- Lapozó gombok -->
+            <div class="popup-tabs">
+                <button class="popup-tab active" onclick="switchPopupTab(0)"> Könyvek</button>
+                <button class="popup-tab" onclick="switchPopupTab(1)"> ID: Senkisem</button>
+                <button class="popup-tab" onclick="switchPopupTab(2)"> Cipők</button>
+            </div>
+        </div>
 
-        <div class="limited-grid">
-    <!-- E-könyv Csomag -->
-    <div class="limited-card">
-        <div class="limited-badge best">Legjobb Ajánlat</div>
-        <div class="limited-single-book">
-            <img src="./assets/img/ketkonyv.png" alt="Teljes Digitális Kollekció" class="limited-book-image">
+        <!-- TAB 0: Könyvcsomagok -->
+        <div class="popup-tab-content active" id="popup-tab-0">
+            <div class="limited-grid">
+                <div class="limited-card">
+                    <div class="limited-badge best">Legjobb Ajánlat</div>
+                    <div class="limited-single-book">
+                        <img src="./assets/img/ketkonyv.png" alt="Teljes Digitális Kollekció" class="limited-book-image">
+                    </div>
+                    <h3 class="limited-card-title">Teljes Digitális Kollekció</h3>
+                    <p class="limited-card-desc">
+                        <strong>Jegyzetek egy Idegentől</strong> és
+                        <strong>Használati Útmutató az Élethez</strong><br>
+                        Digitális formában, azonnali hozzáféréssel.
+                    </p>
+                    <div class="limited-price">
+                        <span class="limited-old-price">5 980 Ft</span>
+                        <span class="limited-new-price">5 000 Ft</span>
+                    </div>
+                    <div class="limited-stock">
+                        <i class="ri-alert-line"></i>
+                        <span>Digitális · időkorlát nélküli hozzáférés</span>
+                    </div>
+                    <button class="limited-btn primary" onclick="addLimitedProduct(300, 'bundle')">
+                        Megnézem <i class="ri-arrow-right-line"></i>
+                    </button>
+                </div>
+                <div class="limited-card">
+                    <div class="limited-badge">-16%</div>
+                    <div class="limited-single-book">
+                        <img src="./assets/img/ketkonyv.png" alt="Teljes Fizikai Kollekció" class="limited-book-image">
+                    </div>
+                    <h3 class="limited-card-title">Teljes Fizikai Kollekció</h3>
+                    <p class="limited-card-desc">
+                        <strong>Jegyzetek egy Idegentől</strong> és
+                        <strong>Használati Útmutató az Élethez</strong><br>
+                        A5 méret, igényes kivitel. Korlátozott példányszám.
+                    </p>
+                    <div class="limited-price">
+                        <span class="limited-old-price">11 980 Ft</span>
+                        <span class="limited-new-price">10 000 Ft</span>
+                    </div>
+                    <div class="limited-stock warning">
+                        <i class="ri-error-warning-line"></i>
+                        <span>Korlátozott · utánnyomás nem tervezett</span>
+                    </div>
+                    <button class="limited-btn secondary" onclick="addLimitedProduct(311, 'physical')">
+                        Kosárba <i class="ri-shopping-cart-line"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-        <h3 class="limited-card-title">Teljes Digitális Kollekció</h3>
-        <p class="limited-card-desc">
-    <strong>Jegyzetek egy Idegentől</strong> és
-    <strong>Használati Útmutató az Élethez</strong><br>
-    Két külön világ, egy gondolkodási ívben.
-    Digitális formában, azonnali hozzáféréssel.
-</p>
-        <div class="limited-price">
-            <span class="limited-old-price">5 980 Ft</span>
-            <span class="limited-new-price">5 000 Ft</span>
-        </div>
-        <div class="limited-stock">
-            <i class="ri-alert-line"></i>
-            <span>Digitális kiadás · időkorlát nélküli hozzáférés</span>
-        </div>
-        <button class="limited-btn primary" onclick="addLimitedProduct(300, 'bundle')">
-            Megnézem a csomagot <i class="ri-arrow-right-line"></i>
-        </button>
-    </div>
 
-    <!-- Fizikai Könyvek Csomag -->
-    <div class="limited-card">
-        <div class="limited-badge">-16%</div>
-        <div class="limited-single-book">
-            <img src="./assets/img/ketkonyv.png" alt="Teljes Fizikai Kollekció" class="limited-book-image">
+        <!-- TAB 1: ID: Senkisem -->
+        <div class="popup-tab-content" id="popup-tab-1">
+            <div class="limited-grid-small">
+                <div class="limited-card-small">
+                    <div class="limited-badge" style="background: linear-gradient(135deg,#ff006e,#cc0055); border-color: rgba(255,0,110,0.5); color: white;">1/1</div>
+                    <img src="./assets/img/id-sweater-pixel.png" alt="ID Pulóver Pixel" class="limited-small-img">
+                    <h4 class="limited-small-title">Pulóver – Pixel</h4>
+                    <div class="limited-price" style="margin:0.5rem 0;">
+                        <span class="limited-old-price">12 990 Ft</span>
+                        <span class="limited-new-price" style="font-size:1.2rem;">7 990 Ft</span>
+                    </div>
+                    <button class="limited-btn primary" style="font-size:0.8rem; padding:0.7rem 1rem;" onclick="addIdProduct(601)">
+                        Kosárba <i class="ri-shopping-cart-line"></i>
+                    </button>
+                </div>
+                <div class="limited-card-small">
+                    <div class="limited-badge" style="background: linear-gradient(135deg,#ff006e,#cc0055); border-color: rgba(255,0,110,0.5); color: white;">1/1</div>
+                    <img src="./assets/img/id-tshirt-pixel.png" alt="ID Póló Pixel" class="limited-small-img">
+                    <h4 class="limited-small-title">Póló – Pixel</h4>
+                    <div class="limited-price" style="margin:0.5rem 0;">
+                        <span class="limited-old-price">9 990 Ft</span>
+                        <span class="limited-new-price" style="font-size:1.2rem;">5 990 Ft</span>
+                    </div>
+                    <button class="limited-btn primary" style="font-size:0.8rem; padding:0.7rem 1rem;" onclick="addIdProduct(602)">
+                        Kosárba <i class="ri-shopping-cart-line"></i>
+                    </button>
+                </div>
+                <div class="limited-card-small">
+                    <div class="limited-badge" style="background: linear-gradient(135deg,#ff006e,#cc0055); border-color: rgba(255,0,110,0.5); color: white;">1/1</div>
+                    <img src="./assets/img/id-sweater-corrupted.png" alt="ID Pulóver Corrupted" class="limited-small-img">
+                    <h4 class="limited-small-title">Pulóver – Corrupted</h4>
+                    <div class="limited-price" style="margin:0.5rem 0;">
+                        <span class="limited-old-price">12 990 Ft</span>
+                        <span class="limited-new-price" style="font-size:1.2rem;">7 990 Ft</span>
+                    </div>
+                    <button class="limited-btn primary" style="font-size:0.8rem; padding:0.7rem 1rem;" onclick="addIdProduct(603)">
+                        Kosárba <i class="ri-shopping-cart-line"></i>
+                    </button>
+                </div>
+                <div class="limited-card-small">
+                    <div class="limited-badge" style="background: linear-gradient(135deg,#ff006e,#cc0055); border-color: rgba(255,0,110,0.5); color: white;">1/1</div>
+                    <img src="./assets/img/id-tshirt-corrupted.png" alt="ID Póló Corrupted" class="limited-small-img">
+                    <h4 class="limited-small-title">Póló – Corrupted</h4>
+                    <div class="limited-price" style="margin:0.5rem 0;">
+                        <span class="limited-old-price">9 990 Ft</span>
+                        <span class="limited-new-price" style="font-size:1.2rem;">5 990 Ft</span>
+                    </div>
+                    <button class="limited-btn primary" style="font-size:0.8rem; padding:0.7rem 1rem;" onclick="addIdProduct(604)">
+                        Kosárba <i class="ri-shopping-cart-line"></i>
+                    </button>
+                </div>
+            </div>
+            <p style="text-align:center; font-size:0.8rem; color:rgba(255,0,110,0.7); margin-top:1rem; font-family:'Courier New',monospace;">
+                ⚠ Rendelés után küldj képet a visszaigazoló emailre válaszolva.
+            </p>
         </div>
-        <h3 class="limited-card-title">Teljes Fizikai Kollekció</h3>
-        <p class="limited-card-desc">
-    <strong>Jegyzetek egy Idegentől</strong> és
-    <strong>Használati Útmutató az Élethez</strong><br>
-    A5 méret, igényes kivitel.
-    Korlátozott példányszámban, egyszeri gyártásból.
-</p>
-        <div class="limited-price">
-            <span class="limited-old-price">11 980 Ft</span>
-            <span class="limited-new-price">10 000 Ft</span>
-        </div>
-        <div class="limited-stock warning">
-            <i class="ri-error-warning-line"></i>
-            <span>Korlátozott példányszám · utánnyomás nem tervezett</span>
-        </div>
-<button class="limited-btn secondary" onclick="addLimitedProduct(311, 'physical')">
-    Kosárba <i class="ri-shopping-cart-line"></i>
-</button>
-    </div>
-</div>
 
-<div class="limited-footer">
+        <!-- TAB 2: Cipők -->
+        <div class="popup-tab-content" id="popup-tab-2">
+            <div class="limited-grid">
+                <div class="limited-card">
+                    <div class="limited-badge" style="background:linear-gradient(135deg,#ff4444,#cc0000); color:white; border-color:rgba(255,68,68,0.5);">-10%</div>
+                    <div class="limited-single-book" style="margin: 1rem auto;">
+                        <img src="./assets/img/sneakers-black.png" alt="Sportcipő" class="limited-book-image" style="width:160px;">
+                    </div>
+                    <h3 class="limited-card-title">Senkisem Sportcipő Fekete</h3>
+                    <p class="limited-card-desc" style="min-height:auto; margin-bottom:0.8rem;">
+                        Urban fekete sportcipő.<br>Phantom kollekció.
+                    </p>
+                    <div class="limited-price">
+                        <span class="limited-old-price">19 990 Ft</span>
+                        <span class="limited-new-price">17 990 Ft</span>
+                    </div>
+                    <div class="limited-stock" style="margin-bottom:0.8rem;">
+                        <i class="ri-footprint-line"></i>
+                        <span>38 – 45 · Phantom Collection</span>
+                    </div>
+                    <button class="limited-btn secondary" onclick="closeLimitedPopup(); document.getElementById('phantom').scrollIntoView({behavior:'smooth'})">
+                        Méret választás <i class="ri-arrow-right-line"></i>
+                    </button>
+                </div>
+                <div class="limited-card">
+                    <div class="limited-badge" style="background:linear-gradient(135deg,#ff4444,#cc0000); color:white; border-color:rgba(255,68,68,0.5);">-10%</div>
+                    <div class="limited-single-book" style="margin: 1rem auto;">
+                        <img src="./assets/img/high-sneakers-black.png" alt="Hosszúszárú Cipő" class="limited-book-image" style="width:160px;">
+                    </div>
+                    <h3 class="limited-card-title">Hosszúszárú Tornacipő Fekete</h3>
+                    <p class="limited-card-desc" style="min-height:auto; margin-bottom:0.8rem;">
+                        Magas szárú fekete sneaker.<br>Phantom kollekció.
+                    </p>
+                    <div class="limited-price">
+                        <span class="limited-old-price">19 990 Ft</span>
+                        <span class="limited-new-price">17 990 Ft</span>
+                    </div>
+                    <div class="limited-stock" style="margin-bottom:0.8rem;">
+                        <i class="ri-footprint-line"></i>
+                        <span>38 – 45 · Phantom Collection</span>
+                    </div>
+                    <button class="limited-btn secondary" onclick="closeLimitedPopup(); document.getElementById('phantom').scrollIntoView({behavior:'smooth'})">
+                        Méret választás <i class="ri-arrow-right-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="limited-footer">
             <p class="limited-footer-note">
                 <i class="ri-information-line"></i>
                 Egyben olcsóbb.
             </p>
-            <p class="limited-footer-note secondary">
-                ennyi:)
-            </p>
+            <p class="limited-footer-note secondary">ennyi:)</p>
         </div>
     </div>
 </div>
@@ -4750,24 +4956,29 @@ const products = [
         category: "Phantom",
         sectionId: "phantom"
     },
-    {
-        id: 403,
-        name: "Senkisem Sportcipő Fekete",
-        price: 19990,
-        image: "./assets/img/sneakers-black.png",
-        sizes: ["38", "39", "40", "41", "42", "43", "44", "45"],
-        category: "Phantom",
-        sectionId: "phantom"
-    },
-    {
-        id: 404,
-        name: "Hosszúszárú Tornacipő Fekete",
-        price: 19990,
-        image: "./assets/img/high-sneakers-black.png",
-        sizes: ["38", "39", "40", "41", "42", "43", "44", "45"],
-        category: "Phantom",
-        sectionId: "phantom"
-    },
+// Módosítsd ezt a két terméket:
+{
+    id: 403,
+    name: "Senkisem Sportcipő Fekete",
+    price: 17990,        // 19990 * 0.9
+    oldPrice: 19990,     // ← ADD HOZZÁ
+    sale: true,          // ← ADD HOZZÁ
+    image: "./assets/img/sneakers-black.png",
+    sizes: ["38", "39", "40", "41", "42", "43", "44", "45"],
+    category: "Phantom",
+    sectionId: "phantom"
+},
+{
+    id: 404,
+    name: "Hosszúszárú Tornacipő Fekete",
+    price: 17990,        // 19990 * 0.9
+    oldPrice: 19990,     // ← ADD HOZZÁ
+    sale: true,          // ← ADD HOZZÁ
+    image: "./assets/img/high-sneakers-black.png",
+    sizes: ["38", "39", "40", "41", "42", "43", "44", "45"],
+    category: "Phantom",
+    sectionId: "phantom"
+},
     
     // SIGNATURE EDITION
     {
@@ -5782,6 +5993,42 @@ function openMobileMenu() {
 function closeMobileMenu() {
     document.getElementById('mobile-menu').classList.remove('active');
 }
+
+function switchPopupTab(index) {
+    document.querySelectorAll('.popup-tab').forEach((t, i) => {
+        t.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.popup-tab-content').forEach((c, i) => {
+        c.classList.toggle('active', i === index);
+    });
+}
+
+function addIdProduct(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existing = cart.find(item => item.id === productId);
+    
+    if (!existing) {
+        cart.push({...product, quantity: 1, needsSize: true});
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+    }
+    
+    closeLimitedPopup();
+    showNotification(product.name, 'hozzáadva! Válassz méretet a terméknél.');
+    
+    setTimeout(() => {
+        document.getElementById('products-section-wrapper').classList.add('revealed');
+        document.getElementById('id-senkisem-products-grid')
+            ?.closest('section')
+            ?.scrollIntoView({behavior: 'smooth'});
+    }, 400);
+}
+
+window.switchPopupTab = switchPopupTab;
+window.addIdProduct = addIdProduct;
 
 // ========================================
 // GLOBAL EXPORTS
