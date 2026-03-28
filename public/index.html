@@ -447,7 +447,6 @@
 
 .login-copyright{
   margin-top:8.5rem;
-  margin-bottom:1.5rem;
   text-align:center;
   font-family:'Inter',sans-serif;
   font-size:0.9rem;
@@ -465,6 +464,155 @@
   font-size:0.8rem;
   padding:0 1rem;
 }
+@media (max-width: 768px) {
+  .merch-about__desc {
+    max-width: 100%; /* volt: 100% */
+    margin-left: -85px;
+  }
+
+  .merch-about__bottom-text {
+    max-width: 100%; /* volt: 100% */
+    margin-right: -65px;
+  }
+
+    .books-kep1-desc {
+      max-width: 100%; /* volt: 100% */
+    margin-left: -85px;
+    }
+    
+    .books-kep2-text {
+    max-width: 100%;
+    margin-right: -65px;
+  }
+}
+
+@media (max-width: 768px) {
+  .merch-about__desc,
+  .merch-about__bottom-text,
+  .books-kep1-desc,
+  .books-kep2-text {
+    background: linear-gradient(
+      to right,
+      rgba(0,0,0,0.85) 60%,
+      transparent 100%
+    );
+    border-radius: 4px;
+  }
+
+  .merch-about__bottom-text,
+  .books-kep2-text {
+    background: linear-gradient(
+      to left,
+      rgba(0,0,0,0.85) 60%,
+      transparent 100%
+    );
+  }
+}
+
+@media (max-width: 768px) {
+  .merch-about__desc,
+  .merch-about__bottom-text,
+  .books-kep1-desc,
+  .books-kep2-text {
+    position: relative;
+    z-index: 3;
+    mix-blend-mode: normal;
+    isolation: isolate;
+  }
+}
+@media (max-width: 768px) {
+  .login-copyright {
+    margin-top:70%;
+  }
+}
+
+/* LANGUAGE SWITCHER */
+.lang-switcher {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+.lang-switcher.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+.lang-current {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+  transition: border-color 0.25s, background 0.25s;
+  user-select: none;
+}
+.lang-current:hover {
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(0,0,0,0.75);
+}
+.lang-flag {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.lang-label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+}
+.lang-arrow {
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.4);
+  transition: transform 0.25s ease;
+  margin-left: 2px;
+}
+.lang-switcher.open .lang-arrow {
+  transform: rotate(180deg);
+}
+.lang-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.12);
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease;
+}
+.lang-switcher.open .lang-dropdown {
+  max-height: 80px;
+  opacity: 1;
+}
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+.lang-option:hover {
+  background: rgba(255,255,255,0.07);
+}
+.lang-option .lang-label {
+  color: rgba(255,255,255,0.6);
+  transition: color 0.2s;
+}
+.lang-option:hover .lang-label {
+  color: #fff;
+}
+
     </style>
   </head>
   <body>
@@ -489,6 +637,18 @@
         <div class="scroll-hint-arrow"></div>
       </div>
     </section>
+
+    <div class="lang-switcher" id="lang-switcher">
+  <div class="lang-current" id="lang-current">
+    <span class="lang-label">HUN</span>
+    <span class="lang-arrow">▼</span>
+  </div>
+  <div class="lang-dropdown">
+    <a class="lang-option" href="https://senkisem.com" target="_blank">
+      <span class="lang-label">ENG</span>
+    </a>
+  </div>
+</div>
 
 <section class="we-are-section">
     <div class="we-are-track" id="weAreTrack">
@@ -624,16 +784,40 @@
     </div>
 
     <script>
-      // VIDEO — minden eszközön
-      (function(){
-        var v = document.querySelector('.hero-bg-video');
-        if(!v) return;
-        var s = document.createElement('source');
-        s.src = 'assets/img/merchvid.mp4';
-        s.type = 'video/mp4';
-        v.appendChild(s);
-        v.load();
-      })();
+      // VIDEO — desktop / mobile külön videó
+  (function () {
+    var v = document.querySelector('.hero-bg-video');
+    if (!v) return;
+
+    var mobileBp = 768;
+    var desktopSrc = 'assets/img/merchvid.mp4';
+    var mobileSrc = 'assets/img/merchvidphone.mp4';
+
+    function setHeroVideo() {
+      var isMobile = window.innerWidth <= mobileBp;
+      var nextSrc = isMobile ? mobileSrc : desktopSrc;
+
+      if (v.getAttribute('data-current-src') === nextSrc) return;
+
+      v.setAttribute('data-current-src', nextSrc);
+      v.innerHTML = '';
+
+      var s = document.createElement('source');
+      s.src = nextSrc;
+      s.type = 'video/mp4';
+      v.appendChild(s);
+
+      v.load();
+
+      var playPromise = v.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(function(){});
+      }
+    }
+
+    setHeroVideo();
+    window.addEventListener('resize', setHeroVideo);
+  })();
 
       // SCROLL HINT — 8 mp után
       setTimeout(function(){
@@ -817,6 +1001,27 @@
       vis = e[0].isIntersecting;
       if (vis && !af) draw();
     }, { threshold: 0.1 }).observe(el);
+  });
+})();
+
+// LANGUAGE SWITCHER — 12mp után jelenik meg
+(function() {
+  var sw = document.getElementById('lang-switcher');
+  var cur = document.getElementById('lang-current');
+  if (!sw || !cur) return;
+
+  // 12000ms = videó 1 körüljárása után
+  setTimeout(function() {
+    sw.classList.add('visible');
+  }, 8000);
+
+  cur.addEventListener('click', function(e) {
+    e.stopPropagation();
+    sw.classList.toggle('open');
+  });
+
+  document.addEventListener('click', function() {
+    sw.classList.remove('open');
   });
 })();
 

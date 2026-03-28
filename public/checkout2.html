@@ -1,208 +1,1056 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senkisem - Fizetés (Digitális)</title>
-    <link rel="stylesheet" href="./assets/css/checkout.css">
-    <meta name="description" content="Fizetési oldal a Senkisem - Jegyzetek egy Idegentől E-könyv megrendeléséhez. Töltsd ki adataidat a gyors és egyszerű vásárláshoz.">
-    <meta name="keywords" content="fizetés, e-könyv vásárlás, Senkisem, megrendelés, letöltés, online fizetés">
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Senkisem — Digitális Rendelés</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --void: #050505;
+      --surface: #0d0d0d;
+      --surface-2: #141414;
+      --surface-3: #1a1a1a;
+      --border: rgba(255,255,255,0.07);
+      --border-active: rgba(255,255,255,0.22);
+      --text: #f0ede8;
+      --text-dim: rgba(240,237,232,0.5);
+      --text-ghost: rgba(240,237,232,0.22);
+      --accent: #e8d5b0;
+      --accent-2: #c9a96e;
+      --green: rgba(60,200,120,0.9);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--void);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 58px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(5,5,5,0.92);
+      backdrop-filter: blur(20px);
+    }
+
+    .topbar-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .topbar-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0.8rem;
+      background: rgba(60,200,120,0.08);
+      border: 1px solid rgba(60,200,120,0.2);
+      border-radius: 2px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: rgba(60,200,120,0.8);
+      text-transform: uppercase;
+    }
+
+    .topbar-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .topbar-secure {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--text-ghost);
+      text-transform: uppercase;
+    }
+
+    .topbar-secure svg {
+      width: 12px; height: 12px;
+      fill: none;
+      stroke: var(--accent-2);
+      stroke-width: 2;
+    }
+
+    /* ── PROGRESS ── */
+    .progress-bar {
+      position: fixed;
+      top: 58px; left: 0; right: 0;
+      height: 2px;
+      background: var(--surface-3);
+      z-index: 99;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-2), var(--accent));
+      transition: width 0.4s var(--ease);
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      min-height: 100vh;
+      padding-top: 60px;
+    }
+
+    /* ── LEFT ── */
+    .left-panel {
+      padding: 3.5rem 4rem 4rem;
+      border-right: 1px solid var(--border);
+    }
+
+    /* DIGITAL HERO INTRO */
+    .digital-intro {
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .digital-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      color: var(--accent-2);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .digital-eyebrow::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--accent-2);
+    }
+
+    .digital-headline {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-style: italic;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+    }
+
+    .digital-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 420px;
+    }
+
+    .digital-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.4rem;
+    }
+
+    .digital-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      background: var(--surface);
+    }
+
+    .digital-pill .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+
+    /* DELIVERY INFO BOX */
+    .delivery-info-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.2rem;
+      background: rgba(201,169,110,0.05);
+      border: 1px solid rgba(201,169,110,0.15);
+      border-radius: 3px;
+      margin-bottom: 2.5rem;
+    }
+
+    .delivery-info-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      line-height: 1;
+      margin-top: 0.1rem;
+    }
+
+    .delivery-info-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      line-height: 1.7;
+    }
+
+    .delivery-info-text strong {
+      color: var(--text);
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.72rem;
+    }
+
+    /* FORM BLOCKS */
+    .form-block { margin-bottom: 2.5rem; }
+
+    .block-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .block-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      line-height: 1;
+      color: var(--text-ghost);
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    .block-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--text-dim);
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .field-row.single { grid-template-columns: 1fr; }
+
+    .field { position: relative; }
+
+    .field label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      color: var(--text-ghost);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .field:focus-within label { color: var(--accent-2); }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      transition: border-color 0.25s, background 0.25s;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+    }
+
+    .field input::placeholder { color: var(--text-ghost); }
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--border-active);
+      background: var(--surface-2);
+    }
+
+    .field input.error { border-color: rgba(255,60,60,0.5); }
+    .field input.valid { border-color: rgba(60,200,120,0.3); }
+
+    /* OPTIONAL FIELDS NOTE */
+    .optional-note {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--text-ghost);
+      margin-bottom: 1.2rem;
+    }
+
+    /* TERMS */
+    .terms-block {
+      margin-top: 2rem;
+      padding: 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--surface);
+    }
+
+    .check-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .check-label input[type="checkbox"] {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+      accent-color: var(--accent-2);
+    }
+
+    .check-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    .check-link {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* SECTION DIVIDER */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border) 30%, var(--border) 70%, transparent);
+      margin: 2.5rem 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--text-ghost);
+      text-decoration: none;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--text-dim); }
+    .back-link svg {
+      width: 12px; height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      transition: transform 0.2s;
+    }
+    .back-link:hover svg { transform: translateX(-2px); }
+
+    /* ── RIGHT PANEL ── */
+    .right-panel {
+      position: sticky;
+      top: 60px;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+      padding: 2.5rem 2rem;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      scrollbar-width: thin;
+      scrollbar-color: var(--surface-3) transparent;
+    }
+
+    .right-panel::-webkit-scrollbar { width: 4px; }
+    .right-panel::-webkit-scrollbar-track { background: transparent; }
+    .right-panel::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 2px; }
+
+    .summary-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      color: var(--text-ghost);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .summary-label::before {
+      content: '';
+      width: 16px; height: 1px;
+      background: var(--text-ghost);
+    }
+
+    /* PRODUCT SHOWCASE */
+    .product-showcase {
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+
+    .product-showcase-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-showcase-item:last-child { border-bottom: none; }
+
+    .product-showcase-img {
+      width: 52px; height: 52px;
+      object-fit: cover;
+      border-radius: 3px;
+      background: var(--surface-3);
+      flex-shrink: 0;
+    }
+
+    .product-showcase-info { flex: 1; }
+
+    .product-showcase-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      line-height: 1.3;
+    }
+
+    .product-showcase-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: rgba(60,200,120,0.7);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .product-showcase-tag::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .product-showcase-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+
+    /* DELIVERY TIMELINE */
+    .delivery-timeline {
+      padding: 1rem;
+      background: var(--surface-2);
+      border-radius: 3px;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .timeline-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: var(--text-ghost);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .timeline-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .timeline-step {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .timeline-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .timeline-dot.done { background: var(--green); border-color: transparent; }
+    .timeline-dot.active { background: var(--accent-2); border-color: transparent; animation: pulse-dot 1.5s ease-in-out infinite; }
+
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201,169,110,0.4); }
+      50% { box-shadow: 0 0 0 5px rgba(201,169,110,0); }
+    }
+
+    .timeline-step-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      color: var(--text-ghost);
+    }
+
+    .timeline-step.active .timeline-step-text { color: var(--accent); }
+    .timeline-step.done .timeline-step-text { color: rgba(60,200,120,0.7); }
+
+    /* TOTALS */
+    .totals-block {
+      border-top: 1px solid var(--border);
+      padding-top: 1.2rem;
+    }
+
+    .total-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+
+    .total-line-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--text-ghost);
+      text-transform: uppercase;
+    }
+
+    .total-line-val {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    .total-line.grand {
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .total-line.grand .total-line-label {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text);
+      letter-spacing: 0;
+    }
+
+    .total-line.grand .total-line-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+    }
+
+    /* SUBMIT */
+    .submit-zone { margin-top: 1.5rem; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1.1rem 1.5rem;
+      background: var(--text);
+      color: var(--void);
+      border: none;
+      border-radius: 3px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .submit-btn:hover::before { transform: translateX(100%); }
+    .submit-btn:hover {
+      background: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(201,169,110,0.25);
+    }
+    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .btn-loading { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; }
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    .submit-btn.loading .spinner { display: block; }
+    .submit-btn.loading .btn-text { opacity: 0.6; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .submit-sub {
+      text-align: center;
+      margin-top: 0.6rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: var(--text-ghost);
+      text-transform: uppercase;
+      line-height: 1.5;
+    }
+
+    /* TRUST SIGNALS */
+    .trust-signals {
+      margin-top: 1.2rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .trust-signal-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      color: var(--text-ghost);
+    }
+
+    .trust-signal-icon {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      fill: none;
+      stroke: var(--accent-2);
+      stroke-width: 1.5;
+    }
+
+    /* FADE-UP */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up-1 { transition-delay: 0.05s; }
+    .fade-up-2 { transition-delay: 0.12s; }
+    .fade-up-3 { transition-delay: 0.2s; }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .page { grid-template-columns: 1fr; }
+      .right-panel {
+        position: static;
+        height: auto;
+        order: -1;
+        border-left: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem;
+      }
+      .left-panel { padding: 2rem 1.5rem 3rem; border-right: none; }
+      .field-row { grid-template-columns: 1fr; }
+      .topbar { padding: 0 1.5rem; }
+    }
+  </style>
+</head>
 <body>
 
-    <div class="container">
-        <form id="checkout-form">
-            <div class="row">
-                <div class="column">
-                    <h3 class="title">Számlázási és Szállítási Adatok</h3>
-                    <p>A rendelt terméket a megadott e-mail címre küldjük a fizetés után.</p>
+<!-- TOP BAR -->
+<header class="topbar">
+  <a href="index.html" class="topbar-brand">Senkisem</a>
+  <div class="topbar-badge">Digitális rendelés</div>
+  <div class="topbar-secure">
+    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    Biztonságos
+  </div>
+</header>
 
-                    <div class="input-box">
-                        <span>Teljes Név :</span>
-                        <input type="text" name="fullName" placeholder="Teljes Név" required>
-                    </div>
-                    <div class="input-box">
-                        <span>Email Cím :</span>
-                        <input type="email" name="email" placeholder="email@email.com" required>
-                    </div>
-                    <div class="input-box">
-                        <span>Lakcím (utca, házszám):</span>
-                        <input type="text" name="address" placeholder="Utca, Házszám">
-                    </div>
-                    <div class="input-box">
-                        <span>Város :</span>
-                        <input type="text" name="city" placeholder="Város">
-                    </div>
-
-                    <div class="flex">
-                        <div class="input-box">
-                            <span>Ország :</span>
-                            <input type="text" name="country" placeholder="Magyarország">
-                        </div>
-                        <div class="input-box">
-                            <span>Irányítószám :</span>
-                            <input type="number" name="zip" placeholder="1234">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="cart-section">
-                <h3 class="title">Kosár Tartalma</h3>
-                <a href="index.html" class="back-btn">Vissza a főoldalra</a>
-                <div id="cart-items" class="cart-items"></div>
-
-                <h3 class="title">Szállítási Díj</h3>
-                <div id="shipping-fee" class="shipping-fee"></div> <h3 class="title">Végösszeg</h3>
-                <div id="total-price" class="total-price">0 Ft</div>
-            </div>
-
-            <div class="terms-acceptance">
-  <label class="terms-checkbox">
-    <input type="checkbox" id="terms-agree" name="terms-agree" required>
-    <span class="checkmark"></span>
-    <span class="terms-text">
-      Elolvastam és elfogadom az 
-      <a href="assets/ÁSZF.pdf" target="_blank" class="terms-link">Általános Szerződési Feltételeket</a>
-    </span>
-  </label>
+<div class="progress-bar">
+  <div class="progress-fill" id="progress-fill"></div>
 </div>
 
-            <button type="submit" class="btn">Megrendelés Leadása és Fizetés</button>
-            <p style="text-align: center; font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 6px; letter-spacing: 0.5px;">
-  Átirányítás A Stripe Inc. online fizetési rendszerére.
-</p>
-        </form>
+<form id="checkout-form">
+  <div class="page">
+
+    <!-- ── LEFT PANEL ── -->
+    <div class="left-panel">
+
+      <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Vissza a boltba
+      </a>
+
+      <!-- DIGITAL INTRO -->
+      <div class="digital-intro fade-up">
+        <div class="digital-eyebrow">Digitális termék</div>
+        <h1 class="digital-headline">2 Perc múlva<br>nálad lesz.</h1>
+        <p class="digital-sub">
+          Fizetés után azonnal emailben küldjük a letöltési linket.<br>
+          Nincs várakozás, nincs szállítási díj.
+        </p>
+        <div class="digital-pills">
+          <span class="digital-pill"><span class="dot"></span>Azonnali kézbesítés emailben</span>
+          <span class="digital-pill"><span class="dot"></span>Szállítási díj: 0 Ft</span>
+          <span class="digital-pill"><span class="dot"></span>Bármely eszközön olvasható</span>
+        </div>
+      </div>
+
+      <!-- DELIVERY INFO -->
+      <div class="delivery-info-box fade-up fade-up-1">
+        <div class="delivery-info-icon">✉️</div>
+        <div class="delivery-info-text">
+          <strong>Így működik a kézbesítés</strong>
+          Fizetés után perceken belül emailt kapsz a megadott címre,<br>
+          amiben ott van a letöltési link. Ellenőrizd a spam mappát is.
+        </div>
+      </div>
+
+      <!-- FORM: ONLY NAME + EMAIL REQUIRED -->
+      <div class="form-block fade-up fade-up-2">
+        <div class="block-header">
+          <span class="block-num">01</span>
+          <span class="block-title">Személyes adatok</span>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="fullName">Teljes név *</label>
+            <input type="text" name="fullName" id="fullName" required placeholder="pl. Kovács Péter">
+          </div>
+          <div class="field">
+            <label for="email">Email cím *</label>
+            <input type="email" name="email" id="email" required placeholder="pelda@email.com">
+          </div>
+        </div>
+
+
+        <div class="field-row single">
+          <div class="field">
+            <label for="address">Lakcím</label>
+            <input type="text" name="address" id="address" placeholder="Utca, házszám">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="city">Város</label>
+            <input type="text" name="city" id="city" placeholder="Budapest">
+          </div>
+          <div class="field">
+            <label for="zip">Irányítószám</label>
+            <input type="text" name="zip" id="zip" placeholder="1234">
+          </div>
+        </div>
+
+        <div class="field-row single" style="display:none;">
+          <div class="field">
+            <label for="country">Ország</label>
+            <input type="text" name="country" id="country" value="Magyarország">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- TERMS -->
+      <div class="form-block fade-up fade-up-3">
+        <div class="terms-block">
+          <label class="check-label">
+            <input type="checkbox" id="terms-agree" name="terms-agree" required>
+            <span class="check-text">
+              Elolvastam és elfogadom az
+              <a href="assets/ÁSZF.pdf" target="_blank" class="check-link">Általános Szerződési Feltételeket</a>
+            </span>
+          </label>
+        </div>
+      </div>
+
     </div>
 
-<!-- ÚJ (beilleszteni): -->
+    <!-- ── RIGHT PANEL ── -->
+    <div class="right-panel">
+      <div class="summary-label">A rendelésed</div>
+
+      <div class="product-showcase" id="product-showcase">
+        <!-- populated by JS -->
+      </div>
+
+      <!-- DELIVERY TIMELINE -->
+      <div class="delivery-timeline">
+        <div class="timeline-label">Mi történik ezután?</div>
+        <div class="timeline-steps">
+          <div class="timeline-step active">
+            <div class="timeline-dot active"></div>
+            <div class="timeline-step-text">Megrendelés & fizetés most</div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div class="timeline-step-text">Email megerősítés — perceken belül</div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div class="timeline-step-text">Letöltési link az emailedben</div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div class="timeline-step-text">Olvasás kezdhető azonnal ✓</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="totals-block">
+        <div class="total-line">
+          <span class="total-line-label">Termékek</span>
+          <span class="total-line-val" id="subtotal">—</span>
+        </div>
+        <div class="total-line">
+          <span class="total-line-label">Szállítás</span>
+          <span class="total-line-val" style="color:rgba(60,200,120,0.7);">Ingyenes</span>
+        </div>
+        <div class="total-line grand">
+          <span class="total-line-label">Végösszeg</span>
+          <span class="total-line-val" id="total-price">—</span>
+        </div>
+      </div>
+
+      <div class="submit-zone">
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <span class="btn-loading">
+            <div class="spinner"></div>
+            <span class="btn-text">Megrendelés &amp; Fizetés →</span>
+          </span>
+        </button>
+        <div class="submit-sub">
+          Átirányítás a Stripe Inc. titkosított fizetési felületére
+        </div>
+      </div>
+
+      <div class="trust-signals">
+        <div class="trust-signal-item">
+          <svg class="trust-signal-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          256-bites SSL titkosítás
+        </div>
+        <div class="trust-signal-item">
+          <svg class="trust-signal-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Bankkártyaadatok nem kerülnek hozzánk
+        </div>
+        <div class="trust-signal-item">
+          <svg class="trust-signal-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Azonnali kézbesítés fizetés után
+        </div>
+      </div>
+    </div>
+
+  </div>
+</form>
+
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const cartItemsContainer = document.getElementById('cart-items');
-    const totalPriceElement = document.getElementById('total-price');
-    const shippingFeeElement = document.getElementById('shipping-fee');
-    const checkoutForm = document.getElementById('checkout-form');
+  document.addEventListener('DOMContentLoaded', () => {
+    const totalPriceEl = document.getElementById('total-price');
+    const subtotalEl   = document.getElementById('subtotal');
+    const showcaseEl   = document.getElementById('product-showcase');
+    const form         = document.getElementById('checkout-form');
+    const submitBtn    = document.getElementById('submit-btn');
 
     let cart = [];
     let totalPrice = 0;
-    const shippingCost = 0; // E-könyv esetén 0
+    const shippingCost = 0;
 
+    // Load cart
     try {
-        const storedCart = localStorage.getItem('cart');
-        if (storedCart) {
-            cart = JSON.parse(storedCart);
-        }
+      const stored = localStorage.getItem('cart');
+      if (stored) cart = JSON.parse(stored);
     } catch (e) {
-        console.error('Hiba a kosár betöltésekor:', e);
-        cart = []; 
+      console.error('Cart load error:', e);
+      cart = [];
     }
 
+    // Empty state
     if (cart.length === 0) {
-        cartItemsContainer.innerHTML = "<p>A kosarad üres. <a href='index.html'>Vissza a főoldalra</a></p>";
-        shippingFeeElement.textContent = '0 Ft (Digitális termék)';
-        totalPriceElement.textContent = "0 Ft";
-        if (checkoutForm.querySelector('.btn')) {
-            checkoutForm.querySelector('.btn').disabled = true; 
-        }
-        return;
+      showcaseEl.innerHTML = `<div style="text-align:center;padding:2rem 0;color:var(--text-ghost);font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;">A KOSÁR ÜRES<br><br><a href="index.html" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px;">Vissza a boltba</a></div>`;
+      submitBtn.disabled = true;
+      return;
     }
 
+    // Render products
     cart.forEach(item => {
-        const itemElement = document.createElement('div');
-        itemElement.classList.add('item'); 
-        
-        itemElement.innerHTML = `
-            <img src="${item.image}" alt="${item.name}">
-            <div class="item-details">
-                <p class="item-name"><strong>${item.name}</strong></p>
-                <p class="item-price">${typeof item.price === 'string' ? item.price : item.price + ' Ft'}</p>
-            </div>
-        `;
-        cartItemsContainer.appendChild(itemElement);
+      const numericPrice = typeof item.price === 'string' ? parseInt(item.price.replace(/\D/g, '')) : item.price;
+      const qty = item.quantity || 1;
+      totalPrice += numericPrice * qty;
 
-        // Ár kalkuláció javítás
-        const numericPrice = typeof item.price === 'string' ? 
-            parseInt(item.price.replace(/\D/g, '')) : item.price;
-        totalPrice += numericPrice;
+      showcaseEl.innerHTML += `
+        <div class="product-showcase-item">
+          <img class="product-showcase-img" src="${item.image}" alt="${item.name}">
+          <div class="product-showcase-info">
+            <div class="product-showcase-name">${item.name}${qty > 1 ? ` (${qty} db)` : ''}</div>
+            <div class="product-showcase-tag">Digitális termék • Azonnali</div>
+          </div>
+          <div class="product-showcase-price">${(numericPrice * qty).toLocaleString('hu-HU')} Ft</div>
+        </div>`;
     });
 
-    shippingFeeElement.textContent = `${shippingCost.toLocaleString('hu-HU')} Ft (Digitális termék)`;
-    totalPriceElement.textContent = `${totalPrice.toLocaleString('hu-HU')} Ft`;
+    // Update totals
+    subtotalEl.textContent = `${totalPrice.toLocaleString('hu-HU')} Ft`;
+    totalPriceEl.textContent = `${totalPrice.toLocaleString('hu-HU')} Ft`;
 
-    checkoutForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    // Progress
+    function updateProgress() {
+      const fields = document.querySelectorAll('input[required]');
+      let filled = 0;
+      fields.forEach(f => { if (f.value.trim()) filled++; });
+      const pct = Math.min(90, Math.round((filled / fields.length) * 90));
+      document.getElementById('progress-fill').style.width = pct + '%';
+    }
+    document.addEventListener('input', updateProgress);
+    updateProgress();
 
-        const termsCheckbox = document.getElementById('terms-agree');
-        if (!termsCheckbox.checked) {
-            alert('Kérjük, fogadd el az Általános Szerződési Feltételeket a folytatáshoz!');
-            termsCheckbox.focus();
-            return;
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+    // FORM SUBMIT — backend logic preserved exactly
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const termsCheckbox = document.getElementById('terms-agree');
+      if (!termsCheckbox.checked) {
+        alert('Kérjük, fogadd el az Általános Szerződési Feltételeket a folytatáshoz!');
+        termsCheckbox.focus();
+        return;
+      }
+
+      const formData = new FormData(form);
+      const customerData = {
+        fullName: formData.get('fullName'),
+        email: formData.get('email'),
+        phone: '',
+        address: formData.get('address') || '-',
+        city: formData.get('city') || '-',
+        country: formData.get('country') || 'Magyarország',
+        zip: formData.get('zip') || '-',
+        shippingMethod: 'digital',
+        pickupPoint: null,
+        deliveryAddress: '',
+        deliveryCity: '',
+        deliveryZip: '',
+        deliveryNote: ''
+      };
+
+      if (!customerData.fullName || !customerData.email) {
+        alert('Kérjük, töltse ki a teljes nevét és az e-mail címét!');
+        return;
+      }
+
+      const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRx.test(customerData.email)) {
+        document.getElementById('email').classList.add('error');
+        alert('Kérjük, adj meg érvényes email címet!');
+        return;
+      }
+
+      const cartForPayment = cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: typeof item.price === 'string' ? parseInt(item.price.replace(/\D/g, '')) : item.price,
+        image: item.image,
+        quantity: item.quantity || 1
+      }));
+
+      submitBtn.disabled = true;
+      submitBtn.classList.add('loading');
+
+      try {
+        const response = await fetch('/create-payment-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cart: cartForPayment, customerData })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.payment_url) {
+          localStorage.removeItem('cart');
+          window.location.href = data.payment_url;
+        } else {
+          console.error('Error:', data.error);
+          alert(`Hiba történt: ${data.error || 'Ismeretlen hiba'}`);
         }
-
-        // ✅ ÍGY JÓ: FormData létrehozása
-        const formData = new FormData(checkoutForm);
-        
-        const customerData = {
-            fullName: formData.get('fullName'),
-            email: formData.get('email'),
-            phone: '', // Digitális terméknél nem kötelező
-            address: formData.get('address') || '-', 
-            city: formData.get('city') || '-',
-            country: formData.get('country') || 'Magyarország',
-            zip: formData.get('zip') || '-',
-            shippingMethod: 'digital', // ✅ Jelzés, hogy digitális
-            pickupPoint: null,
-            deliveryAddress: '',
-            deliveryCity: '',
-            deliveryZip: '',
-            deliveryNote: ''
-        };
-
-        if (!customerData.fullName || !customerData.email) {
-            alert('Kérjük, töltse ki a teljes nevét és az e-mail címét!');
-            return;
-        }
-
-        const cartForPayment = cart.map(item => ({
-            id: item.id, 
-            name: item.name,
-            price: typeof item.price === 'string' ? 
-                parseInt(item.price.replace(/\D/g, '')) : item.price,
-            image: item.image,
-            quantity: item.quantity || 1 // ✅ Darabszám
-        }));
-
-        try {
-            const response = await fetch('/create-payment-session', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    cart: cartForPayment,
-                    customerData: customerData
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok && data.payment_url) {
-                localStorage.removeItem('cart');
-                window.location.href = data.payment_url;
-            } else {
-                console.error('Hiba:', data.error);
-                alert(`Hiba történt: ${data.error || 'Ismeretlen hiba'}`);
-            }
-        } catch (error) {
-            console.error('Hálózati hiba:', error);
-            alert('Hálózati hiba történt. Próbálja újra!');
-        }
+      } catch (error) {
+        console.error('Network error:', error);
+        alert('Hálózati hiba történt. Próbálja újra!');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+      }
     });
-});
+  });
 </script>
-
 </body>
 </html>

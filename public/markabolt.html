@@ -2650,8 +2650,7 @@
 
         <div class="footer-col-right">
             <div class="footer-col-title">Ügyfélszolgálat</div>
-            <a href="mailto:info@senkisem.com">info@senkisem.com</a>
-            <a href="ugyfelszolgalat.html" class="footer-contact-link">
+            <a href="support.html" class="footer-contact-link">
                 Kérdésed van? Írj üzenetet →
             </a>
         </div>
@@ -3271,10 +3270,10 @@ function goToCheckout() {
 // ============================================================
 function addLimitedProduct(productId, variant) {
     if (productId === 300 && variant === 'bundle') {
-        localStorage.setItem('cart', JSON.stringify([{ id: 300, name: "Teljes Digitális Kollekció (jegyzetek + Használati Útmutató)", price: 5000, image: "./assets/img/ketkonyv.png", isBundle: true, isLimited: true }]));
+        localStorage.setItem('cart', JSON.stringify([{ id: 300, name: "Teljes Digitális Kollekció (Jegyzetek + Használati Útmutató)", price: 5000, image: "./assets/img/ketkonyv.png", isBundle: true, isLimited: true }]));
         window.location.href = 'checkout2.html';
     } else if (productId === 311 && variant === 'physical') {
-        localStorage.setItem('cart', JSON.stringify([{ id: 311, name: "Teljes Fizikai Kollekció (Notes + Útmutató)", price: 10000, image: "./assets/img/ketkonyv.png", size: "A5", quantity: 1, isLimited: true, isPhysicalBundle: true }]));
+        localStorage.setItem('cart', JSON.stringify([{ id: 311, name: "Teljes Fizikai Kollekció (Jegyzetek + Útmutató)", price: 10000, image: "./assets/img/ketkonyv.png", size: "A5", quantity: 1, isLimited: true, isPhysicalBundle: true }]));
         openSidebar('cart');
     }
 }
