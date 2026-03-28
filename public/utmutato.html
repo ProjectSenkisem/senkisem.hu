@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
-        <title> Senkisem - Jegyzetek Egy Idegentől</title>
+<title>Senkisem - Használati Útmutató az Élethez</title>
        <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9GKMR41DYX"></script>
 <script>
@@ -15,8 +15,7 @@
   gtag('config', 'G-9GKMR41DYX');
 </script>
         <!-- SEO Meta Tags -->
-<meta name="description" content="Senkisem - Jegyzetek egy Idegentől. Egy könyv, ami kérdez, szétszed, majd újrarendez. Nem mesél történetet, nem ad tanácsokat. Rólad szól.">
-<meta name="keywords" content="jegyzetek egy idegentől, senkisem könyv, magyar önismereti könyv, filozofikus könyv, gondolatok könyv">
+<meta name="description" content="Senkisem - Használati Útmutató az Élethez. A személyiséged algoritmus. A döntéseid túlélési protokollok. Nem önfejlesztés — feltárás."><meta name="keywords" content="használati útmutató az élethez, senkisem könyv, magyar filozofikus könyv, személyiség algoritmus, önismeret könyv">
 <meta name="author" content="Senkisem">
 <meta name="robots" content="index, follow">
 <meta name="language" content="Hungarian">
@@ -24,18 +23,18 @@
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://senkisem.hu/">
-<meta property="og:title" content="Senkisem - Jegyzetek egy Idegentől">
-<meta property="og:description" content="Egy könyv, ami kérdez, szétszed, majd újrarendez. Nem mesél történetet, nem ad tanácsokat. Rólad szól.">
-<meta property="og:image" content="https://senkisem.hu/assets/img/könyv1.png">
+<meta property="og:title" content="Senkisem - Használati Útmutató az Élethez">
+<meta property="og:description" content="A személyiséged algoritmus. A döntéseid túlélési protokollok. Nem önfejlesztés — feltárás.">
+<meta property="og:image" content="https://senkisem.hu/assets/img/huae.png">
 <meta property="og:site_name" content="Senkisem">
 <meta property="og:locale" content="hu_HU">
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://senkisem.hu/">
-<meta property="twitter:title" content="Senkisem - Jegyzetek egy Idegentől">
-<meta property="twitter:description" content="Egy könyv, ami kérdez, szétszed, majd újrarendez. Rólad szól.">
-<meta property="twitter:image" content="https://senkisem.hu/assets/img/könyv1.png">
+<meta property="twitter:title" content="Senkisem - Használati Útmutató az Élethez">
+<meta property="twitter:description" content="A személyiséged algoritmus. Nem önfejlesztés — feltárás.">
+<meta property="twitter:image" content="https://senkisem.hu/assets/img/huae.png">
 
 <!-- Canonical URL -->
 <link rel="canonical" href="https://senkisem.hu/">
@@ -45,7 +44,7 @@
 {
   "@context": "https://schema.org",
   "@type": "Book",
-  "name": "Jegyzetek egy Idegentől",
+"name": "Használati Útmutató az Élethez",
   "author": {
     "@type": "Person",
     "name": "Senkisem"
@@ -83,6 +82,7 @@
     "query-input": "required name=search_term_string"
   }
 }
+</script>
 </script>
         <style>
             img:is([sizes="auto" i], [sizes^="auto," i]) {
@@ -195,82 +195,43 @@ display: none !important;
     from { opacity: 0; transform: translateY(5px); }
     to { opacity: 0.9; transform: translateY(0); }
 }
-/* Header */
-.header {
+/* HEADER */
+.page-header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    padding: 2rem 3rem;
-    background: rgba(0, 0, 0, 0.4);
+    padding: 1.2rem 2rem;
+    background: transparent;
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--glass-border);
     z-index: 1000;
-    transition: var(--transition);
-}
-
-.logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: -0.02em;
-    text-decoration: none;
-    flex-shrink: 0;
-    white-space: nowrap;
-}
-
-.nav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    max-width: 1600px;
-    margin: 0 auto;
-    gap: 1rem;
+    justify-content: space-between;
+    transition: background 0.3s ease;
+    box-sizing: border-box;
 }
 
-.nav-links {
-    display: flex;
-    gap: 3rem;
-    list-style: none;
-}
-
-.nav-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-weight: 400;
-    font-size: 0.9rem;
-    transition: var(--transition);
-    position: relative;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+.back-btn {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    color: var(--text-primary, #fff);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: opacity 0.2s ease;
 }
 
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--text-primary);
-    transition: width 0.3s ease;
+.back-btn:hover {
+    opacity: 0.7;
 }
 
-.nav-link:hover {
-    color: var(--text-primary);
-}
-
-.nav-link:hover::after {
-    width: 100%;
-}
-
-.nav-actions {
+.header-actions {
     display: flex;
-    gap: 1.5rem;
+    gap: 0.75rem;
     align-items: center;
 }
 
@@ -281,19 +242,13 @@ display: none !important;
     border-radius: 8px;
     color: var(--text-primary);
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     font-size: 1rem;
     position: relative;
-}
-#menu-icon {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    #menu-icon {
-        display: flex;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-icon:hover {
@@ -315,97 +270,6 @@ display: none !important;
     justify-content: center;
     font-size: 0.7rem;
     font-weight: 600;
-}
-
-/* Mobile menu */
-.mobile-menu {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 300px;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(40px);
-    border-right: 1px solid var(--glass-border);
-    z-index: 2001;
-    transition: left 0.4s ease;
-    padding: 2rem;
-    flex-direction: column;
-}
-
-.mobile-menu.active {
-    left: 0;
-}
-
-.mobile-menu-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 3rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.mobile-menu-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.mobile-menu-close {
-    background: none;
-    border: none;
-    color: var(--text-primary);
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.mobile-nav-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.mobile-nav-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-weight: 400;
-    font-size: 1rem;
-    transition: var(--transition);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.mobile-nav-link:hover {
-    color: var(--text-primary);
-    padding-left: 1rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .header {
-        padding: 1rem 1.5rem;
-    }
-    
-    .logo {
-        font-size: 1.5rem;
-    }
-    
-    .nav-links {
-        display: none;
-    }
-
-    .mobile-menu {
-        display: flex;
-    }
 }
  /* Footer */
         .footer {
@@ -919,15 +783,183 @@ display: none !important;
     position: relative;
 }
 
+/* BUNDLE HINT */
+.bundle-hint {
+    position: fixed;
+    bottom: -300px;
+    right: 1.5rem;
+    width: 320px;
+    background: linear-gradient(135deg, rgba(20,20,30,0.98) 0%, rgba(40,20,60,0.97) 60%, rgba(10,10,20,0.99) 100%);
+    border: 1px solid rgba(120, 80, 200, 0.25);
+    border-radius: 16px;
+    padding: 1.25rem 1.25rem 1rem;
+    z-index: 4000;
+    box-shadow: 0 8px 32px rgba(80,0,180,0.18), 0 2px 8px rgba(0,0,0,0.5);
+    transition: bottom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);}
+
+.bundle-hint.visible {
+    bottom: 1.5rem;
+}
+
+.bundle-hint-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.bundle-hint-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.bundle-hint-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
+}
+
+.bundle-hint-sub {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.1rem;
+}
+
+.bundle-hint-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.bundle-hint-close:hover {
+    color: #fff;
+}
+
+.bundle-hint-body {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    margin-bottom: 0.85rem;
+}
+
+.bundle-hint-cta {
+    margin-bottom: 0.5rem;
+}
+
+.bundle-hint-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.65rem 1.2rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition: all 0.25s ease;
+}
+
+.bundle-hint-btn:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.35);
+}
+
+.bundle-cheaper {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    font-style: italic;
+}
+@media (max-width: 768px) {
+    .bundle-hint {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        bottom: auto !important;
+        top: -200px;
+        border-radius: 10px;
+        padding: 0.75rem 1rem 0.65rem;
+        transition: top 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .bundle-hint.visible {
+        top: 70px; /* header magassága alatt jelenik meg */
+        bottom: auto !important;
+    }
+
+    .bundle-hint-body {
+        font-size: 0.78rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .bundle-hint-title {
+        font-size: 0.82rem;
+    }
+
+    .bundle-hint-btn {
+        font-size: 0.76rem;
+        padding: 0.5rem 0.9rem;
+    }
+
+    .bundle-cheaper {
+        display: none;
+    }
+}
+
+/* PURCHASE CARDS — reszponzív + színvilág */
+@media (max-width: 768px) {
+    .purchase-cards-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    #purchase {
+        padding: 0 1rem !important;
+        margin: 2rem auto !important;
+    }
+
+    #purchase > div:first-child p {
+        font-size: 0.82rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .elementor-element-b2a6613 {
+        position: static !important;
+    }
+}
+
 .elementor-element-e2e211c {
     background-size: contain !important;
-    background-position: right center !important;
+    background-position: center center !important;
     background-repeat: no-repeat !important;
+    min-height: 65vh !important; /* maradjon nagy, fix hero érzés */
+    max-height: 120vh;
 }
+
+
 </style>
 
         </style>
-
+        
         <style>/* ============================================
    LIMITÁLT KÉSZLET POP-UP
    ============================================ */
@@ -1332,8 +1364,9 @@ display: none !important;
         padding: 0.7rem 1.3rem;
         font-size: 0.75rem;
     }
+
+    
 }</style>
-        
        
         <link rel='stylesheet' id='jkit-elements-main-css' href='https://silkroadmodels.com/wp-content/plugins/jeg-elementor-kit/assets/css/elements/main.css?ver=2.6.10' media='all'/>
         <style id='wp-emoji-styles-inline-css'>
@@ -1817,129 +1850,27 @@ display: none !important;
     </head>
 
     <body>
-        <!-- LIMITÁLT KÉSZLET POP-UP -->
-<div class="limited-popup" id="limited-popup">
-    <div class="limited-popup-overlay"></div>
-    <div class="limited-popup-content">
-        <button class="limited-close" onclick="closeLimitedPopup()">
-            <i class="ri-close-line"></i>
-        </button>
 
-        <div class="limited-header">
-            <div class="limited-warning">⚠</div>
-            <h2 class="limited-title">Exkluzív Ajánlat</h2>
-            <p class="limited-subtitle">
-                Ezek a csomagok kizárólag ezen a felületen érhetők el.<br>
-                Más útvonalon nem.
-            </p>
+
+
+<!-- HEADER -->
+<header class="page-header" id="page-header">
+    <a href="markabolt.html" class="back-btn">
+        <i class="ri-arrow-left-line"></i>
+        Márkabolt
+    </a>
+
+    <div class="header-actions">
+        <div class="nav-icon" id="wishlist-icon" title="Kedvencek">
+            <i class="ri-heart-line"></i>
+            <span class="cart-count" id="wishlist-count" style="display:none;">0</span>
         </div>
-
-        <div class="limited-grid">
-            <!-- E-könyv Csomag -->
-            <div class="limited-card">
-                <div class="limited-badge best">Legjobb Ajánlat</div>
-                <div class="limited-single-book">
-                    <img src="./assets/img/ketkonyv.png" alt="Teljes Digitális Kollekció" class="limited-book-image">
-                </div>
-                <h3 class="limited-card-title">Teljes Digitális Kollekció</h3>
-                <p class="limited-card-desc">
-                    <strong>Jegyzetek egy Idegentől</strong> és
-                    <strong>Használati Útmutató az Élethez</strong><br>
-                    Két külön világ, egy gondolkodási ívben.
-                    Digitális formában, azonnali hozzáféréssel.
-                </p>
-                <div class="limited-price">
-                    <span class="limited-old-price">5 980 Ft</span>
-                    <span class="limited-new-price">5 000 Ft</span>
-                </div>
-                <div class="limited-stock">
-                    <i class="ri-alert-line"></i>
-                    <span>Digitális kiadás · időkorlát nélküli hozzáférés</span>
-                </div>
-                <button class="limited-btn primary" onclick="addLimitedProduct(300, 'bundle')">
-                    Megnézem a csomagot <i class="ri-arrow-right-line"></i>
-                </button>
-            </div>
-
-            <!-- Fizikai Könyvek Csomag -->
-            <div class="limited-card">
-                <div class="limited-badge">-10%</div>
-                <div class="limited-single-book">
-                    <img src="./assets/img/ketkonyv.png" alt="Teljes Fizikai Kollekció" class="limited-book-image">
-                </div>
-                <h3 class="limited-card-title">Teljes Fizikai Kollekció</h3>
-                <p class="limited-card-desc">
-                    <strong>Jegyzetek egy Idegentől</strong> és
-                    <strong>Használati Útmutató az Élethez</strong><br>
-                    A5 méret, igényes kivitel.
-                    Korlátozott példányszámban, egyszeri gyártásból.
-                </p>
-                <div class="limited-price">
-                    <span class="limited-old-price">13 980 Ft</span>
-                    <span class="limited-new-price">12 582 Ft</span>
-                </div>
-                <div class="limited-stock warning">
-                    <i class="ri-error-warning-line"></i>
-                    <span>Korlátozott példányszám · utánnyomás nem tervezett</span>
-                </div>
-                <button class="limited-btn secondary" onclick="addLimitedProduct(301, 'physical')">
-                    Kosárba <i class="ri-shopping-cart-line"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="limited-footer">
-            <p class="limited-footer-note">
-                <i class="ri-information-line"></i>
-                Egyben olcsóbb.
-            </p>
-            <p class="limited-footer-note secondary">
-                ennyi:)
-            </p>
+        <div class="nav-icon" id="cart-icon" title="Kosár">
+            <i class="ri-shopping-cart-2-line"></i>
+            <span class="cart-count" id="cart-count" style="display:none;">0</span>
         </div>
     </div>
-</div>
-
-
-
-
-<!-- Header -->
-<header class="header">
-    <nav class="nav">
-        <a href="/" class="logo">Senkisem</a>
-<ul class="nav-links">
-    <li><a href="/" class="nav-link">Főoldal</a></li>
-    <li><a href="markabolt.html" class="nav-link">Márkabolt</a></li>
-    <li><a href="konyvek.html" class="nav-link">Könyvek</a></li></ul>
-        <div class="nav-actions">
-            <div class="nav-icon" id="wishlist-icon">
-                <i class="ri-heart-line"></i>
-                <span class="cart-count" id="wishlist-count" style="display: none;">0</span>
-            </div>
-            <div class="nav-icon" id="cart-icon">
-                <i class="ri-shopping-cart-2-line"></i>
-                <span class="cart-count" id="cart-count" style="display: none;">0</span>
-            </div>
-            <div class="nav-icon" id="menu-icon">
-                <i class="ri-menu-line"></i>
-            </div>
-        </div>
-    </nav>
 </header>
-
-<!-- Mobile Menu -->
-<div class="mobile-menu" id="mobile-menu">
-    <div class="mobile-menu-header">
-        <div class="mobile-menu-logo">Senkisem</div>
-        <button class="mobile-menu-close" onclick="closeMobileMenu()">&times;</button>
-    </div>
-    <ul class="mobile-nav-links">
-        <li><a href="/" class="mobile-nav-link" onclick="closeMobileMenu()"><i class=""></i> Főoldal</a></li>
-        <li><a href="markabolt.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i class=""></i> Márkabolt</a></li>
-        <li><a href="konyvek.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i class=""></i> Könyvek</a></li>
-
-    </ul>
-</div>
     
 
     <body class="home page-template-default page page-id-9 wp-embed-responsive jkit-color-scheme elementor-default elementor-template-full-width elementor-kit-16 elementor-page elementor-page-9">
@@ -1975,7 +1906,7 @@ display: none !important;
      data-id="e2e211c" 
      data-element_type="container" 
      data-settings="{&quot;background_background&quot;:&quot;classic&quot;}"
-     style="background-image: url('assets/img/huae.png');">
+     style="background-image: url('assets/img/usermanualbg169.png');">
                     <div class="elementor-element elementor-element-cb2b89e e-con-full e-flex e-con e-child" data-id="cb2b89e" data-element_type="container">
                         <div class="elementor-element elementor-element-3124d43 animated-slow elementor-invisible elementor-widget elementor-widget-heading" data-id="3124d43" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeIn&quot;,&quot;_animation_delay&quot;:300}" data-widget_type="heading.default">
                             <div class="elementor-widget-container">
@@ -2004,8 +1935,8 @@ display: none !important;
                         <div class="elementor-element elementor-element-6279525 animated-slow elementor-widget__width-initial elementor-invisible elementor-widget elementor-widget-text-editor" data-id="6279525" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeIn&quot;,&quot;_animation_delay&quot;:700}" data-widget_type="text-editor.default">
                             <div class="elementor-widget-container">
 <p> <br>
-                        Az első kötet néma párbeszédeiből született gondolatok most rendszerszintű diagnosztikává váltak. 
-                        Ez nem önfejlesztés. Ez feltárás. A felismerés, hogy a személyiséged algoritmus. 
+                        Az első kötet néma párbeszédeiből született gondolatok most rendszerszintű diagnosztikává váltak. <br> <br>
+                        Ez nem önfejlesztés. Ez feltárás. <br> <br> A felismerés, hogy a személyiséged algoritmus. <br> <br>
                         A döntéseid túlélési protokollok.<br></p>
 
                             </div>
@@ -2063,8 +1994,7 @@ display: none !important;
                     </div>
                 </div>
             </div>
-            <div class="elementor-element elementor-element-4110e1f e-flex e-con-boxed e-con e-parent" data-id="4110e1f" data-element_type="container" id="about" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
-                <div class="e-con-inner">
+<div class="elementor-element elementor-element-4110e1f e-flex e-con-boxed e-con e-parent" data-id="4110e1f" data-element_type="container" id="about" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}" style="display:none !important;">                <div class="e-con-inner">
                     <div class="elementor-element elementor-element-5d5180c e-flex e-con-boxed e-con e-child" data-id="5d5180c" data-element_type="container">
                         <div class="e-con-inner">
                             <div class="elementor-element elementor-element-9c92977 e-flex e-con-boxed e-con e-child" data-id="9c92977" data-element_type="container">
@@ -2202,7 +2132,7 @@ display: none !important;
                                                     <div class="ekit-heading elementskit-section-title-wraper text_center   ekit_heading_tablet-   ekit_heading_mobile-">
                                                         <h2 class="ekit-heading--title elementskit-section-title text_fill">
                                                             <span>
-                                                                <span>742K+</span>
+                                                                <span>1,2M+</span>
                                                             </span>
                                                         </h2>
                                                     </div>
@@ -2298,6 +2228,11 @@ display: none !important;
                                 <div class="elementor-divider">
                                     <span class="elementor-divider-separator"></span>
                                 </div>
+                                <div style="margin-top: 2rem; text-align: center; animation: fadeIn 0.8s ease forwards;">
+                            <img src="assets/img/huae.png" 
+                                 alt="Senkisem - Jegyzetek egy Idegentől" 
+                                 style="max-width: 400px; width: 100%; height: auto; border-radius: 8px; opacity: 0.92; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));">
+                        </div>
                             </div>
                         </div>
                     </div>
@@ -2322,9 +2257,7 @@ display: none !important;
                                                     <div class="section">
                                                         <div class="layoutArea">
                                                             <div class="column">
-                                                                <p class="font_7 wixui-rich-text__text"><p>SYSTEM STATUS: INITIALIZING<br>
-USER AWARENESS: TOO HIGH<br>
-COMFORT BUFFER: UNAVAILABLE<br><br>
+                                                                <p class="font_7 wixui-rich-text__text">
 Gratulálunk. Végre eljutottál oda, ahol már nem kell hazudnod magadnak.</p>
                                                             </div>
                                                         </div>
@@ -2461,233 +2394,153 @@ Nincs távolság. Nincs "megértettem". Csak: "ez én vagyok".
     </div>
 </div>
 
-        <div class="elementor-element elementor-element-fb3e5bd e-con-full e-flex e-con e-child" data-id="fb3e5bd" data-element_type="container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
-            
-            <!-- E-KÖNYV KÁRTYA -->
-            <div class="elementor-element elementor-element-928ddbf e-con-full e-flex e-con e-child" data-id="928ddbf" data-element_type="container">
-                <div class="elementor-element elementor-element-9a726df elementor-widget__width-inherit elementor-testimonial--skin-default elementor-testimonial--layout-image_inline elementor-testimonial--align-center elementor-pagination-type-bullets elementor-widget elementor-widget-testimonial-carousel" data-id="9a726df" data-element_type="widget">
-                    <div class="elementor-widget-container">
-                        <div class="book-option-card ebook-card" >
-                            
-                            <!-- Sale Badge -->
-                            
-                            <div data-elementor-type="container" data-elementor-id="399" class="elementor elementor-399" data-elementor-post-type="elementor_library">
-                                <div class="elementor-element elementor-element-e932c3e e-flex e-con-boxed e-con e-parent" data-id="e932c3e" data-element_type="container">
-                                    <div class="e-con-inner">
-                                        <div class="elementor-element elementor-element-ceb317b e-con-full e-flex e-con e-child" data-id="ceb317b" data-element_type="container">
-                                            <div class="elementor-element elementor-element-08e2581 e-con-full e-flex e-con e-child" data-id="08e2581" data-element_type="container">
-                                                <div class="elementor-element elementor-element-040d1f7 e-con-full e-flex e-con e-child" data-id="040d1f7" data-element_type="container">
-                                                    
-                                                        
+<div class="elementor-element elementor-element-fb3e5bd e-con-full e-flex e-con e-child" id="purchase" data-id="fb3e5bd" data-element_type="container" style="width: 100%; max-width: 900px; margin: 4rem auto; padding: 0 1.5rem; box-sizing: border-box;">
+    <!-- Fejléc szöveg a cardok felett -->
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+        <p style="color: rgba(255,255,255,0.45); font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem;">Válassz formátumot</p>
+    </div>
 
-                                                    <!-- Cím -->
-                                                    <div class="elementor-element elementor-element-ae576f8 elementor-widget elementor-widget-heading" data-id="ae576f8" data-element_type="widget" data-widget_type="heading.default">
-                                                        <div class="elementor-widget-container" style="text-align: center; margin-bottom: 1rem;">
-                                                            <h4 class="elementor-heading-title elementor-size-default card-title" style="color: white; font-size: 2rem; font-weight: 700; margin: 0;">Senkisem <br> <br>
-                                                                Használati Útmutató az Élethez <br> <br>E-Könyv</h4>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <!-- Leírás -->
-                                                    <div class="elementor-element elementor-element-e51c584 elementor-widget elementor-widget-text-editor" data-id="e51c584" data-element_type="widget" data-widget_type="text-editor.default">
-                                                        <div class="elementor-widget-container" style="text-align: center; margin-bottom: 1.5rem;">
-                                                            <p class="card-description" style="color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.6;">Digitális formátum, azonnali hozzáférés</p>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <!-- Ár -->
-                                                    <div class="elementor-element elementor-element-2ad3dcc animated-slow elementor-widget elementor-widget-elementskit-heading" data-id="2ad3dcc" data-element_type="widget" data-widget_type="elementskit-heading.default">
-                                                        <div class="elementor-widget-container" style="text-align: center; margin-bottom: 1.5rem;">
-                                                            <div class="ekit-wid-con">
-                                                                <div class="ekit-heading elementskit-section-title-wraper text_center price-wrapper">
-                                                                    <h2 class="ekit-heading--title elementskit-section-title current-price" style="color: white; font-size: 3rem; font-weight: 800; margin: 0;">
-                                                                        <span>2990 Ft</span>
-                                                                    </h2>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <!-- Funkciók lista -->
-                                                    <div class="elementor-element elementor-element-e0da665 elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="e0da665" data-element_type="widget" data-widget_type="icon-list.default">
-                                                        <div class="elementor-widget-container" style="margin-bottom: 2rem;">
-                                                            <ul class="elementor-icon-list-items features-list" style="list-style: none; padding: 0; margin: 0;">
-                                                                <li class="elementor-icon-list-item" style="color: white; padding: 0.75rem 0; display: flex; align-items: flex-start; gap: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                                                    <span class="elementor-icon-list-icon" style="flex-shrink: 0; margin-top: 0.25rem;">
-                                                                        <i aria-hidden="true" class="jki jki-checked1-light" style="color: #4ade80; font-size: 1.2rem;"></i>
-                                                                    </span>
-                                                                    <span class="elementor-icon-list-text" style="color: rgba(255,255,255,0.9); line-height: 1.6;">Azonnali letöltés</span>
-                                                                </li>
-                                                                <li class="elementor-icon-list-item" style="color: white; padding: 0.75rem 0; display: flex; align-items: flex-start; gap: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                                                    <span class="elementor-icon-list-icon" style="flex-shrink: 0; margin-top: 0.25rem;">
-                                                                        <i aria-hidden="true" class="jki jki-checked1-light" style="color: #4ade80; font-size: 1.2rem;"></i>
-                                                                    </span>
-                                                                    <span class="elementor-icon-list-text" style="color: rgba(255,255,255,0.9); line-height: 1.6;">Minden eszközön olvasható</span>
-                                                                </li>
-                                                                <li class="elementor-icon-list-item" style="color: white; padding: 0.75rem 0; display: flex; align-items: flex-start; gap: 0.75rem;">
-                                                                    <span class="elementor-icon-list-icon" style="flex-shrink: 0; margin-top: 0.25rem;">
-                                                                        <i aria-hidden="true" class="jki jki-checked1-light" style="color: #4ade80; font-size: 1.2rem;"></i>
-                                                                    </span>
-                                                                    <span class="elementor-icon-list-text" style="color: rgba(255,255,255,0.9); line-height: 1.6;">Örök hozzáférés</span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <!-- Vásárlás gomb -->
-                                                    <div style="text-align: center;">
-                                                       <button class="purchase-btn primary-btn elementor-heading-title elementor-size-default" onclick="purchaseBook('ebook')">
-    Megveszem
-</button>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Card konténer -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: stretch;" class="purchase-cards-grid">
+        <!-- E-KÖNYV KÁRTYA -->
+        <div style="background: linear-gradient(135deg, rgba(60,20,80,0.45) 0%, rgba(30,10,50,0.6) 100%); border: 1px solid rgba(150,80,200,0.25); border-radius: 20px; padding: 2.5rem 2rem; display: flex; flex-direction: column; transition: all 0.3s ease; cursor: default;"
+             onmouseover="this.style.background='linear-gradient(135deg, rgba(80,30,110,0.55) 0%, rgba(50,15,70,0.7) 100%)'; this.style.borderColor='rgba(180,100,240,0.4)'; this.style.transform='translateY(-3px)'"
+             onmouseout="this.style.background='linear-gradient(135deg, rgba(60,20,80,0.45) 0%, rgba(30,10,50,0.6) 100%)'; this.style.borderColor='rgba(150,80,200,0.25)'; this.style.transform='translateY(0)'">
+
+            <div style="margin-bottom: 1.5rem;">
+                <span style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); font-weight: 500;">Digitális</span>
+                <h3 style="color: #fff; font-size: 1.4rem; font-weight: 700; margin: 0.4rem 0 0 0; line-height: 1.2;">E-Könyv</h3>
+            </div>
+
+            <div style="margin-bottom: 2rem; flex: 1;">
+                <div style="display: flex; align-items: baseline; gap: 0.4rem; margin-bottom: 1.5rem;">
+                    <span style="font-size: 2.6rem; font-weight: 800; color: #fff; letter-spacing: -0.03em;">2 990 Ft</span>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 0.9rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="color: rgba(255,255,255,0.5); font-size: 1rem; flex-shrink: 0;">→</span>
+                        <span style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Azonnali letöltés vásárlás után</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="color: rgba(255,255,255,0.5); font-size: 1rem; flex-shrink: 0;">→</span>
+                        <span style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Telefon, tablet, PC - bárhol</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="color: rgba(255,255,255,0.5); font-size: 1rem; flex-shrink: 0;">→</span>
+                        <span style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Örök hozzáférés</span>
                     </div>
                 </div>
             </div>
 
-            <!-- FIZIKAI KÖNYV KÁRTYA -->
-            <div class="elementor-element e-con-full e-flex e-con e-child" data-element_type="container">
-                <div class="elementor-widget elementor-widget-testimonial-carousel">
-                    <div class="elementor-widget-container">
-                        <div class="book-option-card physical-card featured">
-                            
-                            <!-- Featured Badge -->                            
-                            <div data-elementor-type="container" data-elementor-id="713" class="elementor elementor-713" data-elementor-post-type="elementor_library">
-                                <div class="elementor-element elementor-element-2c9082ed e-flex e-con-boxed e-con e-parent" data-id="2c9082ed" data-element_type="container">
-                                    <div class="e-con-inner">
-                                        <div class="elementor-element elementor-element-1ecc2798 e-con-full e-flex e-con e-child" data-id="1ecc2798" data-element_type="container">
-                                            <div class="elementor-element elementor-element-516dde04 e-con-full e-flex e-con e-child" data-id="516dde04" data-element_type="container">
-                                                <div class="elementor-element elementor-element-38496d67 e-con-full e-flex e-con e-child" data-id="38496d67" data-element_type="container">
-
-                                                    
-                                                    <!-- Cím -->
-                                                    <div class="elementor-element elementor-element-2bb8af2f elementor-widget elementor-widget-heading" data-id="2bb8af2f" data-element_type="widget" data-widget_type="heading.default">
-                                                        <div class="elementor-widget-container" style="text-align: center; margin-bottom: 1rem;">
-                                                            <h4 class="elementor-heading-title elementor-size-default card-title" style="color: white; font-size: 2rem; font-weight: 700; margin: 0;">Senkisem <br><br> Használati Útmutató az Élethez <br> <br> Fizikai Példány </h4>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <!-- Leírás -->
-                                                    <div class="elementor-element elementor-element-771571d7 elementor-widget elementor-widget-text-editor" data-id="771571d7" data-element_type="widget" data-widget_type="text-editor.default">
-                                                        <div class="elementor-widget-container" style="text-align: center; margin-bottom: 1.5rem;">
-                                                            <p class="card-description" style="color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.6;">A5 méret · Prémium minőség</p>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <!-- Ár -->
-                                                    <div class="elementor-element elementor-element-1f2e805d animated-slow elementor-widget elementor-widget-elementskit-heading" data-id="1f2e805d" data-element_type="widget" data-widget_type="elementskit-heading.default">
-                                                        <div class="elementor-widget-container" style="text-align: center; margin-bottom: 1.5rem;">
-                                                            <div class="ekit-wid-con">
-                                                                <div class="ekit-heading elementskit-section-title-wraper text_center price-wrapper">
-                                                                    <h2 class="ekit-heading--title elementskit-section-title current-price" style="color: white; font-size: 3rem; font-weight: 800; margin: 0;">
-                                                                        <span>5 990 Ft</span>
-                                                                    </h2>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <!-- Funkciók lista -->
-                                                    <div class="elementor-element elementor-element-223a5570 elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="223a5570" data-element_type="widget" data-widget_type="icon-list.default">
-                                                        <div class="elementor-widget-container" style="margin-bottom: 2rem;">
-                                                            <ul class="elementor-icon-list-items features-list" style="list-style: none; padding: 0; margin: 0;">
-                                                                <li class="elementor-icon-list-item" style="color: white; padding: 0.75rem 0; display: flex; align-items: flex-start; gap: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                                                    <span class="elementor-icon-list-icon" style="flex-shrink: 0; margin-top: 0.25rem;">
-                                                                        <i aria-hidden="true" class="jki jki-checked1-light" style="color: #4ade80; font-size: 1.2rem;"></i>
-                                                                    </span>
-                                                                    <span class="elementor-icon-list-text" style="color: rgba(255,255,255,0.9); line-height: 1.6;">Ajándék a csomagolásban</span>
-                                                                </li>
-                                                                <li class="elementor-icon-list-item" style="color: white; padding: 0.75rem 0; display: flex; align-items: flex-start; gap: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                                                    <span class="elementor-icon-list-icon" style="flex-shrink: 0; margin-top: 0.25rem;">
-                                                                        <i aria-hidden="true" class="jki jki-checked1-light" style="color: #4ade80; font-size: 1.2rem;"></i>
-                                                                    </span>
-                                                                    <span class="elementor-icon-list-text" style="color: rgba(255,255,255,0.9); line-height: 1.6;">Prémium minőség</span>
-                                                                </li>
-                                                                <li class="elementor-icon-list-item" style="color: white; padding: 0.75rem 0; display: flex; align-items: flex-start; gap: 0.75rem;">
-                                                                    <span class="elementor-icon-list-icon" style="flex-shrink: 0; margin-top: 0.25rem;">
-                                                                        <i aria-hidden="true" class="jki jki-checked1-light" style="color: #4ade80; font-size: 1.2rem;"></i>
-                                                                    </span>
-                                                                    <span class="elementor-icon-list-text" style="color: rgba(255,255,255,0.9); line-height: 1.6;">Limitált példányszám</span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <!-- Vásárlás gomb -->
-                                                    <div style="text-align: center;">
-                                                        <button class="purchase-btn secondary-btn elementor-heading-title elementor-size-default" onclick="purchaseBook('physical')">
-    Kosárba
-</button>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <button onclick="purchaseBook('ebook')"
+                    style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 10px; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: all 0.25s ease;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.18)'; this.style.borderColor='rgba(255,255,255,0.4)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255,255,255,0.25)'">
+                Megveszem
+            </button>
         </div>
+
+        <!-- FIZIKAI KÖNYV KÁRTYA — kiemelve -->
+        <div style="background: linear-gradient(135deg, rgba(100,20,80,0.55) 0%, rgba(60,10,60,0.75) 50%, rgba(20,10,40,0.8) 100%); border: 1.5px solid rgba(200,80,160,0.45); border-radius: 20px; padding: 2.5rem 2rem; display: flex; flex-direction: column; transition: all 0.3s ease; cursor: default; position: relative; box-shadow: 0 0 40px rgba(150,30,120,0.2);"
+             onmouseover="this.style.background='linear-gradient(135deg, rgba(130,30,100,0.65) 0%, rgba(80,15,80,0.85) 50%, rgba(30,10,55,0.9) 100%)'; this.style.borderColor='rgba(230,100,190,0.6)'; this.style.transform='translateY(-3px)'"
+             onmouseout="this.style.background='linear-gradient(135deg, rgba(100,20,80,0.55) 0%, rgba(60,10,60,0.75) 50%, rgba(20,10,40,0.8) 100%)'; this.style.borderColor='rgba(200,80,160,0.45)'; this.style.transform='translateY(0)'">
+
+            <div style="position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, #c850a0, #7b2d8b); color: #fff; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.35rem 1.1rem; border-radius: 20px; white-space: nowrap; box-shadow: 0 2px 12px rgba(180,50,150,0.4);">
+                Ajánlott
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <span style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 500;">Fizikai Példány</span>
+                <h3 style="color: #fff; font-size: 1.4rem; font-weight: 700; margin: 0.4rem 0 0 0; line-height: 1.2;">Nyomtatott Könyv</h3>
+            </div>
+
+            <div style="margin-bottom: 2rem; flex: 1;">
+                <div style="display: flex; align-items: baseline; gap: 0.4rem; margin-bottom: 1.5rem;">
+                    <span style="font-size: 2.6rem; font-weight: 800; color: #fff; letter-spacing: -0.03em;">5 990 Ft</span>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 0.9rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="color: rgba(255,255,255,0.6); font-size: 1rem; flex-shrink: 0;">→</span>
+                        <span style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">A5 méret, prémium papír</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="color: rgba(255,255,255,0.6); font-size: 1rem; flex-shrink: 0;">→</span>
+                        <span style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">Ajándék a csomagolásban:)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="color: rgba(255,255,255,0.6); font-size: 1rem; flex-shrink: 0;">→</span>
+                        <span style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">Limitált példányszám</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sürgősség szöveg -->
+            <p style="font-size: 0.78rem; color: rgba(255,255,255,0.4); text-align: center; margin-bottom: 0.75rem; font-style: italic;">Utánnyomás nem tervezett.</p>
+
+            <button onclick="purchaseBook('physical')"
+                    style="width: 100%; padding: 1rem; background: #fff; border: none; color: #000; border-radius: 10px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: all 0.25s ease;"
+                    onmouseover="this.style.background='rgba(220,220,220,1)'; this.style.transform='scale(1.01)'"
+                    onmouseout="this.style.background='#fff'; this.style.transform='scale(1)'">
+                Kosárba
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Garancia sor -->
+    <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+        <span style="color: rgba(255,255,255,0.35); font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i class="ri-shield-check-line"></i> Biztonságos fizetés
+        </span>
+        <span style="color: rgba(255,255,255,0.35); font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i class="ri-lock-line"></i> Titkosított kapcsolat
+        </span>
+        <span style="color: rgba(255,255,255,0.35); font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i class="ri-mail-send-line"></i> Azonnali visszaigazolás
+        </span>
     </div>
 </div>
 
-           
-            
-            <!-- Footer -->
-    <footer class="footer" id="contact">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Senkisem</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 2rem;">
-                    Nem egy brand; <br>
-                    Üzenet.
-                </p>
-            </div>
-            <div class="footer-section">
-                <h3>Közösség</h3>
-                <div class="social-icons">
-                    <a href="https://www.instagram.com/senkisem.hu/" target="_blank" class="social-icon">
-                        <i class="ri-instagram-line"></i>
-                    </a>
-                    <a href="https://www.tiktok.com/@senkisem.hu" target="_blank" class="social-icon" title="TikTok">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-.04-.1z"/>
-                        </svg>
-                    </a>
-                    <a href="mailto:info@senkisem.com" class="social-icon">
-                        <i class="ri-mail-line"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Ügyfélszolgálat</h3>
-                <ul class="footer-links">
-                    <li><a href="#contact">info@senkisem.com</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Információk</h3>
-                <ul class="footer-links">
-                    <li><a href="index.html">Rólunk</a></li>
-                    <li><a href="assets/ÁSZF.pdf">ÁSZF</a></li>
-                </ul>
-            </div>
+<!-- BUNDLE HINT -->
+<div class="bundle-hint" id="bundle-hint">
+    <div class="bundle-hint-header">
+        <div>
+            <div class="bundle-hint-title">Van még egy könyvünk!</div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Senkisem - Minden jog fenntartva</p>
+        <button class="bundle-hint-close" onclick="closeBundleHint()">
+            <i class="ri-close-line"></i>
+        </button>
+    </div>
+    <div class="bundle-hint-body">
+        Mindkét könyv együtt kedvezőbb áron megrendelhető a Márkaboltban.
+    </div>
+    <div class="bundle-hint-cta">
+        <a href="markabolt.html#universe" class="bundle-hint-btn">
+            Megnézem <i class="ri-arrow-right-line"></i>
+        </a>
+    </div>
+    <div class="bundle-cheaper">A kettő együtt olcsóbb :)</div>
+</div>
+
+    <div class="preview-modal" id="preview-modal">
+    <div class="preview-modal-content">
+        <button class="preview-close-btn" onclick="closePreviewModal()">
+            <i class="ri-close-line"></i>
+        </button>
+        <img id="preview-modal-image" src="" alt="Előnézet" class="preview-modal-image">
+        <div class="preview-modal-nav">
+            <button class="preview-nav-btn" id="preview-prev-btn" onclick="previousPreview()">
+                <i class="ri-arrow-left-line"></i>
+            </button>
+            <span class="preview-counter" id="preview-counter">1 / 4</span>
+            <button class="preview-nav-btn" id="preview-next-btn" onclick="nextPreview()">
+                <i class="ri-arrow-right-line"></i>
+            </button>
         </div>
-    </footer>
+    </div>
+</div>
 
     <div class="preview-modal" id="preview-modal">
     <div class="preview-modal-content">
@@ -3612,6 +3465,33 @@ document.querySelector('.limited-popup-overlay')?.addEventListener('click', clos
 window.openLimitedPopup = openLimitedPopup;
 window.closeLimitedPopup = closeLimitedPopup;
 window.addLimitedProduct = addLimitedProduct;
+
+// Bundle hint
+let bundleHintShown = false;
+let bundleHintDismissed = false;
+
+function closeBundleHint() {
+    bundleHintDismissed = true;
+    document.getElementById('bundle-hint').classList.remove('visible');
+}
+
+function checkBundleHint() {
+    if (bundleHintDismissed || bundleHintShown) return;
+    const purchaseSection = document.getElementById('purchase');
+    if (!purchaseSection) return;
+    const rect = purchaseSection.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    if (rect.top < windowHeight * 0.7) {
+        bundleHintShown = true;
+        setTimeout(() => {
+            document.getElementById('bundle-hint').classList.add('visible');
+        }, 400);
+    }
+}
+
+window.addEventListener('scroll', checkBundleHint, { passive: true });
+window.closeBundleHint = closeBundleHint;
+// Global export
 
 // Global exports
 window.updateCartCount = updateCartCount;

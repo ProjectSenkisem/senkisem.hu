@@ -553,17 +553,11 @@ app.get('/health', (req, res) => {
   });
 });
 
-// ============================================
-// STATIKUS FÁJLOK
-// ============================================
-app.use(express.static(path.join(__dirname, 'dist')));
 
-app.get('/download-error.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'download-error.html'));
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // ============================================

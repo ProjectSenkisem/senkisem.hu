@@ -11,6 +11,13 @@
  */
 
 const PDFDocument = require('pdfkit');
+const path = require('path');
+
+const FONTS = {
+  regular: path.join(__dirname, 'fonts', 'DejaVuSans.ttf'),
+  bold: path.join(__dirname, 'fonts', 'DejaVuSans-Bold.ttf'),
+  italic: path.join(__dirname, 'fonts', 'DejaVuSans-Oblique.ttf'),
+};
 
 const INVOICE_CONFIG = {
   SELLER: {
@@ -51,6 +58,10 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
           Creator: INVOICE_CONFIG.BRAND.NAME
         }
       });
+
+doc.registerFont('Regular', FONTS.regular);
+doc.registerFont('Bold', FONTS.bold);
+doc.registerFont('Italic', FONTS.italic);
       
       const chunks = [];
       doc.on('data', chunk => chunks.push(chunk));
@@ -63,19 +74,19 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Brand név (bal)
       doc.fontSize(28)
-         .font('Helvetica-Bold')
+         .font('Bold')
          .fillColor(INVOICE_CONFIG.COLORS.BLACK)
          .text(INVOICE_CONFIG.BRAND.NAME, 50, 50);
       
       // Brand tagline
       doc.fontSize(9)
-         .font('Helvetica-Oblique')
+         .font('Italic')
          .fillColor(INVOICE_CONFIG.COLORS.LIGHT_GRAY)
          .text(INVOICE_CONFIG.BRAND.TAGLINE, 50, 80);
       
       // Számla cím (jobb)
       doc.fontSize(32)
-         .font('Helvetica-Bold')
+         .font('Bold')
          .fillColor(INVOICE_CONFIG.COLORS.BLACK)
          .text('SZÁMLA', 400, 50, { align: 'right' });
       
@@ -94,12 +105,12 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Számlaszám
       doc.fontSize(10)
-         .font('Helvetica-Bold')
+         .font('Bold')
          .fillColor(INVOICE_CONFIG.COLORS.DARK_GRAY)
          .text('Számlaszám:', 350, yPos);
       
       doc.fontSize(11)
-         .font('Helvetica')
+         .font('Regular')
          .fillColor(INVOICE_CONFIG.COLORS.BLACK)
          .text(invoiceNumber, 350, yPos + 15);
       
@@ -107,18 +118,15 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Kiállítás dátuma
       doc.fontSize(10)
-         .font('Helvetica-Bold')
+         .font('Bold')
          .fillColor(INVOICE_CONFIG.COLORS.DARK_GRAY)
          .text('Kiállítás dátuma:', 350, yPos);
       
-      const issueDate = new Date().toLocaleDateString('hu-HU', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
+      const now = new Date();
+const issueDate = `${now.getFullYear()}. ${String(now.getMonth()+1).padStart(2,'0')}. ${String(now.getDate()).padStart(2,'0')}.`;
       
       doc.fontSize(10)
-         .font('Helvetica')
+         .font('Regular')
          .fillColor(INVOICE_CONFIG.COLORS.BLACK)
          .text(issueDate, 350, yPos + 15);
       
@@ -126,12 +134,12 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Fizetési mód
       doc.fontSize(10)
-         .font('Helvetica-Bold')
+         .font('Bold')
          .fillColor(INVOICE_CONFIG.COLORS.DARK_GRAY)
          .text('Fizetési mód:', 350, yPos);
       
       doc.fontSize(10)
-         .font('Helvetica')
+         .font('Regular')
          .fillColor(INVOICE_CONFIG.COLORS.BLACK)
          .text('Bankkártya', 350, yPos + 15);
       
@@ -148,7 +156,7 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Eladó cím
       doc.fontSize(11)
-         .font('Helvetica-Bold')
+         .font('Bold')
          .fillColor(INVOICE_CONFIG.COLORS.BLACK)
          .text('ELADÓ', 60, yPos);
       
@@ -156,7 +164,7 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Eladó részletek
       doc.fontSize(9)
-         .font('Helvetica')
+         .font('Regular')
          .fillColor(INVOICE_CONFIG.COLORS.DARK_GRAY)
          .text(INVOICE_CONFIG.SELLER.NAME, 60, yPos);
       
@@ -182,7 +190,7 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Vevő cím
       doc.fontSize(11)
-         .font('Helvetica-Bold')
+         .font('Bold')
          .fillColor(INVOICE_CONFIG.COLORS.BLACK)
          .text('VEVŐ', 60, yPos);
       
@@ -190,7 +198,7 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Vevő részletek
       doc.fontSize(9)
-         .font('Helvetica')
+         .font('Regular')
          .fillColor(INVOICE_CONFIG.COLORS.DARK_GRAY)
          .text(customerData.fullName || 'N/A', 60, yPos);
       
@@ -221,7 +229,7 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Táblázat fejlécek
       doc.fontSize(9)
-         .font('Helvetica-Bold')
+         .font('Bold')
          .fillColor('#FFFFFF')
          .text('TÉTEL', 60, yPos + 8)
          .text('DB', 320, yPos + 8, { width: 40, align: 'center' })
@@ -233,7 +241,7 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Táblázat sorok
       doc.fontSize(9)
-         .font('Helvetica')
+         .font('Regular')
          .fillColor(INVOICE_CONFIG.COLORS.DARK_GRAY);
       
       let rowIndex = 0;
@@ -277,7 +285,7 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Részösszeg
       doc.fontSize(10)
-         .font('Helvetica')
+         .font('Regular')
          .fillColor(INVOICE_CONFIG.COLORS.DARK_GRAY)
          .text('Részösszeg:', 370, yPos, { width: 100, align: 'right' })
          .text(`${totalAmount.toLocaleString('hu-HU')} Ft`, 480, yPos, { width: 65, align: 'right' });
@@ -296,7 +304,7 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
          .fill();
       
       doc.fontSize(12)
-         .font('Helvetica-Bold')
+         .font('Bold')
          .fillColor(INVOICE_CONFIG.COLORS.BLACK)
          .text('VÉGÖSSZEG:', 370, yPos + 6, { width: 100, align: 'right' });
       
@@ -319,7 +327,7 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
       
       // Lábléc szöveg
       doc.fontSize(8)
-         .font('Helvetica')
+         .font('Regular')
          .fillColor(INVOICE_CONFIG.COLORS.MEDIUM_GRAY)
          .text(
            `Köszönjük a vásárlást | ${INVOICE_CONFIG.BRAND.NAME}.hu`,
