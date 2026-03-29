@@ -13,10 +13,18 @@
 const PDFDocument = require('pdfkit');
 const path = require('path');
 
+// ============================================
+// FONT BETÖLTÉS (npm csomagból - mindig elérhető Render-en)
+// ============================================
+const dejavuPath = path.join(
+  require.resolve('dejavu-fonts-ttf/ttf/DejaVuSans.ttf')
+    .replace('DejaVuSans.ttf', '')
+);
+
 const FONTS = {
-  regular: path.join(__dirname, 'fonts', 'DejaVuSans.ttf'),
-  bold: path.join(__dirname, 'fonts', 'DejaVuSans-Bold.ttf'),
-  italic: path.join(__dirname, 'fonts', 'DejaVuSans-Oblique.ttf'),
+  regular: path.join(dejavuPath, 'DejaVuSans.ttf'),
+  bold:    path.join(dejavuPath, 'DejaVuSans-Bold.ttf'),
+  italic:  path.join(dejavuPath, 'DejaVuSans-Oblique.ttf'),
 };
 
 const INVOICE_CONFIG = {
@@ -59,9 +67,9 @@ async function generateInvoicePDF(orderData, totalAmount, invoiceNumber) {
         }
       });
 
-doc.registerFont('Regular', FONTS.regular);
-doc.registerFont('Bold', FONTS.bold);
-doc.registerFont('Italic', FONTS.italic);
+      doc.registerFont('Regular', FONTS.regular);
+      doc.registerFont('Bold', FONTS.bold);
+      doc.registerFont('Italic', FONTS.italic);
       
       const chunks = [];
       doc.on('data', chunk => chunks.push(chunk));
@@ -123,7 +131,7 @@ doc.registerFont('Italic', FONTS.italic);
          .text('Kiállítás dátuma:', 350, yPos);
       
       const now = new Date();
-const issueDate = `${now.getFullYear()}. ${String(now.getMonth()+1).padStart(2,'0')}. ${String(now.getDate()).padStart(2,'0')}.`;
+      const issueDate = `${now.getFullYear()}. ${String(now.getMonth()+1).padStart(2,'0')}. ${String(now.getDate()).padStart(2,'0')}.`;
       
       doc.fontSize(10)
          .font('Regular')
