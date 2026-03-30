@@ -2518,7 +2518,7 @@
         <h2 class="yakuza-title" data-text="DIGITAL YAKUZA">DIGITAL YAKUZA</h2>
         <div class="yakuza-subtitle">// SAKURA HERITAGE × URBAN ARMOR</div>
         <p class="yakuza-desc">
-            A keleti esztétika találkozik a város brutalitásával. Minden darab egy szerepjáték – viseled, és valami megváltozik benned.
+            A keleti esztétika találkozik a város brutalitásával.
         </p>
     </div>
 
@@ -2794,14 +2794,15 @@
 <!-- JAVASCRIPT -->
 <script>
 // ============================================================
+// ============================================================
 // PRODUCTS DATA
 // ============================================================
 const products = [
     // ID: SENKISEM
-    { id: 601, name: "ID: SENKISEM Pulóver – Pixel",     price: 7990,  oldPrice: 12990, sale: true,  image: "./assets/img/id-sweater-pixel.png",    sizes: ["S","M","L","XL"], category: "ID: SENKISEM", sectionId: "id-senkisem", customPhoto: true },
-    { id: 602, name: "ID: SENKISEM Pulóver – Corrupted", price: 7990,  oldPrice: 12990, sale: true,  image: "./assets/img/id-sweater-corrupted.png", sizes: ["S","M","L","XL"], category: "ID: SENKISEM", sectionId: "id-senkisem", customPhoto: true },
-    { id: 603, name: "ID: SENKISEM Póló – Pixel",        price: 5990,  oldPrice: 9990,  sale: true,  image: "./assets/img/id-tshirt-pixel.png",      sizes: ["S","M","L","XL"], category: "ID: SENKISEM", sectionId: "id-senkisem", customPhoto: true },
-    { id: 604, name: "ID: SENKISEM Póló – Corrupted",    price: 5990,  oldPrice: 9990,  sale: true,  image: "./assets/img/id-tshirt-corrupted.png",  sizes: ["S","M","L","XL"], category: "ID: SENKISEM", sectionId: "id-senkisem", customPhoto: true },
+    { id: 601, name: "ID: SENKISEM Pulóver – Pixel",     price: 7990,  oldPrice: 12990, sale: true, image: "./assets/img/id-sweater-pixel.png",    sizes: ["S","M","L","XL"], category: "ID: SENKISEM", sectionId: "id-senkisem", customPhoto: true },
+    { id: 602, name: "ID: SENKISEM Póló – Pixel",        price: 5990,  oldPrice: 9990,  sale: true, image: "./assets/img/id-tshirt-pixel.png",      sizes: ["S","M","L","XL"], category: "ID: SENKISEM", sectionId: "id-senkisem", customPhoto: true },
+    { id: 603, name: "ID: SENKISEM Pulóver – Corrupted", price: 7990,  oldPrice: 12990, sale: true, image: "./assets/img/id-sweater-corrupted.png", sizes: ["S","M","L","XL"], category: "ID: SENKISEM", sectionId: "id-senkisem", customPhoto: true },
+    { id: 604, name: "ID: SENKISEM Póló – Corrupted",    price: 5990,  oldPrice: 9990,  sale: true, image: "./assets/img/id-tshirt-corrupted.png",  sizes: ["S","M","L","XL"], category: "ID: SENKISEM", sectionId: "id-senkisem", customPhoto: true },
 
     // PHANTOM
     { id: 401, name: "Kapucnis Pulcsi – Zipzáros Maszkkal", price: 12990, image: "./assets/img/hoodie-zip-mask.png",     sizes: ["S","M","L","XL"], category: "Phantom", sectionId: "phantom" },
@@ -2810,9 +2811,9 @@ const products = [
     { id: 404, name: "Hosszúszárú Tornacipő – Fekete",      price: 17990, oldPrice: 19990, sale: true, image: "./assets/img/high-sneakers-black.png",   sizes: ["38","39","40","41","42","43","44","45"], category: "Phantom", sectionId: "phantom" },
 
     // DIGITAL YAKUZA
-    { id: 302, name: "Digital Yakuza Nadrág",    price: 7990,  oldPrice: null,  sale: false, image: "./assets/img/pants-twisted.png", sizes: ["S","M","L","XL"], category: "Digital Yakuza", sectionId: "yakuza" },
-    { id: 303, name: "Digital Yakuza Kimono Rövid",            price: 9990,  oldPrice: null,  sale: false, image: "./assets/img/kimono-short.png",  sizes: ["S","M","L","XL"], category: "Digital Yakuza", sectionId: "yakuza" },
-    { id: 304, name: "Digital Yakuza Teljes Szett",       price: 15000, oldPrice: 17980, sale: true,  image: "./assets/img/full-set.png",      sizes: ["S","M","L","XL"], category: "Digital Yakuza", sectionId: "yakuza", bundle: true },
+    { id: 302, name: "Digital Yakuza Nadrág",        price: 7990,  image: "./assets/img/pants-twisted.png", sizes: ["S","M","L","XL"], category: "Digital Yakuza", sectionId: "yakuza" },
+    { id: 303, name: "Digital Yakuza Kimono Rövid",  price: 9990,  image: "./assets/img/kimono-short.png",  sizes: ["S","M","L","XL"], category: "Digital Yakuza", sectionId: "yakuza" },
+    { id: 304, name: "Digital Yakuza Teljes Szett",  price: 15000, oldPrice: 17980, sale: true, image: "./assets/img/full-set.png", sizes: ["S","M","L","XL"], category: "Digital Yakuza", sectionId: "yakuza", bundle: true },
 
     // SIGNATURE EDITION
     { id: 501, name: "Senkisem Póló – Nyomtatott",    price: 6490, image: "./assets/img/tshirt-printed.png",  sizes: ["S","M","L","XL"], category: "Signature", sectionId: "signature" },
@@ -2831,12 +2832,30 @@ let selectedIDColor = null;
 const heroLabels = ['ID: Senkisem', 'Phantom', 'Signature'];
 
 // ============================================================
-// ID COLOR SELECTOR (global section selector)
+// ID COLOR SELECTOR
+// Csak a selectedIDColor-t állítja — UI nem változik
 // ============================================================
 function selectIDColor(btn) {
     document.querySelectorAll('.id-color-pill').forEach(p => p.classList.remove('selected'));
     btn.classList.add('selected');
     selectedIDColor = btn.dataset.color;
+}
+
+// ============================================================
+// A kosárba kerülő valódi ID meghatározása a termék típusa és
+// a kiválasztott szín alapján
+// ============================================================
+function resolveIDProductId(displayedProductId) {
+    // displayedProductId: 601 (hoodie, Pixel képpel jelenik meg)
+    //                  vagy 604 (tshirt, Corrupted képpel jelenik meg)
+    const isHoodie = (displayedProductId === 601);
+    const color = selectedIDColor; // 'fekete' vagy 'szines'
+
+    if (isHoodie) {
+        return color === 'szines' ? 603 : 601; // fekete/default → Pixel(601), szines → Corrupted(603)
+    } else {
+        return color === 'fekete' ? 602 : 604; // fekete → Pixel(602), szines/default → Corrupted(604)
+    }
 }
 
 // ============================================================
@@ -2893,13 +2912,15 @@ function buildProdObj(product, extraClasses) {
 function loadProducts() {
 
     // ---- ID: SENKISEM ----
+    // UI-n: hoodie = Pixel kép (601), tshirt = Corrupted kép (604)
+    // A kosárba kerülő ID a color selector alapján dől el (resolveIDProductId)
     const idLayout = document.getElementById('id-senkisem-layout');
     if (idLayout) {
-        const pixelSweater  = products.find(p => p.id === 601);
-        const corruptedTee  = products.find(p => p.id === 604);
+        const displayHoodie = products.find(p => p.id === 601); // Pixel kép
+        const displayTshirt = products.find(p => p.id === 604); // Corrupted kép
 
         idLayout.innerHTML = `
-            ${buildProdObj(pixelSweater, 'id-item-a reveal-delay-1')}
+            ${buildProdObj(displayHoodie, 'id-item-a reveal-delay-1')}
 
             <div class="id-text-right reveal reveal-delay-2">
                 <div class="id-editorial-text">
@@ -2924,11 +2945,11 @@ function loadProducts() {
                 </div>
             </div>
 
-            ${buildProdObj(corruptedTee, 'id-item-b reveal-delay-4')}
+            ${buildProdObj(displayTshirt, 'id-item-b reveal-delay-4')}
         `;
     }
 
-    // ---- PHANTOM hoodies side by side ----
+    // ---- PHANTOM ----
     const phantomHoodies = products.filter(p => p.sectionId === 'phantom' && !p.name.toLowerCase().includes('cipő') && !p.name.toLowerCase().includes('tornacipő'));
     const phantomShoes   = products.filter(p => p.sectionId === 'phantom' && (p.name.toLowerCase().includes('cipő') || p.name.toLowerCase().includes('tornacipő')));
 
@@ -2962,8 +2983,7 @@ function loadProducts() {
 
     const yakuzaBundleRow = document.getElementById('yakuza-bundle-row');
     if (yakuzaBundleRow && yakuzaBundle) {
-        const bundleHTML = buildProdObj(yakuzaBundle, 'yakuza-bundle-row reveal-delay-1');
-        yakuzaBundleRow.innerHTML = bundleHTML;
+        yakuzaBundleRow.innerHTML = buildProdObj(yakuzaBundle, 'yakuza-bundle-row reveal-delay-1');
         setTimeout(() => {
             yakuzaBundleRow.querySelectorAll('.sale-chip').forEach(chip => {
                 chip.style.background = 'rgba(139,0,255,0.9)';
@@ -2985,29 +3005,31 @@ function loadProducts() {
 // ============================================================
 // CART FROM PRODUCT OBJECTS
 // ============================================================
-function handleAddFromObj(evt, productId) {
+function handleAddFromObj(evt, displayedProductId) {
     evt.stopPropagation();
-    const product = products.find(p => p.id === productId);
-    if (!product) return;
+    const displayedProduct = products.find(p => p.id === displayedProductId);
+    if (!displayedProduct) return;
 
     const prodObj = evt.target.closest('.prod-obj');
     const selectedPill = prodObj ? prodObj.querySelector('.size-pill.selected') : null;
 
     if (!selectedPill) {
-        openProductModal(productId);
+        openProductModal(displayedProductId);
         return;
     }
 
-    // ID: Senkisem — check color variant
-    if (product.customPhoto) {
+    // ID: Senkisem termékek — color selector alapján valódi ID
+    if (displayedProduct.customPhoto) {
         if (!selectedIDColor) {
-            showNotification('Kérjük, válassz verziót (Fekete/Fehér/Színes)!', product.name);
+            showNotification('Kérjük, válassz verziót (Fekete-fehér vagy Színes)!', displayedProduct.name);
             document.querySelector('.id-color-selector-wrap')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
             return;
         }
-        addToCart({ ...product, size: selectedPill.dataset.size, variant: selectedIDColor });
+        const realId = resolveIDProductId(displayedProductId);
+        const realProduct = products.find(p => p.id === realId);
+        addToCart({ ...realProduct, size: selectedPill.dataset.size, variant: selectedIDColor });
     } else {
-        addToCart({ ...product, size: selectedPill.dataset.size });
+        addToCart({ ...displayedProduct, size: selectedPill.dataset.size });
     }
 
     const btn = evt.target.closest('.prod-action-primary');
@@ -3038,13 +3060,23 @@ document.addEventListener('click', function(e) {
 
 // ============================================================
 // PRODUCT MODAL
+// openProductModal a megjelenített ID-t kapja (601 vagy 604),
+// de a color alapján a valódi terméket tölti be
 // ============================================================
-function openProductModal(productId) {
-    const product = products.find(p => p.id === productId);
-    if (!product) return;
-    selectedProduct = product;
+function openProductModal(displayedProductId) {
+    const displayedProduct = products.find(p => p.id === displayedProductId);
+    if (!displayedProduct) return;
+
+    // Ha ID: Senkisem termék, és van color kiválasztva, a valódi terméket mutatjuk
+    let product = displayedProduct;
+    if (displayedProduct.customPhoto && selectedIDColor) {
+        const realId = resolveIDProductId(displayedProductId);
+        product = products.find(p => p.id === realId) || displayedProduct;
+    }
+
+    selectedProduct = { ...product, _displayedId: displayedProductId };
     selectedSize = null;
-    selectedVariant = null;
+    selectedVariant = selectedIDColor || null;
 
     document.getElementById('modal-title').textContent = product.name;
     document.getElementById('modal-image').src = product.image;
@@ -3062,15 +3094,13 @@ function openProductModal(productId) {
         `<button class="size-option" data-size="${s}" onclick="selectModalSize('${s}')">${s}</button>`
     ).join('');
 
-    // Show/hide color variant section for ID: Senkisem products
     const colorSection = document.getElementById('modal-color-section');
-    if (product.customPhoto) {
+    if (displayedProduct.customPhoto) {
         colorSection.style.display = 'flex';
         colorSection.querySelectorAll('.color-variant-btn').forEach(b => b.classList.remove('selected'));
-        // Pre-select if global selector was used
         if (selectedIDColor) {
             const preBtn = colorSection.querySelector(`[data-variant="${selectedIDColor}"]`);
-            if (preBtn) { preBtn.classList.add('selected'); selectedVariant = selectedIDColor; }
+            if (preBtn) { preBtn.classList.add('selected'); }
         }
     } else {
         colorSection.style.display = 'none';
@@ -3095,8 +3125,31 @@ function selectModalSize(size) {
 
 function selectModalVariant(variant, btn) {
     selectedVariant = variant;
+    selectedIDColor = variant; // szinkronizál a globális selectorral is
     document.querySelectorAll('.color-variant-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
+    // Szinkronizáld a szekció color pilleket is
+    document.querySelectorAll('.id-color-pill').forEach(p => {
+        p.classList.toggle('selected', p.dataset.color === variant);
+    });
+
+    // Ha van megnyitott termék, frissítsd a modal képét és adatait
+    if (selectedProduct && selectedProduct._displayedId) {
+        const realId = resolveIDProductId(selectedProduct._displayedId);
+        const realProduct = products.find(p => p.id === realId);
+        if (realProduct) {
+            selectedProduct = { ...realProduct, _displayedId: selectedProduct._displayedId };
+            document.getElementById('modal-image').src = realProduct.image;
+            document.getElementById('modal-image').alt = realProduct.name;
+            document.getElementById('modal-product-title').textContent = realProduct.name;
+            const priceEl = document.getElementById('modal-product-price');
+            if (realProduct.sale && realProduct.oldPrice) {
+                priceEl.innerHTML = `<span style="text-decoration:line-through;font-size:1rem;color:rgba(255,255,255,0.3);font-weight:400;margin-right:0.5rem;">${realProduct.oldPrice.toLocaleString()} Ft</span>${realProduct.price.toLocaleString()} Ft`;
+            } else {
+                priceEl.textContent = `${realProduct.price.toLocaleString()} Ft`;
+            }
+        }
+    }
 }
 
 // ============================================================
@@ -3104,7 +3157,6 @@ function selectModalVariant(variant, btn) {
 // ============================================================
 function addToCart(product) {
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const key = product.id + '_' + (product.size || '') + '_' + (product.variant || '');
     const existing = cart.find(item =>
         item.id === product.id && item.size === product.size && (item.variant || '') === (product.variant || '')
     );
@@ -3270,10 +3322,10 @@ function goToCheckout() {
 // ============================================================
 function addLimitedProduct(productId, variant) {
     if (productId === 300 && variant === 'bundle') {
-        localStorage.setItem('cart', JSON.stringify([{ id: 300, name: "Teljes Digitális Kollekció (Jegyzetek + Használati Útmutató)", price: 5000, image: "./assets/img/ketkonyv.png", isBundle: true, isLimited: true }]));
+        localStorage.setItem('cart', JSON.stringify([{ id: 300, name: "Teljes Digitális Kollekció (jegyzetek + Használati Útmutató)", price: 5000, image: "./assets/img/ketkonyv.png", isBundle: true, isLimited: true }]));
         window.location.href = 'checkout2.html';
     } else if (productId === 311 && variant === 'physical') {
-        localStorage.setItem('cart', JSON.stringify([{ id: 311, name: "Teljes Fizikai Kollekció (Jegyzetek + Útmutató)", price: 10000, image: "./assets/img/ketkonyv.png", size: "A5", quantity: 1, isLimited: true, isPhysicalBundle: true }]));
+        localStorage.setItem('cart', JSON.stringify([{ id: 311, name: "Teljes Fizikai Kollekció (jegyzetek + Útmutató)", price: 10000, image: "./assets/img/ketkonyv.png", size: "A5", quantity: 1, isLimited: true, isPhysicalBundle: true }]));
         openSidebar('cart');
     }
 }
@@ -3296,10 +3348,7 @@ function showNotification(message, productName) {
         </div>`;
     document.body.appendChild(n);
     setTimeout(() => n.classList.add('show'), 10);
-    setTimeout(() => {
-        n.classList.remove('show');
-        setTimeout(() => n.remove(), 400);
-    }, 3000);
+    setTimeout(() => { n.classList.remove('show'); setTimeout(() => n.remove(), 400); }, 3000);
 }
 
 // ============================================================
@@ -3310,11 +3359,9 @@ function initializeCookieBanner() {
         setTimeout(() => document.getElementById('cookie-banner').classList.add('show'), 2000);
     }
 }
-
 function acceptCookies()          { localStorage.setItem('cookieChoice','accepted');  hideCookieBanner(); }
 function declineCookies()         { localStorage.setItem('cookieChoice','declined');  hideCookieBanner(); }
 function acceptNecessaryCookies() { localStorage.setItem('cookieChoice','necessary'); hideCookieBanner(); }
-
 function hideCookieBanner() {
     const banner = document.getElementById('cookie-banner');
     banner.classList.add('hide');
@@ -3325,12 +3372,8 @@ function hideCookieBanner() {
 // HERO SLIDER
 // ============================================================
 function initHeroSlider() {
-    setInterval(() => {
-        heroSlideIndex = (heroSlideIndex + 1) % 3;
-        goToSlide(heroSlideIndex);
-    }, 5000);
+    setInterval(() => { heroSlideIndex = (heroSlideIndex + 1) % 3; goToSlide(heroSlideIndex); }, 5000);
 }
-
 function goToSlide(idx) {
     heroSlideIndex = idx;
     document.querySelectorAll('.hero-slide').forEach((s, i) => s.classList.toggle('active', i === idx));
@@ -3340,7 +3383,7 @@ function goToSlide(idx) {
 }
 
 // ============================================================
-// NAVBAR SCROLL + ACTIVE SECTION
+// NAVBAR
 // ============================================================
 function initNavbar() {
     const navbar = document.getElementById('navbar');
@@ -3357,15 +3400,11 @@ function initNavbar() {
         }
     }, { passive: true });
 }
-
 function highlightActiveNavLink() {
     const sections = ['id-senkisem','phantom','digital-yakuza','signature'];
     const scrollY = window.pageYOffset + 120;
     let current = '';
-    sections.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= scrollY) current = id;
-    });
+    sections.forEach(id => { const el = document.getElementById(id); if (el && el.offsetTop <= scrollY) current = id; });
     document.querySelectorAll('.navbar-links a').forEach(a => {
         const href = a.getAttribute('href').replace('#','');
         a.classList.toggle('active', href === current);
@@ -3373,30 +3412,22 @@ function highlightActiveNavLink() {
 }
 
 // ============================================================
-// HAMBURGER / MOBILE NAV
+// MOBILE NAV
 // ============================================================
 function initMobileNav() {
     const btn = document.getElementById('hamburger-btn');
     if (!btn) return;
-    btn.addEventListener('click', () => {
-        document.getElementById('mobile-nav').classList.toggle('open');
-    });
+    btn.addEventListener('click', () => document.getElementById('mobile-nav').classList.toggle('open'));
 }
-
-function closeMobileNav() {
-    document.getElementById('mobile-nav').classList.remove('open');
-}
+function closeMobileNav() { document.getElementById('mobile-nav').classList.remove('open'); }
 
 // ============================================================
 // SCROLL REVEAL
 // ============================================================
 function initScrollReveal() {
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
@@ -3407,19 +3438,16 @@ function initSocialReveal() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.querySelectorAll('.social-icon-card').forEach(card => {
-                    card.classList.add('visible');
-                });
+                entry.target.querySelectorAll('.social-icon-card').forEach(card => card.classList.add('visible'));
             }
         });
     }, { threshold: 0.2 });
-
     const row = document.getElementById('social-icons-row');
     if (row) observer.observe(row);
 }
 
 // ============================================================
-// WE ARE TICKER (parallax)
+// WE ARE TICKER
 // ============================================================
 (function() {
     const track = document.getElementById('weAreTrack');
@@ -3429,10 +3457,28 @@ function initSocialReveal() {
         const rect = section.getBoundingClientRect();
         if (rect.bottom < 0 || rect.top > window.innerHeight) return;
         const progress = (window.scrollY - (section.offsetTop - window.innerHeight)) / (window.innerHeight + section.offsetHeight);
-        const offset = -60 + (progress * 50);
-        track.style.transform = `translateX(${offset}%)`;
+        track.style.transform = `translateX(${-60 + (progress * 50)}%)`;
     }, { passive: true });
 })();
+
+// ============================================================
+// BOOKS MODAL
+// ============================================================
+function openBooksModal() {
+    const modal = document.getElementById('books-modal');
+    if (!modal) return;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeBooksModal() {
+    const modal = document.getElementById('books-modal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    const productModal = document.getElementById('product-modal');
+    if (!productModal || !productModal.classList.contains('active')) {
+        document.body.style.overflow = 'auto';
+    }
+}
 
 // ============================================================
 // INIT
@@ -3446,17 +3492,13 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileNav();
     initHeroSlider();
     initSocialReveal();
-
-
-    requestAnimationFrame(() => {
-        initScrollReveal();
-    });
+    requestAnimationFrame(() => initScrollReveal());
 
     document.getElementById('modal-add-to-cart').addEventListener('click', function() {
         if (!selectedProduct) return;
         if (!selectedSize) { alert('Kérjük, válassz méretet!'); return; }
         if (selectedProduct.customPhoto && !selectedVariant) {
-            alert('Kérjük, válaszd ki a verziót (Fekete / Fehér / Színes)!');
+            alert('Kérjük, válaszd ki a verziót (Fekete-fehér vagy Színes)!');
             return;
         }
         addToCart({ ...selectedProduct, size: selectedSize, variant: selectedVariant || undefined });
@@ -3481,44 +3523,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-        closeProductModal();
-        closeBooksModal();
-        closeSidebar();
-        closeMobileNav();
-    }
-});
+        if (e.key === 'Escape') { closeProductModal(); closeBooksModal(); closeSidebar(); closeMobileNav(); }
+    });
 
-    // Close modal on backdrop click
     document.getElementById('product-modal').addEventListener('click', function(e) {
         if (e.target === this) closeProductModal();
     });
+
+    document.getElementById('books-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeBooksModal();
+    });
 });
-
-document.getElementById('books-modal').addEventListener('click', function(e) {
-    if (e.target === this) closeBooksModal();
-});
-
-// ============================================================
-// BOOKS MODAL
-// ============================================================
-function openBooksModal() {
-    const modal = document.getElementById('books-modal');
-    if (!modal) return;
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeBooksModal() {
-    const modal = document.getElementById('books-modal');
-    if (!modal) return;
-    modal.classList.remove('active');
-
-    const productModal = document.getElementById('product-modal');
-    if (!productModal || !productModal.classList.contains('active')) {
-        document.body.style.overflow = 'auto';
-    }
-}
 
 // GLOBAL EXPORTS
 window.updateQuantity         = updateQuantity;
@@ -3544,8 +3559,9 @@ window.renderCart             = renderCart;
 window.goToSlide              = goToSlide;
 window.handleAddFromObj       = handleAddFromObj;
 window.handleWishlistFromObj  = handleWishlistFromObj;
-window.openBooksModal = openBooksModal;
-window.closeBooksModal = closeBooksModal;
+window.openBooksModal         = openBooksModal;
+window.closeBooksModal        = closeBooksModal;
+window.resolveIDProductId     = resolveIDProductId;
 </script>
 </body>
 </html>
