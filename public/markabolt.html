@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senkisem — Márkabolt</title>
+    <title>Senkisem Márkabolt</title>
     <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
     <meta name="description" content="Senkisem Márkabolt — Limitált ruházati kollekciók. ID: Senkisem, Phantom, Signature.">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9Q1NRNRGP"></script>
@@ -238,7 +238,7 @@
             .hero-left {
                 background-image:
                     linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.88) 100%),
-                    url('./assets/img/herobg.jpg');
+                    url('./assets/img/herobg.png');
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -2286,6 +2286,307 @@
         padding: 1rem;
     }
 }
+
+/* ============================================================
+   BUNDLE GIFT SECTION
+============================================================ */
+.bundle-gift-section {
+    padding: 9rem 0 7rem;
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    border-top: 1px solid var(--glass-border);
+}
+
+.bg-gift-ambient {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+        radial-gradient(ellipse at 10% 50%, rgba(255,255,255,0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 30%, rgba(255,200,50,0.025) 0%, transparent 50%);
+}
+
+.bg-gift-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 75%);
+}
+
+/* TOP ROW: szöveg + videó */
+.bundle-gift-top {
+    max-width: 1400px; margin: 0 auto;
+    padding: 0 3rem 5rem;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 6rem;
+    align-items: center;
+}
+
+/* SZÖVEG */
+.bundle-gift-eyebrow {
+    display: flex; align-items: center;
+    gap: 1rem; margin-bottom: 2rem;
+}
+
+.eyebrow-line {
+    width: 36px; height: 1px;
+    background: rgba(255,255,255,0.2);
+    display: block; flex-shrink: 0;
+}
+
+.eyebrow-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--text-muted);
+}
+
+.bundle-gift-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.5rem, 4.5vw, 5rem);
+    line-height: 1.0; letter-spacing: -0.02em;
+    color: var(--text-primary); font-weight: 400;
+    margin-bottom: 1.8rem;
+}
+
+.bundle-gift-title em {
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+.bundle-gift-desc {
+    font-size: 0.95rem; color: var(--text-secondary);
+    line-height: 1.85; font-weight: 300;
+    margin-bottom: 3rem;
+    max-width: 480px;
+}
+
+/* Value row */
+.bundle-gift-value-row {
+    display: flex; align-items: center;
+    gap: 1.5rem; flex-wrap: wrap;
+    padding: 1.5rem 2rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 3px;
+    max-width: 520px;
+}
+
+.bundle-gift-value-item {
+    display: flex; flex-direction: column; gap: 0.25rem;
+}
+
+.val-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--text-muted);
+}
+
+.val-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+    color: var(--text-primary); line-height: 1;
+}
+
+.val-gift { display: flex; flex-direction: column; gap: 0.15rem; }
+
+.val-struck {
+    font-size: 0.78rem; color: rgba(255,255,255,0.2);
+    text-decoration: line-through;
+    font-family: 'Inter', sans-serif; font-weight: 300;
+}
+
+.val-free {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.07);
+    padding: 0.15rem 0.6rem; border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.12);
+    display: inline-block;
+}
+
+.bundle-gift-value-sep {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem; color: rgba(255,255,255,0.12);
+}
+
+.val-pay {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.3); text-transform: uppercase;
+    margin-top: 0.1rem;
+}
+
+/* VIDEÓ */
+.bundle-video-wrap {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 1.2rem;
+}
+
+.bundle-video-phone {
+    position: relative;
+    width: 220px;
+    aspect-ratio: 9/16;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.07),
+        0 40px 100px rgba(0,0,0,0.8),
+        0 0 80px rgba(255,255,255,0.03);
+}
+
+.bundle-video-el {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+}
+
+.bundle-video-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 55%);
+    pointer-events: none;
+}
+
+.bundle-video-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(255,255,255,0.25);
+    display: flex; align-items: center; gap: 0.5rem;
+}
+
+.bundle-video-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    animation: dot-blink 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+/* ELVÁLASZTÓ */
+.bundle-gift-sep {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--glass-border) 20%, var(--glass-border) 80%, transparent);
+    max-width: 1400px; margin: 0 auto 4rem;
+}
+
+/* 3 SZETT KÁRTYA — a szokásos prod-obj stílusban, 3 oszlop */
+.bundle-prods-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    position: relative; z-index: 2;
+}
+
+/* Kijelölt szett kártya jelölése */
+.bundle-prods-row .prod-obj.bundle-selected {
+    outline: 2px solid rgba(255,255,255,0.5);
+    outline-offset: 2px;
+}
+
+/* CHECKOUT AREA */
+.bundle-checkout-area {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 3px;
+    animation: fadeSlideUp 0.4s var(--ease) forwards;
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.bundle-size-row {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.5rem; flex-wrap: wrap;
+}
+
+.bundle-size-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.bundle-size-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+.bundle-size-pill {
+    padding: 0.4rem 0.9rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent; color: rgba(255,255,255,0.5);
+    font-size: 0.75rem; cursor: pointer;
+    transition: var(--transition); border-radius: 2px;
+}
+
+.bundle-size-pill:hover, .bundle-size-pill.selected {
+    border-color: rgba(255,255,255,0.7);
+    color: #fff; background: rgba(255,255,255,0.06);
+}
+
+.bundle-cta-btn {
+    width: 100%;
+    display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    padding: 1.2rem 2rem;
+    background: #fff; color: #000;
+    border: none; border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    position: relative; overflow: hidden;
+}
+
+.bundle-cta-btn:hover { background: rgba(255,255,255,0.9); transform: translateY(-1px); }
+
+.bundle-cta-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+.bundle-cta-sub {
+    font-size: 0.72rem; color: rgba(0,0,0,0.45);
+}
+
+.bundle-cta-icon {
+    position: absolute; right: 1.5rem; top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem; opacity: 0.35;
+}
+
+/* FOOTER NOTE */
+.bundle-footer-note {
+    max-width: 1400px; margin: 3rem auto 0;
+    padding: 0 3rem;
+    display: flex; align-items: center; gap: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.18); text-transform: uppercase;
+    justify-content: center;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .bundle-gift-top {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+    .bundle-video-wrap { flex-direction: row; gap: 2rem; }
+    .bundle-video-phone { width: 160px; }
+    .bundle-prods-row { grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+}
+
+@media (max-width: 768px) {
+    .bundle-gift-top { padding: 0 1.5rem 3rem; }
+    .bundle-video-wrap { flex-direction: column; }
+    .bundle-video-phone { width: 180px; }
+    .bundle-prods-row { grid-template-columns: 1fr; }
+    .bundle-gift-value-row { flex-direction: column; gap: 1rem; padding: 1.2rem 1.5rem; }
+    .bundle-gift-value-sep { transform: rotate(90deg); }
+    .bundle-footer-note { padding: 0 1.5rem; text-align: center; }
+    .bundle-checkout-area { margin-top: 1.5rem; }
+}
+
     </style>
 </head>
 <body>
@@ -2392,8 +2693,8 @@
                 <br><br>
             </h3>
             <p class="universe-body">
-                Ha legalább 15 000 Ft értékben vásárolsz,<br>
-                ajándékba kapod a Senkisem könyvcsomagot.
+                A kettő együtt olcsóbb.<br>
+                Ennyi:)
             </p>
             <div class="universe-cta">
                 <button class="uni-btn" onclick="addLimitedProduct(300,'bundle')" style="background:#fff;color:#000;border-color:#fff;font-weight:600;">
@@ -2423,6 +2724,103 @@
     </div>
 </div>
 
+
+<!-- ============================================================
+     BUNDLE GIFT SECTION
+============================================================ -->
+<section class="bundle-gift-section" id="bundle-gift">
+    <div class="bg-gift-ambient"></div>
+    <div class="bg-gift-grid"></div>
+
+    <!-- Felső sor: szöveg bal, videó jobb -->
+    <div class="bundle-gift-top">
+        <div class="bundle-gift-text reveal">
+            <div class="bundle-gift-eyebrow">
+                <span class="eyebrow-line"></span>
+                <span class="eyebrow-text">Minden szetthez jár</span>
+            </div>
+
+            <h2 class="bundle-gift-title">
+                Minden limitált szetthez<br>
+                <em>A két könyvet ajándékba kapod</em>
+            </h2>
+
+            <p class="bundle-gift-desc">
+                Nem kedvezményt kapsz. Nem bónuszt.<br>
+                A két Senkisem könyvet.<br>
+            </p>
+
+            <div class="bundle-gift-value-row">
+                <div class="bundle-gift-value-item">
+                    <span class="val-label">Szett ára</span>
+                    <span class="val-num">15 000 Ft</span>
+                </div>
+                <div class="bundle-gift-value-sep">+</div>
+                <div class="bundle-gift-value-item">
+                    <span class="val-label">2 fizikai könyv</span>
+                    <span class="val-num val-gift">
+                        <span class="val-struck">11 980 Ft</span>
+                        <span class="val-free">Ajándék</span>
+                    </span>
+                </div>
+                <div class="bundle-gift-value-sep">=</div>
+                <div class="bundle-gift-value-item">
+                    <span class="val-label">Teljes érték</span>
+                    <span class="val-num">26 980 Ft</span>
+                    <span class="val-pay">Te csak 15 000-et fizetsz</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bundle-video-wrap reveal reveal-delay-2">
+            <div class="bundle-video-phone">
+                <video
+                    src="./assets/img/syntheticbg.mp4"
+                    autoplay loop muted playsinline
+                    class="bundle-video-el"
+                ></video>
+                <div class="bundle-video-glow"></div>
+            </div>
+            <div class="bundle-video-label">
+                <span class="bundle-video-dot"></span>
+                Synthetic Human
+            </div>
+        </div>
+    </div>
+
+    <!-- Elválasztó -->
+    <div class="bundle-gift-sep"></div>
+
+    <!-- 3 termék kártya — prod-obj stílusban -->
+    <div class="editorial-stage">
+        <div class="bundle-prods-row" id="bundle-prods-row">
+            <!-- JS tölti be -->
+        </div>
+
+        <!-- Méret + CTA -->
+        <div class="bundle-checkout-area" id="bundle-checkout-area" style="display:none;">
+            <div class="bundle-size-row">
+                <span class="bundle-size-label">Méret:</span>
+                <div class="bundle-size-pills" id="bundle-size-pills">
+                    <button class="bundle-size-pill" data-size="S">S</button>
+                    <button class="bundle-size-pill" data-size="M">M</button>
+                    <button class="bundle-size-pill" data-size="L">L</button>
+                    <button class="bundle-size-pill" data-size="XL">XL</button>
+                </div>
+            </div>
+            <button class="bundle-cta-btn" id="bundle-add-to-cart" onclick="addBundleToCart()">
+                <span class="bundle-cta-text">Kosárba — 15 000 Ft</span>
+                <span class="bundle-cta-sub">+ 2 Senkisem könyv fizikailag, a csomagban</span>
+                <i class="ri-shopping-cart-line bundle-cta-icon"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="bundle-footer-note reveal">
+        <i class="ri-gift-line"></i>
+        Legjobb Ajánlat
+    </div>
+</section>
 <!-- ============================================================
      ID: SENKISEM
 ============================================================ -->
@@ -2735,14 +3133,14 @@
                 </div>
             </a>
 
-            <a href="/utmutato.html" class="book-choice-card">
+            <a href="/szintetikus-ember.html" class="book-choice-card">
                 <div class="book-choice-image-wrap">
-                    <img src="assets/img/hbg.png" alt="Használati Útmutató az Élethez">
+                    <img src="assets/img/usermanualbg169.png" alt="Szintetikus Ember">
                 </div>
                 <div class="book-choice-overlay"></div>
                 <div class="book-choice-content">
                     <div class="book-choice-label">Senkisem II.</div>
-                    <h3 class="book-choice-title">Használati Útmutató az Élethez</h3>
+                    <h3 class="book-choice-title">Szintetikus Ember</h3>
                     <p class="book-choice-desc">
                         Nem önfejlesztés. Feltárás. A személyiséged algoritmusának boncolása.
                     </p>
@@ -2812,7 +3210,6 @@
 <!-- JAVASCRIPT -->
 <script>
 // ============================================================
-// ============================================================
 // PRODUCTS DATA
 // ============================================================
 const products = [
@@ -2825,8 +3222,8 @@ const products = [
     // PHANTOM
     { id: 401, name: "Kapucnis Pulcsi – Zipzáros Maszkkal", price: 12990, image: "./assets/img/hoodie-zip-mask.png",     sizes: ["S","M","L","XL"], category: "Phantom", sectionId: "phantom" },
     { id: 402, name: "Kapucnis Pulcsi – Beduin Maszkkal",   price: 12990, image: "./assets/img/hoodie-bedouin-mask.png", sizes: ["S","M","L","XL"], category: "Phantom", sectionId: "phantom" },
-    { id: 403, name: "Senkisem Sportcipő – Fekete",         price: 17990, oldPrice: 19990, sale: true, image: "./assets/img/sneakers-black.png",       sizes: ["38","39","40","41","42","43","44","45"], category: "Phantom", sectionId: "phantom" },
-    { id: 404, name: "Hosszúszárú Tornacipő – Fekete",      price: 17990, oldPrice: 19990, sale: true, image: "./assets/img/high-sneakers-black.png",   sizes: ["38","39","40","41","42","43","44","45"], category: "Phantom", sectionId: "phantom" },
+    { id: 403, name: "Senkisem Sportcipő – Fekete",         price: 17990, oldPrice: 19990, sale: true, image: "./assets/img/sneakers-black.png",     sizes: ["38","39","40","41","42","43","44","45"], category: "Phantom", sectionId: "phantom" },
+    { id: 404, name: "Hosszúszárú Tornacipő – Fekete",      price: 17990, oldPrice: 19990, sale: true, image: "./assets/img/high-sneakers-black.png", sizes: ["38","39","40","41","42","43","44","45"], category: "Phantom", sectionId: "phantom" },
 
     // SIGNATURE EDITION
     { id: 501, name: "Senkisem Póló – Nyomtatott",    price: 6490, image: "./assets/img/tshirt-printed.png",  sizes: ["S","M","L","XL"], category: "Signature", sectionId: "signature" },
@@ -2834,19 +3231,29 @@ const products = [
     { id: 504, name: "Senkisem Pulóver – Nyomtatott", price: 8990, image: "./assets/img/sweater-printed.png", sizes: ["S","M","L","XL"], category: "Signature", sectionId: "signature" },
     { id: 505, name: "Senkisem Pulóver – Írott",      price: 8990, image: "./assets/img/sweater-written.png", sizes: ["S","M","L","XL"], category: "Signature", sectionId: "signature" },
     { id: 503, name: "Baseball Sapka",                price: 5490, image: "./assets/img/cap-baseball.png",    sizes: ["Univerzális"], category: "Signature", sectionId: "signature" },
-    { id: 506, name: "Téli Sapka",                    price: 5490, image: "./assets/img/cap-winter.png",      sizes: ["Univerzális"], category: "Signature", sectionId: "signature" }
+    { id: 506, name: "Téli Sapka",                    price: 5490, image: "./assets/img/cap-winter.png",      sizes: ["Univerzális"], category: "Signature", sectionId: "signature" },
+
+    // SZETTED
+    { id: 700, name: "Synthetic Human Szett", price: 15000, image: "./assets/img/sett1.png", sizes: ["S","M","L","XL"], category: "Szett", sectionId: "bundle-gift", isGiftBundle: true },
+    { id: 304, name: "Digital Yakuza Szett",  price: 15000, image: "./assets/img/sett2.png", sizes: ["S","M","L","XL"], category: "Szett", sectionId: "bundle-gift", isGiftBundle: true },
+    { id: 800, name: "Digital Cartel Szett",  price: 15000, image: "./assets/img/sett3.png", sizes: ["S","M","L","XL"], category: "Szett", sectionId: "bundle-gift", isGiftBundle: true },
+
+    // KÖNYV CSOMAGOK
+    { id: 300, name: "Teljes Digitális Kollekció (jegyzetek + Szintetikus Ember)", price: 5000,  image: "./assets/img/ketkonyv.png", isBundle: true, isLimited: true },
+    { id: 311, name: "Teljes Fizikai Kollekció (jegyzetek + Szintetikus Ember)",   price: 10000, image: "./assets/img/ketkonyv.png", size: "A5", isLimited: true, isPhysicalBundle: true }
 ];
 
-let selectedProduct = null;
-let selectedSize = null;
-let selectedVariant = null;
-let heroSlideIndex = 0;
-let selectedIDColor = null;
+let selectedProduct  = null;
+let selectedSize     = null;
+let selectedVariant  = null;
+let heroSlideIndex   = 0;
+let selectedIDColor  = null;
+let selectedBundleId   = null;
+let selectedBundleSize = null;
 const heroLabels = ['ID: Senkisem', 'Phantom', 'Signature'];
 
 // ============================================================
 // ID COLOR SELECTOR
-// Csak a selectedIDColor-t állítja — UI nem változik
 // ============================================================
 function selectIDColor(btn) {
     document.querySelectorAll('.id-color-pill').forEach(p => p.classList.remove('selected'));
@@ -2855,19 +3262,15 @@ function selectIDColor(btn) {
 }
 
 // ============================================================
-// A kosárba kerülő valódi ID meghatározása a termék típusa és
-// a kiválasztott szín alapján
+// RESOLVE ID PRODUCT
 // ============================================================
 function resolveIDProductId(displayedProductId) {
-    // displayedProductId: 601 (hoodie, Pixel képpel jelenik meg)
-    //                  vagy 604 (tshirt, Corrupted képpel jelenik meg)
     const isHoodie = (displayedProductId === 601);
-    const color = selectedIDColor; // 'fekete' vagy 'szines'
-
+    const color = selectedIDColor;
     if (isHoodie) {
-        return color === 'szines' ? 603 : 601; // fekete/default → Pixel(601), szines → Corrupted(603)
+        return color === 'szines' ? 603 : 601;
     } else {
-        return color === 'fekete' ? 602 : 604; // fekete → Pixel(602), szines/default → Corrupted(604)
+        return color === 'fekete' ? 602 : 604;
     }
 }
 
@@ -2920,21 +3323,46 @@ function buildProdObj(product, extraClasses) {
 }
 
 // ============================================================
-// LOAD PRODUCTS INTO EDITORIAL LAYOUTS
+// BUNDLE SZETT BUILDER — prod-obj stílusú, de selectBundle hívással
+// ============================================================
+function buildBundleProdObj(product, extraClasses) {
+    return `
+        <div class="prod-obj ${extraClasses || ''} reveal" id="bundle-card-${product.id}">
+            <div class="prod-img-wrap" onclick="selectBundle(${product.id}, this.closest('.prod-obj'))">
+                <img src="${product.image}" alt="${product.name}" loading="lazy">
+                <div class="prod-overlay">
+                    <div class="prod-overlay-category">${product.category}</div>
+                    <div class="prod-overlay-name">${product.name}</div>
+                    <div class="prod-overlay-price">15 000 Ft</div>
+                    <div class="prod-overlay-actions">
+                        <button class="prod-action-btn prod-action-primary" onclick="selectBundle(${product.id}, this.closest('.prod-obj'));event.stopPropagation();">
+                            <i class="ri-check-line"></i> Kiválaszt
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-sizes" id="sizes-bundle-${product.id}">
+                ${product.sizes.map(s => `<button class="size-pill" data-size="${s}" data-bundle-product-id="${product.id}">${s}</button>`).join('')}
+            </div>
+            <div class="prod-meta">
+                <div class="prod-meta-name">${product.name}</div>
+                <div class="prod-meta-price">15 000 Ft <span style="font-size:0.68rem;color:rgba(255,255,255,0.3);margin-left:0.3rem;">+ 2 könyv ajándék</span></div>
+            </div>
+        </div>`;
+}
+
+// ============================================================
+// LOAD PRODUCTS
 // ============================================================
 function loadProducts() {
 
     // ---- ID: SENKISEM ----
-    // UI-n: hoodie = Pixel kép (601), tshirt = Corrupted kép (604)
-    // A kosárba kerülő ID a color selector alapján dől el (resolveIDProductId)
     const idLayout = document.getElementById('id-senkisem-layout');
     if (idLayout) {
-        const displayHoodie = products.find(p => p.id === 601); // Pixel kép
-        const displayTshirt = products.find(p => p.id === 604); // Corrupted kép
-
+        const displayHoodie = products.find(p => p.id === 601);
+        const displayTshirt = products.find(p => p.id === 604);
         idLayout.innerHTML = `
             ${buildProdObj(displayHoodie, 'id-item-a reveal-delay-1')}
-
             <div class="id-text-right reveal reveal-delay-2">
                 <div class="id-editorial-text">
                     Minden ruhán, amit valaha vettél,<br>
@@ -2943,7 +3371,6 @@ function loadProducts() {
                     <em>Ez más.</em>
                 </div>
             </div>
-
             <div class="id-text-left reveal reveal-delay-3">
                 <div class="id-editorial-text">
                     Az ID: SENKISEM kollekció minden darabja <strong>egyedi;</strong>
@@ -2957,7 +3384,6 @@ function loadProducts() {
                     Hanem hogy <em>mi maradt belőled?</em>
                 </div>
             </div>
-
             ${buildProdObj(displayTshirt, 'id-item-b reveal-delay-4')}
         `;
     }
@@ -2980,7 +3406,7 @@ function loadProducts() {
         ).join('');
     }
 
-    // ---- DIGITAL YAKUZA ----
+    // ---- DIGITAL YAKUZA (rejtett szekció, ha lenne) ----
     const yakuzaItems  = products.filter(p => p.sectionId === 'yakuza' && !p.bundle);
     const yakuzaBundle = products.find(p => p.sectionId === 'yakuza' && p.bundle);
 
@@ -3006,13 +3432,74 @@ function loadProducts() {
 
     // ---- SIGNATURE ----
     const sigProducts = products.filter(p => p.sectionId === 'signature');
-    const sigLayout = document.getElementById('signature-layout');
-    const sigClasses = ['sig-item-a','sig-item-b','sig-item-c','sig-item-d','sig-item-e','sig-item-f'];
+    const sigLayout   = document.getElementById('signature-layout');
+    const sigClasses  = ['sig-item-a','sig-item-b','sig-item-c','sig-item-d','sig-item-e','sig-item-f'];
     if (sigLayout) {
         sigLayout.innerHTML = sigProducts.map((p, i) =>
             buildProdObj(p, `${sigClasses[i] || ''} reveal-delay-${(i % 3) + 1}`)
         ).join('');
     }
+
+    // ---- BUNDLE SZETTED ----
+    const bundleProdsRow = document.getElementById('bundle-prods-row');
+    if (bundleProdsRow) {
+        const bundleProds = products.filter(p => p.sectionId === 'bundle-gift');
+        bundleProdsRow.innerHTML = bundleProds.map((p, i) =>
+            buildBundleProdObj(p, `reveal-delay-${i+1}`)
+        ).join('');
+    }
+}
+
+// ============================================================
+// BUNDLE GIFT SELECTOR
+// ============================================================
+function selectBundle(bundleId, cardEl) {
+    selectedBundleId   = bundleId;
+    selectedBundleSize = null;
+
+    document.querySelectorAll('.bundle-prods-row .prod-obj').forEach(c => c.classList.remove('bundle-selected'));
+    cardEl.classList.add('bundle-selected');
+
+    const area = document.getElementById('bundle-checkout-area');
+    area.style.display = 'block';
+    area.style.animation = 'none';
+    requestAnimationFrame(() => { area.style.animation = ''; });
+
+    document.querySelectorAll('.bundle-size-pill').forEach(p => p.classList.remove('selected'));
+}
+
+function initBundleSizePills() {
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('bundle-size-pill')) {
+            e.stopPropagation();
+            document.querySelectorAll('.bundle-size-pill').forEach(p => p.classList.remove('selected'));
+            e.target.classList.add('selected');
+            selectedBundleSize = e.target.dataset.size;
+        }
+    });
+}
+
+function addBundleToCart() {
+    if (!selectedBundleId) return;
+    if (!selectedBundleSize) {
+        showNotification('Kérjük, válassz méretet!', '');
+        return;
+    }
+    const product = products.find(p => p.id === selectedBundleId);
+    if (!product) return;
+
+    addToCart({ ...product, size: selectedBundleSize, isGiftBundle: true });
+
+    const btn = document.getElementById('bundle-add-to-cart');
+    const origHtml = btn.innerHTML;
+    btn.innerHTML = '<span class="bundle-cta-text">Hozzáadva!</span><span class="bundle-cta-sub">A könyvek a csomagban lesznek</span>';
+    btn.style.background = '#28a745';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+        btn.innerHTML = origHtml;
+        btn.style.background = '';
+        btn.style.color = '';
+    }, 2000);
 }
 
 // ============================================================
@@ -3023,7 +3510,7 @@ function handleAddFromObj(evt, displayedProductId) {
     const displayedProduct = products.find(p => p.id === displayedProductId);
     if (!displayedProduct) return;
 
-    const prodObj = evt.target.closest('.prod-obj');
+    const prodObj      = evt.target.closest('.prod-obj');
     const selectedPill = prodObj ? prodObj.querySelector('.size-pill.selected') : null;
 
     if (!selectedPill) {
@@ -3031,14 +3518,13 @@ function handleAddFromObj(evt, displayedProductId) {
         return;
     }
 
-    // ID: Senkisem termékek — color selector alapján valódi ID
     if (displayedProduct.customPhoto) {
         if (!selectedIDColor) {
             showNotification('Kérjük, válassz verziót (Fekete-fehér vagy Színes)!', displayedProduct.name);
             document.querySelector('.id-color-selector-wrap')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
             return;
         }
-        const realId = resolveIDProductId(displayedProductId);
+        const realId      = resolveIDProductId(displayedProductId);
         const realProduct = products.find(p => p.id === realId);
         addToCart({ ...realProduct, size: selectedPill.dataset.size, variant: selectedIDColor });
     } else {
@@ -3060,9 +3546,9 @@ function handleWishlistFromObj(evt, productId) {
     if (product) addToWishlist(product);
 }
 
-// SIZE PILL INTERACTION
+// SIZE PILL INTERACTION (normál termékek)
 document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('size-pill')) {
+    if (e.target.classList.contains('size-pill') && !e.target.classList.contains('bundle-size-pill')) {
         const productId = e.target.dataset.productId;
         const container = document.getElementById('sizes-' + productId);
         if (container) container.querySelectorAll('.size-pill').forEach(p => p.classList.remove('selected'));
@@ -3073,14 +3559,14 @@ document.addEventListener('click', function(e) {
 
 // ============================================================
 // PRODUCT MODAL
-// openProductModal a megjelenített ID-t kapja (601 vagy 604),
-// de a color alapján a valódi terméket tölti be
 // ============================================================
 function openProductModal(displayedProductId) {
     const displayedProduct = products.find(p => p.id === displayedProductId);
     if (!displayedProduct) return;
 
-    // Ha ID: Senkisem termék, és van color kiválasztva, a valódi terméket mutatjuk
+    // Bundle szettekre ne nyíljon modal — selectBundle fut helyette
+    if (displayedProduct.isGiftBundle) return;
+
     let product = displayedProduct;
     if (displayedProduct.customPhoto && selectedIDColor) {
         const realId = resolveIDProductId(displayedProductId);
@@ -3088,13 +3574,13 @@ function openProductModal(displayedProductId) {
     }
 
     selectedProduct = { ...product, _displayedId: displayedProductId };
-    selectedSize = null;
+    selectedSize    = null;
     selectedVariant = selectedIDColor || null;
 
-    document.getElementById('modal-title').textContent = product.name;
-    document.getElementById('modal-image').src = product.image;
-    document.getElementById('modal-image').alt = product.name;
-    document.getElementById('modal-product-title').textContent = product.name;
+    document.getElementById('modal-title').textContent          = product.name;
+    document.getElementById('modal-image').src                  = product.image;
+    document.getElementById('modal-image').alt                  = product.name;
+    document.getElementById('modal-product-title').textContent  = product.name;
 
     const priceEl = document.getElementById('modal-product-price');
     if (product.sale && product.oldPrice) {
@@ -3113,7 +3599,7 @@ function openProductModal(displayedProductId) {
         colorSection.querySelectorAll('.color-variant-btn').forEach(b => b.classList.remove('selected'));
         if (selectedIDColor) {
             const preBtn = colorSection.querySelector(`[data-variant="${selectedIDColor}"]`);
-            if (preBtn) { preBtn.classList.add('selected'); }
+            if (preBtn) preBtn.classList.add('selected');
         }
     } else {
         colorSection.style.display = 'none';
@@ -3138,22 +3624,20 @@ function selectModalSize(size) {
 
 function selectModalVariant(variant, btn) {
     selectedVariant = variant;
-    selectedIDColor = variant; // szinkronizál a globális selectorral is
+    selectedIDColor = variant;
     document.querySelectorAll('.color-variant-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-    // Szinkronizáld a szekció color pilleket is
     document.querySelectorAll('.id-color-pill').forEach(p => {
         p.classList.toggle('selected', p.dataset.color === variant);
     });
 
-    // Ha van megnyitott termék, frissítsd a modal képét és adatait
     if (selectedProduct && selectedProduct._displayedId) {
-        const realId = resolveIDProductId(selectedProduct._displayedId);
+        const realId      = resolveIDProductId(selectedProduct._displayedId);
         const realProduct = products.find(p => p.id === realId);
         if (realProduct) {
             selectedProduct = { ...realProduct, _displayedId: selectedProduct._displayedId };
-            document.getElementById('modal-image').src = realProduct.image;
-            document.getElementById('modal-image').alt = realProduct.name;
+            document.getElementById('modal-image').src                 = realProduct.image;
+            document.getElementById('modal-image').alt                 = realProduct.name;
             document.getElementById('modal-product-title').textContent = realProduct.name;
             const priceEl = document.getElementById('modal-product-price');
             if (realProduct.sale && realProduct.oldPrice) {
@@ -3171,7 +3655,9 @@ function selectModalVariant(variant, btn) {
 function addToCart(product) {
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const existing = cart.find(item =>
-        item.id === product.id && item.size === product.size && (item.variant || '') === (product.variant || '')
+        item.id === product.id &&
+        item.size === product.size &&
+        (item.variant || '') === (product.variant || '')
     );
     if (existing) {
         existing.quantity = (existing.quantity || 1) + 1;
@@ -3185,7 +3671,11 @@ function addToCart(product) {
 
 function updateQuantity(productId, size, variant, change) {
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const item = cart.find(i => i.id === productId && (i.size || '') === size && (i.variant || '') === variant);
+    const item = cart.find(i =>
+        i.id === productId &&
+        (i.size || '') === size &&
+        (i.variant || '') === variant
+    );
     if (item) {
         const newQty = (item.quantity || 1) + change;
         if (newQty <= 0) {
@@ -3208,11 +3698,11 @@ function removeFromCart(productId, size, variant) {
 }
 
 function updateCartCount() {
-    const el = document.getElementById('cart-count');
+    const el   = document.getElementById('cart-count');
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const total = cart.reduce((s, i) => s + (i.quantity || 1), 0);
-    el.textContent = total;
-    el.style.display = total > 0 ? 'flex' : 'none';
+    el.textContent    = total;
+    el.style.display  = total > 0 ? 'flex' : 'none';
 }
 
 // ============================================================
@@ -3239,9 +3729,9 @@ function removeFromWishlist(productId) {
 }
 
 function updateWishlistCount() {
-    const el = document.getElementById('wishlist-count');
+    const el       = document.getElementById('wishlist-count');
     const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    el.textContent = wishlist.length;
+    el.textContent   = wishlist.length;
     el.style.display = wishlist.length > 0 ? 'flex' : 'none';
 }
 
@@ -3266,11 +3756,13 @@ function openSidebar(type) {
     type === 'cart' ? renderCart() : renderWishlist();
 }
 
-function closeSidebar() { document.getElementById('sidebar').classList.remove('active'); }
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('active');
+}
 
 function renderCart() {
     const content = document.getElementById('sidebar-content');
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cart    = JSON.parse(localStorage.getItem('cart') || '[]');
     if (cart.length === 0) {
         content.innerHTML = '<p style="color:var(--text-secondary);text-align:center;margin-top:2rem;">A kosár jelenleg üres</p>';
         return;
@@ -3278,15 +3770,19 @@ function renderCart() {
     const total = cart.reduce((s, i) => s + i.price * (i.quantity || 1), 0);
     content.innerHTML = `
         ${cart.map(item => {
-            const qty = item.quantity || 1;
-            const sizeText = item.size ? ` (${item.size})` : '';
+            const qty         = item.quantity || 1;
+            const sizeText    = item.size    ? ` (${item.size})`    : '';
             const variantText = item.variant ? ` — ${item.variant}` : '';
+            const giftBadge   = item.isGiftBundle
+                ? `<div style="font-size:0.65rem;color:rgba(255,255,255,0.4);margin-top:0.2rem;">+ 2 könyv ajándékba a csomagban</div>`
+                : '';
             return `
                 <div style="display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--glass-border);">
                     <img src="${item.image}" alt="${item.name}" style="width:60px;height:60px;object-fit:cover;border-radius:2px;">
                     <div style="flex:1;">
-                        <div style="font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;color:var(--text-primary);">${item.name}${sizeText}${variantText}</div>
-                        <div style="font-size:0.82rem;color:var(--text-secondary);">${item.price.toLocaleString()} Ft / db</div>
+                        <div style="font-size:0.85rem;font-weight:500;margin-bottom:0.2rem;color:var(--text-primary);">${item.name}${sizeText}${variantText}</div>
+                        ${giftBadge}
+                        <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:0.3rem;">${item.price.toLocaleString()} Ft / db</div>
                         <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.6rem;">
                             <button onclick="updateQuantity(${item.id},'${item.size||''}','${item.variant||''}',-1);event.stopPropagation();" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:white;width:28px;height:28px;border-radius:3px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;">−</button>
                             <span style="min-width:28px;text-align:center;color:var(--text-primary);font-weight:600;font-size:0.9rem;">${qty}</span>
@@ -3303,7 +3799,7 @@ function renderCart() {
 }
 
 function renderWishlist() {
-    const content = document.getElementById('sidebar-content');
+    const content  = document.getElementById('sidebar-content');
     const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
     if (wishlist.length === 0) {
         content.innerHTML = '<p style="color:var(--text-secondary);text-align:center;margin-top:2rem;">Nincs még kedvenc termék</p>';
@@ -3335,10 +3831,26 @@ function goToCheckout() {
 // ============================================================
 function addLimitedProduct(productId, variant) {
     if (productId === 300 && variant === 'bundle') {
-        localStorage.setItem('cart', JSON.stringify([{ id: 300, name: "Teljes Digitális Kollekció (jegyzetek + Használati Útmutató)", price: 5000, image: "./assets/img/ketkonyv.png", isBundle: true, isLimited: true }]));
+        localStorage.setItem('cart', JSON.stringify([{
+            id: 300,
+            name: "Teljes Digitális Kollekció (jegyzetek + Szintetikus Ember)",
+            price: 5000,
+            image: "./assets/img/ketkonyv.png",
+            isBundle: true,
+            isLimited: true
+        }]));
         window.location.href = 'checkout2.html';
     } else if (productId === 311 && variant === 'physical') {
-        localStorage.setItem('cart', JSON.stringify([{ id: 311, name: "Teljes Fizikai Kollekció (jegyzetek + Útmutató)", price: 10000, image: "./assets/img/ketkonyv.png", size: "A5", quantity: 1, isLimited: true, isPhysicalBundle: true }]));
+        localStorage.setItem('cart', JSON.stringify([{
+            id: 311,
+            name: "Teljes Fizikai Kollekció (jegyzetek + Szintetikus Ember)",
+            price: 10000,
+            image: "./assets/img/ketkonyv.png",
+            size: "A5",
+            quantity: 1,
+            isLimited: true,
+            isPhysicalBundle: true
+        }]));
         openSidebar('cart');
     }
 }
@@ -3385,12 +3897,16 @@ function hideCookieBanner() {
 // HERO SLIDER
 // ============================================================
 function initHeroSlider() {
-    setInterval(() => { heroSlideIndex = (heroSlideIndex + 1) % 3; goToSlide(heroSlideIndex); }, 5000);
+    setInterval(() => {
+        heroSlideIndex = (heroSlideIndex + 1) % 3;
+        goToSlide(heroSlideIndex);
+    }, 5000);
 }
+
 function goToSlide(idx) {
     heroSlideIndex = idx;
     document.querySelectorAll('.hero-slide').forEach((s, i) => s.classList.toggle('active', i === idx));
-    document.querySelectorAll('.hero-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    document.querySelectorAll('.hero-dot').forEach((d, i)   => d.classList.toggle('active', i === idx));
     const label = document.getElementById('hero-label');
     if (label) label.textContent = heroLabels[idx] || '';
 }
@@ -3413,11 +3929,15 @@ function initNavbar() {
         }
     }, { passive: true });
 }
+
 function highlightActiveNavLink() {
     const sections = ['id-senkisem','phantom','digital-yakuza','signature'];
-    const scrollY = window.pageYOffset + 120;
-    let current = '';
-    sections.forEach(id => { const el = document.getElementById(id); if (el && el.offsetTop <= scrollY) current = id; });
+    const scrollY  = window.pageYOffset + 120;
+    let current    = '';
+    sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollY) current = id;
+    });
     document.querySelectorAll('.navbar-links a').forEach(a => {
         const href = a.getAttribute('href').replace('#','');
         a.classList.toggle('active', href === current);
@@ -3432,14 +3952,19 @@ function initMobileNav() {
     if (!btn) return;
     btn.addEventListener('click', () => document.getElementById('mobile-nav').classList.toggle('open'));
 }
-function closeMobileNav() { document.getElementById('mobile-nav').classList.remove('open'); }
+
+function closeMobileNav() {
+    document.getElementById('mobile-nav').classList.remove('open');
+}
 
 // ============================================================
 // SCROLL REVEAL
 // ============================================================
 function initScrollReveal() {
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
@@ -3467,7 +3992,7 @@ function initSocialReveal() {
     if (!track) return;
     window.addEventListener('scroll', function() {
         const section = track.closest('.we-are-section');
-        const rect = section.getBoundingClientRect();
+        const rect    = section.getBoundingClientRect();
         if (rect.bottom < 0 || rect.top > window.innerHeight) return;
         const progress = (window.scrollY - (section.offsetTop - window.innerHeight)) / (window.innerHeight + section.offsetHeight);
         track.style.transform = `translateX(${-60 + (progress * 50)}%)`;
@@ -3483,6 +4008,7 @@ function openBooksModal() {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
+
 function closeBooksModal() {
     const modal = document.getElementById('books-modal');
     if (!modal) return;
@@ -3505,6 +4031,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileNav();
     initHeroSlider();
     initSocialReveal();
+    initBundleSizePills();
     requestAnimationFrame(() => initScrollReveal());
 
     document.getElementById('modal-add-to-cart').addEventListener('click', function() {
@@ -3522,7 +4049,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (selectedProduct) addToWishlist(selectedProduct);
     });
 
-    document.getElementById('cart-icon').addEventListener('click', () => openSidebar('cart'));
+    document.getElementById('cart-icon').addEventListener('click',     () => openSidebar('cart'));
     document.getElementById('wishlist-icon').addEventListener('click', () => openSidebar('wishlist'));
 
     document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -3536,7 +4063,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') { closeProductModal(); closeBooksModal(); closeSidebar(); closeMobileNav(); }
+        if (e.key === 'Escape') {
+            closeProductModal();
+            closeBooksModal();
+            closeSidebar();
+            closeMobileNav();
+        }
     });
 
     document.getElementById('product-modal').addEventListener('click', function(e) {
@@ -3548,7 +4080,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// ============================================================
 // GLOBAL EXPORTS
+// ============================================================
 window.updateQuantity         = updateQuantity;
 window.openProductModal       = openProductModal;
 window.closeProductModal      = closeProductModal;
@@ -3575,6 +4109,8 @@ window.handleWishlistFromObj  = handleWishlistFromObj;
 window.openBooksModal         = openBooksModal;
 window.closeBooksModal        = closeBooksModal;
 window.resolveIDProductId     = resolveIDProductId;
+window.selectBundle           = selectBundle;
+window.addBundleToCart        = addBundleToCart;
 </script>
 </body>
 </html>

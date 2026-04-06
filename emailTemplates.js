@@ -3,7 +3,7 @@
  * 
  * 4 különböző email sablon tartalmazza:
  * - Sablon A: Digitális Termék 1 (Jegyzetek Egy Idegentől - ID 2)
- * - Sablon B: Digitális Termék 2 (Használati Útmutató Az Élethez - ID 4)
+ * - Sablon B: Digitális Termék 2 (Szintetikus Ember - ID 4)
  * - Sablon C: Digitális Csomag (Mindkét e-könyv - ID 300 vagy mindkét ID 2 + ID 4)
  * - Sablon D: Fizikai Termékek
  */
@@ -234,7 +234,7 @@ function templateDigitalProduct1(orderData, totalAmount, downloadLinks) {
 }
 
 /**
- * SABLON B: Digitális Termék 2 - Használati Útmutató Az Élethez (ID 4)
+ * SABLON B: Digitális Termék 2 - Szintetikus Ember (ID 4)
  */
 function templateDigitalProduct2(orderData, totalAmount, downloadLinks) {
   const { customerData, cart } = orderData;
@@ -252,11 +252,11 @@ function templateDigitalProduct2(orderData, totalAmount, downloadLinks) {
       <!-- Üdvözlés -->
       <h2 style="color: #000000; font-size: 24px; margin-bottom: 10px;">Szia ${customerData.fullName}! 👋</h2>
       <p style="color: #666666; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
-        Köszönjük a vásárlást! A <strong>"Használati Útmutató Az Élethez"</strong> e-könyved letöltésre kész.
+        Köszönjük a vásárlást! A <strong>"Szintetikus Ember"</strong> e-könyved letöltésre kész.
       </p>
       
       <!-- Letöltés Gomb -->
-      ${getDownloadButton(downloadLink, '"Használati Útmutató Az Élethez" Letöltése')}
+      ${getDownloadButton(downloadLink, '"Szintetikus Ember" Letöltése')}
       
       <!-- Figyelmeztetés -->
       <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 25px 0; border-radius: 4px;">
@@ -358,7 +358,7 @@ function templateDigitalBundle(orderData, totalAmount, downloadLinks) {
           ━━━━━━━━━━━━━━━━
         </div>
         
-        ${getDownloadButton(link4, '"Használati Útmutató Az Élethez" Letöltése')}
+        ${getDownloadButton(link4, '"Szintetikus Ember" Letöltése')}
       </div>
       
       <!-- Figyelmeztetés -->

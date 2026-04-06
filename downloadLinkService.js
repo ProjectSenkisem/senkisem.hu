@@ -246,7 +246,7 @@ function getProductFilePath(productId) {
 function getProductFileName(productId) {
   const nameMap = {
     2: 'Senkisem - Jegyzetek egy Idegentől.pdf',
-    4: 'Senkisem - Használati Útmutató az Élethez.pdf'
+    4: 'Senkisem - Szintetikus Ember.pdf'
   };
   
   return nameMap[productId] || 'ebook.pdf';
