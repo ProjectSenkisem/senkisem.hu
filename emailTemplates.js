@@ -11,7 +11,7 @@
 const CONFIG = {
   BRAND_NAME: 'Senkisem',
   TAGLINE: 'Nem egy Brand; Üzenet.',
-  SUPPORT_EMAIL: process.env.RESEND_FROM_EMAIL || 'info@senkisem.com',
+  SUPPORT_EMAIL: process.env.RESEND_FROM_EMAIL || 'info@senkisem.hu',
   CURRENT_YEAR: new Date().getFullYear()
 };
 
