@@ -1774,7 +1774,7 @@
     .sn-footer-links {
 
         position: absolute;
-        top: -400px;        /* videó tetejétől számítva */
+        top: -415px;        /* videó tetejétől számítva */
         left: 1.6rem;
         z-index: 4;         /* overlay (z-index:1) fölé */
     }
@@ -2617,6 +2617,13 @@
 #sn-preloader.hide {
     opacity: 0;
     pointer-events: none;
+}
+@media (max-width: 768px) {
+    .typing {
+        font-size: 0.72rem;
+        line-height: 1.6;
+        min-height: unset;
+    }
 }
 </style>
 
