@@ -297,7 +297,7 @@ app.use(cors());
 // ⚠️ FONTOS: Webhook endpoint-hoz RAW body kell!
 app.use('/webhook/stripe', express.raw({type: 'application/json'}));
 
-app.use(express.json());
+app.use(express.json({ limit: '25mb' }));
 
 // Rate limiting
 const downloadLimiter = rateLimit({
@@ -538,6 +538,50 @@ app.get('/download/:token', downloadLimiter, async (req, res) => {
   } catch (error) {
     console.error('❌ Letöltési hiba:', error);
     res.redirect('/download-error.html?reason=server-error');
+  }
+});
+
+app.post('/api/id-modal-email', async (req, res) => {
+  const { type, subject, html, uploadedFiles, customerEmail } = req.body;
+ 
+  try {
+ 
+    // ── ADMIN EMAIL ──────────────────────────────────────────────────
+    if (type === 'admin') {
+      // base64 képek → Buffer attachments (Resend formátum)
+      const attachments = (uploadedFiles || []).map((f) => ({
+        filename: f.name || 'kep.jpg',
+        content:  Buffer.from(f.base64, 'base64'),
+      }));
+ 
+      await resend.emails.send({
+        from:        `Senkisem <${process.env.RESEND_FROM_EMAIL}>`,
+        to:          ['bellerzoltanezra@gmail.com'],
+        subject:     subject,
+        html:        html,
+        attachments, // képek csatolva, ha vannak
+      });
+ 
+      console.log('✅ [ID Modal] Admin email elküldve');
+    }
+ 
+    // ── VISSZAIGAZOLÓ EMAIL (vevőnek) ────────────────────────────────
+    if (type === 'confirmation' && customerEmail) {
+      await resend.emails.send({
+        from:    `Senkisem <${process.env.RESEND_FROM_EMAIL}>`,
+        to:      [customerEmail],
+        subject: subject,
+        html:    html,
+      });
+ 
+      console.log('✅ [ID Modal] Visszaigazoló email elküldve:', customerEmail);
+    }
+ 
+    res.json({ success: true });
+ 
+  } catch (error) {
+    console.error('❌ [ID Modal] Email küldési hiba:', error);
+    res.status(500).json({ error: error.message });
   }
 });
 

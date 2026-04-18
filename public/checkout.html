@@ -1174,6 +1174,11 @@
     initReveal();
     updateProgress();
   });
+  document.getElementById('terms-agree').addEventListener('change', function() {
+  if (this.checked) {
+    document.getElementById('submit-btn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
 
   // ── PROGRESS BAR ──────────────────────────────────────
   function updateProgress() {

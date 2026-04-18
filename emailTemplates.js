@@ -220,7 +220,7 @@ function templateDigitalProduct1(orderData, totalAmount, downloadLinks) {
       
       <!-- Támogatás -->
       <p style="color: #666666; font-size: 14px; line-height: 1.6; margin-top: 30px;">
-        Segítségre van szükséged? Írj nekünk: <a href="mailto:${CONFIG.SUPPORT_EMAIL}" style="color: #667eea; text-decoration: none; font-weight: 600;">${CONFIG.SUPPORT_EMAIL}</a>
+        Segítségre van szükséged? Írj nekünk: <a href="mailto:info@senkisem.hu" style="color: #667eea; text-decoration: none; font-weight: 600;">${CONFIG.SUPPORT_EMAIL}</a>
       </p>
       
       <p style="color: #333333; font-size: 15px; margin-top: 30px;">
@@ -306,7 +306,7 @@ function templateDigitalProduct2(orderData, totalAmount, downloadLinks) {
       
       <!-- Támogatás -->
       <p style="color: #666666; font-size: 14px; line-height: 1.6; margin-top: 30px;">
-        Segítségre van szükséged? Írj nekünk: <a href="mailto:${CONFIG.SUPPORT_EMAIL}" style="color: #667eea; text-decoration: none; font-weight: 600;">${CONFIG.SUPPORT_EMAIL}</a>
+        Segítségre van szükséged? Írj nekünk: <a href="mailto:info@senkisem.hu" style="color: #667eea; text-decoration: none; font-weight: 600;">${CONFIG.SUPPORT_EMAIL}</a>
       </p>
       
       <p style="color: #333333; font-size: 15px; margin-top: 30px;">
