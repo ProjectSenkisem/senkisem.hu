@@ -1773,17 +1773,21 @@
 
     .sn-footer-links {
         position: absolute;
-        top:-595px           /* ÁSZF és Adatvédelem felkerül a tetejére */
+        top: 1.5rem;        /* videó tetejétől számítva */
+        left: 1.6rem;
+        z-index: 4;         /* overlay (z-index:1) fölé */
     }
 
+
     .sn-footer-center {
-        order: 2;
+        order: 1;
         align-items: flex-start;
         text-align: left;
     }
 
     .sn-footer-copy {
-        order: 3;
+        width: 100%;
+        order: 2;
         text-align: left;
     }
 
@@ -1793,11 +1797,6 @@
     }
 }
 
-@media (max-width: 480px) {
-    .sn-footer-bar {
-        padding: 1.2rem 1.4rem 1.6rem;
-    }
-}
 
 @media (max-width: 768px) {
     .sn-nav-icon {
@@ -3426,7 +3425,7 @@ object-fit: contain;
             <a href="mailto:info@senkisem.hu" class="sn-footer-email">info@senkisem.hu</a>
         </div>
         <div class="sn-footer-copy">
-            © 2026 Senkisem | Minden jog fenntartva
+            © 2026 Senkisem <br> Minden jog fenntartva
         </div>
     </div>
 </footer>
