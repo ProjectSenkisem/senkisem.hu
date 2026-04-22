@@ -4880,8 +4880,8 @@ window.snCloseBooksModal        = snCloseBooksModal;
   function snIdGetSelectedProduct() {
     var ruha = answers.q13;
     if (!ruha) return null;
-    if (ruha === 'Póló')        return ID_PRODUCTS[602];
-    if (ruha === 'Pulóver')     return ID_PRODUCTS[603];
+    if (ruha === 'Póló')         return ID_PRODUCTS[602];
+    if (ruha === 'Pulóver')      return ID_PRODUCTS[603];
     if (ruha === 'Teljes szett') return ID_PRODUCTS[999];
     return null;
   }
@@ -4903,7 +4903,7 @@ window.snCloseBooksModal        = snCloseBooksModal;
     document.getElementById('sn-id-modal-footer').style.display  = 'flex';
     document.querySelectorAll('.sn-id-size-btn').forEach(function (b) { b.classList.remove('selected'); });
 
-    // "Később" lépés resetelése
+    // "Később" / email lépés resetelése
     var laterEmail = document.getElementById('sn-id-later-email');
     if (laterEmail) laterEmail.value = '';
     var laterFeedback = document.getElementById('sn-id-later-feedback');
@@ -4911,7 +4911,11 @@ window.snCloseBooksModal        = snCloseBooksModal;
     var laterActions = document.getElementById('sn-id-later-actions');
     if (laterActions) laterActions.style.display = 'flex';
     var laterBtn = document.getElementById('sn-id-later-submit-btn');
-    if (laterBtn) { laterBtn.disabled = false; laterBtn.textContent = 'Értesítést kérek'; }
+    if (laterBtn) {
+      laterBtn.disabled = false;
+      laterBtn.textContent = 'Értesítést kérek';
+      laterBtn.removeAttribute('data-checkout');
+    }
 
     document.getElementById('sn-id-modal-overlay').classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -4932,7 +4936,7 @@ window.snCloseBooksModal        = snCloseBooksModal;
   }
 
   function snIdModalBack() {
-    if (currentStep > 1)      { currentStep--; }
+    if (currentStep > 1)        { currentStep--; }
     else if (currentStep === 1) { currentStep = 0; }
     snIdUpdateUI();
   }
@@ -5017,8 +5021,8 @@ window.snCloseBooksModal        = snCloseBooksModal;
   function snIdSelectSize(el) {
     document.querySelectorAll('.sn-id-size-btn').forEach(function (b) { b.classList.remove('selected'); });
     el.classList.add('selected');
-    selectedSize  = el.getAttribute('data-size');
-    answers.size  = selectedSize;
+    selectedSize = el.getAttribute('data-size');
+    answers.size = selectedSize;
   }
 
   // ─── CTA ÖSSZEGZÉS RENDER ─────────────────────────────────
@@ -5028,11 +5032,11 @@ window.snCloseBooksModal        = snCloseBooksModal;
     if (!card) return;
 
     var rows = [];
-    if (answers.q1)          rows.push(['Identitás',        answers.q1]);
-    if (answers.q9)          rows.push(['Torzítás',          answers.q9]);
-    if (answers.q13)         rows.push(['Termék',            answers.q13]);
-    if (answers.size)        rows.push(['Méret',             answers.size]);
-    if (answers.uploadCount) rows.push(['Feltöltött kép',    answers.uploadCount + ' db']);
+    if (answers.q1)          rows.push(['Identitás',      answers.q1]);
+    if (answers.q9)          rows.push(['Torzítás',        answers.q9]);
+    if (answers.q13)         rows.push(['Termék',          answers.q13]);
+    if (answers.size)        rows.push(['Méret',           answers.size]);
+    if (answers.uploadCount) rows.push(['Feltöltött kép',  answers.uploadCount + ' db']);
 
     var rowsHtml = rows.map(function (r) {
       return '<div class="sn-id-summary-row">' +
@@ -5072,68 +5076,15 @@ window.snCloseBooksModal        = snCloseBooksModal;
   }
 
   // ─── "MEG AKAROM KAPNI" ───────────────────────────────────
+  // Nem zárja be a modalt, hanem az email bekérő lépésre (STEP 8) visz,
+  // data-checkout="true" flaggel megjelölve, hogy fizetési szándék van.
   function snIdModalCheckout() {
     snIdSaveStep(currentStep);
 
-    var product = snIdGetSelectedProduct();
+    document.getElementById('sn-id-modal-footer').style.display  = 'none';
+    document.getElementById('sn-id-progress-wrap').style.display = 'none';
+    document.getElementById('sn-id-btn-back').style.display      = 'none';
 
-    // 1. Admin email küldés (nem blokkoló)
-    snIdSendAdminEmail(true);
-
-    // 2. Kosárba + sidebar (változatlan logika)
-    if (!product) {
-      snIdModalClose();
-      if (typeof snShowNotification === 'function') {
-        snShowNotification('Hamarosan felvesszük veled a kapcsolatot!', 'ID: Senkisem');
-      }
-      return;
-    }
-
-    var cartItem = {
-      id:        product.id,
-      name:      product.name,
-      price:     product.price,
-      image:     product.image,
-      size:      answers.size || 'M',
-      type:      product.type,
-      isLimited: true,
-      isCustom:  true,
-      idAnswers: {
-        identitas:       answers.q1  || '',
-        torzitas:        answers.q9  || '',
-        hangulatSzoveg:  answers.q2  || '',
-        stilus:          answers.q10 || '',
-        ertelem:         answers.q14 || '',
-      },
-    };
-
-    if (typeof snAddToCart === 'function') {
-      snAddToCart(cartItem);
-    } else {
-      var cart = JSON.parse(localStorage.getItem('sn_cart') || '[]');
-      cart.push(Object.assign({ quantity: 1 }, cartItem));
-      localStorage.setItem('sn_cart', JSON.stringify(cart));
-      localStorage.setItem('cart',    JSON.stringify(cart));
-    }
-
-    snIdModalClose();
-
-    setTimeout(function () {
-      if (typeof snOpenSidebar === 'function') { snOpenSidebar('cart'); }
-    }, 200);
-  }
-
-  // ─── "KÉSŐBB" LOGIKA ──────────────────────────────────────
-
-  /** Átlép a "Később" email bekérő lépésre (STEP 8) */
-  function snIdGoLater() {
-    snIdSaveStep(currentStep);
-
-    // Footer elrejtése (CTA lépésen vagyunk, ott már el van rejtve,
-    // de step 8-on sincs szükség rá)
-    document.getElementById('sn-id-modal-footer').style.display = 'none';
-
-    // Step váltás
     document.querySelectorAll('.sn-id-step').forEach(function (s) { s.classList.remove('active'); });
     var step8 = document.querySelector('.sn-id-step[data-step="8"]');
     if (step8) {
@@ -5144,12 +5095,37 @@ window.snCloseBooksModal        = snCloseBooksModal;
     }
     document.getElementById('sn-id-steps').scrollTop = 0;
 
-    // Progress és back gomb elrejtése
-    document.getElementById('sn-id-progress-wrap').style.display = 'none';
-    document.getElementById('sn-id-btn-back').style.display      = 'none';
+    // Jelöljük hogy ez a checkout ág, nem a "később"
+    var laterBtn = document.getElementById('sn-id-later-submit-btn');
+    if (laterBtn) laterBtn.setAttribute('data-checkout', 'true');
   }
 
-  /** "Értesítést kérek" gomb megnyomva */
+  // ─── "KÉSŐBB" LOGIKA ──────────────────────────────────────
+
+  /** Átlép az email bekérő lépésre (STEP 8), checkout flag nélkül */
+  function snIdGoLater() {
+    snIdSaveStep(currentStep);
+
+    document.getElementById('sn-id-modal-footer').style.display  = 'none';
+    document.getElementById('sn-id-progress-wrap').style.display = 'none';
+    document.getElementById('sn-id-btn-back').style.display      = 'none';
+
+    document.querySelectorAll('.sn-id-step').forEach(function (s) { s.classList.remove('active'); });
+    var step8 = document.querySelector('.sn-id-step[data-step="8"]');
+    if (step8) {
+      step8.classList.add('active');
+      step8.style.animation = 'none';
+      void step8.offsetWidth;
+      step8.style.animation = '';
+    }
+    document.getElementById('sn-id-steps').scrollTop = 0;
+
+    // Biztosan nincs checkout flag
+    var laterBtn = document.getElementById('sn-id-later-submit-btn');
+    if (laterBtn) laterBtn.removeAttribute('data-checkout');
+  }
+
+  /** "Értesítést kérek" gomb megnyomva — mindkét ágban ugyanez fut */
   function snIdLaterSubmit() {
     var emailInput = document.getElementById('sn-id-later-email');
     if (!emailInput) return;
@@ -5160,13 +5136,15 @@ window.snCloseBooksModal        = snCloseBooksModal;
       return;
     }
 
-    var btn = document.getElementById('sn-id-later-submit-btn');
+    var btn        = document.getElementById('sn-id-later-submit-btn');
+    var isCheckout = btn && btn.getAttribute('data-checkout') === 'true';
+
     if (btn) { btn.disabled = true; btn.textContent = 'Küldés…'; }
 
     // Tároljuk a kontakt email-t a válaszok között is
     answers.contactEmail = email;
 
-    var adminPromise = snIdSendAdminEmail(false);
+    var adminPromise = snIdSendAdminEmail(isCheckout);
     var confirmPromise = (window.idModalService)
       ? window.idModalService.sendConfirmationEmail(email)
           .then(function () { console.log('[ID Modal] Visszaigazoló email elküldve:', email); })
@@ -5175,6 +5153,39 @@ window.snCloseBooksModal        = snCloseBooksModal;
 
     Promise.all([adminPromise, confirmPromise])
       .then(function () {
+
+        // Ha checkout ágból jöttünk, kosárba is kerül a termék
+        if (isCheckout) {
+          var product = snIdGetSelectedProduct();
+          if (product) {
+            var cartItem = {
+              id:        product.id,
+              name:      product.name,
+              price:     product.price,
+              image:     product.image,
+              size:      answers.size || 'M',
+              type:      product.type,
+              isLimited: true,
+              isCustom:  true,
+              idAnswers: {
+                identitas:      answers.q1  || '',
+                torzitas:       answers.q9  || '',
+                hangulatSzoveg: answers.q2  || '',
+                stilus:         answers.q10 || '',
+                ertelem:        answers.q14 || '',
+              },
+            };
+            if (typeof snAddToCart === 'function') {
+              snAddToCart(cartItem);
+            } else {
+              var cart = JSON.parse(localStorage.getItem('sn_cart') || '[]');
+              cart.push(Object.assign({ quantity: 1 }, cartItem));
+              localStorage.setItem('sn_cart', JSON.stringify(cart));
+              localStorage.setItem('cart',    JSON.stringify(cart));
+            }
+          }
+        }
+
         // Átlépés a sikeres visszaigazolás lépésre (STEP 9)
         document.querySelectorAll('.sn-id-step').forEach(function (s) { s.classList.remove('active'); });
         var step9 = document.querySelector('.sn-id-step[data-step="9"]');
@@ -5185,6 +5196,14 @@ window.snCloseBooksModal        = snCloseBooksModal;
           step9.style.animation = '';
         }
         document.getElementById('sn-id-steps').scrollTop = 0;
+
+        // Checkout esetén kis késleltetéssel megnyitjuk a kosarat
+        if (isCheckout) {
+          setTimeout(function () {
+            snIdModalClose();
+            if (typeof snOpenSidebar === 'function') { snOpenSidebar('cart'); }
+          }, 2500);
+        }
       })
       .catch(function (err) {
         console.error('[ID Modal] Hiba a küldés során:', err);
@@ -5202,8 +5221,8 @@ window.snCloseBooksModal        = snCloseBooksModal;
       success: { bg: 'rgba(0,255,80,.06)',  border: 'rgba(0,255,80,.25)', text: 'rgba(0,200,60,.9)' },
     };
     var c = colors[type] || colors.warning;
-    el.style.display    = 'block';
-    el.style.marginTop  = '1rem';
+    el.style.display   = 'block';
+    el.style.marginTop = '1rem';
     el.innerHTML =
       '<div style="background:' + c.bg + ';border:1px solid ' + c.border + ';border-radius:2px;' +
       'padding:.8rem 1rem;font-family:\'Space Mono\',monospace;font-size:.65rem;' +
@@ -5301,8 +5320,8 @@ window.snCloseBooksModal        = snCloseBooksModal;
   window.snIdModalCheckout  = snIdModalCheckout;
   window.snIdSelectSize     = snIdSelectSize;
   window.snIdRemoveFile     = snIdRemoveFile;
-  window.snIdGoLater        = snIdGoLater;       // ← ÚJ
-  window.snIdLaterSubmit    = snIdLaterSubmit;   // ← ÚJ
+  window.snIdGoLater        = snIdGoLater;
+  window.snIdLaterSubmit    = snIdLaterSubmit;
 
 })();
 
