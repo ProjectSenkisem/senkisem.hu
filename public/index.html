@@ -2803,37 +2803,6 @@
                         <div class="carousel-cell w-100"></div>
                     </div>
 
-                    <div class="pe-none section scrub-minus" data-function="scrub-cta">
-                        <div class="min-vh-100 position-sticky top-0 d-flex align-items-center justify-content-center ctaImageTrigger">
-                            <div class="position-absolute inset-0 d-flex align-items-center justify-content-center ctaImage bg-black">
-                                <picture class="ratio bg-black min-vh-lg-100-down ctaImage1" style="--bs-aspect-ratio:53%; width: 100%;opacity: 0.5;">
-                                    <source type='image/webp' media='(max-width:960px)' srcset='https://nextnet.ai/wp-content/uploads/2025/03/cta-7-1200x787.jpg.webp'>
-                                    <source type='image/webp' srcset='https://nextnet.ai/wp-content/uploads/2025/03/cta-7.jpg.webp'>
-                                </picture>
-                            </div>
-                            <div class="position-absolute inset-0 d-flex align-items-center justify-content-center">
-                                <picture class="ratio ctaHakkies" style="--bs-aspect-ratio:53%;">
-                                    <div class="inset-0">
-                                        <div class="corner position-absolute border-start border-top"></div>
-                                        <div class="corner position-absolute border-end border-top end-0"></div>
-                                        <div class="corner position-absolute border-start border-bottom bottom-0"></div>
-                                        <div class="corner position-absolute border-end border-bottom bottom-0 end-0"></div>
-                                    </div>
-                                </picture>
-                            </div>
-                            <div class="grid align-items-center position-relative w-100">
-                                <div class="g-start-1 g-col-12">
-                                    <div class="merch-more__typing" style="width:100%; max-width:900px; margin:0 auto; min-height:420px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3rem; padding:0 1rem;">
-                                        <div class="typing" id="typing-text" style="font-family:'Courier New',monospace; font-size:clamp(1.25rem, 2.2vw, 1.75rem); text-transform:uppercase; white-space:pre-wrap; text-align:center; color:#fff; line-height:1.75; min-height:320px; text-shadow:0 0 10px rgba(0,255,255,0.5), 0 0 20px rgba(0,255,255,0.3);">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="min-vh-100 position-relative ctaMarker1 d-none d-lg-block pe-none"></div>
-                        <section class="min-vh-100 position-relative ctaMarker2 d-none d-lg-block pe-none"></section>
-                    </div>
-
                     <div>
                         <h2 class="h3 mb-0 mx-auto lh-1" style="max-width: 20ch">A Senkisem nem csak egy márka;</h2> <br><br>
                         <div class="position-relative">
@@ -2871,211 +2840,7 @@
         </section>
         <!-- END ticker -->
 
-        <!-- SIRNIK TEAM SECTION -->
-        <div id="sirnik-team-host"></div>
-
-        <script>
-        (function() {
-            var host = document.getElementById('sirnik-team-host');
-            var shadow = host.attachShadow({ mode: 'open' });
-            shadow.innerHTML = `
-                <style>
-                    @import url('https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a/css/sirnik.shared.476ad7ad7.min.css');
-                    :host { display: block; width: 100%; background: #000; }
-                    .section_team { margin-top: 0; padding-top: 0; background: #000; }
-                    .team-card_person-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-                    .team-card_person-video { position: relative; overflow: hidden; width: 100%; height: 100%; }
-                    @media (min-width: 992px) {
-                        .team_cards { margin-left: 20% !important; width: 75% !important; }
-                        .team-cards_row { padding-right: 5% !important; }
-                    }
-                    @media (max-width: 991px) {
-                        .team_cards { margin-left: 0 !important; width: 100% !important; }
-                    }
-
-                    .team-card_person-desc {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1.2rem;
-}
-.team-cta-btn {
-    display: inline-block;
-    padding: 1rem 2.2rem;
-    background: transparent;
-    border: 1px solid #000;
-    border-radius: 999px;
-    color: #000;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: transform 0.25s ease;
-    white-space: nowrap;
-}
-.team-cta-btn:hover {
-    transform: scale(1.07);
-}
-
-/* CTA bothbg — mobil fix */
-@media (max-width: 991px) {
-    .ctaImage1 {
-        --bs-aspect-ratio: 100% !important; /* álló arány mobilon */
-        min-height: 100vh;
-        width: 100% !important;
-    }
-
-    .ctaImage1 img {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    /* scrub-chars animáció szöveg mérete mobilon */
-    [scrub-chars-cta] h2 {
-        font-size: clamp(2rem, 8vw, 3.5rem);
-    }
-}
-                </style>
-                <section id="Team-Section" class="section_team">
-                    <div class="team_sticky">
-                        <div class="padding-global is-team">
-                            <div class="team-sticky_top-wrapper">
-                                <div class="team-sticky_top">
-                                    <div class="team-sticky_h2-wrap">
-                                        <h2 data-anim="in" class="h2_team">ID: Senkisem</h2>
-                                        <h2 data-anim="in" class="h2_team is-2"></h2>
-                                    </div>
-                                    <div data-anim="in" class="team_dot"></div>
-                                    <img src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a/695fc1763f7580c1924388f6_team-top-bg.svg" loading="lazy" data-anim="in" alt="" class="team-sticky_top-bg"/>
-                                </div>
-                                <div class="team-sticky-top_desc">
-                                    <div class="hide-landscape"></div>
-                                    <div><p data-anim="in" class="p white">Az arc, ami felismerhetetlenné válik.</p></div>
-                                    <div class="display-flex-0-5rem">
-                                        <p data-split="lines" data-anim="lines" class="p">Mégis teljesen a tiéd.</p>
-                                        <p data-split="lines" data-anim="lines" class="p margin-left margin-53">
-                                            Nincs másolat. <br> Nincs Két egyforma.<br/>
-                                            <p data-split="lines" data-anim="lines" class="p margin-left margin-53">Csak egy létezik belőle:</p>
-                                            <span class="span-white">A te példányod.</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="team-sticky_bottom-wrapper">
-                                <img src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a/695fdffdda5819ab479eceda_team-sticky_bottom-bg.svg" loading="lazy" data-anim="in" alt="" class="team-sticky_bottom-bg"/>
-                                <div class="team-sticky-bottom_desc">
-                                    <div>
-                                        <p data-split="lines" data-anim="lines" class="p">
-                                            <span class="span-white">Minden</span> ruhán,<br/>amit valaha vettél, <br><span class="span-white">valaki más arca volt. </span>
-                                        </p><br>
-                                    </div>
-                                    <div class="display-flex-0-5rem mg-top-0-5">
-                                        <p data-split="lines" data-anim="lines" class="p margin-left margin-100">Egy logó, <br/>Egy márka...</p>
-                                        <p data-split="lines" data-anim="lines" class="p margin-left margin-100"><span class="span-white">Ez más.</span></p>
-                                    </div>
-                                </div>
-                                <div class="team-sticky_h2-wrap is-bottom">
-                                    <h2 data-anim="in" class="h2_team">mert te</h2>
-                                    <h2 data-anim="in" class="h2_team is-3">vagy rajta.</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="team_cards">
-                        <div class="team-cards_row">
-                            <div class="team-cards_column is-1">
-                                <div class="team-card_wrapper">
-                                    <div class="team-card_person-wrapper">
-                                        <div class="team-card_person-video w-background-video w-background-video-atom">
-                                            <video autoplay loop muted playsinline data-object-fit="cover">
-                                                <source src="./assets/img/card1.mp4"/>
-                                                <source src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a%2F695fe82bb2932d7684a801d5_avatar2_webm.webm"/>
-                                            </video>
-                                        </div>
-                                    </div>
-                                    <div class="team-card_person-desc">
-<a href="javascript:void(0)" onclick="window.snIdModalOpen&&window.snIdModalOpen()" class="team-cta-btn">Kreáld magad</a>
-</div>
-                                </div>
-                            </div>
-                            <div class="team-cards_column"></div>
-                            <div class="team-cards_column is-2">
-                                <div class="team-card_wrapper is-2">
-                                    <div class="team-card_person-wrapper">
-                                        <div class="team-card_person-video w-background-video w-background-video-atom">
-                                            <video autoplay loop muted playsinline data-object-fit="cover">
-                                                <source src="./assets/img/card2.mp4"/>
-                                                <source src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a%2F695fe1797a71fe2e3b902764_avatar-1-rotating_webm.webm"/>
-                                            </video>
-                                        </div>
-                                    </div>
-                                    <div class="team-card_person-desc">
-<a href="javascript:void(0)" onclick="window.snIdModalOpen&&window.snIdModalOpen()" class="team-cta-btn">Készítsd el</a>
-</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="team-cards_row is-2">
-                            <div class="team-cards_column is-1">
-                                <div class="team-card_wrapper is-3">
-                                    <div class="team-card_person-wrapper">
-                                        <div class="team-card_person-video w-background-video w-background-video-atom">
-                                            <video autoplay loop muted playsinline data-object-fit="cover">
-                                                <source src="./assets/img/card3.mp4"/>
-                                                <source src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a%2F6960e8951d5da3df551ad0a2_avatar-4_webm.webm"/>
-                                            </video>
-                                        </div>
-                                    </div>
-                                    <div class="team-card_person-desc">
-<a href="javascript:void(0)" onclick="window.snIdModalOpen&&window.snIdModalOpen()" class="team-cta-btn">Megnézem</a>
-</div>
-                                </div>
-                            </div>
-                            <div class="team-cards_column"></div>
-                            <div class="team-cards_column is-2">
-                                <div class="team-card_wrapper is-4">
-                                    <div class="team-card_person-wrapper">
-                                        <div class="team-card_person-video w-background-video w-background-video-atom">
-                                            <video autoplay loop muted playsinline data-object-fit="cover">
-                                                <source src="./assets/img/card4.mp4"/>
-                                                <source src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a%2F6960e77b08248983a3a43fa3_avatar-3_webm.webm"/>
-                                            </video>
-                                        </div>
-                                    </div>
-                                    <div class="team-card_person-desc">
-<a href="javascript:void(0)" onclick="window.snIdModalOpen&&window.snIdModalOpen()" class="team-cta-btn">Megcsinálom</a>
-</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            `;
-            shadow.querySelectorAll('video').forEach(function(video) {
-                video.play().catch(function() {});
-            });
-            window.addEventListener('load', function() {
-                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-                    shadow.querySelectorAll('[data-anim="in"]').forEach(function(el) {
-                        gsap.fromTo(el,
-                            { opacity: 0, y: 40 },
-                            { opacity: 1, y: 0, duration: 1, ease: 'power3.out',
-                              scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
-                            }
-                        );
-                    });
-                }
-            });
-        })();
-        </script>
-
-        <!-- CTA with bothbg — PC: eredeti Next Net scrub | MOBIL: saját sticky scroll -->
-
-<!-- ===== PC VERZIÓ (>= 992px) — EREDETI, VÁLTOZATLAN ===== -->
+        <!-- ===== PC VERZIÓ (>= 992px) — EREDETI, VÁLTOZATLAN ===== -->
 <div class="d-none d-lg-block pe-none section scrub-minus" data-function="scrub-cta">
     <div class="min-vh-100 position-sticky top-0 d-flex align-items-center justify-content-center ctaImageTrigger">
         <div class="position-absolute inset-0 d-flex align-items-center justify-content-center ctaImage bg-black">
@@ -3321,6 +3086,212 @@ object-fit: contain;
 
             </div>
         </section>
+
+        <!-- SIRNIK TEAM SECTION -->
+        <div id="sirnik-team-host"></div>
+
+        <script>
+        (function() {
+            var host = document.getElementById('sirnik-team-host');
+            var shadow = host.attachShadow({ mode: 'open' });
+            shadow.innerHTML = `
+                <style>
+                    @import url('https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a/css/sirnik.shared.476ad7ad7.min.css');
+                    :host { display: block; width: 100%; background: #000; }
+                    .section_team { margin-top: 0; padding-top: 0; background: #000; }
+                    .team-card_person-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+                    .team-card_person-video { position: relative; overflow: hidden; width: 100%; height: 100%; }
+                    @media (min-width: 992px) {
+                        .team_cards { margin-left: 20% !important; width: 75% !important; }
+                        .team-cards_row { padding-right: 5% !important; }
+                    }
+                    @media (max-width: 991px) {
+                        .team_cards { margin-left: 0 !important; width: 100% !important; }
+                    }
+
+                    .team-card_person-desc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.2rem;
+}
+.team-cta-btn {
+    display: inline-block;
+    padding: 1rem 2.2rem;
+    background: transparent;
+    border: 1px solid #000;
+    border-radius: 999px;
+    color: #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.25s ease;
+    white-space: nowrap;
+}
+.team-cta-btn:hover {
+    transform: scale(1.07);
+}
+
+/* CTA bothbg — mobil fix */
+@media (max-width: 991px) {
+    .ctaImage1 {
+        --bs-aspect-ratio: 100% !important; /* álló arány mobilon */
+        min-height: 100vh;
+        width: 100% !important;
+    }
+
+    .ctaImage1 img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* scrub-chars animáció szöveg mérete mobilon */
+    [scrub-chars-cta] h2 {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+    }
+}
+                </style>
+                <section id="Team-Section" class="section_team">
+                    <div class="team_sticky">
+                        <div class="padding-global is-team">
+                            <div class="team-sticky_top-wrapper">
+                                <div class="team-sticky_top">
+                                    <div class="team-sticky_h2-wrap">
+                                        <h2 data-anim="in" class="h2_team">ID: Senkisem</h2>
+                                        <h2 data-anim="in" class="h2_team is-2"></h2>
+                                    </div>
+                                    <div data-anim="in" class="team_dot"></div>
+                                    <img src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a/695fc1763f7580c1924388f6_team-top-bg.svg" loading="lazy" data-anim="in" alt="" class="team-sticky_top-bg"/>
+                                </div>
+                                <div class="team-sticky-top_desc">
+                                    <div class="hide-landscape"></div>
+                                    <div><p data-anim="in" class="p white">Az arc, ami felismerhetetlenné válik.</p></div>
+                                    <div class="display-flex-0-5rem">
+                                        <p data-split="lines" data-anim="lines" class="p">Mégis teljesen a tiéd.</p>
+                                        <p data-split="lines" data-anim="lines" class="p margin-left margin-53">
+                                            Nincs másolat. <br> Nincs Két egyforma.<br/>
+                                            <p data-split="lines" data-anim="lines" class="p margin-left margin-53">Csak egy létezik belőle:</p>
+                                            <span class="span-white">A te példányod.</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-sticky_bottom-wrapper">
+                                <img src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a/695fdffdda5819ab479eceda_team-sticky_bottom-bg.svg" loading="lazy" data-anim="in" alt="" class="team-sticky_bottom-bg"/>
+                                <div class="team-sticky-bottom_desc">
+                                    <div>
+                                        <p data-split="lines" data-anim="lines" class="p">
+                                            <span class="span-white">Minden</span> ruhán,<br/>amit valaha vettél, <br><span class="span-white">valaki más arca volt. </span>
+                                        </p><br>
+                                    </div>
+                                    <div class="display-flex-0-5rem mg-top-0-5">
+                                        <p data-split="lines" data-anim="lines" class="p margin-left margin-100">Egy logó, <br/>Egy márka...</p>
+                                        <p data-split="lines" data-anim="lines" class="p margin-left margin-100"><span class="span-white">Ez más.</span></p>
+                                    </div>
+                                </div>
+                                <div class="team-sticky_h2-wrap is-bottom">
+                                    <h2 data-anim="in" class="h2_team">mert te</h2>
+                                    <h2 data-anim="in" class="h2_team is-3">vagy rajta.</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team_cards">
+                        <div class="team-cards_row">
+                            <div class="team-cards_column is-1">
+                                <div class="team-card_wrapper">
+                                    <div class="team-card_person-wrapper">
+                                        <div class="team-card_person-video w-background-video w-background-video-atom">
+                                            <video autoplay loop muted playsinline data-object-fit="cover">
+                                                <source src="./assets/img/card1.mp4"/>
+                                                <source src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a%2F695fe82bb2932d7684a801d5_avatar2_webm.webm"/>
+                                            </video>
+                                        </div>
+                                    </div>
+                                    <div class="team-card_person-desc">
+<a href="javascript:void(0)" onclick="window.snIdModalOpen&&window.snIdModalOpen()" class="team-cta-btn">Kreáld magad</a>
+</div>
+                                </div>
+                            </div>
+                            <div class="team-cards_column"></div>
+                            <div class="team-cards_column is-2">
+                                <div class="team-card_wrapper is-2">
+                                    <div class="team-card_person-wrapper">
+                                        <div class="team-card_person-video w-background-video w-background-video-atom">
+                                            <video autoplay loop muted playsinline data-object-fit="cover">
+                                                <source src="./assets/img/card2.mp4"/>
+                                                <source src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a%2F695fe1797a71fe2e3b902764_avatar-1-rotating_webm.webm"/>
+                                            </video>
+                                        </div>
+                                    </div>
+                                    <div class="team-card_person-desc">
+<a href="javascript:void(0)" onclick="window.snIdModalOpen&&window.snIdModalOpen()" class="team-cta-btn">Készítsd el</a>
+</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="team-cards_row is-2">
+                            <div class="team-cards_column is-1">
+                                <div class="team-card_wrapper is-3">
+                                    <div class="team-card_person-wrapper">
+                                        <div class="team-card_person-video w-background-video w-background-video-atom">
+                                            <video autoplay loop muted playsinline data-object-fit="cover">
+                                                <source src="./assets/img/card3.mp4"/>
+                                                <source src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a%2F6960e8951d5da3df551ad0a2_avatar-4_webm.webm"/>
+                                            </video>
+                                        </div>
+                                    </div>
+                                    <div class="team-card_person-desc">
+<a href="javascript:void(0)" onclick="window.snIdModalOpen&&window.snIdModalOpen()" class="team-cta-btn">Megnézem</a>
+</div>
+                                </div>
+                            </div>
+                            <div class="team-cards_column"></div>
+                            <div class="team-cards_column is-2">
+                                <div class="team-card_wrapper is-4">
+                                    <div class="team-card_person-wrapper">
+                                        <div class="team-card_person-video w-background-video w-background-video-atom">
+                                            <video autoplay loop muted playsinline data-object-fit="cover">
+                                                <source src="./assets/img/card4.mp4"/>
+                                                <source src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a%2F6960e77b08248983a3a43fa3_avatar-3_webm.webm"/>
+                                            </video>
+                                        </div>
+                                    </div>
+                                    <div class="team-card_person-desc">
+<a href="javascript:void(0)" onclick="window.snIdModalOpen&&window.snIdModalOpen()" class="team-cta-btn">Megcsinálom</a>
+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+            shadow.querySelectorAll('video').forEach(function(video) {
+                video.play().catch(function() {});
+            });
+            window.addEventListener('load', function() {
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    shadow.querySelectorAll('[data-anim="in"]').forEach(function(el) {
+                        gsap.fromTo(el,
+                            { opacity: 0, y: 40 },
+                            { opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+                              scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+                            }
+                        );
+                    });
+                }
+            });
+        })();
+        </script>
+
+        <!-- CTA with bothbg — PC: eredeti Next Net scrub | MOBIL: saját sticky scroll -->
+
+
 
         <!-- WE ARE TICKER -->
 <!-- WE ARE TICKER – JAVÍTOTT VÁLTOZAT -->
