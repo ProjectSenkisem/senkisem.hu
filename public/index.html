@@ -1,294 +1,3529 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Senkisem — Hamarosan</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Senkisem | Custom Clothing, Books, Philosophy</title>
+<link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9GKMR41DYX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9GKMR41DYX');
+</script>
+<meta name="description" content="Senkisem - Not a brand; a message. Hungarian custom clothing and free-to-read books: unique pieces, ID: Senkisem, Notes from a Stranger, Synthetic Human, a philosophical view of identity.">
+<meta name="keywords" content="senkisem, senkisem brand, custom clothing, urban fashion hungary, Synthetic Human, Notes from a Stranger, free ebook, self-discovery book, streetwear budapest">
+<meta name="author" content="Senkisem">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="language" content="English">
+<meta name="geo.region" content="HU">
+<meta name="geo.placename" content="Hungary">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://senkisem.hu/">
+<meta property="og:site_name" content="Senkisem">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Senkisem - Not a Brand; a Message | Custom Clothing, Free Books, Philosophy">
+<meta property="og:description" content="Custom clothing and free-to-read books in one place. Limited pieces and books about self-discovery.">
+<meta property="og:image" content="https://senkisem.hu/img/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Senkisem - Not a Brand; a Message">
+<meta name="twitter:image" content="https://senkisem.hu/img/og-image.jpg">
+<link rel="canonical" href="https://senkisem.hu/">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Senkisem","url":"https://senkisem.hu/","logo":"https://senkisem.hu/img/favicon.svg","description":"Hungarian custom clothing and free-to-read books about self-discovery, with a philosophical view of identity.","email":"info@senkisem.com","sameAs":["https://www.instagram.com/senkisem.hu/","https://www.tiktok.com/@senkisem.hu"]}
+</script>
 
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <!-- Adobe Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/bxm6vfh.css">
+    <!-- Next Net Stylesheets -->
+    <link rel="stylesheet" href="https://nextnet.ai/wp-content/themes/next-net/css/bootstrap.css?ver=1746005940">
+    <link rel="stylesheet" href="https://nextnet.ai/wp-content/themes/next-net/style.css?ver=1745583412">
+    <!-- Next Net Scripts -->
+    <script src="https://nextnet.ai/wp-content/themes/next-net/js/all.js?ver=1745583412"></script>
+    <script src="https://nextnet.ai/wp-content/themes/next-net/js/main.js?ver=1745913787" type="module"></script>
 
+    <!-- Senkisem Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+/* ============================================================
+   ROOT VARIABLES
+============================================================ */
 :root {
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --border: rgba(255,255,255,0.07);
-  --muted: rgba(255,255,255,0.38);
-  --ghost: rgba(255,255,255,0.14);
+    --void: #000000;
+    --primary-dark: #0a0a0a;
+    --secondary-dark: #111111;
+    --glass-white: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.09);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255,255,255,0.55);
+    --text-muted: rgba(255,255,255,0.32);
+    --text-ghost: rgba(255,255,255,0.18);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+    --transition: all 0.35s var(--ease);
 }
 
-html, body {
-  height: 100%;
-  background: #000;
-  color: #fff;
-  font-family: 'Space Mono', monospace;
-  overflow-x: hidden;
+/* ============================================================
+   NAVBAR
+============================================================ */
+.sn-navbar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    padding: 0 2.5rem;
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    transition: background 0.4s ease, backdrop-filter 0.4s ease;
 }
 
-body { display: flex; flex-direction: column; min-height: 100vh; }
-
-/* grain */
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  opacity: 0.032;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px;
+.sn-navbar.scrolled {
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-bottom: 1px solid var(--glass-border);
 }
 
-/* subtle center glow */
-body::after {
-  content: '';
-  position: fixed;
-  width: 900px; height: 500px;
-  top: 40%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse, rgba(255,255,255,0.025) 0%, transparent 70%);
-  pointer-events: none; z-index: 0;
+.sn-navbar-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+    text-decoration: none;
+    flex-shrink: 0;
 }
 
-/* NAV */
-.nav {
-  position: relative; z-index: 10;
-  padding: 2rem 3rem;
-  display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 1px solid var(--border);
-  animation: fadeDown 1s var(--ease) both;
+.sn-navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    list-style: none;
+    flex: 1;
+    justify-content: center;
 }
 
-.nav-brand {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.35rem; letter-spacing: 0.14em;
-  color: #fff; text-decoration: none;
+.sn-navbar-links a {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+    transition: color 0.22s, background 0.22s;
+    white-space: nowrap;
 }
 
-.nav-pill {
-  display: flex; align-items: center; gap: 0.5rem;
-  font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--muted);
-  border: 1px solid var(--border);
-  padding: 0.35rem 0.85rem;
-  border-radius: 2px;
+.sn-navbar-links a:hover {
+    color: var(--text-primary);
 }
 
-.pulse {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: rgba(255,180,0,0.75);
-  animation: blink 2s ease-in-out infinite;
+/* min-width keeps the link group centered now that the cart/wishlist icons are gone */
+.sn-navbar-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    flex-shrink: 0;
+    min-width: 96px;
 }
 
-@keyframes blink {
-  0%,100% { opacity:1; } 50% { opacity:0.25; }
+.sn-nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 0.4rem;
+    background: none;
+    border: none;
 }
 
-/* MAIN */
-main {
-  flex: 1; position: relative; z-index: 1;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 6rem 3rem 4rem;
-  max-width: 860px; margin: 0 auto; width: 100%;
+.sn-nav-hamburger span {
+    display: block;
+    width: 22px; height: 1px;
+    background: var(--text-primary);
+    transition: var(--transition);
 }
 
-.eyebrow {
-  font-size: 0.56rem; letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--ghost);
-  margin-bottom: 2.8rem;
-  display: flex; align-items: center; gap: 1rem;
-  animation: fadeUp 1s var(--ease) 0.1s both;
-}
-.eyebrow::before {
-  content: ''; width: 28px; height: 1px;
-  background: var(--ghost); flex-shrink: 0;
-}
-
-.headline {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(3.4rem, 9vw, 8rem);
-  line-height: 0.88; letter-spacing: -0.025em;
-  margin-bottom: 3.5rem;
-  animation: fadeUp 1s var(--ease) 0.18s both;
-}
-.headline em { font-style: italic; color: var(--muted); }
-
-/* horizontal rule with label */
-.rule {
-  display: flex; align-items: center; gap: 1.5rem;
-  margin-bottom: 3rem;
-  animation: fadeUp 1s var(--ease) 0.28s both;
-}
-.rule-line { flex: 1; height: 1px; background: var(--border); }
-.rule-label {
-  font-size: 0.54rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--ghost); white-space: nowrap;
+.sn-mobile-nav {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    padding: 2rem;
 }
 
-/* BODY TEXT */
-.copy {
-  max-width: 560px;
-  animation: fadeUp 1s var(--ease) 0.36s both;
-}
-.copy p {
-  font-size: 0.86rem; line-height: 2;
-  color: rgba(255,255,255,0.44);
-  margin-bottom: 1.2rem;
-}
-.copy p:last-child { margin-bottom: 0; }
-.copy strong { color: rgba(255,255,255,0.72); font-weight: 700; }
+.sn-mobile-nav.open { display: flex; }
 
-/* STATUS ROW */
-.status-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  margin-top: 4.5rem;
-  background: var(--border);
-  border: 1px solid var(--border);
-  animation: fadeUp 1s var(--ease) 0.46s both;
+.sn-mobile-nav a {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 1.6rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 1.2rem 0;
 }
 
-.status-item {
-  background: #000;
-  padding: 1.5rem 1.8rem;
-  position: relative;
-}
-.status-item::after {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+.sn-mobile-nav a:hover { color: var(--text-primary); }
+
+.sn-mobile-nav-back {
+    position: static;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: var(--text-primary);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.75rem 1.5rem;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    align-self: flex-start;
 }
 
-.s-label {
-  font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--ghost); margin-bottom: 0.65rem;
-  display: flex; align-items: center; gap: 0.4rem;
-}
-.s-label::before { content: '//'; color: rgba(0,200,80,0.35); font-size: 0.6rem; }
-
-.s-val {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.15rem;
-  color: rgba(255,255,255,0.78);
-  line-height: 1.1;
+@media (max-width: 1024px) {
+    .sn-navbar-links { display: none; }
+    .sn-nav-hamburger { display: flex; }
+    .sn-navbar-actions { min-width: 0; }
 }
 
-/* FOOTER */
-footer {
-  position: relative; z-index: 10;
-  border-top: 1px solid var(--border);
-  padding: 1.3rem 3rem;
-  display: flex; justify-content: space-between; align-items: center;
-  gap: 1rem; flex-wrap: wrap;
-  animation: fadeUp 1s var(--ease) 0.56s both;
-}
-
-.foot-copy {
-  font-size: 0.54rem; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--ghost);
-}
-
-.foot-link {
-  font-size: 0.54rem; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--muted);
-  text-decoration: none; transition: color 0.2s;
-  display: flex; align-items: center; gap: 0.4rem;
-}
-.foot-link::after { content: '↗'; font-size: 0.6rem; }
-.foot-link:hover { color: #fff; }
-
-/* BG WORD */
-.bg-word {
-  position: fixed; bottom: -0.08em; left: -0.02em;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(14rem, 30vw, 28rem);
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255,255,255,0.035);
-  line-height: 1; pointer-events: none; user-select: none; z-index: 0;
-  white-space: nowrap;
-}
-
-/* ANIMATIONS */
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(20px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-@keyframes fadeDown {
-  from { opacity:0; transform:translateY(-10px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .nav, footer { padding: 1.4rem 1.6rem; }
-  main { padding: 4rem 1.6rem 3rem; }
-  .status-row { grid-template-columns: 1fr; }
-  .bg-word { font-size: 40vw; }
-}
 @media (max-width: 480px) {
-  .nav-pill { display: none; }
-  footer { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .sn-navbar { padding: 0 1.2rem; }
 }
-</style>
+
+@media (max-width: 768px) {
+    .sn-nav-hamburger span { width: 28px; height: 2px; }
+    .sn-nav-hamburger { gap: 6px; padding: 0.6rem; }
+    .sn-navbar-actions { gap: 0.8rem; }
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.senkisem-hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 4rem 6rem;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+
+@media (min-width: 1025px) {
+    .hero-left {
+        background-image:
+            linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.88) 100%),
+            url('./assets/img/herobg.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}
+
+.hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    color: var(--text-ghost);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.hero-eyebrow::before {
+    content: '';
+    width: 36px; height: 1px;
+    background: var(--text-ghost);
+    display: block;
+}
+
+.hero-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3.5rem, 6vw, 7rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    margin-bottom: 2.5rem;
+    color: var(--text-primary);
+}
+
+.hero-headline em { font-style: italic; color: var(--text-secondary); }
+
+.hero-sub {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 380px;
+    margin-bottom: 3.5rem;
+    font-weight: 300;
+}
+
+.hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+.hero-btn-primary {
+    background: #fff; color: #000;
+    border: none;
+    padding: 0.9rem 2.2rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    border-radius: 3px;
+}
+
+.hero-btn-primary:hover { background: rgba(255,255,255,0.88); transform: translateY(-1px); }
+
+.hero-right { position: relative; overflow: hidden; }
+.hero-stage { position: absolute; inset: 0; }
+.hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
+.hero-slide.active { opacity: 1; }
+
+.hero-slide img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+    filter: brightness(0.72);
+}
+
+.hero-right::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, #000 0%, transparent 28%);
+    z-index: 1; pointer-events: none;
+}
+
+.hero-indicators {
+    position: absolute; bottom: 3rem; right: 3rem;
+    display: flex; gap: 0.5rem; z-index: 5;
+}
+
+.hero-dot {
+    width: 20px; height: 2px;
+    background: rgba(255,255,255,0.22);
+    cursor: pointer; transition: background 0.3s, width 0.3s;
+    border: none;
+}
+.hero-dot.active { width: 40px; background: rgba(255,255,255,0.85); }
+
+.hero-collection-label {
+    position: absolute; top: 50%; right: 3rem;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.28);
+    text-transform: uppercase; z-index: 5;
+    white-space: nowrap; pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+    .senkisem-hero {
+        grid-template-columns: 1fr;
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+    .hero-left {
+        padding: 10rem 2rem 5rem;
+        background-image:
+            linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 60%, #000 100%) !important;
+        z-index: 2;
+        position: relative;
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+    .hero-right {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+    }
+    .hero-right::before { display: none; }
+}
+
+@media (max-width: 480px) {
+    .hero-left { padding: 8rem 1.5rem 4rem; }
+    .hero-headline { font-size: clamp(2.8rem, 12vw, 4rem); }
+    .hero-sub { font-size: 0.92rem; margin-bottom: 2.5rem; }
+}
+
+/* ============================================================
+   SCROLL REVEAL
+============================================================ */
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.45s; }
+
+/* ============================================================
+   COOKIE BANNER
+============================================================ */
+.sn-cookie-banner {
+    position: fixed; bottom: 2rem; left: 2rem; right: 2rem;
+    max-width: 480px; margin: 0 auto;
+    background: rgba(8,8,8,0.96);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px; padding: 2rem; z-index: 4000;
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.5s var(--ease);
+    display: none;
+}
+.sn-cookie-banner.show { display: block; transform: translateY(0); opacity: 1; }
+.sn-cookie-banner.hide { transform: translateY(100px); opacity: 0; }
+
+.sn-cookie-content { display: flex; flex-direction: column; gap: 1.2rem; }
+.sn-cookie-icon { font-size: 1.6rem; text-align: center; opacity: 0.7; }
+.sn-cookie-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); text-align: center; }
+.sn-cookie-text { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; text-align: center; }
+.sn-cookie-buttons { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+
+.sn-cookie-btn {
+    padding: 0.6rem 1.2rem; border-radius: 3px; border: 1px solid transparent;
+    font-size: 0.78rem; font-weight: 500; cursor: pointer; transition: var(--transition);
+    text-transform: uppercase; letter-spacing: 0.06em;
+}
+.sn-cookie-btn-accept { background: var(--text-primary); color: #000; border-color: var(--text-primary); }
+.sn-cookie-btn-accept:hover { background: rgba(255,255,255,0.88); }
+.sn-cookie-btn-decline { background: rgba(255,255,255,0.06); color: var(--text-secondary); border-color: var(--glass-border); }
+.sn-cookie-btn-decline:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+.sn-cookie-btn-necessary { background: transparent; color: var(--text-muted); border-color: rgba(255,255,255,0.08); font-size: 0.73rem; }
+.sn-cookie-btn-necessary:hover { color: var(--text-secondary); }
+
+@media (max-width: 480px) {
+    .sn-cookie-buttons { flex-direction: column; }
+}
+
+/* ============================================================
+   BOOKS INTRO SECTION
+============================================================ */
+.konyv-section {
+    padding: 9rem 0 7rem;
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.02) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(255,255,255,0.015) 0%, transparent 45%),
+        #000;
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--glass-border);
+}
+
+.konyv-bg-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at 50% 50%, black 15%, transparent 70%);
+    z-index: 0;
+}
+
+.konyv-section-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.konyv-section-header { margin-bottom: 4rem; }
+
+.konyv-section-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.22em;
+    color: var(--text-muted); text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+}
+.konyv-section-eyebrow::before {
+    content: ''; width: 30px; height: 1px; background: var(--text-muted);
+}
+
+.konyv-section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 0.92; letter-spacing: -0.025em;
+    color: var(--text-primary); font-weight: 400;
+    margin-bottom: 1.5rem;
+}
+.konyv-section-title em { font-style: italic; color: var(--text-secondary); }
+
+.konyv-section-subtitle {
+    font-size: 0.95rem; color: var(--text-secondary);
+    line-height: 1.75; font-weight: 300;
+    max-width: 480px;
+}
+
+.books-intro-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+}
+
+.books-intro-item {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 2.5rem 2rem;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--glass-border);
+    position: relative; overflow: hidden;
+}
+
+.books-intro-item::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+}
+
+.books-intro-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 0.8rem;
+}
+
+.books-intro-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.4rem, 2.4vw, 2.1rem);
+    line-height: 1.1; color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.books-intro-body {
+    font-size: 0.85rem; color: var(--text-secondary);
+    line-height: 1.7; font-weight: 300;
+}
+
+.books-intro-footer {
+    margin-top: 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 2rem; flex-wrap: wrap;
+}
+
+.books-intro-badges { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+.books-intro-badge {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.6rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 2px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+}
+.books-intro-badge i { color: rgba(255,255,255,0.6); }
+
+@media (max-width: 1024px) {
+    .konyv-section-inner { padding: 0 2rem; }
+}
+
+@media (max-width: 768px) {
+    .konyv-section { padding: 5rem 0 4rem; }
+    .konyv-section-inner { padding: 0 1.5rem; }
+    .konyv-section-header { margin-bottom: 3rem; }
+    .books-intro-panel { grid-template-columns: 1fr; gap: 1.5rem; }
+    .books-intro-footer { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+    .konyv-section-title { font-size: 2.5rem; }
+}
+
+/* ============================================================
+   BOOKS SHOWCASE (bk-*)
+============================================================ */
+.bk-vols { display: flex; flex-direction: column; }
+
+.bk-vol {
+    --acc: 255,255,255;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(260px, 5fr) 7fr;
+    gap: clamp(2rem, 5vw, 5.5rem);
+    align-items: center;
+    padding: 5.5rem 0;
+    border-top: 1px solid var(--glass-border);
+}
+.bk-vol--notes { --acc: 255,70,140; }
+.bk-vol--synth { --acc: 12,236,153; }
+.bk-vol--rev   { grid-template-columns: 7fr minmax(260px, 5fr); }
+.bk-vol--rev .bk-visual { order: 2; }
+
+.bk-visual {
+    position: relative;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 2.2rem;
+}
+.bk-visual::before {
+    content: '';
+    position: absolute; top: 46%; left: 50%;
+    width: 130%; aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(var(--acc), .17), transparent 62%);
+    filter: blur(34px);
+    pointer-events: none;
+}
+.bk-numeral {
+    position: absolute; top: -3rem; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(9rem, 19vw, 17rem);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,.1);
+    pointer-events: none; user-select: none;
+}
+
+.bk-cover {
+    --rot: -3deg; --sc: 1; --rx: 0deg; --ry: 0deg;
+    position: relative; z-index: 2; display: block;
+    width: clamp(210px, 24vw, 340px);
+    aspect-ratio: .705;
+    background: #0c0c0c;
+    transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry)) rotate(var(--rot)) scale(var(--sc));
+    transition: transform .7s var(--ease);
+    box-shadow:
+        0 40px 90px rgba(0,0,0,.8),
+        0 0 0 1px rgba(255,255,255,.14),
+        0 0 90px rgba(var(--acc), .13);
+}
+.bk-vol--rev .bk-cover { --rot: 3deg; }
+.bk-cover:hover { --rot: 0deg; --sc: 1.04; }
+.bk-cover img {
+    position: absolute; inset: 0; z-index: 1;
+    width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.bk-cover-fb {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem; text-align: center;
+    font-family: 'DM Serif Display', serif; font-size: 1.7rem; line-height: 1.05;
+    color: var(--text-secondary);
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+.bk-peek {
+    position: relative; z-index: 2;
+    width: min(100%, 340px);
+    padding: 1.1rem 1.3rem;
+    border: 1px solid var(--glass-border);
+    border-left: 2px solid rgba(var(--acc), .7);
+    background: rgba(255,255,255,.025);
+    font-family: 'Space Mono', monospace;
+    font-size: .64rem; letter-spacing: .12em; text-transform: uppercase;
+    line-height: 1.9; color: var(--text-secondary);
+}
+.bk-peek small {
+    display: block; margin-bottom: .5rem;
+    font-size: .56rem; letter-spacing: .2em; color: rgba(var(--acc), .85);
+}
+.bk-peek--q {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: 1.25rem; letter-spacing: 0; text-transform: none; line-height: 1.25;
+    color: rgba(255,255,255,.88);
+}
+.bk-peek--q small { font-family: 'Space Mono', monospace; font-style: normal; }
+.bk-cursor {
+    display: inline-block; width: .55em; height: 1em;
+    margin-left: .3em; vertical-align: -.15em;
+    background: rgba(var(--acc), .9);
+    animation: bkBlink 1.1s steps(1) infinite;
+}
+@keyframes bkBlink { 50% { opacity: 0; } }
+
+.bk-info { position: relative; z-index: 2; }
+
+.bk-label {
+    display: flex; align-items: center; flex-wrap: wrap; gap: .9rem;
+    margin-bottom: 1.4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: .62rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--text-muted);
+}
+.bk-chip {
+    padding: .28rem .65rem;
+    border: 1px solid rgba(var(--acc), .35);
+    border-radius: 2px;
+    color: rgba(var(--acc), .9);
+    font-size: .56rem;
+}
+.bk-title {
+    font-family: 'DM Serif Display', serif; font-weight: 400;
+    font-size: clamp(2.5rem, 4.8vw, 4.8rem);
+    line-height: .95; letter-spacing: -.025em;
+    color: var(--text-primary);
+    margin: 0 0 1.6rem;
+}
+.bk-hook {
+    margin: 0 0 1.8rem; padding-left: 1.2rem;
+    border-left: 1px solid rgba(var(--acc), .6);
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: clamp(1.15rem, 1.8vw, 1.6rem); line-height: 1.3;
+    color: rgba(255,255,255,.82);
+    max-width: 34ch;
+}
+.bk-text {
+    font-size: .95rem; line-height: 1.8; font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 56ch; margin: 0 0 1.1rem;
+}
+.bk-text strong { color: var(--text-primary); font-weight: 400; }
+.bk-for {
+    margin: 1.6rem 0 2.2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: .64rem; letter-spacing: .1em; text-transform: uppercase;
+    line-height: 1.8; color: var(--text-muted);
+}
+.bk-for b { color: rgba(var(--acc), .9); font-weight: 400; margin-right: .6rem; }
+
+.bk-specs {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    margin: 0 0 2rem; max-width: 520px;
+    border-top: 1px solid var(--glass-border);
+}
+.bk-spec { padding: 1.1rem 0 0; }
+.bk-spec b {
+    display: block;
+    font-family: 'DM Serif Display', serif; font-weight: 400;
+    font-size: 2.3rem; line-height: 1; letter-spacing: -.02em;
+    color: var(--text-primary);
+}
+.bk-spec span {
+    display: block; margin-top: .45rem;
+    font-family: 'Space Mono', monospace;
+    font-size: .55rem; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.bk-toc {
+    list-style: none; margin: 0 0 2.4rem; padding: 0;
+    display: grid; grid-template-columns: 1fr 1fr; column-gap: 2.5rem;
+    max-width: 640px;
+}
+.bk-toc li {
+    display: flex; align-items: baseline; gap: .8rem;
+    padding: .7rem 0;
+    border-bottom: 1px solid var(--glass-border);
+    font-size: .82rem; font-weight: 300; line-height: 1.35;
+    color: var(--text-secondary);
+}
+.bk-toc b {
+    min-width: 2.2rem;
+    font-family: 'Space Mono', monospace; font-weight: 400;
+    font-size: .56rem; letter-spacing: .14em;
+    color: rgba(var(--acc), .85);
+}
+.bk-toc em {
+    margin-left: auto; font-style: normal;
+    font-family: 'Space Mono', monospace; font-size: .56rem;
+    color: var(--text-muted);
+}
+
+.bk-cta-row { display: flex; align-items: center; flex-wrap: wrap; gap: 1.4rem; }
+.bk-cta-note {
+    font-family: 'Space Mono', monospace;
+    font-size: .58rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.bk-pick {
+    margin-top: 1rem;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 5rem;
+}
+.bk-pick-title {
+    font-family: 'DM Serif Display', serif; font-weight: 400;
+    font-size: clamp(2rem, 4vw, 3.6rem);
+    line-height: .98; letter-spacing: -.02em;
+    margin: 0 0 3rem; color: var(--text-primary);
+}
+.bk-pick-title em { font-style: italic; color: var(--text-secondary); }
+.bk-pick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.bk-pick-item {
+    --acc: 255,255,255;
+    position: relative; overflow: hidden;
+    padding: 2.4rem 2rem;
+    background: rgba(255,255,255,.025);
+    border: 1px solid var(--glass-border);
+}
+.bk-pick-item.n { --acc: 255,70,140; }
+.bk-pick-item.s { --acc: 12,236,153; }
+.bk-pick-item::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(var(--acc), .55), transparent);
+}
+.bk-pick-item small {
+    display: block; margin-bottom: .9rem;
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+    color: rgba(var(--acc), .85);
+}
+.bk-pick-item h4 {
+    font-family: 'DM Serif Display', serif; font-weight: 400;
+    font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.1;
+    margin: 0 0 .9rem; color: var(--text-primary);
+}
+.bk-pick-item p {
+    margin: 0; font-size: .86rem; line-height: 1.7; font-weight: 300;
+    color: var(--text-secondary);
+}
+.bk-pick-foot {
+    margin: 2.2rem 0 0; text-align: center;
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    color: var(--text-secondary);
+}
+
+@media (max-width: 900px) {
+    .bk-vol, .bk-vol--rev { grid-template-columns: 1fr; padding: 4rem 0; gap: 3rem; }
+    .bk-vol--rev .bk-visual { order: 0; }
+    .bk-numeral { top: -1.5rem; }
+    .bk-cover { width: min(64vw, 300px); }
+    .bk-pick-grid { grid-template-columns: 1fr; gap: 1rem; }
+}
+@media (max-width: 520px) {
+    .bk-toc { grid-template-columns: 1fr; }
+    .bk-spec b { font-size: 1.9rem; }
+    .bk-pick { padding-top: 3.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .bk-cursor { animation: none; }
+    .bk-cover { transition: none; }
+}
+
+/* ============================================================
+   WE ARE TICKER
+============================================================ */
+.we-are-section {
+    overflow: hidden;
+    padding: 1rem 0;
+    background: #000;
+    position: relative;
+}
+
+.we-are-track {
+    display: flex; gap: 1rem;
+    white-space: nowrap; will-change: transform;
+    position: relative; z-index: 1;
+}
+
+.we-are-track span.solid {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    color: rgba(255,255,255,0.9);
+    text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0;
+}
+
+.we-are-track span.outline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.38);
+    text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0;
+}
+
+/* ============================================================
+   STATS SECTION
+============================================================ */
+.sn-stats-section {
+    padding: 8rem 0;
+    background:
+        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.02) 0%, transparent 60%),
+        linear-gradient(180deg, #000 0%, #050505 50%, #000 100%);
+    border-top: 1px solid var(--glass-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.sn-stats-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.12) 30%, rgba(255,255,255,0.12) 70%, transparent);
+}
+
+.sn-stats-ambient {
+    position: absolute; inset: 0; pointer-events: none;
+}
+
+.sn-stats-ambient::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 300px;
+    top: 50%; left: 30%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse, rgba(0,255,200,0.04) 0%, transparent 65%);
+    filter: blur(80px);
+}
+
+.sn-stats-ambient::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 250px;
+    top: 50%; left: 70%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse, rgba(255,0,120,0.04) 0%, transparent 65%);
+    filter: blur(60px);
+}
+
+.sn-stats-inner {
+    max-width: 1200px; margin: 0 auto;
+    padding: 0 3rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative; z-index: 1;
+}
+
+.sn-stat-item {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-right: 1px solid var(--glass-border);
+    position: relative;
+}
+
+.sn-stat-item:last-child { border-right: none; }
+
+.sn-stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 1px; height: 30px;
+    background: linear-gradient(to bottom, transparent, var(--glass-border));
+}
+
+.sn-stat-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sn-stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* ============================================================
+   SOCIAL SECTION
+============================================================ */
+.sn-social-section {
+    padding: 5rem 0 4rem;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.sn-social-section-label {
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+}
+
+.sn-social-section-label::before,
+.sn-social-section-label::after {
+    content: '';
+    width: 60px; height: 1px;
+    background: var(--glass-border);
+}
+
+.sn-social-icons-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding: 0 2rem;
+}
+
+.sn-social-icon-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.8rem 2.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    transition: all 0.4s var(--ease);
+    min-width: 120px;
+    opacity: 0;
+    transform: translateY(24px);
+}
+
+.sn-social-icon-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sn-social-icon-card:hover {
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+    color: var(--text-primary);
+    transform: translateY(-4px);
+}
+
+.sn-social-icon-card.tiktok:hover { border-color: rgba(0,255,200,0.4); box-shadow: 0 0 30px rgba(0,255,200,0.06); }
+.sn-social-icon-card.instagram:hover { border-color: rgba(255,100,150,0.4); box-shadow: 0 0 30px rgba(255,100,150,0.06); }
+.sn-social-icon-card.x-twitter:hover { border-color: rgba(255,255,255,0.4); box-shadow: 0 0 30px rgba(255,255,255,0.04); }
+.sn-social-icon-card.threads:hover { border-color: rgba(150,150,255,0.4); box-shadow: 0 0 30px rgba(150,150,255,0.06); }
+
+.sn-social-icon-card svg {
+    width: 28px; height: 28px;
+    fill: currentColor;
+}
+
+.sn-social-icon-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.sn-social-icon-card:nth-child(1) { transition-delay: 0.05s; }
+.sn-social-icon-card:nth-child(2) { transition-delay: 0.15s; }
+.sn-social-icon-card:nth-child(3) { transition-delay: 0.25s; }
+.sn-social-icon-card:nth-child(4) { transition-delay: 0.35s; }
+
+@media (max-width: 768px) {
+    .sn-stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .sn-stat-item:nth-child(2) { border-right: none; }
+    .sn-stat-item:nth-child(3) { border-right: 1px solid var(--glass-border); }
+    .sn-social-icons-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .sn-social-icon-card { min-width: unset; }
+}
+
+@media (max-width: 480px) {
+    .sn-stats-inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 0 1.5rem;
+    }
+    .sn-stat-item {
+        padding: 2rem 1rem;
+        border-right: none;
+    }
+    .sn-stat-item:nth-child(odd) { border-right: 1px solid var(--glass-border); }
+    .sn-stat-item:nth-child(1),
+    .sn-stat-item:nth-child(2) { border-bottom: 1px solid var(--glass-border); }
+}
+
+/* ============================================================
+   FOOTER  (videó javítva: a konténer kitölti a footert,
+   a videó középre igazítva mindig cover)
+============================================================ */
+.sn-footer {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    min-height: 520px;
+    max-height: 900px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: #000;
+    isolation: isolate;
+}
+
+.sn-footer-video-container {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.sn-footer-video {
+    position: absolute !important;
+    top: 50% !important; left: 50% !important;
+    width: 100% !important; height: 100% !important;
+    min-width: 100% !important; min-height: 100% !important;
+    max-width: none !important; max-height: none !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    transform: translate(-50%, -50%) scale(1.06) !important;
+    z-index: 0;
+}
+.sn-footer-video.mobile-video { display: none; }
+@media (max-width: 768px) {
+    .sn-footer-video.desktop-video { display: none; }
+    .sn-footer-video.mobile-video  { display: block; }
+}
+
+.sn-footer-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0.25) 40%,
+        rgba(0,0,0,0.68) 100%
+    );
+    z-index: 1;
+}
+
+.sn-footer-bar {
+    position: relative;
+    z-index: 3;
+    padding: 2rem 3rem 2.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.sn-footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.sn-footer-links a,
+.sn-footer-email {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    transition: color 0.25s ease;
+    line-height: 1.4;
+}
+
+.sn-footer-links a:hover,
+.sn-footer-email:hover {
+    color: rgba(255,255,255,0.9);
+}
+
+.sn-footer-center {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.sn-footer-col-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 0.1rem;
+}
+
+.sn-footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    text-align: right;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .sn-footer {
+        height: 82vh;
+        min-height: 580px;
+    }
+
+    .sn-footer-bar {
+        padding: 1.4rem 1.6rem 1.8rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.6rem;
+    }
+
+    .sn-footer-links {
+        position: absolute;
+        top: -415px;
+        left: 1.6rem;
+        z-index: 4;
+    }
+
+    .sn-footer-center {
+        order: 1;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .sn-footer-copy {
+        width: 100%;
+        order: 2;
+        text-align: left;
+    }
+
+    .sn-footer-links a,
+    .sn-footer-email {
+        font-size: 0.82rem;
+    }
+}
+
+/* ============================================================
+   SENKISEM — WORD PLANET
+============================================================ */
+
+.sn-word-section {
+    position: relative;
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at center,
+            rgba(255,255,255,0.02) 0%,
+            rgba(120,100,180,0.014) 30%,
+            transparent 65%),
+        #000;
+    color: #fff;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sn-word-inner {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sn-word-stage {
+    --r: 300px;
+    position: relative;
+    width: min(1100px, 94vw);
+    height: min(760px, 82vh);
+}
+
+.sn-sphere-wrap {
+    position: absolute;
+    inset: 0;
+    perspective: 1500px;
+    perspective-origin: 50% 50%;
+    z-index: 1;
+}
+
+.sn-sphere {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 0; height: 0;
+    transform-style: preserve-3d;
+}
+
+.sn-word-secondary {
+    position: absolute;
+    left: 0; top: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    letter-spacing: .03em;
+    white-space: nowrap;
+    color: #fff;
+    opacity: 0;
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+    will-change: opacity, transform;
+    pointer-events: none;
+}
+
+.sn-word-center {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    pointer-events: none;
+}
+
+.sn-word-center::before {
+    content: '';
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 150%; height: 190%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse at center,
+        rgba(0,0,0,.88) 0%,
+        rgba(0,0,0,.65) 40%,
+        transparent 72%);
+    z-index: -1;
+}
+
+.sn-word-main {
+    margin: 0;
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(4.2rem, 12vw, 11.5rem);
+    line-height: .85;
+    letter-spacing: -.055em;
+    white-space: nowrap;
+    color: #fff;
+    text-shadow:
+        0 0 30px rgba(255,255,255,.14),
+        0 0 90px rgba(255,255,255,.06);
+}
+
+.sn-word-caption {
+    margin-top: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .45rem;
+}
+
+.sn-cap-split {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.6vw, 2.3rem);
+    letter-spacing: .02em;
+    color: rgba(255,255,255,.92);
+}
+
+.sn-cap-meaning {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(.68rem, 1vw, .9rem);
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.6);
+    white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+    .sn-word-section,
+    .sn-word-inner { min-height: 90vh; }
+
+    .sn-word-stage { width: 100vw; height: 70vh; }
+
+    .sn-word-main { font-size: clamp(3.2rem, 17vw, 6rem); }
+    .sn-cap-meaning { font-size: .6rem; letter-spacing: .12em; }
+}
+
+/* ============================================================
+   MEANING MORPH — scroll-driven, pinned
+============================================================ */
+.sn-morph {
+    position: relative;
+    margin-top: 8rem;
+    height: 440vh;
+}
+
+.sn-morph-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.5rem, 5vh, 3.5rem);
+    padding: 64px 1.5rem 0;
+}
+
+.sn-morph-stage {
+    position: relative;
+    width: 100%;
+    height: clamp(5rem, 15vw, 10rem);
+    perspective: 1200px;
+}
+
+.sn-morph-cube {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.sn-morph-word {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+    will-change: transform, opacity, filter;
+}
+
+.sn-morph-word .h1 {
+    display: block;
+    margin: 0;
+    white-space: nowrap;
+    line-height: 1;
+    font-size: clamp(2.4rem, 8.5vw, 6.5rem) !important;
+}
+
+.sn-morph-dots {
+    display: flex;
+    gap: .55rem;
+}
+.sn-morph-dots i {
+    width: 18px; height: 2px;
+    background: rgba(255,255,255,.2);
+    transition: width .4s ease, background .4s ease;
+}
+.sn-morph-dots i.on {
+    width: 36px;
+    background: rgba(255,255,255,.85);
+}
+
+@media (max-width: 700px) {
+    .sn-morph { margin-top: 5rem; }
+}
+/* ============================================================
+   PRELOADER
+============================================================ */
+#sn-preloader { transition: opacity 0.7s ease; }
+#sn-preloader.hide { opacity: 0; pointer-events: none; }
+
+/* ===== SUPPORT (navbar) ===== */
+.sn-support{
+    font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.12em;
+    color:#e0212b;text-decoration:none;display:inline-flex;align-items:center;gap:.55rem;
+    text-shadow:0 0 18px rgba(224,33,43,.35);transition:color .25s,text-shadow .25s;white-space:nowrap;
+}
+.sn-support::before{
+    content:'';width:7px;height:7px;border-radius:50%;background:#e0212b;
+    box-shadow:0 0 10px #e0212b;animation:snPulse 2.4s ease-in-out infinite;
+}
+.sn-support:hover{color:#ff4350;text-shadow:0 0 26px rgba(255,67,80,.6)}
+@keyframes snPulse{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}
+@media(max-width:480px){.sn-support{font-size:1.1rem}}
+
+/* ===== HERO SCROLL HINT ===== */
+.hero-scroll{
+    display:inline-flex;flex-direction:column;align-items:center;gap:.7rem;
+    font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+    color:rgba(255,255,255,.38);text-decoration:none;animation:snBob 2.6s ease-in-out infinite;
+}
+.hero-scroll i{
+    width:9px;height:9px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;
+    transform:rotate(45deg);margin-left:0px;
+}
+@keyframes snBob{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(9px);opacity:1}}
+
+/* ===== HERO – MOBIL (kép tölti ki, szöveg a képen) ===== */
+@media (max-width:1024px){
+    .senkisem-hero{display:block;position:relative;min-height:100svh}
+    .hero-right{position:absolute;inset:0;height:auto;min-height:0;z-index:1}
+    .hero-right::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+        background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.6) 34%,rgba(0,0,0,.12) 66%,rgba(0,0,0,.4) 100%)}
+    .hero-slide.active img{animation:snKen 9s ease-out forwards}
+    .hero-left{position:relative;z-index:3;min-height:100svh!important;margin-top:0;
+        padding:0 1.6rem 2.6rem!important;justify-content:flex-end;background:none!important}
+    .hero-eyebrow{margin-bottom:1.2rem}
+    .hero-sub{max-width:none;font-size:.95rem;margin-bottom:1.8rem}
+    .hero-indicators{right:auto;left:1.6rem;top:5.2rem;bottom:auto}
+    .hero-collection-label{top:5.2rem;right:1.6rem;left:auto;transform:none}
+}
+@keyframes snKen{from{transform:scale(1.14)}to{transform:scale(1)}}
+
+/* ===== SOCIAL ===== */
+.sn-social-icon-card.instagram:hover{border-color:rgba(70,150,255,.55);box-shadow:0 0 30px rgba(70,150,255,.14);color:#78b0ff}
+.sn-social-icon-card.youtube:hover{border-color:rgba(255,45,45,.55);box-shadow:0 0 30px rgba(255,45,45,.14);color:#ff5252}
+@media(max-width:768px){
+    .sn-social-icons-row{display:flex;flex-wrap:nowrap;justify-content:center;gap:.7rem;max-width:none;padding:0 1rem;margin:0}
+    .sn-social-icon-card{flex:1 1 0;min-width:0;max-width:112px;padding:1.1rem .4rem}
+    .sn-social-icon-card svg{width:22px;height:22px}
+    .sn-social-icon-name{font-size:.52rem;letter-spacing:.1em}
+}
+
+/* ===== ID TURNTABLE ===== */
+.tt-scene{position:relative;height:420vh;background:#000}
+.tt-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:
+    radial-gradient(ellipse at 50% 58%,rgba(255,255,255,.07),transparent 60%),#000;color:#fff}
+.tt-label{position:absolute;top:92px;left:0;right:0;text-align:center;z-index:5;
+    font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.tt-stage{position:absolute;inset:140px 0 150px;perspective:1400px;display:flex;align-items:center;justify-content:center}
+.tt-img{position:absolute;max-height:100%;max-width:min(88vw,720px);object-fit:contain;
+    will-change:transform,opacity,filter;filter:drop-shadow(0 40px 60px rgba(0,0,0,.8))}
+.tt-floor{position:absolute;left:50%;bottom:140px;width:min(70vw,560px);height:26px;transform:translateX(-50%);
+    background:radial-gradient(ellipse,rgba(255,255,255,.18),transparent 70%);filter:blur(8px)}
+.tt-hud{position:absolute;left:0;right:0;bottom:36px;z-index:5;display:flex;flex-direction:column;align-items:center;gap:.9rem}
+.tt-deg{font-family:'DM Serif Display',serif;font-size:clamp(2.6rem,7vw,5rem);line-height:1;letter-spacing:-.03em}
+.tt-name{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.tt-ticks{display:flex;gap:.55rem}
+.tt-ticks i{width:18px;height:2px;background:rgba(255,255,255,.2);transition:width .4s,background .4s}
+.tt-ticks i.on{width:36px;background:rgba(255,255,255,.85)}
+@media(max-width:700px){.tt-stage{inset:130px 0 140px}.tt-label{top:84px;font-size:.58rem}}
+
+@media(max-width:700px){.tt-stage{inset:130px 0 140px}.tt-label{top:84px;font-size:.58rem}}
+
+/* ===== ID MORPH ===== */
+.mm-scene{position:relative;height:420vh;background:#000}
+.mm-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;color:#fff;
+    background:radial-gradient(ellipse at 50% 55%,rgba(255,255,255,.06),transparent 62%),#000}
+.mm-label{position:absolute;top:92px;left:0;right:0;text-align:center;z-index:5;
+    font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.mm-stage{position:absolute;inset:130px 0 160px;display:flex;align-items:center;justify-content:center}
+.mm-frame{position:relative;width:min(90vw,760px);height:100%}
+.mm-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;will-change:clip-path,filter,transform}
+.mm-scan{position:absolute;top:0;bottom:0;width:2px;left:0;background:#fff;opacity:0;z-index:3;
+    box-shadow:0 0 18px 4px rgba(255,255,255,.55)}
+.mm-hud{position:absolute;left:0;right:0;bottom:34px;z-index:5;display:flex;flex-direction:column;align-items:center;gap:.8rem}
+.mm-count{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,6vw,4rem);line-height:1;letter-spacing:-.03em}
+.mm-count small{font-size:.4em;color:rgba(255,255,255,.4);margin-left:.4em}
+.mm-name{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.mm-ticks{display:flex;gap:.55rem}
+.mm-ticks i{width:18px;height:2px;background:rgba(255,255,255,.2);transition:width .4s,background .4s}
+.mm-ticks i.on{width:36px;background:rgba(255,255,255,.85)}
+@media(max-width:700px){.mm-stage{inset:120px 0 150px}.mm-label{top:84px;font-size:.58rem}}
+
+/* ===== LANGUAGE SWITCH (navbar) ===== */
+.sn-langs{display:flex;gap:6px;align-items:center;margin-left:.4rem}
+.sn-flag{width:34px;height:34px;padding:3px;border-radius:50%;border:2px solid transparent;
+    background:none;opacity:.5;cursor:pointer;transition:opacity .2s}
+.sn-flag svg{display:block;width:100%;height:100%;border-radius:50%}
+.sn-flag[aria-pressed="true"]{opacity:1;border-color:#fff}
+.sn-flag:hover{opacity:.9}
+.sn-flag:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media(max-width:768px){.sn-navbar-actions{gap:.6rem}}
+@media(max-width:480px){
+    .sn-langs{gap:4px;margin-left:0}
+    .sn-flag{width:28px;height:28px;padding:2px}
+    .sn-navbar-actions{gap:.45rem}
+}
+
+    </style>
 </head>
-<body>
+<body data-barba="wrapper" data-scrolling-started="false" data-scrolling-direction="up" body-transition-background class="first-load">
 
-<div class="bg-word">SOON</div>
+<!-- ============================================================
+     PRELOADER
+============================================================ -->
+<div id="sn-preloader" style="
+    position: fixed; inset: 0; z-index: 99999;
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+">
+    <div id="sn-preloader-text" style="
+        font-size: clamp(2.2rem, 8vw, 5rem);
+        color: #fff;
+        letter-spacing: 0.08em;
+        transition: opacity 0.18s ease, transform 0.18s ease;
+        user-select: none;
+        text-align: center;
+        line-height: 1;
+    ">Senkisem</div>
+</div>
 
-<nav class="nav">
-  <a href="#" class="nav-brand">Senkisem</a>
-  <div class="nav-pill">
-    <div class="pulse"></div>
-    Gyártás alatt
-  </div>
+<script>
+(function() {
+    var fonts = [
+        { family: "'Bebas Neue', sans-serif",        weight: 900, style: 'normal',  spacing: '0.25em',  size: 'clamp(3rem, 10vw, 6rem)' },
+        { family: "'DM Serif Display', serif",       weight: 400, style: 'italic',  spacing: '-0.02em', size: 'clamp(2.5rem, 9vw, 5.5rem)' },
+        { family: "'Playfair Display', serif",       weight: 700, style: 'normal',  spacing: '0.08em',  size: 'clamp(2.8rem, 9vw, 5.8rem)' },
+        { family: "'Space Mono', monospace",         weight: 700, style: 'normal',  spacing: '0.18em',  size: 'clamp(1.8rem, 6vw, 4rem)' },
+        { family: "'Bebas Neue', sans-serif",        weight: 400, style: 'normal',  spacing: '0.05em',  size: 'clamp(4rem, 13vw, 8rem)' },
+        { family: "'DM Serif Display', serif",       weight: 400, style: 'normal',  spacing: '-0.03em', size: 'clamp(3.5rem, 11vw, 7rem)' },
+        { family: "'Playfair Display', serif",       weight: 400, style: 'italic',  spacing: '0.12em',  size: 'clamp(2.2rem, 7vw, 4.5rem)' },
+        { family: "'Space Grotesk', sans-serif",     weight: 300, style: 'normal',  spacing: '0.35em',  size: 'clamp(1.6rem, 5vw, 3.5rem)' },
+        { family: "'Space Grotesk', sans-serif",     weight: 700, style: 'normal',  spacing: '0.02em',  size: 'clamp(3rem, 10vw, 6.5rem)' },
+        { family: "'Space Mono', monospace",         weight: 400, style: 'normal',  spacing: '0.08em',  size: 'clamp(2rem, 7vw, 4.5rem)' },
+        { family: "'Bebas Neue', sans-serif", weight: 700, style: 'normal', spacing: '0.15em', size: 'clamp(3.8rem, 12vw, 7.2rem)' },
+        { family: "'DM Serif Display', serif", weight: 700, style: 'italic', spacing: '-0.04em', size: 'clamp(2.9rem, 9.5vw, 6rem)' },
+        { family: "'Playfair Display', serif", weight: 900, style: 'normal', spacing: '0.22em', size: 'clamp(2.6rem, 8.5vw, 5.4rem)' },
+        { family: "'Space Grotesk', sans-serif", weight: 500, style: 'normal', spacing: '0.28em', size: 'clamp(2.1rem, 7vw, 4.8rem)' },
+        { family: "'Space Mono', monospace", weight: 700, style: 'italic', spacing: '0.12em', size: 'clamp(1.95rem, 6.5vw, 4.2rem)' },
+        { family: "'Bebas Neue', sans-serif", weight: 900, style: 'normal', spacing: '0.38em', size: 'clamp(4.2rem, 14vw, 8.5rem)' },
+        { family: "'Inter', sans-serif", weight: 900, style: 'normal', spacing: '0.06em', size: 'clamp(2.7rem, 9vw, 5.7rem)' },
+        { family: "'DM Serif Display', serif", weight: 400, style: 'italic', spacing: '0.04em', size: 'clamp(3.3rem, 10.5vw, 6.8rem)' },
+        { family: "'Space Grotesk', sans-serif", weight: 600, style: 'normal', spacing: '-0.01em', size: 'clamp(3.1rem, 10vw, 6.3rem)' },
+        { family: "'Playfair Display', serif", weight: 700, style: 'italic', spacing: '0.18em', size: 'clamp(2.4rem, 8vw, 5.1rem)' }
+    ];
+
+    var el    = document.getElementById('sn-preloader-text');
+    var idx   = 0;
+    var total = fonts.length;
+
+    function applyFont(f) {
+        el.style.fontFamily    = f.family;
+        el.style.fontWeight    = f.weight;
+        el.style.fontStyle     = f.style;
+        el.style.letterSpacing = f.spacing;
+        el.style.fontSize      = f.size;
+        el.style.textTransform = 'uppercase';
+    }
+
+    applyFont(fonts[0]);
+
+    var interval = setInterval(function() {
+        idx = (idx + 1) % total;
+        applyFont(fonts[idx]);
+    }, 120);
+
+    function hidePreloader() {
+        clearInterval(interval);
+        var loader = document.getElementById('sn-preloader');
+        loader.classList.add('hide');
+        setTimeout(function() { loader.style.display = 'none'; }, 700);
+    }
+
+    var minMs = 3000;
+    var start = Date.now();
+
+    window.addEventListener('load', function() {
+        var elapsed = Date.now() - start;
+        var wait    = Math.max(0, minMs - elapsed);
+        setTimeout(hidePreloader, wait);
+    });
+})();
+</script>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<header class="sn-navbar" id="sn-navbar">
+    <a href="/index.html" class="sn-navbar-brand">Senkisem</a>
+
+    <nav>
+        <ul class="sn-navbar-links">
+            <li><a href="/">About</a></li>
+            <li><a href="/clothing.html">Clothing</a></li>
+            <li><a href="/books.html">Books</a></li>
+        </ul>
+    </nav>
+
+    <div class="sn-navbar-actions">
+    <a href="/support.html" class="sn-support">Support</a>
+
+    <div class="sn-langs" role="group" aria-label="Language">
+        <button class="sn-flag" data-lang="hu" aria-label="Magyar" title="Magyar" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><clipPath id="snfh"><circle cx="12" cy="12" r="12"/></clipPath><g clip-path="url(#snfh)"><rect width="24" height="8" fill="#CD2A3E"/><rect y="8" width="24" height="8" fill="#fff"/><rect y="16" width="24" height="8" fill="#436F4D"/></g></svg>
+        </button>
+        <button class="sn-flag" data-lang="en" aria-label="English" title="English" aria-pressed="true">
+            <svg viewBox="0 0 24 24"><clipPath id="snfe"><circle cx="12" cy="12" r="12"/></clipPath><g clip-path="url(#snfe)"><rect width="24" height="24" fill="#012169"/><path d="M0 0L24 24M24 0L0 24" stroke="#fff" stroke-width="4"/><path d="M0 0L24 24M24 0L0 24" stroke="#C8102E" stroke-width="1.5"/><path d="M12 0V24M0 12H24" stroke="#fff" stroke-width="7"/><path d="M12 0V24M0 12H24" stroke="#C8102E" stroke-width="4"/></g></svg>
+        </button>
+    </div>
+
+    <button class="sn-nav-hamburger" id="sn-hamburger-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+</header>
+
+<!-- MOBILE NAV -->
+<nav class="sn-mobile-nav" id="sn-mobile-nav">
+    <button class="sn-mobile-nav-back" onclick="snCloseMobileNav()">
+        ← Back
+    </button>
+    <a href="/" onclick="snCloseMobileNav()">About</a>
+    <a href="/clothing.html" onclick="snCloseMobileNav()">Clothing</a>
+    <a href="/books.html" onclick="snCloseMobileNav()">Books</a>
 </nav>
 
-<main>
-  <div class="eyebrow">2026 &nbsp;&nbsp;—&nbsp;&nbsp; Átmeneti szünet</div>
-
-  <h1 class="headline">
-    Szünetelünk,<br>
-    <em>de nem tűntünk</em><br>
-    el.
-  </h1>
-
-  <div class="rule">
-    <div class="rule-line"></div>
-    <span class="rule-label">Státusz</span>
-    <div class="rule-line"></div>
-  </div>
-
-  <div class="copy">
-    <p>
-      A rendelések száma <strong>váratlanul megugrott</strong> — örülünk neki, de a szállítási idők ennek következtében nem tartottak lépést. Ahelyett hogy ezt elfogadjuk, <strong>leállítottuk az új rendelések felvételét</strong>, amíg a meglévők mindenki kezéhez nem érnek.
-    </p>
-    <p>
-      <strong>Minden meglévő rendelés gyártás alatt van</strong> — egyetlen sem maradt el. Ha rendeltél tőlünk, a csomagod folyamatban van.
-    </p>
-    <p>
-      Hamarosan visszatérünk.
-    </p>
-  </div>
-
-  <div class="status-row">
-    <div class="status-item">
-      <div class="s-label">Meglévő rendelések</div>
-      <div class="s-val">Gyártás alatt</div>
+<!-- ============================================================
+     SENKISEM HERO
+============================================================ -->
+<section class="senkisem-hero" id="senkisem-hero-root">
+    <div class="hero-left">
+        <div class="hero-eyebrow"> Senkisem L.L.C | Montana </div>
+        <h1 class="hero-headline">
+            <em></em><br>
+            
+        </h1>
+        <br><br>
+        <p class="hero-sub">
+            Every piece is a story.<br>
+            Every story is an experience.<br>
+            You don't wear logos,<br>you carry messages.
+        </p>
+        <div class="hero-actions">
+            <a href="#life-content" class="hero-scroll"><span>scroll down</span><i></i></a>
+        </div>
     </div>
-    <div class="status-item">
-      <div class="s-label">Új rendelések</div>
-      <div class="s-val">Szünetelnek</div>
+
+    <div class="hero-right">
+        <div class="hero-stage" id="hero-stage">
+            <div class="hero-slide active">
+                <img src="./assets/img/IDgirl.jpg" alt="ID: Senkisem">
+            </div>
+            <div class="hero-slide">
+                <img src="./assets/img/Phantom.jpg" alt="Phantom">
+            </div>
+            <div class="hero-slide">
+                <img src="./assets/img/Signature.jpg" alt="Signature">
+            </div>
+        </div>
+
+        <div class="hero-indicators" id="hero-indicators">
+            <button class="hero-dot active" onclick="goToSlide(0)" aria-label="Slide 1"></button>
+            <button class="hero-dot" onclick="goToSlide(1)" aria-label="Slide 2"></button>
+            <button class="hero-dot" onclick="goToSlide(2)" aria-label="Slide 3"></button>
+        </div>
+
+        <div class="hero-collection-label" id="hero-label">ID: Senkisem</div>
     </div>
-    <div class="status-item">
-      <div class="s-label">Webshop</div>
-      <div class="s-val">Hamarosan</div>
+</section>
+
+<!-- ============================================================
+     NEXT NET PAGE CONTENT
+============================================================ -->
+<main class="main" id="life-content" data-barba="container" data-barba-namespace="home" data-bg="hsl(0, 0%, 0%)">
+    <div class="content">
+
+        <header style="display:none!important;"></header>
+
+        <!-- ticker -->
+        <section class="position-relative z-3 overflow-clip" data-function="slider" slider data-slider-autoplay="2000">
+            <div class="container text-center">
+                <div class="grid">
+                </div>
+                <div class="g-start-1 g-col-12    g-row-start-md-1 g-start-md-1 g-col-md-5 d-flex flex-column justify-content-between"></div>
+                <div class="g-start-1 g-col-12    g-row-start-md-1 g-start-md-3 g-col-md-8 d-flex flex-column justify-content-between position-relative">
+                    <div class="sliderMain opacity-0">
+                        <div class="carousel-cell w-100"></div>
+                        <div class="carousel-cell w-100"></div>
+                        <div class="carousel-cell w-100"></div>
+                        <div class="carousel-cell w-100"></div>
+                        <div class="carousel-cell w-100"></div>
+                    </div>
+
+<!-- ============================================================
+     SENKISEM — THE WORD / 3D MEANING ORB
+============================================================ -->
+
+<section
+    class="position-relative z-3 overflow-clip"
+    data-function="slider"
+    slider
+    data-slider-autoplay="2000"
+>
+    <div class="container text-center">
+        <div class="grid"></div>
+
+        <div
+            class="g-start-1 g-col-12
+                   g-row-start-md-1
+                   g-start-md-3
+                   g-col-md-8
+                   d-flex flex-column
+                   justify-content-between
+                   position-relative"
+        >
+
+            <section class="sn-word-section">
+
+                <div class="sn-word-inner">
+
+                    <div class="sn-word-stage" id="sn-word-stage">
+
+    <div class="sn-sphere-wrap" aria-hidden="true">
+        <div class="sn-sphere" id="sn-sphere"></div>
     </div>
-  </div>
+
+    <div class="sn-word-center">
+        <h2 class="sn-word-main">SENKISEM</h2>
+        <div class="sn-word-caption">
+            <span class="sn-cap-split">senki sem</span>
+            <span class="sn-cap-meaning">Hungarian — “No One” / “Nobody”</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+(function () {
+    var stage  = document.getElementById('sn-word-stage');
+    var sphere = document.getElementById('sn-sphere');
+    if (!stage || !sphere) return;
+
+    var WORDS = [
+        'No One.', 'Nadie.', 'Personne.', 'Niemand.', '没有人', '誰もいない',
+        'Ninguém.', 'Nessuno.', 'Никого.', 'لا أحد', 'कोई नहीं', '아무도 없다',
+        'Hiç kimse.', 'Niemand.', 'Nikt.', 'Ingen.', 'Κανείς.',
+        'Tidak ada siapa pun.', 'Không ai.', 'ไม่มีใคร', 'אף אחד',
+        'Nobody.', 'Ninguno.', 'Nemo.', 'Nikdo.', 'Ingen.', 'Kukaan.'
+    ];
+
+    var TILT = -18 * Math.PI / 180;
+    var SPEED = 0.045;
+    var GOLDEN = Math.PI * (3 - Math.sqrt(5));
+
+    var seed = 7;
+    function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+
+    var items = [];
+
+    function buildShell(count, radiusFactor, sizeMin, sizeMax, alphaMul) {
+        for (var i = 0; i < count; i++) {
+            var y   = 1 - (i + 0.5) / count * 2;
+            var rad = Math.sqrt(1 - y * y);
+            var lon = i * GOLDEN;
+            var lat = Math.asin(y);
+
+            var el = document.createElement('span');
+            el.className = 'sn-word-secondary';
+            el.textContent = WORDS[Math.floor(rnd() * WORDS.length)];
+            var size = sizeMin + rnd() * (sizeMax - sizeMin);
+            el.style.fontSize = size.toFixed(2) + 'em';
+            sphere.appendChild(el);
+
+            items.push({
+                el: el,
+                lon: lon, lat: lat,
+                roll: (rnd() - 0.5) * 50,
+                rf: radiusFactor,
+                alpha: alphaMul,
+                nx: rad * Math.sin(lon), ny: -y, nz: rad * Math.cos(lon)
+            });
+        }
+    }
+
+    buildShell(190, 1.00, 0.75, 1.25, 1.00);
+    buildShell(70,  0.62, 0.60, 0.90, 0.35);
+
+    var R = 300;
+    function layout() {
+        var w = stage.clientWidth, h = stage.clientHeight;
+        R = Math.min(w, h) * 0.40;
+        stage.style.setProperty('--r', R + 'px');
+        stage.style.fontSize = Math.max(11, Math.min(16, R / 20)) + 'px';
+
+        items.forEach(function (it) {
+            it.el.style.transform =
+                'translate(-50%,-50%) ' +
+                'rotateY(' + (it.lon * 180 / Math.PI) + 'deg) ' +
+                'rotateX(' + (it.lat * 180 / Math.PI) + 'deg) ' +
+                'rotateZ(' + it.roll + 'deg) ' +
+                'translateZ(' + (R * it.rf) + 'px)';
+        });
+    }
+
+    var angle = 0, last = performance.now(), running = true;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function frame(now) {
+        if (running) {
+            if (!reduce) angle += (now - last) * SPEED;
+            last = now;
+
+            var a = angle * Math.PI / 180;
+            var cA = Math.cos(a), sA = Math.sin(a);
+            var cT = Math.cos(TILT), sT = Math.sin(TILT);
+
+            sphere.style.transform =
+                'rotateX(' + (TILT * 180 / Math.PI) + 'deg) rotateY(' + angle + 'deg)';
+
+            for (var i = 0; i < items.length; i++) {
+                var it = items[i];
+                var z1 = -it.nx * sA + it.nz * cA;
+                var z2 = it.ny * sT + z1 * cT;
+                var d  = z2 > 0 ? Math.pow(z2, 1.25) : 0;
+                it.el.style.opacity = (it.alpha * (0.06 + 0.94 * d)).toFixed(3);
+            }
+        }
+        requestAnimationFrame(frame);
+    }
+
+    layout();
+    window.addEventListener('resize', layout);
+    requestAnimationFrame(frame);
+
+    new IntersectionObserver(function (e) {
+        running = e[0].isIntersecting;
+        last = performance.now();
+    }).observe(stage);
+})();
+</script>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+           <!-- ====================================================
+     MEANING MORPH (scroll-driven, pinned)
+===================================================== -->
+<div class="sn-morph" id="sn-morph">
+    <div class="sn-morph-sticky">
+
+        <h2 class="h3 mb-0 mx-auto lh-1 sn-morph-title" style="max-width: 20ch">
+            But what does it really mean?
+        </h2>
+
+        <div class="sn-morph-stage" id="sn-morph-stage">
+            <div class="sn-morph-cube" id="sn-morph-cube">
+                <div class="sn-morph-word"><span class="h1" style="color:#0cec99">Identity.</span></div>
+                <div class="sn-morph-word"><span class="h1" style="color:#6769cd">Message.</span></div>
+                <div class="sn-morph-word"><span class="h1" style="color:#eaf9c4">Movement.</span></div>
+                <div class="sn-morph-word"><span class="h1" style="color:#ade0e1">Self-expression.</span></div>
+                <div class="sn-morph-word"><span class="h1" style="color:#cebfbe">Story.</span></div>
+            </div>
+        </div>
+
+        <div class="sn-morph-dots" id="sn-morph-dots" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i>
+        </div>
+
+    </div>
+</div>
+
+<script>
+(function () {
+    var wrap  = document.getElementById('sn-morph');
+    var stage = document.getElementById('sn-morph-stage');
+    var cube  = document.getElementById('sn-morph-cube');
+    var dots  = document.querySelectorAll('#sn-morph-dots i');
+    if (!wrap || !stage || !cube) return;
+
+    var words = Array.prototype.slice.call(cube.children);
+    var N     = words.length;
+
+    var LAST    = N - 1;
+    var STEP_VH = 85;
+    var HOLD    = 0.10;
+    var EASE    = 0.10;
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var H = 160, target = 0, cur = 0, raf = null;
+
+    function clamp(v, a, b) { return Math.min(Math.max(v, a), b); }
+    function smooth(a, b, x) { var t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); }
+
+    function layout() {
+        wrap.style.height = 'calc(100vh + ' + (LAST * STEP_VH) + 'vh)';
+        H = stage.clientHeight;
+        words.forEach(function (w) { w.style.height = H + 'px'; });
+        measure();
+    }
+
+    function measure() {
+        var rect = wrap.getBoundingClientRect();
+        var scrollable = wrap.offsetHeight - window.innerHeight;
+        var t = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+
+        var raw = clamp(t / (1 - HOLD), 0, 1) * LAST;
+        var i = Math.floor(raw);
+        var f = raw - i;
+        target = i >= LAST ? LAST : i + smooth(0.30, 0.70, f);
+
+        if (!raf) raf = requestAnimationFrame(render);
+    }
+
+    function render() {
+        raf = null;
+        cur += (target - cur) * (reduce ? 1 : EASE);
+        if (Math.abs(target - cur) < 0.0005) cur = target;
+
+        cube.style.transform = 'translateZ(' + (-H / 2) + 'px)';
+
+        for (var k = 0; k < N; k++) {
+            var d  = k - cur;
+            var ad = Math.abs(d);
+            var el = words[k];
+            if (ad >= 1.05) { el.style.visibility = 'hidden'; continue; }
+            el.style.visibility = 'visible';
+            el.style.transform  = 'rotateX(' + (-clamp(d, -1, 1) * 90) + 'deg) translateZ(' + (H / 2) + 'px)';
+            el.style.opacity    = clamp(1 - ad * 1.15, 0, 1).toFixed(3);
+            el.style.filter     = ad > 0.01 ? 'blur(' + (ad * 6).toFixed(2) + 'px)' : 'none';
+        }
+
+        var active = Math.round(cur);
+        for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j === active);
+
+        if (cur !== target) raf = requestAnimationFrame(render);
+    }
+
+    window.addEventListener('scroll', measure, { passive: true });
+    window.addEventListener('resize', layout);
+    window.addEventListener('load', layout);
+    layout();
+})();
+</script>
+
+<!-- END ticker -->
+
+<!-- ============================================================================
+     THE FOUNDATIONS (01) — egyetlen jelenet desktopra és mobilra
+     (a régi scrub-cta desktop + mobil blokk helyett)
+============================================================================ -->
+<style>
+.fd-scene { position: relative; height: 440vh; background: #000; }
+.fd-sticky {
+    position: sticky; top: 0;
+    height: 100vh; height: 100svh;
+    overflow: hidden; background: #000; color: #fff;
+}
+.fd-label {
+    position: absolute; top: 92px; left: 0; right: 0; z-index: 6;
+    display: flex; flex-direction: column; align-items: center; gap: .9rem;
+    font-family: 'Space Mono', monospace;
+    font-size: .64rem; letter-spacing: .24em; text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+    opacity: 0; pointer-events: none;
+}
+.fd-label i {
+    display: block; width: 64px; height: 1px;
+    background: rgba(255,255,255,.35);
+    transform: scaleX(0); transform-origin: center;
+}
+.fd-img {
+    position: absolute; left: 50%; top: 50%;
+    width: 88vw; height: 60vh; margin: 0;
+    transform: translate(-50%, -50%) scale(1.25);
+    opacity: 0; z-index: 2;
+    will-change: transform, opacity, filter;
+    -webkit-mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 46%, transparent 100%);
+            mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 46%, transparent 100%);
+}
+.fd-half {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: fill; display: block; will-change: transform;
+    user-select: none; -webkit-user-drag: none;
+}
+.fd-half--l { clip-path: inset(0 50% 0 0); }
+.fd-half--r { clip-path: inset(0 0 0 50%); }
+.fd-frame {
+    position: absolute; top: 30%; left: 20%; right: 20%; bottom: 30%;
+    z-index: 5; pointer-events: none; opacity: 0;
+}
+.fd-frame b { position: absolute; width: 30px; height: 30px; border: 0 solid rgba(255,255,255,.7); }
+.fd-frame b:nth-child(1) { top: 0;    left: 0;  border-top-width: 1px;    border-left-width: 1px; }
+.fd-frame b:nth-child(2) { top: 0;    right: 0; border-top-width: 1px;    border-right-width: 1px; }
+.fd-frame b:nth-child(3) { bottom: 0; left: 0;  border-bottom-width: 1px; border-left-width: 1px; }
+.fd-frame b:nth-child(4) { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+.fd-copy {
+    position: absolute; inset: 0; z-index: 4;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 0 1.2rem; pointer-events: none; will-change: transform;
+}
+.fd-title {
+    margin: 0;
+    font-family: 'DM Serif Display', serif; font-weight: 400;
+    font-size: clamp(2.7rem, 10.4vw, 10rem);
+    line-height: .92; letter-spacing: -.035em; color: #fff;
+    will-change: opacity, transform;
+}
+.fd-line { display: block; overflow: hidden; padding: .04em .06em; }
+.fd-line > span { display: block; transform: translateY(105%); will-change: transform; }
+.fd-sentence {
+    margin: clamp(1.4rem, 3.4vh, 2.4rem) 0 0;
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: clamp(1.35rem, 3vw, 2.6rem); line-height: 1.15;
+    color: rgba(255,255,255,.88);
+    opacity: 0; will-change: opacity, transform;
+}
+@media (max-width: 700px) {
+    .fd-label { top: 84px; font-size: .58rem; }
+    .fd-frame b { width: 22px; height: 22px; }
+    .fd-title { font-size: clamp(2.5rem, 12.2vw, 4.4rem); }
+}
+@media (prefers-reduced-motion: reduce) { .fd-img { filter: none !important; } }
+</style>
+
+<section class="fd-scene" id="fd-scene" aria-label="The Foundations of Senkisem">
+    <div class="fd-sticky" id="fd-sticky">
+        <div class="fd-label" id="fd-label"><span>01 / The Foundations</span><i></i></div>
+        <div class="fd-img" id="fd-img" aria-hidden="true">
+            <img class="fd-half fd-half--l" id="fd-img-l" src="./assets/img/bothbg.png" alt="" draggable="false">
+            <img class="fd-half fd-half--r" id="fd-img-r" src="./assets/img/bothbg.png" alt="" draggable="false">
+        </div>
+        <div class="fd-frame" id="fd-frame" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
+        <div class="fd-copy" id="fd-copy">
+            <h2 class="fd-title" id="fd-title">
+                <span class="fd-line"><span>The</span></span>
+                <span class="fd-line"><span>Foundations</span></span>
+                <span class="fd-line"><span>of Senkisem</span></span>
+            </h2>
+            <p class="fd-sentence" id="fd-sentence">Two books. One idea.</p>
+        </div>
+    </div>
+</section>
+
+<script>
+(function () {
+    var wrap = document.getElementById('fd-scene'), sticky = document.getElementById('fd-sticky');
+    var label = document.getElementById('fd-label'), lineEl = label && label.querySelector('i');
+    var img = document.getElementById('fd-img'), imgL = document.getElementById('fd-img-l'), imgR = document.getElementById('fd-img-r');
+    var frame = document.getElementById('fd-frame'), copy = document.getElementById('fd-copy');
+    var title = document.getElementById('fd-title'), sent = document.getElementById('fd-sentence');
+    if (!wrap || !sticky || !img) return;
+    var lines = Array.prototype.slice.call(title.querySelectorAll('.fd-line > span'));
+
+    var SCROLL_VH = 340, EASE = 0.12, BLUR_PX = 20;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var target = 0, cur = 0, raf = null;
+    var W = 0, H = 0, boxW = 0, boxH = 0, shift = 0, isSmall = false;
+
+    function clamp(v, a, b) { return Math.min(Math.max(v, a), b); }
+    function seg(p, a, b)   { return clamp((p - a) / (b - a), 0, 1); }
+    function easeOut(t)     { return 1 - Math.pow(1 - t, 3); }
+    function easeIO(t)      { return t * t * (3 - 2 * t); }
+    function lerp(a, b, t)  { return a + (b - a) * t; }
+
+    function layout() {
+        W = window.innerWidth; H = window.innerHeight; isSmall = W <= 700;
+        wrap.style.height = 'calc(100vh + ' + SCROLL_VH + 'vh)';
+        var ratio = (imgL.naturalWidth && imgL.naturalHeight) ? imgL.naturalWidth / imgL.naturalHeight : 16 / 9;
+        var maxW = Math.min(W * (isSmall ? 0.94 : 0.88), 1400);
+        var maxH = Math.min(H * (isSmall ? 0.62 : 0.74), 900);
+        boxW = Math.min(maxW, maxH * ratio); boxH = boxW / ratio;
+        img.style.width = boxW + 'px'; img.style.height = boxH + 'px';
+        copy.style.transform = 'none';
+        var c = copy.getBoundingClientRect(), s = sent.getBoundingClientRect();
+        shift = (c.top + c.height / 2) - (s.top + s.height / 2);
+        measure();
+    }
+    function measure() {
+        var rect = wrap.getBoundingClientRect();
+        var scrollable = wrap.offsetHeight - window.innerHeight;
+        target = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+        if (!raf) raf = requestAnimationFrame(render);
+    }
+    function render() {
+        raf = null;
+        cur += (target - cur) * (reduce ? 1 : EASE);
+        if (Math.abs(target - cur) < 0.0004) cur = target;
+        var p = cur;
+
+        label.style.opacity = easeOut(seg(p, 0, 0.06)) * (1 - 0.55 * easeIO(seg(p, 0.5, 0.62))) * (1 - easeIO(seg(p, 0.8, 0.88)));
+        lineEl.style.transform = 'scaleX(' + easeIO(seg(p, 0.02, 0.12)).toFixed(3) + ')';
+
+        var e = easeOut(seg(p, 0.08, 0.34));
+        var dim = easeIO(seg(p, 0.50, 0.64));
+        var out = easeIO(seg(p, 0.86, 1.0));
+        var imgOpacity = e * (1 - 0.68 * dim) * (1 - out);
+        img.style.opacity = imgOpacity.toFixed(3);
+        img.style.transform = 'translate(-50%, -50%) scale(' + lerp(1.25, 1, e).toFixed(4) + ')';
+        img.style.filter = (!isSmall && !reduce && e < 0.999) ? 'blur(' + ((1 - e) * BLUR_PX).toFixed(2) + 'px)' : 'none';
+        img.style.visibility = imgOpacity < 0.002 ? 'hidden' : 'visible';
+
+        var sp = easeIO(seg(p, 0.34, 0.54));
+        var padX = isSmall ? 14 : 28, padTop = isSmall ? 78 : 84, padBot = isSmall ? 18 : 28;
+        var startX = (W - boxW * 0.80) / 2, startY = (H - boxH * 0.80) / 2;
+        frame.style.left = frame.style.right = lerp(startX, padX, sp) + 'px';
+        frame.style.top = lerp(startY, padTop, sp) + 'px';
+        frame.style.bottom = lerp(startY, padBot, sp) + 'px';
+        frame.style.opacity = (easeOut(seg(p, 0.30, 0.38)) * (1 - easeIO(seg(p, 0.90, 0.98)))).toFixed(3);
+
+        for (var i = 0; i < lines.length; i++) {
+            var t = easeOut(seg(p, 0.50 + i * 0.045, 0.62 + i * 0.045));
+            lines[i].style.transform = 'translateY(' + ((1 - t) * 105).toFixed(2) + '%)';
+        }
+
+        var tOut = easeIO(seg(p, 0.80, 0.88));
+        title.style.opacity = (1 - tOut).toFixed(3);
+        title.style.transform = 'translateY(' + (-tOut * 24).toFixed(1) + 'px)';
+        var s1 = easeOut(seg(p, 0.68, 0.78));
+        sent.style.opacity = s1.toFixed(3);
+        sent.style.transform = 'translateY(' + ((1 - s1) * 14).toFixed(1) + 'px)';
+        copy.style.transform = 'translateY(' + (shift * easeIO(seg(p, 0.80, 0.90))).toFixed(1) + 'px)';
+
+        var split = easeIO(seg(p, 0.78, 1.0)), dx = boxW * 0.26 * split;
+        imgL.style.transform = 'translateX(' + (-dx).toFixed(1) + 'px)';
+        imgR.style.transform = 'translateX(' + dx.toFixed(1) + 'px)';
+
+        if (cur !== target) raf = requestAnimationFrame(render);
+    }
+    window.addEventListener('scroll', measure, { passive: true });
+    window.addEventListener('resize', layout);
+    window.addEventListener('load', layout);
+    imgL.addEventListener('load', layout);
+    layout();
+})();
+</script>
+
+      
+
+            <!-- ===== VOLUME I — NOTES FROM A STRANGER ===== -->
+            <article class="bk-vol bk-vol--notes reveal">
+                <div class="bk-visual">
+                    <span class="bk-numeral" aria-hidden="true">I</span>
+                    <a href="/books.html" class="bk-cover" aria-label="Notes from a Stranger – read free">
+                        <span class="bk-cover-fb">Notes from a Stranger</span>
+                        <img src="./assets/book/notes/en/p001.webp" alt="Notes from a Stranger – cover" loading="lazy" onerror="this.style.display='none'">
+                    </a>
+                    <div class="bk-peek bk-peek--q">
+                        <small>// Page 5 · the first question</small>
+                        Do you love yourself when nobody’s watching?
+                    </div>
+                </div>
+
+                <div class="bk-info">
+                    <div class="bk-label">Senkisem I. <span class="bk-chip">Free</span></div>
+                    <h3 class="bk-title">Notes from<br>a Stranger</h3>
+                    <p class="bk-hook">“It’s enough if you just feel something stir inside you.”</p>
+
+                    <p class="bk-text">
+                        This isn’t a self-help course, and it isn’t an interrogation. It’s a stranger who signs as
+                        <strong>Nobody</strong>, sitting next to you with a notebook, asking the questions no one has
+                        asked you in a long time. <strong>What do you wish others just knew about you?
+                        What life would you live if nobody’s opinion mattered?</strong>
+                    </p>
+                    <p class="bk-text">
+                        Every question is followed by a page that answers back, and then by pages that are simply yours.
+                        <strong>49 of them are blank, and you can write on them right in your browser.</strong>
+                        Your answers never leave your device.
+                    </p>
+
+                    <p class="bk-for"><b>// for you if</b>“I’m fine” stopped being true a while ago.</p>
+
+                    <div class="bk-specs">
+                        <div class="bk-spec"><b>117</b><span>Pages</span></div>
+                        <div class="bk-spec"><b>8</b><span>Chapters</span></div>
+                        <div class="bk-spec"><b>49</b><span>Pages to write on</span></div>
+                    </div>
+
+                    <ol class="bk-toc">
+                        <li><b>01</b>You Are the First Question<em>p.3</em></li>
+                        <li><b>02</b>Why Do You Hurt Yourself So Beautifully?<em>p.26</em></li>
+                        <li><b>03</b>The Cry No One Heard<em>p.42</em></li>
+                        <li><b>04</b>Are You Still Here?<em>p.58</em></li>
+                        <li><b>05</b>Don’t Tell Anyone, But…<em>p.68</em></li>
+                        <li><b>06</b>I Love You, Just Differently<em>p.82</em></li>
+                        <li><b>07</b>Now It’s Your Turn<em>p.102</em></li>
+                        <li><b>08</b>Don’t Leave Yet<em>p.111</em></li>
+                    </ol>
+
+                    
+            </article>
+
+            <!-- ===== VOLUME II — SYNTHETIC HUMAN ===== -->
+            <article class="bk-vol bk-vol--synth bk-vol--rev reveal">
+                <div class="bk-visual">
+                    <span class="bk-numeral" aria-hidden="true">II</span>
+                    <a href="/books.html" class="bk-cover" aria-label="Synthetic Human – read free">
+                        <span class="bk-cover-fb">Synthetic Human</span>
+                        <img src="./assets/book/synthetic/en/p001.webp" alt="Synthetic Human – cover" loading="lazy" onerror="this.style.display='none'">
+                    </a>
+                    <div class="bk-peek">
+                        <small>// System status</small>
+                        Identity coherence: unstable<br>
+                        Performance mode: active<br>
+                        Authenticity index: not found<span class="bk-cursor"></span>
+                    </div>
+                </div>
+
+                <div class="bk-info">
+                    <div class="bk-label">Senkisem II. <span class="bk-chip">Free</span></div>
+                    <h3 class="bk-title">Synthetic<br>Human</h3>
+                    <p class="bk-hook">“Your personality is not who you are.”</p>
+
+                    <p class="bk-text">
+                        This is not self-improvement. <strong>This is excavation.</strong> The book opens with a failed
+                        login and never lets you read from the outside. The character you play, the program you
+                        learned as a child, the need for something bigger: all of it is code you didn’t write,
+                        but are still running.
+                    </p>
+                    <p class="bk-text">
+                        Written like a system log, with status panels, alerts and diagnostics, it reads you back.
+                        It ends at an Exit Point with four options: <strong>Reset. Remain. Observe.</strong> Or refuse
+                        to choose, which, the book will tell you, is a choice too.
+                    </p>
+
+                    <p class="bk-for"><b>// for you if</b>You’ve read the self-help and still feel like you’re performing.</p>
+
+                    <div class="bk-specs">
+                        <div class="bk-spec"><b>118</b><span>Pages</span></div>
+                        <div class="bk-spec"><b>10</b><span>Modules</span></div>
+                        <div class="bk-spec"><b>4</b><span>Final choices</span></div>
+                    </div>
+
+                    <ol class="bk-toc">
+                        <li><b>00</b>Prologue: Login Failed</li>
+                        <li><b>VI</b>The Power</li>
+                        <li><b>I</b>The Illusion</li>
+                        <li><b>VII</b>No Tutorial</li>
+                        <li><b>II</b>The System</li>
+                        <li><b>VIII</b>Exit Point</li>
+                        <li><b>III</b>The Origin</li>
+                        <li><b>IX</b>Reboot</li>
+                        <li><b>IV</b>The Chaos</li>
+                        <li><b>X</b>ID: Senkisem</li>
+                        <li><b>V</b>God</li>
+                        <li><b>∞</b>Epilogue: Exit Not Recommended</li>
+                    </ol>
+
+                    
+            </article>
+        </div>
+
+        <!-- ===== WHERE TO START ===== -->
+        <div class="bk-pick">
+            <h3 class="bk-pick-title reveal">Not sure where to start?<br><em>Pick your voice.</em></h3>
+            <div class="bk-pick-grid">
+                <div class="bk-pick-item n reveal reveal-delay-1">
+                    <small>Senkisem I.</small>
+                    <h4>Start here if you want to be asked.</h4>
+                    <p>Soft, direct, human. Questions, silence, and pages to write in. It doesn’t tell you who you are. It waits until you do.</p>
+                </div>
+                <div class="bk-pick-item s reveal reveal-delay-2">
+                    <small>Senkisem II.</small>
+                    <h4>Start here if you want to be diagnosed.</h4>
+                    <p>Cold, clinical, relentless. A system log that takes the character apart piece by piece and leaves the decision to you.</p>
+                </div>
+            </div>
+            <p class="bk-pick-foot reveal">Or read both. They are two halves of the same idea.</p>
+        </div>
+
+        <div class="books-intro-footer reveal" style="margin-top:4rem;">
+        </div>
+
+    </div>
+</section>
+
+<!-- borító finom 3D-dőlése egérmozgásra (csak desktopon) -->
+<script>
+(function () {
+    if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('.bk-cover').forEach(function (c) {
+        c.addEventListener('pointermove', function (e) {
+            var r = c.getBoundingClientRect();
+            var x = (e.clientX - r.left) / r.width - .5;
+            var y = (e.clientY - r.top) / r.height - .5;
+            c.style.setProperty('--ry', (x * 14) + 'deg');
+            c.style.setProperty('--rx', (-y * 14) + 'deg');
+        });
+        c.addEventListener('pointerleave', function () {
+            c.style.setProperty('--ry', '0deg');
+            c.style.setProperty('--rx', '0deg');
+        });
+    });
+})();
+</script>
+
+<!-- ============================================================================
+     ID: SENKISEM FELVEZETŐ (02) — a Foundations tükörképe: a sarkok bezárulnak
+============================================================================ -->
+<style>
+.ib-scene { position: relative; height: 280vh; background: #000; }
+.ib-sticky {
+    position: sticky; top: 0;
+    height: 100vh; height: 100svh;
+    overflow: hidden; background: #000; color: #fff;
+}
+.ib-label {
+    position: absolute; top: 92px; left: 0; right: 0; z-index: 6;
+    display: flex; flex-direction: column; align-items: center; gap: .9rem;
+    font-family: 'Space Mono', monospace;
+    font-size: .64rem; letter-spacing: .24em; text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+    opacity: 0; pointer-events: none;
+}
+.ib-label i {
+    display: block; width: 64px; height: 1px;
+    background: rgba(255,255,255,.35);
+    transform: scaleX(0); transform-origin: center;
+}
+.ib-frame { position: absolute; z-index: 5; pointer-events: none; opacity: 0; top: 84px; left: 28px; right: 28px; bottom: 28px; }
+.ib-frame b { position: absolute; width: 30px; height: 30px; border: 0 solid rgba(255,255,255,.7); }
+.ib-frame b:nth-child(1) { top: 0;    left: 0;  border-top-width: 1px;    border-left-width: 1px; }
+.ib-frame b:nth-child(2) { top: 0;    right: 0; border-top-width: 1px;    border-right-width: 1px; }
+.ib-frame b:nth-child(3) { bottom: 0; left: 0;  border-bottom-width: 1px; border-left-width: 1px; }
+.ib-frame b:nth-child(4) { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+.ib-copy {
+    position: absolute; inset: 0; z-index: 4;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 0 1.2rem; pointer-events: none;
+}
+.ib-title {
+    margin: 0;
+    font-family: 'DM Serif Display', serif; font-weight: 400;
+    font-size: clamp(2.6rem, 10.4vw, 10rem);
+    line-height: .95; letter-spacing: -.035em; color: #fff;
+    white-space: nowrap;
+}
+.ib-word { display: inline-block; overflow: hidden; vertical-align: top; padding: .04em .06em; }
+.ib-word + .ib-word { margin-left: .22em; }
+.ib-word > span { display: block; transform: translateY(105%); will-change: transform; }
+.ib-sentence {
+    margin: clamp(2.6rem, 6vh, 4rem) 0 0;
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: clamp(1.35rem, 3vw, 2.6rem); line-height: 1.15;
+    color: rgba(255,255,255,.88);
+    opacity: 0; will-change: opacity, transform;
+}
+@media (max-width: 700px) {
+    .ib-label { top: 84px; font-size: .58rem; }
+    .ib-frame { top: 78px; left: 14px; right: 14px; bottom: 18px; }
+    .ib-frame b { width: 22px; height: 22px; }
+    .ib-title { font-size: clamp(2.3rem, 12.6vw, 4.6rem); }
+}
+</style>
+
+<section class="ib-scene" id="ib-scene" aria-label="ID: Senkisem">
+    <div class="ib-sticky" id="ib-sticky">
+        <div class="ib-label" id="ib-label"><span>02 / ID: Senkisem</span><i></i></div>
+        <div class="ib-frame" id="ib-frame" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
+        <div class="ib-copy" id="ib-copy">
+            <h2 class="ib-title" id="ib-title">
+                <span class="ib-word"><span>ID:</span></span><span class="ib-word"><span>Senkisem</span></span>
+            </h2>
+            <p class="ib-sentence" id="ib-sentence">The idea, worn.</p>
+        </div>
+    </div>
+</section>
+
+<script>
+(function () {
+    var wrap = document.getElementById('ib-scene'), sticky = document.getElementById('ib-sticky');
+    var label = document.getElementById('ib-label'), lineEl = label && label.querySelector('i');
+    var frame = document.getElementById('ib-frame');
+    var title = document.getElementById('ib-title'), sent = document.getElementById('ib-sentence');
+    if (!wrap || !sticky || !title) return;
+    var words = Array.prototype.slice.call(title.querySelectorAll('.ib-word > span'));
+
+    var SCROLL_VH = 180, EASE = 0.12;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var target = 0, cur = 0, raf = null;
+    var isSmall = false, tb = { l: 0, t: 0, r: 0, b: 0 };
+
+    function clamp(v, a, b) { return Math.min(Math.max(v, a), b); }
+    function seg(p, a, b)   { return clamp((p - a) / (b - a), 0, 1); }
+    function easeOut(t)     { return 1 - Math.pow(1 - t, 3); }
+    function easeIO(t)      { return t * t * (3 - 2 * t); }
+    function lerp(a, b, t)  { return a + (b - a) * t; }
+
+    function layout() {
+        isSmall = window.innerWidth <= 700;
+        wrap.style.height = 'calc(100vh + ' + SCROLL_VH + 'vh)';
+        var s = sticky.getBoundingClientRect(), t = title.getBoundingClientRect();
+        var pad = isSmall ? 16 : 36;
+        tb.l = t.left - s.left - pad;
+        tb.t = t.top  - s.top  - pad;
+        tb.r = s.right - t.right - pad;
+        tb.b = s.bottom - t.bottom - pad;
+        measure();
+    }
+    function measure() {
+        var rect = wrap.getBoundingClientRect();
+        var scrollable = wrap.offsetHeight - window.innerHeight;
+        target = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+        if (!raf) raf = requestAnimationFrame(render);
+    }
+    function render() {
+        raf = null;
+        cur += (target - cur) * (reduce ? 1 : EASE);
+        if (Math.abs(target - cur) < 0.0004) cur = target;
+        var p = cur, out = easeIO(seg(p, 0.9, 1.0));
+
+        label.style.opacity = (easeOut(seg(p, 0, 0.08)) * (1 - out)).toFixed(3);
+        lineEl.style.transform = 'scaleX(' + easeIO(seg(p, 0.02, 0.14)).toFixed(3) + ')';
+
+        for (var i = 0; i < words.length; i++) {
+            var t = easeOut(seg(p, 0.12 + i * 0.08, 0.30 + i * 0.08));
+            words[i].style.transform = 'translateY(' + ((1 - t) * 105).toFixed(2) + '%)';
+        }
+
+        var sp = easeIO(seg(p, 0.28, 0.62));
+        var sx = isSmall ? 14 : 28, st = isSmall ? 78 : 84, sb = isSmall ? 18 : 28;
+        frame.style.left   = lerp(sx, tb.l, sp) + 'px';
+        frame.style.right  = lerp(sx, tb.r, sp) + 'px';
+        frame.style.top    = lerp(st, tb.t, sp) + 'px';
+        frame.style.bottom = lerp(sb, tb.b, sp) + 'px';
+        frame.style.opacity = (easeOut(seg(p, 0.22, 0.30)) * (1 - out)).toFixed(3);
+
+        var s1 = easeOut(seg(p, 0.62, 0.74));
+        sent.style.opacity = (s1 * (1 - out)).toFixed(3);
+        sent.style.transform = 'translateY(' + ((1 - s1) * 14).toFixed(1) + 'px)';
+
+        if (cur !== target) raf = requestAnimationFrame(render);
+    }
+    window.addEventListener('scroll', measure, { passive: true });
+    window.addEventListener('resize', layout);
+    window.addEventListener('load', layout);
+    layout();
+})();
+</script>
+
+        <!-- CLOTHING SECTION (Shadow DOM) — all buttons redirect to clothing.html -->
+        <div id="sirnik-team-host"></div>
+
+        <script>
+        (function() {
+            var host = document.getElementById('sirnik-team-host');
+            var shadow = host.attachShadow({ mode: 'open' });
+            shadow.innerHTML = `
+                <style>
+                    @import url('https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a/css/sirnik.shared.476ad7ad7.min.css');
+                    :host { display: block; width: 100%; background: #000; }
+                    .section_team { margin-top: 0; padding-top: 0; background: #000; }
+                    .team-card_person-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+                    .team-card_person-video { position: relative; overflow: hidden; width: 100%; height: 100%; }
+                    @media (min-width: 992px) {
+                        .team_cards { margin-left: 20% !important; width: 75% !important; }
+                        .team-cards_row { padding-right: 5% !important; }
+                    }
+                    @media (max-width: 991px) {
+                        .team_cards { margin-left: 0 !important; width: 100% !important; }
+                    }
+
+                    .team-card_person-desc {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 1.2rem;
+                    }
+                    .team-cta-btn {
+                        display: inline-block;
+                        padding: 1rem 2.2rem;
+                        background: transparent;
+                        border: 1px solid #000;
+                        border-radius: 999px;
+                        color: #000;
+                        font-family: 'Space Mono', monospace;
+                        font-size: 0.78rem;
+                        letter-spacing: 0.14em;
+                        text-transform: uppercase;
+                        text-decoration: none;
+                        transition: transform 0.25s ease;
+                        white-space: nowrap;
+                    }
+                    .team-cta-btn:hover {
+                        transform: scale(1.07);
+                    }
+
+                    @media (max-width: 991px) {
+                        .ctaImage1 {
+                            --bs-aspect-ratio: 100% !important;
+                            min-height: 100vh;
+                            width: 100% !important;
+                        }
+
+                        .ctaImage1 img {
+                            position: absolute;
+                            inset: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+
+                        [scrub-chars-cta] h2 {
+                            font-size: clamp(2rem, 8vw, 3.5rem);
+                        }
+                    }
+
+.team_cards.mm-scene{margin-left:0!important;width:100%!important;position:relative;height:260vh;background:transparent;pointer-events:none}
+.mm-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;z-index:3}
+.mm-stage{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem}
+.mm-frame{position:relative;width:min(52vw,680px);height:min(66vh,680px)}
+.mm-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;
+    will-change:transform,opacity;
+    -webkit-backface-visibility:hidden;backface-visibility:hidden;
+    -webkit-mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 86%,transparent 100%);
+            mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 86%,transparent 100%)}
+.mm-meta{display:flex;align-items:center;gap:1rem;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.mm-ticks{display:flex;gap:.45rem}
+.mm-ticks i{width:12px;height:2px;background:rgba(255,255,255,.2);transition:width .5s,background .5s}
+.mm-ticks i.on{width:26px;background:rgba(255,255,255,.8)}
+@media(max-width:700px){.mm-frame{width:min(86vw,400px);height:min(52vh,440px)}.mm-meta{font-size:.54rem}}
+
+                </style>
+                <section id="Team-Section" class="section_team">
+                    <div class="team_sticky">
+                        <div class="padding-global is-team">
+                            <div class="team-sticky_top-wrapper">
+                                <div class="team-sticky_top">
+                                    <div class="team-sticky_h2-wrap">
+                                        <h2 data-anim="in" class="h2_team">ID: Senkisem</h2>
+                                        <h2 data-anim="in" class="h2_team is-2"></h2>
+                                    </div>
+                                    <div data-anim="in" class="team_dot"></div>
+                                    <img src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a/695fc1763f7580c1924388f6_team-top-bg.svg" loading="lazy" data-anim="in" alt="" class="team-sticky_top-bg"/>
+                                </div>
+                                <div class="team-sticky-top_desc">
+                                    <div class="hide-landscape"></div>
+                                    <div><p data-anim="in" class="p white">The face that becomes unrecognizable.</p></div>
+                                    <div class="display-flex-0-5rem">
+                                        <p data-split="lines" data-anim="lines" class="p">Yet completely yours.</p>
+                                        <p data-split="lines" data-anim="lines" class="p margin-left margin-53">
+                                            No copies. <br> No two alike.<br/>
+                                            <p data-split="lines" data-anim="lines" class="p margin-left margin-53">Only one exists:</p>
+                                            <span class="span-white">Your copy.</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-sticky_bottom-wrapper">
+                                <img src="https://cdn.prod.website-files.com/66387c0fa39192a87e403b2a/695fdffdda5819ab479eceda_team-sticky_bottom-bg.svg" loading="lazy" data-anim="in" alt="" class="team-sticky_bottom-bg"/>
+                                <div class="team-sticky-bottom_desc">
+                                    <div>
+                                        <p data-split="lines" data-anim="lines" class="p">
+                                            <span class="span-white">Every</span> piece of clothing<br/>you ever bought carried <br><span class="span-white">someone else's face. </span>
+                                        </p><br>
+                                    </div>
+                                    <div class="display-flex-0-5rem mg-top-0-5">
+                                        <p data-split="lines" data-anim="lines" class="p margin-left margin-100">A logo, <br/>A brand...</p>
+                                        <p data-split="lines" data-anim="lines" class="p margin-left margin-100"><span class="span-white">This is different.</span></p>
+                                    </div>
+                                </div>
+                                <div class="team-sticky_h2-wrap is-bottom">
+                                    <h2 data-anim="in" class="h2_team">because you</h2>
+                                    <h2 data-anim="in" class="h2_team is-3">are on it.</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                                        <div class="team_cards mm-scene" id="mm-scene">
+                      <div class="mm-sticky">
+                        <div class="mm-stage">
+                          <div class="mm-frame" id="mm-frame">
+  <img class="mm-img" src="./assets/img/id-sweater-corrupted.png" alt="Sweater, corrupted">
+  <img class="mm-img" src="./assets/img/id-sweater-pixel.png" alt="Sweater, pixel">
+  <img class="mm-img" src="./assets/img/id-tshirt-corrupted.png" alt="T-shirt, corrupted">
+</div>
+<div class="mm-meta">
+  <span id="mm-name">Sweater · Corrupted</span>
+  <div class="mm-ticks" id="mm-ticks"><i></i><i></i><i></i></div>
+</div>
+                        </div>
+                      </div>
+                    </div>
+
+                </section>
+            `;
+
+                        (function(){
+              var wrap=shadow.getElementById('mm-scene'); if(!wrap) return;
+              var imgs=[].slice.call(shadow.querySelectorAll('#mm-frame .mm-img')), N=imgs.length,
+                  nm=shadow.getElementById('mm-name'), ticks=shadow.querySelectorAll('#mm-ticks i'),
+                  names=['Sweater · Corrupted','Sweater · Pixel','T-shirt · Corrupted'],
+                  reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, target=0,cur=0,raf=null;
+              function clamp(v,a,b){return Math.min(Math.max(v,a),b)}
+              function smooth(a,b,x){var t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)}
+              function measure(){
+                var r=wrap.getBoundingClientRect(), s=wrap.offsetHeight-innerHeight;
+                target=s>0?clamp(-r.top/s,0,1):0;
+                if(!raf) raf=requestAnimationFrame(render);
+              }
+              function render(){
+                raf=null; cur+=(target-cur)*(reduce?1:.08);
+                if(Math.abs(target-cur)<.0004) cur=target;
+                var f=cur*(N-1);
+                for(var k=0;k<N;k++){
+                  var d=k-f, ad=Math.abs(d), m=smooth(.2,.62,ad), el=imgs[k];
+                  if(m>=.995){el.style.visibility='hidden';continue}
+                  el.style.visibility='visible';
+                  el.style.opacity=(1-m).toFixed(3);
+                  el.style.transform='translate3d(0,'+(d*22).toFixed(1)+'px,0) scale('+(1+m*.06).toFixed(3)+')';
+                  el.style.filter='none';
+                }
+                var a=Math.round(f); nm.textContent=(window.SN_MM_NAMES||names)[a];
+                for(var j=0;j<ticks.length;j++) ticks[j].classList.toggle('on',j===a);
+                if(cur!==target) raf=requestAnimationFrame(render);
+              }
+              addEventListener('scroll',measure,{passive:true});
+              addEventListener('resize',measure);
+              measure();
+            })();
+
+            shadow.querySelectorAll('video').forEach(function(video) {
+                video.play().catch(function() {});
+            });
+            window.addEventListener('load', function() {
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    shadow.querySelectorAll('[data-anim="in"]').forEach(function(el) {
+                        gsap.fromTo(el,
+                            { opacity: 0, y: 40 },
+                            { opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+                              scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+                            }
+                        );
+                    });
+                }
+            });
+        })();
+        </script>
+
+        
+
+<!-- WE ARE TICKER -->
+<section class="we-are-section" style="background:#000000; border-top: none; border-bottom: none; padding: 1.2rem 0; overflow: hidden; position: relative;">
+    <div class="we-are-track" id="sn-weAreTrack">
+        <span class="outline">WE ARE</span><span class="solid">SENKISEM</span>
+        <span class="outline">WE ARE</span><span class="solid">SENKISEM</span>
+        <span class="outline">WE ARE</span><span class="solid">SENKISEM</span>
+        <span class="outline">WE ARE</span><span class="solid">SENKISEM</span>
+
+        <span class="outline">WE ARE</span><span class="solid">SENKISEM</span>
+        <span class="outline">WE ARE</span><span class="solid">SENKISEM</span>
+        <span class="outline">WE ARE</span><span class="solid">SENKISEM</span>
+        <span class="outline">WE ARE</span><span class="solid">SENKISEM</span>
+    </div>
+</section>
+
+<!-- STATS -->
+<section class="sn-stats-section">
+    <div class="sn-stats-ambient"></div>
+    <div class="sn-stats-inner">
+        <div class="sn-stat-item reveal reveal-delay-1">
+            <div class="sn-stat-value">2000+</div>
+            <div class="sn-stat-label">Followers</div>
+        </div>
+        <div class="sn-stat-item reveal reveal-delay-2">
+            <div class="sn-stat-value">3.7M</div>
+            <div class="sn-stat-label">Views</div>
+        </div>
+        <div class="sn-stat-item reveal reveal-delay-3">
+            <div class="sn-stat-value">1200+</div>
+            <div class="sn-stat-label">Reader</div>
+        </div>
+        <div class="sn-stat-item reveal reveal-delay-4">
+            <div class="sn-stat-value">100%</div>
+            <div class="sn-stat-label">Senkisem</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     CLOSING — TYPING + ENTER
+============================================================ -->
+<style>
+
+
+.sn-end-scene {
+    position: relative;
+    height: 750vh;
+    height: 750svh;
+    margin-top: -1px;          /* eltünteti az előző szekció hajszálvonalát */
+    background: #000;
+    z-index: 2;
+}
+
+.sn-end-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 50% 50%, rgba(0,255,255,0.04) 0%, transparent 60%),
+        #000;
+}
+
+.sn-end {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.2rem;
+    border-top: none;          /* ez volt a "random vonal" */
+    overflow: hidden;
+}
+
+
+
+.sn-end-inner {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3.5rem;
+}
+
+/* ghost + valódi szöveg ugyanabban a cellában → nincs layout-ugrálás */
+.sn-end-typing-wrap { display: grid; width: 100%; }
+.sn-end-ghost,
+.sn-end-typing {
+    grid-area: 1 / 1;
+    font-family: 'Courier New', monospace;
+    font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+    text-transform: uppercase;
+    text-align: center;
+    color: #fff;
+    line-height: 1.75;
+}
+.sn-end-ghost { visibility: hidden; pointer-events: none; }
+.sn-end-typing {
+    text-shadow: 0 0 10px rgba(0,255,255,0.5), 0 0 20px rgba(0,255,255,0.3);
+    animation: snEndFlicker 3s infinite;
+}
+
+@keyframes snEndFlicker {
+    0%, 100% { text-shadow: 0 0 10px rgba(0,255,255,0.5), 0 0 20px rgba(0,255,255,0.3); }
+    50%      { text-shadow: 0 0 20px rgba(0,255,255,0.8), 0 0 30px rgba(0,255,255,0.5); }
+}
+
+.sn-end-cursor {
+    display: inline-block;
+    margin-left: 2px;
+    color: #00ffff;
+    animation: snEndBlink 1s infinite;
+}
+@keyframes snEndBlink {
+    0%, 50%   { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* ENTER gomb — az írás végén jelenik meg */
+.sn-end-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.05rem 2.6rem;
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 0 24px rgba(0,255,255,0.08);
+    opacity: 0;
+    transform: translateY(16px);
+    pointer-events: none;
+    transition: opacity 0.9s var(--ease), transform 0.9s var(--ease),
+                background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+.sn-end-btn.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.sn-end-btn:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 40px rgba(0,255,255,0.25);
+}
+.sn-end-btn i { font-style: normal; transition: transform 0.3s ease; }
+.sn-end-btn:hover i { transform: translateX(5px); }
+
+@media (max-width: 768px) {
+    .sn-end-inner { gap: 2.8rem; }
+    .sn-end-ghost,
+    .sn-end-typing { font-size: 0.78rem; line-height: 1.6; }
+    .sn-end-btn { padding: 0.95rem 2.1rem; font-size: 0.72rem; }
+}
+</style>
+
+
+<section class="sn-end-scene" id="sn-end-scene">
+    <div class="sn-end-sticky">
+        <section class="sn-end" id="sn-end">
+            <div class="sn-end-inner">
+                <div class="sn-end-typing-wrap">
+                    <div class="sn-end-ghost" aria-hidden="true">This is not just clothing.<br>This is a declaration.<br>A statement. A heartbeat for the future<br><br>Welcome to the new paradigm<br>Welcome to Senkisem</div>
+
+                    <div class="sn-end-typing" id="sn-end-typing" aria-live="polite"></div>
+                </div>
+
+                <a href="#" class="sn-end-btn" id="sn-end-btn">Enter</a>
+            </div>
+        </section>
+    </div>
+</section>
+
+
+<script>
+(function () {
+    var scene = document.getElementById('sn-end-scene');
+    var el    = document.getElementById('sn-end-typing');
+    var btn   = document.getElementById('sn-end-btn');
+    var ghost = document.querySelector('.sn-end-ghost');
+    if (!scene || !el || !btn) return;
+
+    var TXT = {
+        en: {
+            text: "This is not just a brand.\n" +
+                  "This is a declaration.\n" +
+                  "A statement. A heartbeat for the future\n\n" +
+                  "Welcome to the new paradigm\n" +
+                  "Welcome to Senkisem",
+            heart: "future"
+        },
+        hu: {
+            text: "Ez nem csak egy márka.\n" +
+                  "Ez egy nyilatkozat.\n" +
+                  "Egy kijelentés. Egy szívdobbanás a jövőnek\n\n" +
+                  "Üdvözlünk az új paradigmában\n" +
+                  "Üdvözlünk a Senkisemnél",
+            heart: "jövőnek"
+        }
+    };
+
+    function storedLang() {
+        try {
+            var q = new URLSearchParams(location.search).get('lang');
+            if (q === 'hu' || q === 'en') return q;
+            return localStorage.getItem('senkisem.lang') === 'hu' ? 'hu' : 'en';
+        } catch (e) { return 'en'; }
+    }
+
+    var fullText, insertPos, LEN;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ---- hangolható értékek ----
+    var EASE = 0.07;
+    var P1 = [0.06, 0.38];
+    var BEAT = [0.38, 0.42, 0.46];
+    var P2 = [0.46, 0.84];
+    var BTN_AT = 0.90;
+
+    var target = 0, cur = 0, raf = null, lastKey = null;
+
+    function clamp(v, a, b) { return Math.min(Math.max(v, a), b); }
+    function seg(p, a, b)   { return clamp((p - a) / (b - a), 0, 1); }
+
+    function render(text) {
+        el.innerHTML = text.replace(/\n/g, '<br>') + '<span class="sn-end-cursor">█</span>';
+    }
+
+    function setLang(l) {
+        var c = TXT[l] || TXT.en;
+        fullText  = c.text;
+        insertPos = fullText.indexOf(c.heart) + c.heart.length;
+        LEN       = fullText.length;
+        if (ghost) ghost.innerHTML = fullText.replace(/\n/g, '<br>');
+        lastKey = null;
+        measure();
+    }
+    window.snEndSetLang = setLang;
+
+    function measure() {
+        var rect = scene.getBoundingClientRect();
+        var scrollable = scene.offsetHeight - window.innerHeight;
+        target = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+        if (!raf) raf = requestAnimationFrame(update);
+    }
+
+    function update() {
+        raf = null;
+        cur += (target - cur) * (reduce ? 1 : EASE);
+        if (Math.abs(target - cur) < 0.0003) cur = target;
+        var p = cur, text;
+
+        if (reduce) {
+            text = fullText;
+        } else if (p < BEAT[0]) {
+            text = fullText.substring(0, Math.floor(seg(p, P1[0], P1[1]) * insertPos));
+        } else if (p < BEAT[1]) {
+            text = fullText.substring(0, insertPos) + " <";
+        } else if (p < BEAT[2]) {
+            text = fullText.substring(0, insertPos);
+        } else {
+            text = fullText.substring(0, insertPos + Math.floor(seg(p, P2[0], P2[1]) * (LEN - insertPos)));
+        }
+
+        if (text !== lastKey) { lastKey = text; render(text); }
+        btn.classList.toggle('show', reduce || p > BTN_AT);
+
+        if (cur !== target) raf = requestAnimationFrame(update);
+    }
+
+    window.addEventListener('scroll', measure, { passive: true });
+    window.addEventListener('resize', measure);
+    window.addEventListener('load', measure);
+    setLang(storedLang());
+})();
+</script>
+
+<!-- SOCIAL -->
+<section class="sn-social-section">
+    <div class="sn-social-section-label">Follow us</div>
+    <div class="sn-social-icons-row" id="sn-social-icons-row">
+
+        <a href="https://www.tiktok.com/@senkisem.hu" class="sn-social-icon-card tiktok" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.75a8.26 8.26 0 004.83 1.54V6.84a4.85 4.85 0 01-1.06-.15z"/>
+            </svg>
+            <span class="sn-social-icon-name">TikTok</span>
+        </a>
+
+        <a href="https://www.instagram.com/senkisem_hu/" class="sn-social-icon-card instagram" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+            <span class="sn-social-icon-name">Instagram</span>
+        </a>
+
+        <a href="#" class="sn-social-icon-card youtube" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55A3.016 3.016 0 0 0 .501 6.186C0 8.07 0 12 0 12s0 3.93.501 5.814a3.016 3.016 0 0 0 2.122 2.136C4.495 20.5 12 20.5 12 20.5s7.505 0 9.376-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+    </svg>
+    <span class="sn-social-icon-name">YouTube</span>
+</a>
+
+    </div>
+</section>
+
+<!-- ============================================================
+     SENKISEM FOOTER
+============================================================ -->
+<footer class="sn-footer" id="sn-footer">
+    <div class="sn-footer-video-container">
+        <video id="sn-footer-video-desktop" class="sn-footer-video desktop-video" autoplay loop muted playsinline>
+            <source src="./assets/img/merchvid.mp4" type="video/mp4">
+        </video>
+        <video id="sn-footer-video-mobile" class="sn-footer-video mobile-video" autoplay loop muted playsinline>
+            <source src="./assets/img/merchvidphone.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="sn-footer-overlay"></div>
+
+    <div class="sn-footer-bar">
+        <div class="sn-footer-links">
+            <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener">Terms &amp; Conditions</a>
+            <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener">Privacy Policy</a>
+        </div>
+        <div class="sn-footer-copy">
+            © 2026 Senkisem L.L.C. <br> All rights reserved
+        </div>
+    </div>
+</footer>
+
+    </div><!-- /.content -->
 </main>
 
-<footer>
-  <span class="foot-copy">© 2026 Senkisem</span>
+<!-- ============================================================
+     COOKIE BANNER
+============================================================ -->
+<div class="sn-cookie-banner" id="sn-cookie-banner">
+    <div class="sn-cookie-content">
+        <div class="sn-cookie-icon">🍪</div>
+        <h3 class="sn-cookie-title">Cookies &amp; Privacy</h3>
+        <p class="sn-cookie-text">We use essential cookies to make the site work. Details in our Privacy Policy.</p>
+        <div class="sn-cookie-buttons">
+            <button class="sn-cookie-btn sn-cookie-btn-accept" onclick="snAcceptCookies()"><i class="ri-check-line"></i> Accept</button>
+            <button class="sn-cookie-btn sn-cookie-btn-decline" onclick="snDeclineCookies()"><i class="ri-close-line"></i> Decline</button>
+            <button class="sn-cookie-btn sn-cookie-btn-necessary" onclick="snAcceptNecessaryCookies()">Necessary only</button>
+        </div>
+    </div>
+</div>
 
-</footer>
+<!-- ============================================================
+     HERO SLIDER SCRIPT
+============================================================ -->
+<script>
+(function() {
+    var heroSlideIndex = 0;
+    var heroLabels = ['ID: Senkisem', 'Phantom', 'Signature'];
+
+    function goToSlide(idx) {
+        heroSlideIndex = idx;
+        document.querySelectorAll('#senkisem-hero-root .hero-slide').forEach(function(s, i) {
+            s.classList.toggle('active', i === idx);
+        });
+        document.querySelectorAll('#senkisem-hero-root .hero-dot').forEach(function(d, i) {
+            d.classList.toggle('active', i === idx);
+        });
+        var label = document.getElementById('hero-label');
+        if (label) label.textContent = heroLabels[idx] || '';
+    }
+
+    function initHeroSlider() {
+        setInterval(function() {
+            heroSlideIndex = (heroSlideIndex + 1) % 3;
+            goToSlide(heroSlideIndex);
+        }, 5000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHeroSlider);
+    } else {
+        initHeroSlider();
+    }
+
+    window.goToSlide = goToSlide;
+})();
+</script>
+
+<!-- ============================================================
+     SITE SCRIPTS (cookies, navbar, reveal, ticker, social)
+============================================================ -->
+<script>
+// ---------- COOKIE ----------
+function snInitCookieBanner() {
+    if (!localStorage.getItem('sn_cookieChoice')) {
+        setTimeout(function() { document.getElementById('sn-cookie-banner').classList.add('show'); }, 2500);
+    }
+}
+function snAcceptCookies() { localStorage.setItem('sn_cookieChoice', 'accepted'); snHideCookieBanner(); }
+function snDeclineCookies() { localStorage.setItem('sn_cookieChoice', 'declined'); snHideCookieBanner(); }
+function snAcceptNecessaryCookies() { localStorage.setItem('sn_cookieChoice', 'necessary'); snHideCookieBanner(); }
+function snHideCookieBanner() {
+    var banner = document.getElementById('sn-cookie-banner');
+    banner.classList.add('hide');
+    setTimeout(function() { banner.style.display = 'none'; }, 500);
+}
+
+// ---------- NAVBAR SCROLL ----------
+function snInitNavbar() {
+    var navbar = document.getElementById('sn-navbar');
+    if (!navbar) return;
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            requestAnimationFrame(function() {
+                navbar.classList.toggle('scrolled', window.pageYOffset > 80);
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+}
+
+// ---------- MOBILE NAV ----------
+function snInitMobileNav() {
+    var btn = document.getElementById('sn-hamburger-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+        var isOpen = document.getElementById('sn-mobile-nav').classList.toggle('open');
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+}
+function snCloseMobileNav() {
+    document.getElementById('sn-mobile-nav').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+// ---------- SCROLL REVEAL ----------
+function snInitScrollReveal() {
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+}
+
+// ---------- INIT ----------
+document.addEventListener('DOMContentLoaded', function() {
+    snInitCookieBanner();
+    snInitNavbar();
+    snInitMobileNav();
+    setTimeout(function() { snInitScrollReveal(); }, 100);
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') snCloseMobileNav();
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+            var href = a.getAttribute('href');
+            if (href === '#') return;
+            e.preventDefault();
+            var target = document.querySelector(href);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+});
+
+// ---------- FOOTER VIDEO RESPONSIVE SWAP ----------
+(function() {
+    var desktop = document.getElementById('sn-footer-video-desktop');
+    var mobile  = document.getElementById('sn-footer-video-mobile');
+    if (!desktop || !mobile) return;
+    function swapVideo() {
+        if (window.innerWidth <= 768) {
+            desktop.style.display = 'none';
+            mobile.style.display  = 'block';
+            mobile.play().catch(function(){});
+        } else {
+            mobile.style.display  = 'none';
+            desktop.style.display = 'block';
+            desktop.play().catch(function(){});
+        }
+    }
+    swapVideo();
+    window.addEventListener('resize', swapVideo);
+})();
+
+// ---------- WE ARE TICKER (scroll-driven, endless) ----------
+(function() {
+    var track = document.getElementById('sn-weAreTrack');
+    if (!track) return;
+
+    var lastScrollY = window.scrollY;
+    var currentTranslate = 0;
+
+    function updateTicker() {
+        var scrollY = window.scrollY;
+        var delta = scrollY - lastScrollY;
+        currentTranslate -= delta * 0.65;
+
+        var trackWidth = track.scrollWidth / 2;
+        if (Math.abs(currentTranslate) >= trackWidth) {
+            currentTranslate = 0;
+        }
+
+        track.style.transform = 'translateX(' + currentTranslate + 'px)';
+        lastScrollY = scrollY;
+    }
+
+    window.addEventListener('scroll', updateTicker, { passive: true });
+    track.style.transform = 'translateX(0)';
+})();
+
+// ---------- SOCIAL ICONS REVEAL ----------
+(function() {
+    var row = document.getElementById('sn-social-icons-row');
+    if (!row) return;
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.sn-social-icon-card').forEach(function(card) {
+                    card.classList.add('visible');
+                });
+            }
+        });
+    }, { threshold: 0.2 });
+    observer.observe(row);
+})();
+</script>
+
+<!-- ============================================================
+     LANGUAGE SWITCH (EN / HU) — szövegcsomópont-szótár
+============================================================ -->
+<script>
+(function () {
+    var KEY = 'senkisem.lang';
+
+    function lsGet() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+    function lsSet(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+
+    // az idézőjelek és a szóközök normalizálva, így a szótár nem érzékeny rájuk
+    function norm(s) {
+        return s.replace(/[\u2018\u2019]/g, "'")
+                .replace(/[\u201C\u201D]/g, '"')
+                .replace(/\s+/g, ' ').trim();
+    }
+
+    /* ==========================================================
+       MAGYAR SZÓTÁR  (angol szöveg → magyar szöveg)
+       Ha az angol szöveget átírod az oldalon, a kulcsot is írd át.
+    ========================================================== */
+    var HU = {
+        /* --- navbar / mobil menü --- */
+        "About": "Rólunk",
+        "Clothing": "Ruházat",
+        "Books": "Könyvek",
+        "Support": "Támogatás",
+        "← Back": "← Vissza",
+
+        /* --- hero --- */
+        "Every piece is a story.": "Minden darab egy történet.",
+        "Every story is an experience.": "Minden történet egy élmény.",
+        "You don't wear logos,": "Nem logókat viselsz,",
+        "you carry messages.": "hanem üzeneteket.",
+        "scroll down": "görgess lejjebb",
+
+        /* --- a szó / 3D gömb --- */
+        "Hungarian — \"No One\" / \"Nobody\"": "Jelentése — \u201ESenki\u201D / \u201EEgy lélek sem\u201D",
+
+        /* --- meaning morph --- */
+        "But what does it really mean?": "De mit jelent ez valójában?",
+        "Identity.": "Identitás.",
+        "Message.": "Üzenet.",
+        "Movement.": "Mozgalom.",
+        "Self-expression.": "Önkifejezés.",
+        "Story.": "Történet.",
+
+        /* --- The Foundations --- */
+        "01 / The Foundations": "01 / Az Alapok",
+        "The": "A",
+        "Foundations": "Senkisem",
+        "of Senkisem": "alapjai",
+        "Two books. One idea.": "Két könyv. Egy gondolat.",
+
+        /* --- I. kötet: Notes from a Stranger --- */
+        "Free": "Ingyenes",
+        "Notes from": "Jegyzetek",
+        "a Stranger": "egy Idegentől",
+        "Notes from a Stranger": "Jegyzetek egy Idegentől",
+        "// Page 5 · the first question": "// 5. oldal · az első kérdés",
+        "Do you love yourself when nobody's watching?": "Szereted magad, amikor senki sem néz?",
+        "\"It's enough if you just feel something stir inside you.\"": "\u201EElég, ha csak megmozdul benned valami.\u201D",
+        "This isn't a self-help course, and it isn't an interrogation. It's a stranger who signs as":
+            "Ez nem önsegítő tanfolyam, és nem is kihallgatás. Egy idegen, aki",
+        "Nobody": "Senki",
+        ", sitting next to you with a notebook, asking the questions no one has asked you in a long time.":
+            "ként írja alá magát, melléd ül egy jegyzetfüzettel, és olyan kérdéseket tesz fel, amelyeket régóta senki nem kérdezett tőled.",
+        "What do you wish others just knew about you? What life would you live if nobody's opinion mattered?":
+            "Mit szeretnél, ha mások egyszerűen tudnának rólad? Milyen életet élnél, ha senki véleménye nem számítana?",
+        "Every question is followed by a page that answers back, and then by pages that are simply yours.":
+            "Minden kérdés után egy lap következik, amely válaszol, majd olyan lapok, amelyek egyszerűen a tieid.",
+        "49 of them are blank, and you can write on them right in your browser.":
+            "Ebből 49 üres, és közvetlenül a böngésződben írhatsz rájuk.",
+        "Your answers never leave your device.": "A válaszaid sosem hagyják el az eszközödet.",
+        "// for you if": "// neked szól, ha",
+        "\"I'm fine\" stopped being true a while ago.": "A \u201Ejól vagyok\u201D már egy ideje nem igaz.",
+        "Pages": "Oldal",
+        "Chapters": "Fejezet",
+        "Pages to write on": "Kitölthető oldal",
+        "You Are the First Question": "Te vagy az első kérdés",
+        "Why Do You Hurt Yourself So Beautifully?": "Miért bántod magad ilyen gyönyörűen?",
+        "The Cry No One Heard": "A sírás , amit senki sem hallott",
+        "Are You Still Here?": "itt vagy még?",
+        "Don't Tell Anyone, But…": "Ne mondd el senkinek, de…",
+        "I Love You, Just Differently": "Szeretlek, csak másképp",
+        "Now It's Your Turn": "Most te jössz",
+        "Don't Leave Yet": "Ne menj még",
+
+        /* --- II. kötet: Synthetic Human --- */
+        "Synthetic": "Szintetikus",
+        "Human": "Ember",
+        "Synthetic Human": "Szintetikus Ember",
+        "// System status": "// Rendszerállapot",
+        "Identity coherence: unstable": "Identitás-koherencia: instabil",
+        "Performance mode: active": "Megjátszás-mód: aktív",
+        "Authenticity index: not found": "Hitelességi index: nem található",
+        "\"Your personality is not who you are.\"": "\u201EA személyiséged nem az, aki vagy.\u201D",
+        "This is not self-improvement.": "Ez nem önfejlesztés.",
+        "This is excavation.": "Ez feltárás.",
+        "The book opens with a failed login and never lets you read from the outside. The character you play, the program you learned as a child, the need for something bigger: all of it is code you didn't write, but are still running.":
+            "A könyv egy sikertelen bejelentkezéssel nyílik, és sosem hagyja, hogy kívülről olvasd. A szerep, amit játszol, a program, amit gyerekként megtanultál, a vágy valami nagyobb után: mind olyan kód, amit nem te írtál, mégis te futtatod.",
+        "Written like a system log, with status panels, alerts and diagnostics, it reads you back. It ends at an Exit Point with four options:":
+            "Rendszernaplóként íródott, állapotpanelekkel, riasztásokkal és diagnosztikával, és visszaolvas téged. Egy Kilépési ponttal ér véget, négy lehetőséggel:",
+        "Reset. Remain. Observe.": "Újraindítás. Maradás. Megfigyelés.",
+        "Or refuse to choose, which, the book will tell you, is a choice too.":
+            "Vagy a döntés megtagadása, ami, ahogy a könyv mondja, szintén döntés.",
+        "You've read the self-help and still feel like you're performing.":
+            "Olvastál már önsegítő könyveket, és még mindig úgy érzed, szerepet játszol.",
+        "Modules": "Modul",
+        "Final choices": "Végső választás",
+        "Prologue: Login Failed": "Prológus: Sikertelen bejelentkezés",
+        "The Power": "A Hatalom",
+        "The Illusion": "Az Illúzió",
+        "No Tutorial": "Nincs útmutató",
+        "The System": "A Rendszer",
+        "Exit Point": "Kilépési pont",
+        "The Origin": "Az Eredet",
+        "Reboot": "Újraindítás",
+        "The Chaos": "A Káosz",
+        "God": "Isten",
+        "Epilogue: Exit Not Recommended": "Epilógus: A kilépés nem ajánlott",
+
+        /* --- Hol kezdjem --- */
+        "Not sure where to start?": "Nem tudod, hol kezdd?",
+        "Pick your voice.": "Válaszd ki a hangod.",
+        "Start here if you want to be asked.": "Itt kezdd, ha kérdezni szeretnének tőled.",
+        "Soft, direct, human. Questions, silence, and pages to write in. It doesn't tell you who you are. It waits until you do.":
+            "Lágy, közvetlen, emberi. Kérdések, csend és lapok, amelyekre írhatsz. Nem mondja meg, ki vagy. Megvárja, amíg te megteszed.",
+        "Start here if you want to be diagnosed.": "Itt kezdd, ha diagnózist szeretnél.",
+        "Cold, clinical, relentless. A system log that takes the character apart piece by piece and leaves the decision to you.":
+            "Hideg, klinikai, könyörtelen. Egy rendszernapló, amely darabonként szedi szét a karaktert, és rád bízza a döntést.",
+        "Or read both. They are two halves of the same idea.":
+            "Vagy olvasd mindkettőt. Ugyanannak a gondolatnak két vége.",
+
+        /* --- ID: Senkisem felvezető --- */
+        "The idea, worn.": "A gondolat, viselve.",
+
+        /* --- ruházat szekció (Shadow DOM) --- */
+        "The face that becomes unrecognizable.": "Az arc, amely felismerhetetlenné válik.",
+        "Yet completely yours.": "Mégis teljesen a tied.",
+        "No copies.": "Nincs másolat.",
+        "No two alike.": "Nincs két egyforma.",
+        "Only one exists:": "Csak egy létezik belőle:",
+        "Your copy.": "A te példányod.",
+        "Every": "Minden",
+        "piece of clothing": "ruhadarab,",
+        "you ever bought carried": "amit valaha vettél,",
+        "someone else's face.": "valaki más arcát viselte.",
+        "A logo,": "Egy logó,",
+        "A brand...": "egy márka...",
+        "This is different.": "Ez más.",
+        "because you": "mert te",
+        "are on it.": "vagy rajta.",
+
+        /* --- ticker / statisztika --- */
+        "WE ARE": "WE ARE",
+        "Followers": "Követő",
+        "Views": "Megtekintés",
+        "Reader": "Olvasó",
+
+        /* --- záró rész / social / footer --- */
+        "Enter": "Belépés",
+        "Follow us": "Kövess minket",
+        "Terms & Conditions": "Általános szerződési feltételek",
+        "Privacy Policy": "Adatkezelési tájékoztató",
+        "All rights reserved": "Minden jog fenntartva",
+
+        /* --- cookie banner --- */
+        "Cookies & Privacy": "Sütik és adatvédelem",
+        "We use essential cookies to make the site work. Details in our Privacy Policy.":
+            "Csak az oldal működéséhez elengedhetetlen sütiket használjuk. Részletek az Adatkezelési tájékoztatóban.",
+        "Accept": "Elfogadom",
+        "Decline": "Elutasítom",
+        "Necessary only": "Csak a szükségesek"
+    };
+
+    var DICT = {};
+    Object.keys(HU).forEach(function (k) { DICT[norm(k)] = HU[k]; });
+
+    var META = {
+        title: 'Senkisem | Egyedi ruházat, könyvek, filozófia',
+        desc:  'Senkisem – Nem márka; üzenet. Magyar egyedi ruházat és ingyenesen olvasható könyvek: egyedi darabok, ID: Senkisem, Jegyzetek egy Idegentől, Szintetikus Ember, az identitás filozófiai szemlélete.'
+    };
+    var META_ORIG = {
+        title: document.title,
+        desc:  (document.querySelector('meta[name="description"]') || {}).content || ''
+    };
+
+    var ORIG = new WeakMap();
+    var debug = location.hash === '#i18n';
+
+    function textNodes(root) {
+        var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode: function (n) {
+                var p = n.parentNode;
+                if (!p) return NodeFilter.FILTER_REJECT;
+                var t = p.nodeName;
+                return (t === 'SCRIPT' || t === 'STYLE' || t === 'NOSCRIPT')
+                    ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+            }
+        });
+        var list = [], n;
+        while ((n = w.nextNode())) list.push(n);
+        return list;
+    }
+
+    function applyTo(root, lang) {
+        textNodes(root).forEach(function (n) {
+            var o = ORIG.get(n);
+            if (o === undefined) { o = n.data; ORIG.set(n, o); }
+
+            if (lang === 'en') { if (n.data !== o) n.data = o; return; }
+
+            var k = norm(o);
+            if (!k) return;
+            var h = DICT[k];
+            if (h === undefined) {
+                var m = /^p\.(\d+)$/.exec(k);          // TOC oldalszámok: p.26 → 26. o.
+                if (m) h = m[1] + '. o.';
+            }
+            if (h === undefined) {
+                if (n.data !== o) n.data = o;
+                if (debug && !/^[\d\s\W]*$/.test(k)) console.info('[i18n] nincs fordítás:', k);
+                return;
+            }
+            var lead  = /^\s*/.exec(o)[0];
+            var trail = /\s*$/.exec(o)[0];
+            n.data = lead + h + trail;
+        });
+    }
+
+    function setMeta(lang) {
+        document.title = lang === 'hu' ? META.title : META_ORIG.title;
+        var d = document.querySelector('meta[name="description"]');
+        if (d) d.content = lang === 'hu' ? META.desc : META_ORIG.desc;
+    }
+
+    function setLang(lang, initial) {
+        if (lang !== 'hu') lang = 'en';
+        lsSet(lang);
+        window.SN_LANG = lang;
+        document.documentElement.lang = lang;
+
+        document.querySelectorAll('.sn-flag').forEach(function (b) {
+            b.setAttribute('aria-pressed', b.dataset.lang === lang ? 'true' : 'false');
+        });
+
+        if (!(initial && lang === 'en')) {
+            applyTo(document.body, lang);
+            var host = document.getElementById('sirnik-team-host');
+            if (host && host.shadowRoot) applyTo(host.shadowRoot, lang);
+            setMeta(lang);
+        }
+
+        window.SN_MM_NAMES = lang === 'hu'
+            ? ['Pulóver · Korrupt', 'Pulóver · Pixel', 'Póló · Korrupt']
+            : null;
+
+        if (window.snEndSetLang) window.snEndSetLang(lang);
+
+        // a scene-ek újramérik magukat (a magyar szöveg más hosszúságú)
+        requestAnimationFrame(function () {
+            window.dispatchEvent(new Event('resize'));
+            window.dispatchEvent(new Event('scroll'));
+        });
+    }
+
+    document.querySelectorAll('.sn-flag').forEach(function (b) {
+        b.addEventListener('click', function () {
+            if (b.dataset.lang !== window.SN_LANG) setLang(b.dataset.lang, false);
+        });
+    });
+
+    var q = new URLSearchParams(location.search).get('lang');
+    var start = (q === 'hu' || q === 'en') ? q : (lsGet() === 'hu' ? 'hu' : 'en');
+    setLang(start, true);
+})();
+</script>
+
+<!-- Next Net WP scripts -->
+<script type="text/javascript" src="https://nextnet.ai/wp-includes/js/dist/hooks.min.js?ver=dd5603f07f9220ed27f1" id="wp-hooks-js"></script>
+<script type="text/javascript" src="https://nextnet.ai/wp-includes/js/dist/i18n.min.js?ver=c26c3dc7bed366793375" id="wp-i18n-js"></script>
+<script type="text/javascript" src="https://nextnet.ai/wp-content/plugins/contact-form-7/includes/swv/js/index.js?ver=6.1.4" id="swv-js"></script>
+<script type="text/javascript" src="https://nextnet.ai/wp-content/plugins/contact-form-7/includes/js/index.js?ver=6.1.4" id="contact-form-7-js"></script>
 
 </body>
 </html>

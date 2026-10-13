@@ -1,0 +1,630 @@
+{
+ "layout": "pdf1=előlap, pdf2=hátlap, tartalom a 3. oldaltól",
+ "fillable_pages": [
+  3,
+  7,
+  9,
+  11,
+  13,
+  15,
+  17,
+  19,
+  21,
+  23,
+  25,
+  29,
+  31,
+  33,
+  35,
+  37,
+  39,
+  41,
+  47,
+  49,
+  53,
+  55,
+  57,
+  61,
+  63,
+  65,
+  67,
+  71,
+  73,
+  75,
+  77,
+  79,
+  81,
+  85,
+  87,
+  89,
+  91,
+  93,
+  95,
+  101,
+  105,
+  107,
+  109,
+  45,
+  51,
+  97,
+  99,
+  111,
+  115
+ ],
+ "books": {
+  "notes/hu": {
+   "pages": 119,
+   "content": [
+    3,
+    119
+   ],
+   "name_page": 3,
+   "questions": [
+    7,
+    9,
+    11,
+    13,
+    15,
+    17,
+    19,
+    21,
+    23,
+    25,
+    29,
+    31,
+    33,
+    35,
+    37,
+    39,
+    41,
+    47,
+    49,
+    53,
+    55,
+    57,
+    61,
+    63,
+    65,
+    67,
+    71,
+    73,
+    75,
+    77,
+    79,
+    81,
+    85,
+    87,
+    89,
+    91,
+    93,
+    95,
+    101,
+    105,
+    107,
+    109
+   ],
+   "prompts": [
+    45,
+    51,
+    97,
+    99,
+    111,
+    115
+   ],
+   "zone_measure": {
+    "question_text_bottom_max": 0.179,
+    "question_text_bottom_max_page": 67,
+    "suggested_zone_top": 0.22,
+    "name_page_text_y": [
+     0.405,
+     0.563
+    ]
+   },
+   "short_non_fillable_pages": [
+    26,
+    38,
+    42,
+    50,
+    62,
+    72,
+    74,
+    114
+   ]
+  },
+  "notes/en": {
+   "pages": 119,
+   "content": [
+    3,
+    119
+   ],
+   "name_page": 3,
+   "questions": [
+    7,
+    9,
+    11,
+    13,
+    15,
+    17,
+    19,
+    21,
+    23,
+    25,
+    29,
+    31,
+    33,
+    35,
+    37,
+    39,
+    41,
+    47,
+    49,
+    53,
+    55,
+    57,
+    61,
+    63,
+    65,
+    67,
+    71,
+    73,
+    75,
+    77,
+    79,
+    81,
+    85,
+    87,
+    89,
+    91,
+    93,
+    95,
+    101,
+    105,
+    107,
+    109
+   ],
+   "prompts": [
+    45,
+    51,
+    97,
+    99,
+    111,
+    115
+   ],
+   "zone_measure": {
+    "question_text_bottom_max": 0.123,
+    "question_text_bottom_max_page": 67,
+    "suggested_zone_top": 0.16,
+    "name_page_text_y": [
+     0.405,
+     0.563
+    ]
+   },
+   "short_non_fillable_pages": [
+    26,
+    38,
+    42,
+    46,
+    50,
+    62,
+    72,
+    74
+   ]
+  },
+  "synthetic/hu": {
+   "pages": 119,
+   "content": [
+    3,
+    119
+   ],
+   "anchors": [
+    {
+     "id": "pro",
+     "kind": "prologue",
+     "page": 5,
+     "title": "PROLÓGUS: BEJELENTKEZÉS"
+    },
+    {
+     "id": "m01",
+     "kind": "module",
+     "page": 8,
+     "title": "I. MODUL: AZ ILLÚZIÓ"
+    },
+    {
+     "id": "c01",
+     "kind": "chapter",
+     "page": 9,
+     "title": "1. A KARAKTER, AKIT"
+    },
+    {
+     "id": "c02",
+     "kind": "chapter",
+     "page": 14,
+     "title": "2. A SZEMÉLYISÉGED NEM"
+    },
+    {
+     "id": "c03",
+     "kind": "chapter",
+     "page": 18,
+     "title": "3. AZ EGO MINT TÚLÉLÉSI"
+    },
+    {
+     "id": "m02",
+     "kind": "module",
+     "page": 23,
+     "title": "II. MODUL: A RENDSZER"
+    },
+    {
+     "id": "c04",
+     "kind": "chapter",
+     "page": 24,
+     "title": "4. A PÉNZ MINT NYELV"
+    },
+    {
+     "id": "m03",
+     "kind": "module",
+     "page": 28,
+     "title": "III. MODUL: AZ EREDET"
+    },
+    {
+     "id": "c05",
+     "kind": "chapter",
+     "page": 33,
+     "title": "5. HIERARCHIA"
+    },
+    {
+     "id": "c06",
+     "kind": "chapter",
+     "page": 38,
+     "title": "6. OKTATÁS MINT SZŰRŐ"
+    },
+    {
+     "id": "m04",
+     "kind": "module",
+     "page": 43,
+     "title": "IV. MODUL: A KÁOSZ"
+    },
+    {
+     "id": "c07",
+     "kind": "chapter",
+     "page": 44,
+     "title": "7. A FELISMERÉS NEM"
+    },
+    {
+     "id": "c08",
+     "kind": "chapter",
+     "page": 48,
+     "title": "8. A DEPRESSZIÓ MINT"
+    },
+    {
+     "id": "c09",
+     "kind": "chapter",
+     "page": 53,
+     "title": "9. MIÉRT NEM MŰKÖDIK A"
+    },
+    {
+     "id": "m05",
+     "kind": "module",
+     "page": 56,
+     "title": "V. MODUL: ISTEN"
+    },
+    {
+     "id": "m06",
+     "kind": "module",
+     "page": 63,
+     "title": "VI. MODUL: A HATALOM"
+    },
+    {
+     "id": "c10",
+     "kind": "chapter",
+     "page": 64,
+     "title": "10. A HATALOM BELÜL"
+    },
+    {
+     "id": "c11",
+     "kind": "chapter",
+     "page": 67,
+     "title": "11. MIÉRT MANIPULÁLHATÓ"
+    },
+    {
+     "id": "c12",
+     "kind": "chapter",
+     "page": 72,
+     "title": "12. A LÁZADÁS MINT"
+    },
+    {
+     "id": "m07",
+     "kind": "module",
+     "page": 76,
+     "title": "VII. MODUL: „NINCS"
+    },
+    {
+     "id": "c13",
+     "kind": "chapter",
+     "page": 77,
+     "title": "13. NEM IDE TARTOZOM. DE"
+    },
+    {
+     "id": "c14",
+     "kind": "chapter",
+     "page": 80,
+     "title": "14. A MENEKÜLÉS NEM"
+    },
+    {
+     "id": "c15",
+     "kind": "chapter",
+     "page": 83,
+     "title": "15. A KIJÁRAT UGYANAZ A"
+    },
+    {
+     "id": "m08",
+     "kind": "module",
+     "page": 86,
+     "title": "VIII. MODUL: KILÉPÉSI"
+    },
+    {
+     "id": "m09",
+     "kind": "module",
+     "page": 93,
+     "title": "XI. MODUL: REBOOT"
+    },
+    {
+     "id": "c16",
+     "kind": "chapter",
+     "page": 94,
+     "title": "16. ADATKINYERÉS"
+    },
+    {
+     "id": "c17",
+     "kind": "chapter",
+     "page": 98,
+     "title": "17. A BUKÁS ANATÓMIÁJA"
+    },
+    {
+     "id": "c18",
+     "kind": "chapter",
+     "page": 103,
+     "title": "18. MIÉRT NEM VAGY"
+    },
+    {
+     "id": "m10",
+     "kind": "module",
+     "page": 107,
+     "title": "X. MODUL: ID: SENKISEM"
+    },
+    {
+     "id": "c19",
+     "kind": "chapter",
+     "page": 108,
+     "title": "19. AMIKOR RÁJÖSSZ, HOGY"
+    },
+    {
+     "id": "epi",
+     "kind": "epilogue",
+     "page": 111,
+     "title": "EPILÓGUS: KILÉPÉS NEM"
+    }
+   ]
+  },
+  "synthetic/en": {
+   "pages": 120,
+   "content": [
+    3,
+    120
+   ],
+   "anchors": [
+    {
+     "id": "pro",
+     "kind": "prologue",
+     "page": 5,
+     "title": "PROLOGUE: LOGIN FAILED"
+    },
+    {
+     "id": "m01",
+     "kind": "module",
+     "page": 8,
+     "title": "I. MODULE: THE ILLUSION"
+    },
+    {
+     "id": "c01",
+     "kind": "chapter",
+     "page": 9,
+     "title": "1. THE CHARACTER YOU"
+    },
+    {
+     "id": "c02",
+     "kind": "chapter",
+     "page": 14,
+     "title": "2. YOUR PERSONALITY IS"
+    },
+    {
+     "id": "c03",
+     "kind": "chapter",
+     "page": 18,
+     "title": "3. THE EGO AS SURVIVAL"
+    },
+    {
+     "id": "m02",
+     "kind": "module",
+     "page": 23,
+     "title": "II. MODULE: THE SYSTEM"
+    },
+    {
+     "id": "c04",
+     "kind": "chapter",
+     "page": 24,
+     "title": "4. MONEY AS LANGUAGE"
+    },
+    {
+     "id": "m03",
+     "kind": "module",
+     "page": 28,
+     "title": "III. MODULE: THE ORIGIN"
+    },
+    {
+     "id": "c05",
+     "kind": "chapter",
+     "page": 33,
+     "title": "5. HIERARCHY"
+    },
+    {
+     "id": "c06",
+     "kind": "chapter",
+     "page": 38,
+     "title": "6. EDUCATION AS FILTER"
+    },
+    {
+     "id": "m04",
+     "kind": "module",
+     "page": 43,
+     "title": "IV. MODULE: THE CHAOS"
+    },
+    {
+     "id": "c07",
+     "kind": "chapter",
+     "page": 44,
+     "title": "7. REALIZATION DOESN'T"
+    },
+    {
+     "id": "c08",
+     "kind": "chapter",
+     "page": 48,
+     "title": "8. DEPRESSION AS LOGICAL"
+    },
+    {
+     "id": "c09",
+     "kind": "chapter",
+     "page": 53,
+     "title": "9. WHY MOTIVATION"
+    },
+    {
+     "id": "m05",
+     "kind": "module",
+     "page": 56,
+     "title": "V. MODULE: GOD"
+    },
+    {
+     "id": "m06",
+     "kind": "module",
+     "page": 63,
+     "title": "VI. MODULE: THE POWER"
+    },
+    {
+     "id": "c10",
+     "kind": "chapter",
+     "page": 64,
+     "title": "10. POWER BEGINS WITHIN"
+    },
+    {
+     "id": "c11",
+     "kind": "chapter",
+     "page": 67,
+     "title": "11. WHY ALMOST EVERYONE"
+    },
+    {
+     "id": "c12",
+     "kind": "chapter",
+     "page": 72,
+     "title": "12. REBELLION AS PRODUCT"
+    },
+    {
+     "id": "m07",
+     "kind": "module",
+     "page": 76,
+     "title": "VII. MODULE: \"NO"
+    },
+    {
+     "id": "c13",
+     "kind": "chapter",
+     "page": 77,
+     "title": "13. I DON'T BELONG HERE."
+    },
+    {
+     "id": "c14",
+     "kind": "chapter",
+     "page": 80,
+     "title": "14. THE ESCAPE WASN'T A"
+    },
+    {
+     "id": "c15",
+     "kind": "chapter",
+     "page": 83,
+     "title": "15. THE EXIT WAS THE"
+    },
+    {
+     "id": "m08",
+     "kind": "module",
+     "page": 87,
+     "title": "VIII. MODULE: EXIT POINT"
+    },
+    {
+     "id": "m09",
+     "kind": "module",
+     "page": 94,
+     "title": "XI. MODULE: REBOOT"
+    },
+    {
+     "id": "c16",
+     "kind": "chapter",
+     "page": 95,
+     "title": "16. DATA EXTRACTION IN"
+    },
+    {
+     "id": "c17",
+     "kind": "chapter",
+     "page": 99,
+     "title": "17. THE ANATOMY OF"
+    },
+    {
+     "id": "c18",
+     "kind": "chapter",
+     "page": 104,
+     "title": "18. WHY YOU'RE NOT AN"
+    },
+    {
+     "id": "m10",
+     "kind": "module",
+     "page": 108,
+     "title": "X. MODULE: ID: SENKISEM"
+    },
+    {
+     "id": "c19",
+     "kind": "chapter",
+     "page": 109,
+     "title": "19. WHEN YOU REALIZE IT'S"
+    },
+    {
+     "id": "epi",
+     "kind": "epilogue",
+     "page": 112,
+     "title": "EPILOGUE: EXIT NOT"
+    }
+   ]
+  }
+ },
+ "notes_question_text_sample": {
+  "3": {
+   "en": "THE OWNER OF THIS BOOK (a beautiful soul)",
+   "hu": "A KÖNYV TULAJDONOSA (egy gyönyörű lélek)"
+  },
+  "7": {
+   "en": "You are the first question Do you love yourself when nobody’s watching",
+   "hu": "Te vagy az első kérdés Szereted azt, aki vagy, amikor senki sem lát?"
+  },
+  "91": {
+   "en": "I love you, just differently What’s your goal?",
+   "hu": "Szeretlek, csak máshogy Mi a célod?"
+  },
+  "101": {
+   "en": "I love you, just differently What worries you?",
+   "hu": "Szeretlek, csak máshogy Mi aggaszt?"
+  },
+  "109": {
+   "en": "Now it’s your turn What are you proud of?",
+   "hu": "Most te jössz Mire vagy büszke?"
+  },
+  "115": {
+   "en": "Don’t leave yet Your last message:",
+   "hu": "Ne menj még Az utolsó üzeneted:"
+  }
+ }
+}

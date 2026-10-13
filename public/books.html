@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Senkisem – read both books free online.">
+<title>Senkisem – Books</title>
+<link rel="icon" type="image/svg+xml" href="./img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--gb:rgba(255,255,255,.09);--glass-border:rgba(255,255,255,.09);--text-primary:#fff;--t2:rgba(255,255,255,.55);--text-secondary:rgba(255,255,255,.55);--tm:rgba(255,255,255,.32);--text-muted:rgba(255,255,255,.32);--tg:rgba(255,255,255,.18);--ease:cubic-bezier(.16,1,.3,1);--transition:all 0.35s var(--ease)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:#000}
+body{background:#000;color:#fff;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1000;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.bg-grid,.amb{position:fixed;inset:0;pointer-events:none;z-index:0}
+.bg-grid{background-image:linear-gradient(rgba(255,255,255,.014) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);background-size:80px 80px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 10%,transparent 70%);mask-image:radial-gradient(ellipse at 50% 40%,#000 10%,transparent 70%)}
+.amb::before,.amb::after{content:"";position:absolute;width:620px;height:320px;border-radius:50%;filter:blur(90px)}
+.amb::before{top:18%;left:12%;background:radial-gradient(ellipse,rgba(0,255,200,.045),transparent 65%)}
+.amb::after{bottom:8%;right:8%;background:radial-gradient(ellipse,rgba(255,0,120,.04),transparent 65%)}
+
+/* ===== NAVBAR (az index.html-ből) ===== */
+.sn-navbar{position:fixed;top:0;left:0;width:100%;padding:0 2.5rem;height:64px;display:flex;justify-content:space-between;align-items:center;z-index:1000;background:rgba(0,0,0,.35);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);transition:background .4s ease,backdrop-filter .4s ease}
+.sn-navbar.scrolled{background:rgba(0,0,0,.55);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-bottom:1px solid var(--glass-border)}
+.sn-navbar-brand{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.12em;color:var(--text-primary);text-decoration:none;flex-shrink:0}
+.sn-navbar-links{display:flex;align-items:center;gap:1.2rem;list-style:none;flex:1;justify-content:center}
+.sn-navbar-links a{font-family:'DM Serif Display',serif;font-size:1.25rem;letter-spacing:.02em;text-transform:none;color:var(--text-secondary);text-decoration:none;padding-top:15px;display:flex;align-items:center;border-radius:2px;transition:color .22s,background .22s;white-space:nowrap}
+.sn-navbar-links a:hover,.sn-navbar-links a[aria-current]{color:var(--text-primary)}
+.sn-navbar-actions{display:flex;align-items:center;justify-content:flex-end;gap:.6rem;flex-shrink:0;min-width:96px}
+.sn-nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem;background:none;border:none}
+.sn-nav-hamburger span{display:block;width:22px;height:1px;background:var(--text-primary);transition:var(--transition)}
+.sn-mobile-nav{display:none;position:fixed;inset:0;width:100%;height:100%;background:rgba(0,0,0,.55);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;padding:2rem}
+.sn-mobile-nav.open{display:flex}
+.sn-mobile-nav a{font-family:'DM Serif Display',serif;font-style:italic;font-size:1.6rem;letter-spacing:.04em;text-transform:none;border-bottom:1px solid rgba(255,255,255,.1);padding:1.2rem 0}
+.sn-mobile-nav a:hover{color:var(--text-primary)}
+.sn-mobile-nav-back{position:static;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:var(--text-primary);font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:3px;cursor:pointer;margin-bottom:1rem;align-self:flex-start}
+@media (max-width:1024px){.sn-navbar-links{display:none}.sn-nav-hamburger{display:flex}.sn-navbar-actions{min-width:0}}
+@media (max-width:480px){.sn-navbar{padding:0 1.2rem}}
+@media (max-width:768px){.sn-nav-hamburger span{width:28px;height:2px}.sn-nav-hamburger{gap:6px;padding:.6rem}.sn-navbar-actions{gap:.8rem}}
+.sn-support{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.12em;color:#e0212b;text-decoration:none;display:inline-flex;align-items:center;gap:.55rem;text-shadow:0 0 18px rgba(224,33,43,.35);transition:color .25s,text-shadow .25s;white-space:nowrap}
+.sn-support::before{content:'';width:7px;height:7px;border-radius:50%;background:#e0212b;box-shadow:0 0 10px #e0212b;animation:snPulse 2.4s ease-in-out infinite}
+.sn-support:hover{color:#ff4350;text-shadow:0 0 26px rgba(255,67,80,.6)}
+@keyframes snPulse{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}
+@media(max-width:480px){.sn-support{font-size:1.1rem}}
+.sn-langs{display:flex;gap:6px;align-items:center;margin-left:.4rem}
+.sn-flag{width:34px;height:34px;padding:3px;border-radius:50%;border:2px solid transparent;background:none;opacity:.5;cursor:pointer;transition:opacity .2s}
+.sn-flag svg{display:block;width:100%;height:100%;border-radius:50%}
+.sn-flag[aria-pressed="true"]{opacity:1;border-color:#fff}
+.sn-flag:hover{opacity:.9}
+.sn-flag:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media(max-width:768px){.sn-navbar-actions{gap:.6rem}}
+@media(max-width:480px){.sn-langs{gap:4px;margin-left:0}.sn-flag{width:28px;height:28px;padding:2px}.sn-navbar-actions{gap:.45rem}}
+
+/* ===== TARTALOM ===== */
+main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:150px 2.5rem 4rem}
+.tag-g{display:inline-block;font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,255,80,.45);border:1px solid rgba(0,255,80,.18);border-radius:2px;padding:.3rem .7rem;margin-bottom:1.6rem}
+.eyebrow{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--tm);margin-bottom:1.4rem;display:flex;align-items:center;gap:1rem}
+.eyebrow::before{content:"";width:30px;height:1px;background:var(--tm)}
+h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(3rem,7vw,6.4rem);line-height:.92;letter-spacing:-.025em;margin-bottom:1.6rem}
+h1 em{font-style:italic;color:var(--t2)}
+.sub{font-size:.95rem;line-height:1.75;font-weight:300;color:var(--t2);max-width:460px;margin-bottom:4rem}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.card{display:flex;flex-direction:column;border:1px solid var(--gb);border-radius:3px;background:rgba(255,255,255,.025);overflow:hidden;transition:transform .5s var(--ease),border-color .4s,box-shadow .5s var(--ease)}
+.card:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.22);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+/* a kép maga a könyv: nincs külön borító, nincs sötétítés */
+.stage{position:relative;aspect-ratio:16/9;overflow:hidden;background:#050505}
+.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s var(--ease),filter .6s var(--ease)}
+.card:hover .stage img{transform:scale(1.06);filter:brightness(1.14)}
+.body{padding:1.7rem 1.7rem 1.8rem;display:flex;flex-direction:column;flex:1}
+.lbl{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--tm);margin-bottom:.7rem}
+h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.7rem,2.8vw,2.4rem);line-height:1.04;margin-bottom:1rem}
+.desc{font-size:.9rem;line-height:1.75;font-weight:300;color:var(--t2);margin-bottom:1.3rem}
+.pills{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.9rem}
+.pill{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.12);border-radius:2px;padding:.22rem .6rem}
+.sys{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,255,80,.4);margin-bottom:1.6rem}
+.cta{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.3rem;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;transition:background .25s,border-color .25s}
+.card:hover .cta{background:#fff;color:#000;border-color:#fff}
+
+.foot{margin-top:4rem;padding-top:1.6rem;border-top:1px solid var(--gb);font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tg)}
+
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rv{opacity:0;animation:up .9s var(--ease) forwards;animation-delay:var(--d,0s)}
+@media (prefers-reduced-motion:reduce){.rv{animation:none;opacity:1}*{transition:none!important}.sn-support::before{animation:none}}
+@media (max-width:860px){.grid{grid-template-columns:1fr}main{padding:115px 1.4rem 3rem}.sub{margin-bottom:2.6rem}}
+
+/* ===== SOCIAL (az index.html-lel azonos) ===== */
+.sn-social-section{padding:5rem 0 4rem;background:#000;position:relative;overflow:hidden;z-index:1}
+.sn-social-section-label{text-align:center;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--text-muted);margin-bottom:3rem;display:flex;align-items:center;justify-content:center;gap:1.5rem}
+.sn-social-section-label::before,.sn-social-section-label::after{content:'';width:60px;height:1px;background:var(--glass-border)}
+.sn-social-icons-row{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;padding:0 2rem}
+.sn-social-icon-card{display:flex;flex-direction:column;align-items:center;gap:.8rem;padding:1.8rem 2.5rem;background:rgba(255,255,255,.03);border:1px solid var(--glass-border);border-radius:4px;text-decoration:none;color:var(--text-secondary);transition:all .4s var(--ease);min-width:120px;opacity:0;transform:translateY(24px)}
+.sn-social-icon-card.visible{opacity:1;transform:translateY(0)}
+.sn-social-icon-card:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:var(--text-primary);transform:translateY(-4px)}
+.sn-social-icon-card.tiktok:hover{border-color:rgba(0,255,200,.4);box-shadow:0 0 30px rgba(0,255,200,.06)}
+.sn-social-icon-card.instagram:hover{border-color:rgba(70,150,255,.55);box-shadow:0 0 30px rgba(70,150,255,.14);color:#78b0ff}
+.sn-social-icon-card.youtube:hover{border-color:rgba(255,45,45,.55);box-shadow:0 0 30px rgba(255,45,45,.14);color:#ff5252}
+.sn-social-icon-card svg{width:28px;height:28px;fill:currentColor}
+.sn-social-icon-name{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase}
+.sn-social-icon-card:nth-child(1){transition-delay:.05s}
+.sn-social-icon-card:nth-child(2){transition-delay:.15s}
+.sn-social-icon-card:nth-child(3){transition-delay:.25s}
+@media(max-width:768px){
+  .sn-social-icons-row{display:flex;flex-wrap:nowrap;justify-content:center;gap:.7rem;max-width:none;padding:0 1rem;margin:0}
+  .sn-social-icon-card{flex:1 1 0;min-width:0;max-width:112px;padding:1.1rem .4rem}
+  .sn-social-icon-card svg{width:22px;height:22px}
+  .sn-social-icon-name{font-size:.52rem;letter-spacing:.1em}
+}
+
+/* ===== FOOTER (az index.html-lel azonos) ===== */
+.sn-footer{position:relative;width:100%;height:80vh;min-height:520px;max-height:900px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;background:#000;isolation:isolate;z-index:1}
+.sn-footer-video-container{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:hidden;z-index:0}
+.sn-footer-video{position:absolute!important;top:50%!important;left:50%!important;width:100%!important;height:100%!important;min-width:100%!important;min-height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;transform:translate(-50%,-50%) scale(1.06)!important;z-index:0}
+.sn-footer-video.mobile-video{display:none}
+@media(max-width:768px){.sn-footer-video.desktop-video{display:none}.sn-footer-video.mobile-video{display:block}}
+.sn-footer-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.55) 0%,rgba(0,0,0,.25) 40%,rgba(0,0,0,.68) 100%);z-index:1}
+.sn-footer-bar{position:relative;z-index:3;padding:2rem 3rem 2.5rem;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem}
+.sn-footer-links{display:flex;flex-direction:column;gap:.85rem}
+.sn-footer-links a{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none;transition:color .25s ease;line-height:1.4}
+.sn-footer-links a:hover{color:rgba(255,255,255,.9)}
+.sn-footer-copy{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);text-align:right;line-height:1.4}
+@media(max-width:768px){
+  .sn-footer{height:82vh;min-height:580px}
+  .sn-footer-bar{padding:1.4rem 1.6rem 1.8rem;flex-direction:column;align-items:flex-start;gap:1.6rem}
+  .sn-footer-links{position:absolute;top:-415px;left:1.6rem;z-index:4}
+  .sn-footer-copy{width:100%;order:2;text-align:left}
+  .sn-footer-links a{font-size:.82rem}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div><div class="amb"></div>
+
+<!-- NAVBAR -->
+<header class="sn-navbar" id="sn-navbar">
+    <a href="/" class="sn-navbar-brand">Senkisem</a>
+    <nav>
+        <ul class="sn-navbar-links">
+            <li><a href="/" id="nAbout">About</a></li>
+            <li><a href="/clothing.html" id="nClothing">Clothing</a></li>
+            <li><a href="/books.html" id="nBooks" aria-current="page">Books</a></li>
+        </ul>
+    </nav>
+    <div class="sn-navbar-actions">
+        <a href="support.html" class="sn-support" id="nSupport">Support</a>
+        <div class="sn-langs" role="group" aria-label="Language">
+            <button class="sn-flag" data-lang="hu" aria-label="Magyar" title="Magyar" aria-pressed="false">
+                <svg viewBox="0 0 24 24"><clipPath id="snfh"><circle cx="12" cy="12" r="12"/></clipPath><g clip-path="url(#snfh)"><rect width="24" height="8" fill="#CD2A3E"/><rect y="8" width="24" height="8" fill="#fff"/><rect y="16" width="24" height="8" fill="#436F4D"/></g></svg>
+            </button>
+            <button class="sn-flag" data-lang="en" aria-label="English" title="English" aria-pressed="true">
+                <svg viewBox="0 0 24 24"><clipPath id="snfe"><circle cx="12" cy="12" r="12"/></clipPath><g clip-path="url(#snfe)"><rect width="24" height="24" fill="#012169"/><path d="M0 0L24 24M24 0L0 24" stroke="#fff" stroke-width="4"/><path d="M0 0L24 24M24 0L0 24" stroke="#C8102E" stroke-width="1.5"/><path d="M12 0V24M0 12H24" stroke="#fff" stroke-width="7"/><path d="M12 0V24M0 12H24" stroke="#C8102E" stroke-width="4"/></g></svg>
+            </button>
+        </div>
+        <button class="sn-nav-hamburger" id="sn-hamburger-btn" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<!-- MOBILE NAV -->
+<nav class="sn-mobile-nav" id="sn-mobile-nav">
+    <button class="sn-mobile-nav-back" id="mBack" onclick="snCloseMobileNav()">← Back</button>
+    <a href="/" id="mAbout" onclick="snCloseMobileNav()">About</a>
+    <a href="/clothing.html" id="mClothing" onclick="snCloseMobileNav()">Clothing</a>
+    <a href="/books.html" id="mBooks" onclick="snCloseMobileNav()">Books</a>
+</nav>
+
+<main data-barba="container" data-barba-namespace="books">
+  <div class="rv"><span class="tag-g" id="tag"></span></div>
+  <h1 class="rv" style="--d:.16s" id="h1"></h1>
+  <p class="sub rv" style="--d:.26s" id="sub"></p>
+  <section class="grid" id="grid" aria-label="Books"></section>
+  <div class="foot rv" style="--d:.7s"><span id="f1"></span></div>
+</main>
+
+<!-- SOCIAL -->
+<section class="sn-social-section">
+    <div class="sn-social-section-label" id="follow">Follow us</div>
+    <div class="sn-social-icons-row" id="sn-social-icons-row">
+        <a href="https://www.tiktok.com/@senkisem.hu" class="sn-social-icon-card tiktok" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.75a8.26 8.26 0 004.83 1.54V6.84a4.85 4.85 0 01-1.06-.15z"/></svg>
+            <span class="sn-social-icon-name">TikTok</span>
+        </a>
+        <a href="https://www.instagram.com/senkisem_hu/" class="sn-social-icon-card instagram" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            <span class="sn-social-icon-name">Instagram</span>
+        </a>
+        <a href="#" class="sn-social-icon-card youtube" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55A3.016 3.016 0 0 0 .501 6.186C0 8.07 0 12 0 12s0 3.93.501 5.814a3.016 3.016 0 0 0 2.122 2.136C4.495 20.5 12 20.5 12 20.5s7.505 0 9.376-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <span class="sn-social-icon-name">YouTube</span>
+        </a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="sn-footer" id="sn-footer">
+    <div class="sn-footer-video-container">
+        <video id="sn-footer-video-desktop" class="sn-footer-video desktop-video" autoplay loop muted playsinline>
+            <source src="./assets/img/merchvid.mp4" type="video/mp4">
+        </video>
+        <video id="sn-footer-video-mobile" class="sn-footer-video mobile-video" autoplay loop muted playsinline>
+            <source src="./assets/img/merchvidphone.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="sn-footer-overlay"></div>
+    <div class="sn-footer-bar">
+        <div class="sn-footer-links">
+            <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener" id="fTerms">Terms &amp; Conditions</a>
+            <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener" id="fPriv">Privacy Policy</a>
+        </div>
+        <div class="sn-footer-copy">
+            © 2026 Senkisem L.L.C. <br> <span id="fRights">All rights reserved</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+const TXT={
+ hu:{nAbout:'Rólunk',nClothing:'Ruházat',nBooks:'Könyvek',nSupport:'Támogatás',mBack:'← Vissza',mAbout:'Rólunk',mClothing:'Ruházat',mBooks:'Könyvek',
+  follow:'Kövess minket',fTerms:'Általános szerződési feltételek',fPriv:'Adatkezelési tájékoztató',fRights:'Minden jog fenntartva',
+  tag:'// Olvasás — hozzáférés: nyitva',eye:'Könyvek',
+  h1:'Olvasd el<br><em> teljesen ingyen.</em>',sub:'A két könyv teljes tartalmát megnyithatod itt, a böngészőben. <br> A Jegyzetek egy Idegentől lapjaira bele is írhatsz.',
+  cta:'Olvasom',pages:'oldal',f1:'',
+  desc:'Senkisem — Olvasd el ingyen. Két könyv, teljes tartalom, a böngésződben.',
+  notes:{lbl:'Senkisem I.',t:'Jegyzetek egy Idegentől',d:'Nem egy szokványos könyv. Nem mesél történetet. Nem ad tanácsokat.<br>Kérdez. Szétszed. Majd újrarendez.',pill:'Ingyen olvasható és kitölthető',sys:''},
+  synthetic:{lbl:'Senkisem II.',t:'Szintetikus Ember',d:'Ez nem önfejlesztés. Ez feltárás.<br>A felismerés, hogy a személyiséged algoritmus. A döntéseid túlélési protokollok.',pill:'Ingyen olvasható',sys:''}},
+ en:{nAbout:'About',nClothing:'Clothing',nBooks:'Books',nSupport:'Support',mBack:'← Back',mAbout:'About',mClothing:'Clothing',mBooks:'Books',
+  follow:'Follow us',fTerms:'Terms &amp; Conditions',fPriv:'Privacy Policy',fRights:'All rights reserved',
+  tag:'// Reading — access: open',eye:'Books',
+  h1:'Read it<br><em>completely free.</em>',sub:'You can open both books right here in your browser.<br> Inside Notes from a Stranger, you can write on the pages.',
+  cta:'Read',pages:'pages',f1:'',
+  desc:'Senkisem — read both books free online, in full, in your browser.',
+  notes:{lbl:'Senkisem I.',t:'Notes from a Stranger',d:'Not an ordinary book. It tells no story. It gives no advice.<br>It asks. It takes apart. Then it rearranges.',pill:'Free to read and fill in',sys:''},
+  synthetic:{lbl:'Senkisem II.',t:'Synthetic Human',d:'This is not self-improvement. This is excavation.<br>The realization that your personality is an algorithm. Your decisions are survival protocols.',pill:'Free to read',sys:''}}};
+const PG={notes:{hu:117,en:117},synthetic:{hu:117,en:118}};
+/* a kép maga a könyv; sorban próbálja a jelölteket */
+const IMG={
+ notes:{hu:['assets/img/jgybg.png'],en:['assets/img/jgynbg_en.png','assets/img/jgybg_en.png','assets/img/jgybg.png']},
+ synthetic:{hu:['assets/img/usermanualbg169.png','assets/img/usermanualbg.png'],en:['assets/img/usermanualbg_en.png','assets/img/usermanualbg169.png']}
+};
+const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch{}};
+const $=id=>document.getElementById(id);
+let lang=new URLSearchParams(location.search).get('lang');
+if(!TXT[lang])lang=ls('senkisem.lang')==='hu'?'hu':'en';
+function imgFix(img){
+  const list=IMG[img.dataset.b][img.dataset.l],i=(+img.dataset.i||0)+1;
+  if(i<list.length){img.dataset.i=i;img.src=list[i]}else img.style.display='none'}
+function render(){
+  const T=TXT[lang];ls('senkisem.lang',lang);document.documentElement.lang=lang;
+  document.title='Senkisem – '+T.nBooks;document.querySelector('meta[name=description]').content=T.desc;
+  ['nAbout','nClothing','nBooks','nSupport','mBack','mAbout','mClothing','mBooks','follow','fTerms','fPriv','fRights','tag','h1','sub','f1'].forEach(k=>$(k).innerHTML=T[k]);
+  $('grid').innerHTML=['notes','synthetic'].map((b,i)=>{const X=T[b];return `<a class="card rv" style="--d:${.36+i*.12}s" href="olvaso.html?book=${b}&lang=${lang}" aria-label="${X.t} – ${T.cta}">
+    <div class="stage"><img src="${IMG[b][lang][0]}" alt="${X.t}" data-b="${b}" data-l="${lang}" data-i="0" onerror="imgFix(this)"></div>
+    <div class="body"><div class="lbl">${X.lbl}</div><h2>${X.t}</h2><p class="desc">${X.d}</p>
+      <div class="pills"><span class="pill">${X.pill}</span></div>
+      <div class="sys">${X.sys}</div><span class="cta">${T.cta}</span></div></a>`}).join('');
+  document.querySelectorAll('.sn-flag').forEach(f=>f.setAttribute('aria-pressed',f.dataset.lang===lang));
+  history.replaceState(null,'','?lang='+lang);
+}
+document.querySelectorAll('.sn-flag').forEach(f=>f.onclick=()=>{if(f.dataset.lang!==lang){lang=f.dataset.lang;render()}});
+render();
+
+/* ---------- NAVBAR / MOBIL MENÜ ---------- */
+function snCloseMobileNav(){$('sn-mobile-nav').classList.remove('open');document.body.style.overflow=''}
+(function(){
+  var nb=$('sn-navbar'),tk=false;
+  addEventListener('scroll',function(){if(!tk){tk=true;requestAnimationFrame(function(){nb.classList.toggle('scrolled',pageYOffset>80);tk=false})}},{passive:true});
+  nb.classList.toggle('scrolled',pageYOffset>80);
+  $('sn-hamburger-btn').addEventListener('click',function(){var o=$('sn-mobile-nav').classList.toggle('open');document.body.style.overflow=o?'hidden':''});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')snCloseMobileNav()});
+})();
+
+/* ---------- SOCIAL reveal ---------- */
+(function(){
+  var row=$('sn-social-icons-row');if(!row)return;
+  new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.querySelectorAll('.sn-social-icon-card').forEach(function(c){c.classList.add('visible')})})},{threshold:.2}).observe(row);
+})();
+
+/* ---------- FOOTER videó ---------- */
+(function(){
+  var d=$('sn-footer-video-desktop'),m=$('sn-footer-video-mobile');if(!d||!m)return;
+  function swap(){
+    if(innerWidth<=768){d.style.display='none';m.style.display='block';m.play().catch(function(){})}
+    else{m.style.display='none';d.style.display='block';d.play().catch(function(){})}
+  }
+  swap();addEventListener('resize',swap);
+})();
+</script>
+</body>
+</html>

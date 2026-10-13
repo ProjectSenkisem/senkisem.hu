@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Jegyzetek egy Idegentől – ingyen olvasható és kitölthető online.">
+<title>Jegyzetek egy Idegentől | Senkisem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Élesben érdemes saját hostról adni (assets/fonts), a latin-ext (ő, ű) részhalmazzal -->
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#000;color:#fff;font-family:'Space Mono',monospace;-webkit-text-size-adjust:100%;overscroll-behavior:none}
+#stage{position:fixed;left:0;top:0;width:100%;height:100%}
+#stage canvas{display:block;touch-action:none;cursor:grab}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.ui{position:fixed;z-index:10;font-size:12px;color:rgba(255,255,255,.6)}
+#back{top:max(14px,env(safe-area-inset-top));left:16px;text-decoration:none}
+#back:hover,#menuBtn:hover{color:#fff}
+#menuBtn{top:max(10px,env(safe-area-inset-top));right:12px;font-size:20px;padding:4px 10px}
+#menu{top:calc(max(10px,env(safe-area-inset-top)) + 40px);right:12px;background:rgba(10,10,10,.96);border:1px solid rgba(255,255,255,.2);padding:6px;min-width:230px}
+#menu[hidden],#hard[hidden],#help[hidden]{display:none}
+#menu button,#menu label{display:block;width:100%;text-align:left;padding:10px;font-size:12px}
+#menu button:hover{background:#fff;color:#000}
+#menu input{width:70px;background:#000;color:#fff;border:1px solid #555;padding:3px;font:inherit}
+#nav{bottom:max(16px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;white-space:nowrap}
+#nav .a{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);font-size:16px}
+#nav .a:disabled{opacity:.2}
+#stat{text-align:center;line-height:1.5}
+#saved{bottom:max(18px,env(safe-area-inset-bottom));right:14px;font-size:11px;opacity:.5}
+#toast{top:60px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:10px 14px;max-width:88vw;opacity:0;pointer-events:none;transition:opacity .3s}
+#toast.on{opacity:1}
+#load{position:fixed;inset:0;z-index:50;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity .5s}
+#load.off{opacity:0;pointer-events:none}
+#done{bottom:max(16px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:10px 22px;z-index:30}
+body.writing #nav,body.writing #saved{display:none}
+#ta{position:fixed;z-index:20;border:0;outline:1px dashed rgba(0,0,0,.3);background:transparent;color:#0c0c28;font-family:Caveat,cursive;line-height:1.25;padding:0;margin:0;resize:none;overflow:auto;caret-color:#0c0c28}
+#hard,#help{position:fixed;z-index:40;left:50%;top:50%;transform:translate(-50%,-50%);background:#0a0a0a;border:1px solid rgba(255,255,255,.25);padding:22px;width:min(440px,90vw);font-size:13px;line-height:1.7}
+#hard a{color:#fff}
+#hard button,#help button{margin-top:14px;border:1px solid #fff;padding:8px 14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<script src="vendor/quick_flipbook/modifiers.min.js"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/examples/jsm/utils/BufferGeometryUtils.js":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/utils/BufferGeometryUtils.js"}}</script>
+</head>
+<body>
+<div id="stage"></div>
+<div id="load">Betöltés…</div>
+<a id="back" class="ui" href="/">← senkisem.hu</a>
+<button id="menuBtn" class="ui" aria-label="Menü" aria-expanded="false">☰</button>
+<div id="menu" class="ui" hidden>
+  <button id="mSave">Naplófájl mentése</button>
+  <button id="mLoad">Naplófájl betöltése</button>
+  <button id="mPdf">Példányom letöltése (PDF)</button>
+  <label>Ugrás oldalra: <input id="mGo" type="number" min="1" max="119"></label>
+  <button id="mSound">Hang: be</button>
+  <button id="mHard">Ha most nehéz</button>
+  <button id="mDel">A naplóm törlése</button>
+  <p style="padding:10px;font-size:11px;line-height:1.5;opacity:.6">A válaszaid csak a te eszközödön vannak. Mi nem látjuk őket.</p>
+</div>
+<div id="nav" class="ui"><button class="a" id="prev" aria-label="Előző oldal">←</button><div id="stat"></div><button class="a" id="next" aria-label="Következő oldal">→</button></div>
+<div id="saved" class="ui" aria-live="polite"></div>
+<div id="toast" class="ui" role="status"></div>
+<button id="done" class="ui" hidden>Kész ✓</button>
+<textarea id="ta" hidden aria-label="Válaszod"></textarea>
+<div id="help" hidden><p>Húzd a könyvet. Csíptess vagy görgess a nagyításhoz. A lap szélére koppintva lapozol.<br>Ahol szaggatott keretet látsz, oda írhatsz.<br><br>A válaszaid csak ebben a böngészőben vannak. Safari 7 nap használat nélkül törölheti őket, ezért ments időnként naplófájlt a menüben.</p><button id="helpOk">Rendben</button></div>
+<div id="hard" hidden><p>Ha most nehéz, nem kell egyedül lenned vele.<br><br>Lelki Elsősegély Telefonszolgálat: <a href="tel:116123">116-123</a><br>Életveszély esetén: <a href="tel:112">112</a><br><br>Ez a könyv várni fog.</p><button id="hardOk">Bezár</button></div>
+<div id="prog" class="ui" hidden style="top:50%;left:50%;transform:translate(-50%,-50%);background:#000;padding:16px;border:1px solid #fff;z-index:60"></div>
+<input type="file" id="file" accept=".json,application/json" hidden>
+
+<script type="module">
+import * as THREE from 'three';
+import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+const M=window,$=id=>document.getElementById(id);
+const ASPECT=.705,BASE='assets/book/',FS=.033,REDUCE=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const pad=n=>String(n).padStart(3,'0');
+
+/* ---------- Oldalsorrend és kitölthető oldalak (page-map) ---------- */
+const ITEMS=[1,'blank'];for(let i=3;i<=119;i++)ITEMS.push(i);ITEMS.push(2);   // 120 elem = 60 lap
+const Q=[7,9,11,13,15,17,19,21,23,25,29,31,33,35,37,39,41,47,49,53,55,57,61,63,65,67,71,73,75,77,79,81,85,87,89,91,93,95,101,105,107,109];
+const P=[45,51,97,99,111,115];
+const WR={3:{zone:[.2,.47,.6,.06],max:60,one:true}};            // névoldal – a zónát kalibráld a képen
+Q.forEach(p=>WR[p]={zone:[.12,p===67?.24:.22,.76,.66],max:900});
+P.forEach(p=>WR[p]={zone:[.12,.22,.76,.66],max:p===97||p===99?600:1500});
+const TOTAL_W=Object.keys(WR).length;
+
+/* ---------- Mentés (localStorage + bak + fájl) ---------- */
+const KEY='senkisem.diary.v1',iso=()=>new Date().toISOString(),today=()=>iso().slice(0,10);
+const fresh=()=>({v:1,app:'senkisem-jegyzetek',id:Math.random().toString(36).slice(2,6).toUpperCase(),name:'',created:iso(),updated:iso(),lastPage:0,lastExportAt:null,answers:{}});
+const valid=p=>p&&p.app==='senkisem-jegyzetek'&&p.answers&&typeof p.answers==='object';
+function load(){for(const k of [KEY,KEY+'.bak',KEY+'.bak2']){try{const p=JSON.parse(localStorage.getItem(k));if(valid(p))return p}catch{}}return fresh()}
+let D=load(),saveT=0,persisted=false;
+function toast(t,ms=3500){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),ms)}
+function save(){
+  clearTimeout(saveT);D.updated=iso();D.name=(D.answers[3]&&D.answers[3].t)||'';
+  try{
+    const prev=localStorage.getItem(KEY),s=JSON.stringify(D);
+    if(prev&&valid(JSON.parse(prev)))localStorage.setItem(KEY+'.bak',prev);
+    localStorage.setItem(KEY,s);
+    if(localStorage.getItem(KEY+'.d')!==today()){localStorage.setItem(KEY+'.bak2',s);localStorage.setItem(KEY+'.d',today())}
+    if(!persisted){persisted=true;navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}
+    $('saved').textContent='✓ elmentve '+new Date().toTimeString().slice(0,5);
+    if(!D.note1&&Object.keys(D.answers).length){D.note1=1;toast('A válaszaid csak ezen az eszközön vannak. Ments naplófájlt a menüben, hogy sose veszítsd el.',7000)}
+  }catch(e){$('saved').textContent='⚠ nem sikerült menteni';toast('Nem sikerült menteni a böngészőbe (privát mód vagy tele a tár). Mentsd el a naplófájlt!',8000)}
+}
+const sched=()=>{clearTimeout(saveT);saveT=setTimeout(save,400)};
+addEventListener('pagehide',save);addEventListener('blur',save);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});
+function merge(inc){let n=0;for(const[p,a]of Object.entries(inc.answers||{})){const c=D.answers[p];if(a&&typeof a.t==='string'&&WR[p]&&(!c||(a.u||'')>(c.u||''))){D.answers[p]={t:a.t.slice(0,WR[p].max),u:a.u||iso()};n++}}return n}
+addEventListener('storage',e=>{if(e.key===KEY&&e.newValue){try{const p=JSON.parse(e.newValue);if(valid(p)&&merge(p)){reloadAll();updateUI()}}catch{}}});
+function dl(f){const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+const safeName=()=>((D.name||'naplo').replace(/[^\p{L}\p{N}]+/gu,'-').replace(/^-|-$/g,'')||'naplo');
+function exportJSON(){save();const f=new File([JSON.stringify(D)],`senkisem-naplo-${safeName()}-${today()}.json`,{type:'application/json'});
+  D.lastExportAt=iso();save();
+  if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f]}).catch(()=>{});else dl(f)}
+
+/* ---------- Szövegrajzolás a lapra ---------- */
+function wrap(x,t,mw){const o=[];for(const para of t.split('\n')){let l='';for(const w of para.split(' ')){const tr=l?l+' '+w:w;if(x.measureText(tr).width>mw&&l){o.push(l);l=w}else l=tr}o.push(l)}return o}
+function drawText(x,Wd,Hd,t,n){
+  const [zx,zy,zw,zh]=WR[n].zone,bx=zx*Wd,by=zy*Hd,bw=zw*Wd,bh=zh*Hd;let fs=FS*Hd,ls;
+  for(;;){x.font=fs+'px Caveat,cursive';ls=wrap(x,t,bw);if(ls.length*fs*1.25<=bh||fs<=Hd*.018)break;fs-=2}
+  x.fillStyle='rgba(12,12,40,.92)';x.textBaseline='top';const mx=Math.max(1,Math.floor(bh/(fs*1.25)));
+  ls.slice(0,mx).forEach((l,i)=>x.fillText(i===mx-1&&ls.length>mx?l+'…':l,bx,by+i*fs*1.25));
+}
+
+/* ---------- Képbetöltés + textúrák ---------- */
+const rawImg=n=>new Promise(r=>{const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=BASE+'p'+pad(n)+'.webp'});
+const imgs=new Map(),loadImg=n=>{if(!imgs.has(n))imgs.set(n,rawImg(n));return imgs.get(n)};
+function makeTex(im,n,withAns){
+  if(!im)return null;const wr=WR[n],a=D.answers[n];
+  if(!wr||!withAns){const t=new THREE.Texture(im);t.needsUpdate=true;return t}
+  const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;const x=c.getContext('2d');x.drawImage(im,0,0);
+  if(a&&a.t)drawText(x,c.width,c.height,a.t,n);
+  else{const [zx,zy,zw,zh]=wr.zone;x.setLineDash([10,10]);x.lineWidth=2;x.strokeStyle='rgba(0,0,0,.2)';x.strokeRect(zx*c.width,zy*c.height,zw*c.width,zh*c.height);
+    x.setLineDash([]);x.fillStyle='rgba(0,0,0,.35)';x.font=c.height*.016+'px "Space Mono",monospace';x.textBaseline='top';x.fillText('✎ ide írhatsz',zx*c.width+8,zy*c.height+8)}
+  return new THREE.CanvasTexture(c);
+}
+const AO=(()=>{const c=document.createElement('canvas');c.width=256;c.height=2;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,256,0);g.addColorStop(0,'#000');g.addColorStop(.1,'#fff');x.fillStyle=g;x.fillRect(0,0,256,2);return new THREE.CanvasTexture(c)})();
+const NOTEX=new THREE.MeshStandardMaterial({color:'#fff'});
+const mkMat=(tex,side)=>{if(tex){tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=4}return new THREE.MeshStandardMaterial({color:'#fff',map:tex,roughness:.4,toneMapped:false,aoMap:side===1?AO:null,aoMapIntensity:.7})};
+const disposeMat=m=>{if(m&&m!==NOTEX){if(m.map)m.map.dispose();m.dispose()}};
+
+/* ---------- Lap + könyv ---------- */
+class PageCurve extends M.UserDefined{
+  constructor(){super();this.intensity=1;this.renderVector=(v)=>{let r=v.getRatio(M.ModConstant.X);const R=.812,Mid=.325;
+    if(r<=R){r/=R;let e;if(r<Mid){r/=Mid;e=Math.sqrt(1-r*r+r*2-1)}else{r=(r-Mid)/(1-Mid);e=(Math.cos(r*Math.PI)+1)/2}
+      v.setValue(M.ModConstant.Z,v.getValue(M.ModConstant.Z)+e*.054*this.intensity)}}}}
+const flipU=g=>{const a=g.attributes.uv;for(let i=0;i<a.count;i++)a.setXY(i,1-a.getX(i),a.getY(i));return g};
+class FlipPage extends THREE.Mesh{
+  constructor(sub){super();
+    const plane=new THREE.Mesh(mergeGeometries([flipU(new THREE.PlaneGeometry(1,1,sub,sub)),flipU(new THREE.PlaneGeometry(1,1,sub,sub).rotateY(Math.PI))],true),[NOTEX,NOTEX]);
+    plane.rotateX(Math.PI/2);plane.position.x=.5;this.scale.z=-1;this.add(plane);this.page=plane;
+    this.mods=new M.ModifierStack(plane);this.bend=new M.Bend(0,0,0);this.bend.constraint=M.ModConstant.LEFT;
+    this.twist=new M.Twist(0);this.twist.vector=new M.Vector3(2,0,0);this.twist.center=new M.Vector3(-.5,0,0);
+    this.curve=new PageCurve();this.mods.addModifier(this.curve);this.mods.addModifier(this.bend);this.mods.addModifier(this.twist);this._p=-1;this._ci=-1}
+  flip(p,dir,ci){this.rotation.z=Math.PI*p;this.bend.force=Math.min(-Math.sin(this.rotation.z)/2,-1e-4)*dir;this.twist.angle=Math.sin(this.rotation.z)/10;
+    this.curve.intensity=(-1+2*p)*(-Math.sin(this.rotation.z)+1)*ci;this.mods.apply();this._p=p;this._ci=ci}
+}
+class FlipBook extends THREE.Group{
+  constructor(n){super();this.pages=[];this.prog=0;this.goal=0;this.step=0;this.dir=1;
+    for(let i=0;i<n;i++){const p=new FlipPage(16);this.add(p);this.pages.push(p)}this.flipPages()}
+  get N(){return this.pages.length}
+  get moving(){return this.step!==0}
+  go(g){g=clamp(g,0,this.N);const d=g-this.prog;this.goal=g;this.step=d?d/.5:0;this.dir=d>0?1:-1}
+  set(g){this.prog=this.goal=g;this.step=0;this.flipPages()}
+  animate(dt){if(!this.step)return false;this.prog+=this.step*dt;
+    if((this.step>0&&this.prog>=this.goal)||(this.step<0&&this.prog<=this.goal)){this.prog=this.goal;this.step=0}this.flipPages();return true}
+  flipPage(pg){const i=this.pages.indexOf(pg);this.go(this.goal*2<=i*2?i+1:i)}
+  flipPages(){
+    const N=this.N,ai=Math.floor(this.prog),ap=this.prog%1;
+    const ci=this.prog<1?ap:this.prog>=N?0:this.prog>=N-1?1-ap:1;
+    this.pages.forEach((pg,i)=>{
+      const p=ai<i?0:ai>i?1:ap;
+      if(p!==pg._p||(Math.abs(i-ai)<=1&&Math.abs(pg._ci-ci)>.01))pg.flip(p,this.dir,ci);
+      const yp=p<.5?0:(p-.5)/.5,L=-.001*(N-i),R=-.001*i;pg.position.y=R+yp*(L-R)});
+    this.position.x=ai===0?-.5+.5*ap:ai===N-1?.5*ap:ai===N?.5:0;
+  }
+}
+
+/* ---------- Jelenet ---------- */
+const stage=$('stage'),scene=new THREE.Scene();scene.background=new THREE.Color(0);
+const dl_=new THREE.DirectionalLight(0xffffff,1);dl_.position.set(.2,1,0);scene.add(dl_,new THREE.AmbientLight(0xffffff,2));
+const camera=new THREE.PerspectiveCamera(30,1,.1,100);
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.toneMapping=THREE.NoToneMapping;
+stage.appendChild(renderer.domElement);const cv=renderer.domElement;
+const root=new THREE.Group(),book=new FlipBook(ITEMS.length/2);book.scale.z=1/ASPECT;root.add(book);scene.add(root);
+const view={x:0,z:0,zoom:1,tilt:.25,ry:0},tgt={...view};let D_=3.2,dirty=true,portrait=false,writing=null,savedTgt=null;
+const invalidate=()=>{dirty=true};
+function applyView(){root.position.set(view.x,0,view.z);root.rotation.y=view.ry;camera.zoom=view.zoom;camera.position.set(0,D_,D_*view.tilt);camera.up.set(0,0,-1);camera.lookAt(0,0,0);camera.updateProjectionMatrix();camera.updateMatrixWorld()}
+const visH0=()=>2*D_*Math.tan(THREE.MathUtils.degToRad(15));
+function clampView(v){const L=1.3*Math.max(1,v.zoom),Z=1.0*Math.max(1,v.zoom);v.x=clamp(v.x,-L,L);v.z=clamp(v.z,-Z,Z);v.zoom=clamp(v.zoom,.6,3.2)}
+function centerTarget(){tgt.x=portrait?((book.goal===0||book.goal===book.N)?0:-.5):0}
+function fit(){
+  const vv=window.visualViewport,w=innerWidth,h=vv?vv.height:innerHeight;
+  stage.style.height=h+'px';stage.style.top=(vv?vv.offsetTop:0)+'px';
+  const a=w/h;portrait=a<.9;camera.aspect=a;renderer.setSize(w,h);
+  D_=(portrait?Math.max(1.25/a,1.55):Math.max(2.4/a,1.7))/(2*Math.tan(THREE.MathUtils.degToRad(15)));
+  if(writing){focusView();layoutTA()}else{centerTarget();view.x=tgt.x}invalidate();
+}
+
+/* ---------- Ablak (lusta textúrák) ---------- */
+const sideOf=e=>e%2===0?1:0;
+async function fill(pg,e,withAns=true){
+  const it=ITEMS[e],side=sideOf(e);let tex=null;
+  if(it!=='blank')tex=makeTex(await loadImg(it),it,withAns);
+  if(!pg._want){if(tex)tex.dispose();return}
+  const old=pg.page.material[side];pg.page.material[side]=tex||new THREE.MeshStandardMaterial({color:'#fff'});
+  if(tex)pg.page.material[side]=mkMat(tex,side);disposeMat(old);invalidate();
+}
+function drop(pg,i){pg._want=false;for(const s of[0,1]){disposeMat(pg.page.material[s]);pg.page.material[s]=NOTEX}ITEMS.slice(i*2,i*2+2).forEach(n=>imgs.delete(n))}
+function syncWindow(force){
+  const c=Math.floor(book.prog),ps=[];
+  book.pages.forEach((pg,i)=>{
+    const need=Math.abs(i-c)<=3;
+    if(force&&pg._want){drop(pg,i)}
+    if(need&&!pg._want){pg._want=true;ps.push(fill(pg,i*2),fill(pg,i*2+1))}
+    else if(!need&&pg._want)drop(pg,i);
+  });return Promise.all(ps);
+}
+function reloadAll(){syncWindow(true)}
+function refreshItem(e,withAns){const pg=book.pages[e>>1];if(pg._want)fill(pg,e,withAns)}
+
+/* ---------- Pozíció a lapon ---------- */
+function wp(pg,side,rx,ry){const u=rx,v=1-ry;pg.updateWorldMatrix(true,true);return pg.page.localToWorld(new THREE.Vector3(side===0?.5-u:u-.5,v-.5,0))}
+const ray=new THREE.Raycaster(),ndc=new THREE.Vector2();
+function pick(cx,cy){
+  const r=cv.getBoundingClientRect();ndc.set((cx-r.left)/r.width*2-1,-((cy-r.top)/r.height)*2+1);ray.setFromCamera(ndc,camera);
+  const h=ray.intersectObject(book,true)[0];if(!h||!h.face)return null;let o=h.object;while(o&&!(o instanceof FlipPage))o=o.parent;if(!o)return null;
+  const i=book.pages.indexOf(o),e=i*2+(h.face.materialIndex===1?0:1);return{pg:o,e,uv:h.uv,item:ITEMS[e]};
+}
+
+/* ---------- Írás ---------- */
+const ta=$('ta');
+function focusView(){
+  view.ry=0;applyView();root.updateMatrixWorld(true);
+  const c=wp(writing.pg,writing.side,.5,.5),vh=visH0();
+  tgt.ry=0;tgt.tilt=0;tgt.x=view.x-c.x;tgt.z=view.z-c.z;tgt.zoom=Math.min(vh/(1/ASPECT*1.12),vh*camera.aspect/1.12);
+  if(REDUCE)Object.assign(view,tgt);
+}
+function layoutTA(){
+  if(!writing)return;applyView();root.updateMatrixWorld(true);const r=cv.getBoundingClientRect(),{pg,side,w}=writing;
+  const s=(rx,ry)=>{const v=wp(pg,side,rx,ry).project(camera);return{x:(v.x+1)/2*r.width+r.left,y:(1-v.y)/2*r.height+r.top}};
+  const[zx,zy,zw,zh]=w.zone,a=s(zx,zy),b=s(zx+zw,zy+zh),t=s(.5,0),u=s(.5,1);
+  Object.assign(ta.style,{left:a.x+'px',top:a.y+'px',width:(b.x-a.x)+'px',height:(b.y-a.y)+'px',fontSize:Math.abs(u.y-t.y)*FS+'px'});
+}
+async function startWrite(h){
+  await document.fonts.load('40px Caveat','őűŐŰáé');
+  writing={n:h.item,e:h.e,pg:h.pg,side:sideOf(h.e),w:WR[h.item],shown:false};savedTgt={...tgt};
+  document.body.classList.add('writing');$('menu').hidden=true;refreshItem(h.e,false);
+  ta.value=(D.answers[h.item]&&D.answers[h.item].t)||'';ta.maxLength=writing.w.max;focusView();
+}
+function showTA(){ta.hidden=false;$('done').hidden=false;layoutTA();ta.focus({preventScroll:true})}
+function endWrite(){
+  if(!writing)return;const w=writing;writing=null;ta.hidden=true;$('done').hidden=true;ta.blur();document.body.classList.remove('writing');
+  save();refreshItem(w.e,true);Object.assign(tgt,savedTgt);centerTarget();updateUI();invalidate();
+}
+ta.addEventListener('input',()=>{
+  if(!writing)return;let v=ta.value;if(writing.w.one)v=v.replace(/\n/g,' ');
+  if(v.length>writing.w.max){v=v.slice(0,writing.w.max);toast('Ennyi fér a keretbe.')}ta.value=v;
+  if(v.trim())D.answers[writing.n]={t:v,u:iso()};else delete D.answers[writing.n];sched();updateUI();
+});
+ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&writing&&writing.w.one)e.preventDefault()});
+$('done').onclick=endWrite;
+
+/* ---------- Hang + UI ---------- */
+const snd=new Audio('vendor/3dflipbook/sounds/start-flip.mp3');snd.volume=.4;let mute=false;
+const sound=()=>{if(mute)return;snd.currentTime=0;snd.play().catch(()=>{})};
+function updateUI(){
+  const cp=book.goal*2,it=ITEMS[Math.min(cp,ITEMS.length-1)];
+  $('stat').innerHTML=`${it==='blank'?'–':it} / 119<br>kitöltve: ${Object.keys(D.answers).length} / ${TOTAL_W}`;
+  $('prev').disabled=book.goal===0;$('next').disabled=book.goal===book.N;
+  if(!writing)centerTarget();D.lastPage=cp;sched();
+}
+const nav=g=>{if(writing)return;book.go(g);sound();updateUI()};
+$('prev').onclick=()=>nav(book.goal-1);$('next').onclick=()=>nav(book.goal+1);
+function jump(p){const e=ITEMS.indexOf(p);if(e>=0)nav(Math.ceil(e/2))}
+function onTap(x,y){
+  if(writing){endWrite();return}
+  const h=pick(x,y);if(!h)return;const edge=h.uv.x<.18||h.uv.x>.82;
+  if(WR[h.item]&&!edge&&!book.moving)startWrite(h);else{book.flipPage(h.pg);sound();updateUI()}
+}
+
+/* ---------- Pointer események ---------- */
+const ptrs=new Map();let g=null,pinch=null;
+const pdist=()=>{const[a,b]=[...ptrs.values()];return Math.hypot(a.x-b.x,a.y-b.y)};
+function sync(){Object.assign(tgt,view)}
+cv.addEventListener('contextmenu',e=>e.preventDefault());
+cv.addEventListener('pointerdown',e=>{
+  cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===1)g={x:e.clientX,y:e.clientY,t:performance.now(),moved:false,rot:e.button===2||e.shiftKey,touch:e.pointerType!=='mouse'};
+  else if(ptrs.size===2&&!writing){g=null;pinch={d:pdist(),z:view.zoom}}
+});
+cv.addEventListener('pointermove',e=>{
+  const p=ptrs.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
+  if(writing)return;
+  if(pinch&&ptrs.size===2){view.zoom=clamp(pinch.z*pdist()/pinch.d,.6,3.2);clampView(view);sync();invalidate();return}
+  if(!g)return;
+  if(!g.moved&&Math.hypot(e.clientX-g.x,e.clientY-g.y)>(g.touch?14:10)){g.moved=true;cv.style.cursor='grabbing'}
+  if(!g.moved)return;
+  if(g.rot){view.ry+=dx*.006;view.tilt=clamp(view.tilt+dy*.004,0,.9)}
+  else{const wpp=visH0()/view.zoom/cv.clientHeight;view.x+=dx*wpp;view.z+=dy*wpp;clampView(view)}
+  sync();invalidate();
+});
+const up=e=>{
+  ptrs.delete(e.pointerId);cv.style.cursor='grab';
+  if(g&&!g.moved&&ptrs.size===0&&e.type==='pointerup'&&performance.now()-g.t<350)onTap(e.clientX,e.clientY);
+  if(ptrs.size<2)pinch=null;if(ptrs.size===0)g=null;
+};
+cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+cv.addEventListener('wheel',e=>{e.preventDefault();if(writing)return;view.zoom*=Math.exp(-e.deltaY*.0015);clampView(view);sync();invalidate()},{passive:false});
+
+/* ---------- Billentyűk ---------- */
+document.addEventListener('keydown',e=>{
+  if(e.target.closest&&e.target.closest('input,textarea')){if(e.key==='Escape')endWrite();return}
+  if(e.key==='Escape'){endWrite();$('menu').hidden=true;return}
+  if(writing)return;
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nav(book.goal+1)}
+  else if(e.key==='ArrowLeft')nav(book.goal-1);
+  else if(e.key==='Home')nav(0);else if(e.key==='End')nav(book.N);
+  else if(e.key==='+'||e.key==='='){view.zoom*=1.2;clampView(view);sync()}
+  else if(e.key==='-'){view.zoom/=1.2;clampView(view);sync()}
+  else if(e.key==='0'){Object.assign(tgt,{zoom:1,z:0,tilt:.25,ry:0});centerTarget()}
+});
+
+/* ---------- Menü ---------- */
+const menu=$('menu');
+$('menuBtn').onclick=()=>{menu.hidden=!menu.hidden;$('menuBtn').setAttribute('aria-expanded',!menu.hidden)};
+$('mSave').onclick=()=>{menu.hidden=true;exportJSON()};
+$('mLoad').onclick=()=>$('file').click();
+$('file').onchange=async e=>{
+  const f=e.target.files[0];e.target.value='';if(!f)return;
+  try{const p=JSON.parse(await f.text());if(!valid(p))throw 0;
+    if(confirm('Összefésüljem a betöltött naplót a jelenlegivel? (Mégse = felülírás)'))merge(p);
+    else{D=fresh();merge(p);D.id=p.id||D.id}
+    save();reloadAll();updateUI();toast('Napló betöltve.')}
+  catch{toast('Ez nem érvényes naplófájl.')}menu.hidden=true;
+};
+$('mSound').onclick=e=>{mute=!mute;e.target.textContent='Hang: '+(mute?'ki':'be')};
+$('mGo').onchange=e=>{const p=+e.target.value;if(p>=1&&p<=119){jump(p);menu.hidden=true}};
+$('mHard').onclick=()=>{menu.hidden=true;$('hard').hidden=false};$('hardOk').onclick=()=>$('hard').hidden=true;
+$('mDel').onclick=()=>{menu.hidden=true;
+  if(!confirm('Előbb érdemes naplófájlt menteni. Mentsek most?')===false)exportJSON();
+  if(confirm('Biztosan törlöd az összes válaszodat erről az eszközről?')&&confirm('Végleg törlöd? Ez nem vonható vissza.')){
+    try{[KEY,KEY+'.bak',KEY+'.bak2',KEY+'.d'].forEach(k=>localStorage.removeItem(k))}catch{}D=fresh();reloadAll();updateUI();toast('Törölve.')}};
+const HK='senkisem.help.v1';let seen=false;try{seen=localStorage.getItem(HK)}catch{}
+if(!seen)$('help').hidden=false;
+$('helpOk').onclick=()=>{$('help').hidden=true;try{localStorage.setItem(HK,'1')}catch{}};
+
+/* ---------- „A te példányod” – kliensoldali PDF ---------- */
+$('mPdf').onclick=async()=>{
+  menu.hidden=true;const pr=$('prog');pr.hidden=false;pr.textContent='Készül…';
+  try{
+    if(!M.jspdf)await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+    await document.fonts.load('40px Caveat','őűŐŰáé');await document.fonts.load('20px "Space Mono"','őű');
+    const{jsPDF}=M.jspdf,CW=innerWidth<768?700:1000,CH=Math.round(CW/ASPECT),doc=new jsPDF({unit:'mm',format:[148,210],compress:true});
+    const order=[1];for(let i=3;i<=119;i++)order.push(i);order.push('end',2);let k=0;
+    const done=Object.keys(D.answers).length,id='SENKISEM-'+D.id,date=today().replace(/-/g,'.');
+    for(const n of order){
+      pr.textContent=`Készül: ${k+1} / ${order.length}`;
+      const c=document.createElement('canvas');c.width=CW;c.height=CH;const x=c.getContext('2d');
+      if(n==='end'){
+        x.fillStyle='#000';x.fillRect(0,0,CW,CH);x.fillStyle='#fff';x.textAlign='center';
+        [['Nincs másolat.',.38,.05],['Nincs két egyforma.',.45,.05],['Csak egy létezik belőle:',.52,.05]].forEach(([t,y,s])=>{x.font=CH*s+'px "DM Serif Display",Georgia,serif';x.fillText(t,CW/2,CH*y)});
+        x.font='bold '+CH*.07+'px "DM Serif Display",Georgia,serif';x.fillText('A te példányod.',CW/2,CH*.62);
+        x.font=CH*.018+'px "Space Mono",monospace';x.fillStyle='rgba(255,255,255,.55)';x.fillText(`// ${done} / ${TOTAL_W} oldal kitöltve`,CW/2,CH*.72);x.fillText(`ID: ${id} · ${date}`,CW/2,CH*.76);
+      }else{
+        const im=await rawImg(n);if(im)x.drawImage(im,0,0,CW,CH);else{x.fillStyle='#fff';x.fillRect(0,0,CW,CH)}
+        const a=D.answers[n];x.textAlign='left';
+        if(a&&WR[n]){drawText(x,CW,CH,a.t,n);if(n!==3){x.font=CH*.013+'px "Space Mono",monospace';x.fillStyle='rgba(0,0,0,.4)';x.textBaseline='alphabetic';x.fillText('// válaszolva: '+a.u.slice(0,10).replace(/-/g,'.'),CW*.12,CH*.955)}}
+        if(n===3){x.font=CH*.013+'px "Space Mono",monospace';x.fillStyle='rgba(0,0,0,.45)';x.textBaseline='alphabetic';x.fillText(`ID: ${id} · példány · ${date}`,CW*.12,CH*.93)}
+      }
+      if(k++)doc.addPage();doc.addImage(c.toDataURL('image/jpeg',.75),'JPEG',0,0,148,210);c.width=c.height=1;
+      await new Promise(r=>setTimeout(r));
+    }
+    doc.save(`Senkisem-Jegyzetek-${safeName().toUpperCase()}-${today()}.pdf`);toast('Kész, a példányod letöltődött.');
+  }catch(err){toast('Nem sikerült elkészíteni a PDF-et. Próbáld újra.')}
+  pr.hidden=true;
+};
+
+/* ---------- Fő ciklus ---------- */
+const clock=new THREE.Clock();let lastFi=-1;
+function loop(){
+  requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.05);
+  const mv=book.animate(dt);let ch=false;
+  for(const k of['x','z','zoom','tilt','ry']){const d=tgt[k]-view[k];
+    if(Math.abs(d)>1e-4){view[k]+=REDUCE?d:d*Math.min(1,dt*9);ch=true}else if(d){view[k]=tgt[k];ch=true}}
+  const fi=Math.floor(book.prog);if(fi!==lastFi){lastFi=fi;syncWindow()}
+  if(ch||mv||dirty){applyView();renderer.render(scene,camera);dirty=false}
+  if(writing&&!writing.shown&&!ch&&!mv){writing.shown=true;showTA()}
+}
+
+/* ---------- Indulás ---------- */
+addEventListener('resize',fit);if(window.visualViewport){visualViewport.addEventListener('resize',fit);visualViewport.addEventListener('scroll',fit)}
+fit();Object.assign(view,tgt);
+if(D.lastPage>0){book.set(Math.ceil(D.lastPage/2));toast('Folytatod ott, ahol abbahagytad.')}
+updateUI();lastFi=Math.floor(book.prog);
+Promise.all([document.fonts.load('40px Caveat','őű'),syncWindow()]).then(()=>{$('load').classList.add('off')});
+setTimeout(()=>$('load').classList.add('off'),6000);
+loop();
+</script>
+</body>
+</html>

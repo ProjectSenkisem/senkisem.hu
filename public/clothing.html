@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>ID: Senkisem | Senkisem</title>
+<meta name="description" content="ID: Senkisem – a short personality test. Answer, send one photo, and receive your own ID: Senkisem concept by e-mail. No generator, no template, no two alike.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://senkisem.hu/clothing.html">
+<link rel="icon" type="image/svg+xml" href="./img/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Senkisem">
+<meta property="og:title" content="ID: Senkisem">
+<meta property="og:description" content="Your face disappears. Still completely yours.">
+<meta property="og:image" content="https://senkisem.hu/img/og-image.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --glass-b:rgba(255,255,255,.12);
+  --glass-border:rgba(255,255,255,.09);
+  --t1:#fff;
+  --t2:rgba(255,255,255,.74);
+  --t3:rgba(255,255,255,.5);
+  --text-muted:rgba(255,255,255,.32);
+  --soft:255,70,140;
+  --cold:12,236,153;
+  --red:#e0212b;
+  --red-rgb:224,33,43;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:72px;background:#000}
+body{background:#000;color:var(--t1);font-family:'Space Grotesk',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden}
+a{color:inherit}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* NAVBAR */
+.nav{position:fixed;top:0;left:0;width:100%;height:64px;padding:0 2.5rem;z-index:1000;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.35);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);transition:background .4s}
+.nav.scrolled{background:rgba(0,0,0,.6);border-bottom:1px solid var(--glass-b)}
+.brand{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.12em;text-decoration:none}
+.links{display:flex;gap:1.6rem;list-style:none;flex:1;justify-content:center}
+.links a{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--t2);text-decoration:none;padding-top:12px;display:block;transition:color .2s}
+.links a:hover,.links a[aria-current="page"]{color:#fff}
+.links a[aria-current="page"]{text-decoration:underline;text-underline-offset:.35em;text-decoration-thickness:1px}
+.actions{display:flex;align-items:center;gap:.9rem;min-width:96px;justify-content:flex-end}
+.support{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.12em;color:var(--red);text-decoration:none;display:inline-flex;align-items:center;gap:.55rem;text-shadow:0 0 18px rgba(224,33,43,.35)}
+.support::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:pulse 2.4s ease-in-out infinite}
+.support:hover{color:#ff4350}
+@keyframes pulse{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}
+.langs{display:flex;gap:6px}
+.flag{width:34px;height:34px;padding:3px;border-radius:50%;border:2px solid transparent;opacity:.5;transition:opacity .2s}
+.flag svg{display:block;width:100%;height:100%;border-radius:50%}
+.flag[aria-pressed="true"]{opacity:1;border-color:#fff}
+.flag:hover{opacity:.9}
+.burger{display:none;flex-direction:column;gap:6px;padding:.6rem}
+.burger span{display:block;width:26px;height:2px;background:#fff}
+.mnav{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem}
+.mnav.open{display:flex}
+.mnav a{font-family:'DM Serif Display',serif;font-style:italic;font-size:1.7rem;text-decoration:none;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.12);width:min(320px,100%);text-align:center}
+@media(max-width:1024px){.links{display:none}.burger{display:flex}.actions{min-width:0}}
+@media(max-width:480px){.nav{padding:0 1.1rem}.flag{width:28px;height:28px;padding:2px}.support{font-size:1.1rem}.actions{gap:.5rem}}
+
+/* INTRO SCENE */
+.intro{position:relative;height:300vh;background:#000}
+.intro-stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 58%,rgba(255,255,255,.06),transparent 62%),#000}
+.in-label{position:absolute;top:92px;left:0;right:0;z-index:6;display:flex;flex-direction:column;align-items:center;gap:.9rem;font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.2em;color:var(--t3);opacity:0;pointer-events:none}
+.in-label i{display:block;width:64px;height:1px;background:rgba(255,255,255,.35);transform:scaleX(0)}
+.in-frame{position:absolute;top:84px;left:28px;right:28px;bottom:28px;z-index:5;pointer-events:none;opacity:0}
+.in-frame b{position:absolute;width:30px;height:30px;border:0 solid rgba(255,255,255,.7)}
+.in-frame b:nth-child(1){top:0;left:0;border-top-width:1px;border-left-width:1px}
+.in-frame b:nth-child(2){top:0;right:0;border-top-width:1px;border-right-width:1px}
+.in-frame b:nth-child(3){bottom:0;left:0;border-bottom-width:1px;border-left-width:1px}
+.in-frame b:nth-child(4){bottom:0;right:0;border-bottom-width:1px;border-right-width:1px}
+.in-imgs{position:absolute;left:50%;top:54%;width:min(86vw,560px);height:min(56vh,560px);transform:translate(-50%,-50%);z-index:2}
+.in-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;will-change:opacity,transform;-webkit-mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 78%,transparent 100%);mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 78%,transparent 100%)}
+.in-copy{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 1.2rem;pointer-events:none}
+.in-title{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(2.8rem,10.4vw,10rem);line-height:.92;letter-spacing:-.035em;text-shadow:0 0 60px rgba(0,0,0,.9)}
+.in-line{display:block;overflow:hidden;padding:.04em .06em}
+.in-line>span{display:block;transform:translateY(105%);will-change:transform}
+.in-sent{margin-top:clamp(1.2rem,3vh,2.2rem);font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(1.3rem,3vw,2.5rem);line-height:1.15;color:rgba(255,255,255,.92);opacity:0;text-shadow:0 0 40px #000}
+.in-hint{position:absolute;bottom:34px;left:0;right:0;text-align:center;z-index:6;font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.2em;color:var(--t3)}
+.intro.static{height:auto}
+.intro.static .intro-stick{position:relative;height:auto;min-height:100svh;padding:120px 0 80px}
+.intro.static .in-img:first-child{opacity:.55}
+.intro.static .in-line>span{transform:none}
+.intro.static .in-sent,.intro.static .in-label,.intro.static .in-frame{opacity:1}
+.intro.static .in-label i{transform:scaleX(1)}
+@media(max-width:700px){.in-label{top:84px}.in-frame{top:78px;left:14px;right:14px;bottom:18px}.in-frame b{width:22px;height:22px}.in-title{font-size:clamp(2.5rem,12.2vw,4.4rem)}}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 1.8rem;border-radius:3px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:background .2s,color .2s,transform .2s,opacity .2s}
+.btn.primary{background:#fff;color:#000}
+.btn.primary:hover:not(:disabled){background:rgba(255,255,255,.86);transform:translateY(-1px)}
+.btn.ghost{border:1px solid rgba(255,255,255,.4);color:#fff}
+.btn.ghost:hover:not(:disabled){background:rgba(255,255,255,.1)}
+.btn:disabled{opacity:.3;cursor:not-allowed}
+.btn.alarm{background:#fff;color:#000;font-size:.86rem;letter-spacing:.14em;padding:1.2rem 2.3rem;box-shadow:0 0 0 0 rgba(var(--red-rgb),.6);animation:alarm 2.4s infinite}
+.btn.alarm:hover{background:var(--red);color:#fff;animation:none;box-shadow:0 0 40px rgba(var(--red-rgb),.45)}
+@keyframes alarm{0%{box-shadow:0 0 0 0 rgba(var(--red-rgb),.55)}70%,100%{box-shadow:0 0 0 18px rgba(var(--red-rgb),0)}}
+
+/* THE ROOM */
+.room{--acc:var(--soft);position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;background:#000;overflow:hidden;border-top:1px solid var(--glass-b)}
+.room[data-tone="cold"]{--acc:var(--cold)}
+.glow{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.1s ease}
+.glow.s{background:radial-gradient(ellipse at 18% 28%,rgba(255,70,140,.11),transparent 56%)}
+.glow.c{background:radial-gradient(ellipse at 82% 62%,rgba(12,236,153,.10),transparent 56%)}
+.room[data-tone="soft"] .glow.s,.room[data-tone="cold"] .glow.c{opacity:1}
+.scan{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 4px)}
+.room[data-tone="cold"] .scan{opacity:1}
+.cut{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:5}
+.cut.go{animation:cutf .2s steps(3)}
+@keyframes cutf{0%{opacity:0}35%{opacity:.16}100%{opacity:0}}
+.r-frame{position:absolute;inset:84px 28px 28px;pointer-events:none;z-index:2}
+.r-frame b{position:absolute;width:26px;height:26px;border:0 solid rgba(var(--acc),.5);transition:border-color 1s}
+.r-frame b:nth-child(1){top:0;left:0;border-top-width:1px;border-left-width:1px}
+.r-frame b:nth-child(2){top:0;right:0;border-top-width:1px;border-right-width:1px}
+.r-frame b:nth-child(3){bottom:0;left:0;border-bottom-width:1px;border-left-width:1px}
+.r-frame b:nth-child(4){bottom:0;right:0;border-bottom-width:1px;border-right-width:1px}
+
+.r-top{position:relative;z-index:3;padding:84px 2.5rem 0;display:flex;align-items:center;gap:1.5rem}
+.r-prog{flex:1;height:1px;background:rgba(255,255,255,.16)}
+.r-prog i{display:block;height:1px;width:0;background:rgb(var(--acc));box-shadow:0 0 10px rgba(var(--acc),.7);transition:width .7s var(--ease)}
+.r-hard{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--t2);text-decoration:underline;text-underline-offset:.3em;white-space:nowrap}
+.r-hard:hover{color:#fff}
+.r-main{position:relative;z-index:3;flex:1;width:min(880px,calc(100% - 3rem));margin:0 auto;display:flex;flex-direction:column;justify-content:center;padding:2rem 0}
+.r-count{font-family:'Space Mono',monospace;font-size:.76rem;letter-spacing:.14em;color:rgb(var(--acc));margin-bottom:1.4rem;min-height:1.2em}
+.r-body{outline:none}
+.r-foot{position:relative;z-index:3;width:min(880px,calc(100% - 3rem));margin:0 auto;padding:0 0 calc(2rem + env(safe-area-inset-bottom));display:flex;align-items:center;gap:1rem}
+.r-foot .sp{margin-left:auto}
+.r-hint{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--t2);letter-spacing:.06em}
+.r-echo,.r-boot{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}
+.r-echo.on,.r-boot.on{opacity:1;pointer-events:auto;cursor:pointer}
+.r-echo p{font-family:'Space Mono',monospace;font-size:clamp(.95rem,2vw,1.35rem);color:rgb(var(--cold));max-width:36ch;line-height:1.6;text-shadow:0 0 18px rgba(var(--cold),.45)}
+.r-boot div.in{text-align:left;font-family:'Space Mono',monospace;font-size:clamp(.85rem,1.8vw,1.15rem);color:rgb(var(--cold));line-height:2;text-shadow:0 0 14px rgba(var(--cold),.4)}
+.r-boot div.in div{opacity:0;animation:logIn .5s var(--ease) forwards}
+@media(max-width:700px){.r-top{padding:78px 1.2rem 0}.r-foot{flex-wrap:wrap}.r-hint{order:3;width:100%}.r-frame{inset:78px 14px 18px}}
+
+/* reaction cards */
+.rx{position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;padding:2rem;background:rgba(0,0,0,.97);opacity:0;pointer-events:none;transition:opacity .25s;--acc:var(--cold)}
+.rx.on{opacity:1;pointer-events:auto}
+.rx.soft{--acc:var(--soft)}
+.rx.alert{--acc:var(--red-rgb)}
+.rx-in{width:min(640px,100%)}
+.rx-tag{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:rgb(var(--acc));margin-bottom:1.4rem;display:flex;align-items:center;gap:.8rem}
+.rx-tag::before{content:'';width:8px;height:8px;background:rgb(var(--acc));box-shadow:0 0 12px rgb(var(--acc));animation:blink 1.1s steps(1) infinite}
+.rx-h{font-family:'Space Mono',monospace;font-weight:400;font-size:clamp(2rem,6vw,3.6rem);line-height:1.05;margin-bottom:1rem}
+.rx.soft .rx-h{font-family:'DM Serif Display',serif;font-style:italic;letter-spacing:-.02em}
+.rx-p{font-family:'Space Mono',monospace;font-size:clamp(.95rem,2vw,1.2rem);color:var(--t2);line-height:1.7;max-width:44ch}
+.rx.soft .rx-p{font-family:'DM Serif Display',serif;font-size:clamp(1.3rem,3vw,1.9rem);color:rgba(255,255,255,.88);line-height:1.3}
+.rx-l{font-family:'Space Mono',monospace;font-size:clamp(1.15rem,3vw,1.9rem);line-height:1.4;margin-bottom:.6rem;opacity:0;animation:logIn .6s var(--ease) forwards}
+.rx.wow .rx-l:nth-of-type(1){animation:logIn .6s var(--ease) forwards,gl .5s steps(2) .3s 3}
+.rx.wow .rx-l:last-of-type{color:rgb(var(--acc));font-size:clamp(.95rem,2vw,1.2rem);margin-top:1.4rem;text-shadow:0 0 16px rgba(var(--acc),.5)}
+.rx-btns{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:2rem;opacity:0;animation:logIn .6s var(--ease) forwards}
+@keyframes gl{0%,100%{transform:none;text-shadow:none}30%{transform:translate(-4px,1px);text-shadow:4px 0 rgba(255,70,140,.9),-4px 0 rgba(12,236,153,.9)}65%{transform:translate(4px,-1px);text-shadow:-3px 0 rgba(255,70,140,.9),3px 0 rgba(12,236,153,.9)}}
+
+/* glitch on tone cut to cold */
+.room.glitch .qt,.room.glitch .title-cold{animation:gl .45s steps(2) 1}
+
+.qt{margin:0;font-weight:400}
+.room[data-tone="soft"] .qt{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(2rem,5vw,4.2rem);line-height:1.04;letter-spacing:-.025em}
+.room[data-tone="cold"] .qt{font-family:'Space Mono',monospace;font-size:clamp(1.15rem,2.5vw,1.9rem);line-height:1.5;letter-spacing:0}
+.cur{display:inline-block;width:.5em;height:1em;margin-left:.15em;vertical-align:-.12em;background:rgb(var(--acc));animation:blink 1.1s steps(1) infinite}
+.cur.off{display:none}
+@keyframes blink{50%{opacity:0}}
+.ans{margin-top:2rem;opacity:0;transform:translateY(8px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.ans.show{opacity:1;transform:none}
+.subq{font-family:'Space Mono',monospace;font-size:.82rem;color:var(--t3);margin:-.6rem 0 1.4rem;letter-spacing:.04em}
+
+.opts{display:grid;gap:.15rem}
+.opt{position:relative;display:block}
+.opt input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}
+.opt .l{display:flex;gap:1rem;align-items:baseline;padding:.85rem 0 .85rem 1.1rem;border-left:1px solid rgba(255,255,255,.2);color:var(--t2);transition:padding .35s var(--ease),border-color .25s,color .25s}
+.opt .k{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--t3);min-width:1.1rem}
+.room[data-tone="soft"] .opt .l{font-family:'DM Serif Display',serif;font-size:clamp(1.3rem,2.7vw,1.9rem);line-height:1.2}
+.room[data-tone="cold"] .opt .l{font-family:'Space Mono',monospace;font-size:clamp(.95rem,1.8vw,1.15rem);line-height:1.45}
+.opt:hover .l{color:#fff;border-left-color:rgba(255,255,255,.6)}
+.opt input:checked+.l{border-left-color:rgb(var(--acc));color:#fff;padding-left:1.7rem}
+.opt input:checked+.l .k{color:rgb(var(--acc))}
+.opt input:focus-visible+.l{outline:2px solid #fff;outline-offset:2px}
+.or{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--t3);padding:.35rem 0 .35rem 1.1rem}
+
+.tx,.oth{width:100%;background:transparent;color:#fff;border:0;border-bottom:1px solid rgba(255,255,255,.4);padding:.7rem 0;font-size:1.25rem;border-radius:0;line-height:1.4;resize:none}
+.room[data-tone="soft"] .tx,.room[data-tone="soft"] .oth{font-family:'DM Serif Display',serif;font-size:1.5rem}
+.room[data-tone="cold"] .tx,.room[data-tone="cold"] .oth{font-family:'Space Mono',monospace;font-size:1rem}
+.tx:focus,.oth:focus{outline:none;border-bottom-color:rgb(var(--acc));box-shadow:0 1px 0 rgb(var(--acc))}
+.tx::placeholder,.oth::placeholder{color:rgba(255,255,255,.3)}
+.oth-w{margin:.4rem 0 0 1.1rem}
+
+.sl{padding:1rem 0}
+.sl-v{font-family:'DM Serif Display',serif;font-size:clamp(4rem,14vw,8rem);line-height:1;letter-spacing:-.03em;color:#fff;transition:color .3s}
+.room[data-tone="cold"] .sl-v{font-family:'Space Mono',monospace;font-size:clamp(3.2rem,11vw,6.5rem);text-shadow:0 0 24px rgba(var(--cold),.35)}
+.sl.idle .sl-v{color:rgba(255,255,255,.25)}
+.sl input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:rgba(255,255,255,.35);margin:1.6rem 0 .6rem;cursor:pointer;border-radius:0}
+.sl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:rgb(var(--acc));box-shadow:0 0 14px rgba(var(--acc),.8);border:0;border-radius:0}
+.sl input[type=range]::-moz-range-thumb{width:18px;height:18px;background:rgb(var(--acc));box-shadow:0 0 14px rgba(var(--acc),.8);border:0;border-radius:0}
+.sl-ax{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:.7rem;color:var(--t3)}
+
+.ax{display:flex;align-items:center;gap:.9rem}
+.ax em{font-style:normal;color:var(--t2);font-size:.82em;min-width:6.5rem}
+.ax em:last-child{text-align:right}
+.ax i{flex:1;height:1px;background:rgba(255,255,255,.35);position:relative}
+.ax b{position:absolute;top:-6px;width:12px;height:12px;background:rgb(var(--cold));box-shadow:0 0 12px rgba(var(--cold),.7);transform:translateX(-50%)}
+@media(max-width:600px){.ax em{min-width:0;font-size:.74em}}
+
+.lead{color:var(--t2);font-size:1.05rem;max-width:56ch;margin-top:1.1rem}
+.lead+.lead{margin-top:.8rem}
+.lead a{color:#fff}
+.title-soft{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(2.2rem,6vw,5rem);line-height:.98;letter-spacing:-.03em}
+.title-soft em{color:var(--t2)}
+.title-cold{font-family:'Space Mono',monospace;font-weight:400;font-size:clamp(1.3rem,2.8vw,2rem);line-height:1.4}
+.tag{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:rgb(var(--acc));margin-bottom:1.2rem}
+.row-btns{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem;align-items:center}
+
+/* start / gate */
+.badges{display:flex;flex-wrap:wrap;gap:.8rem;margin:1.8rem 0 0}
+.badge{border:1px solid rgba(255,255,255,.25);padding:.75rem 1.1rem;min-width:170px}
+.badge small{display:block;font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t3);margin-bottom:.25rem}
+.badge b{font-family:'DM Serif Display',serif;font-weight:400;font-size:1.5rem;line-height:1.1}
+.badge.sup{border-color:rgba(var(--soft),.6);background:rgba(var(--soft),.06)}
+.badge.sup a{display:block;margin-top:.3rem;font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.1em;color:rgb(var(--soft))}
+.chance{margin-top:1.6rem;max-width:56ch;font-size:.9rem;color:var(--t2);padding-left:1rem;border-left:1px solid rgba(255,255,255,.25)}
+.sysbox{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.1em;color:rgb(var(--cold));line-height:1.9;margin-bottom:1.6rem;text-shadow:0 0 12px rgba(var(--cold),.35)}
+.sysbox div{opacity:0;animation:logIn .6s var(--ease) forwards}
+.warn{font-family:'Space Mono',monospace;font-size:clamp(.9rem,1.7vw,1.1rem);line-height:1.7;color:#fff;max-width:58ch;border-left:2px solid var(--red);padding-left:1rem;margin-bottom:2.2rem;opacity:0;animation:logIn .7s var(--ease) 1.2s forwards}
+.gq{opacity:0;animation:logIn .8s var(--ease) 1.9s forwards}
+.gbtn{opacity:0;animation:logIn .8s var(--ease) 2.5s forwards}
+
+/* pause */
+.breath{display:flex;align-items:center;gap:1.4rem;margin:2rem 0 1.4rem}
+.breath i{width:64px;height:64px;border:1px solid rgb(var(--acc));border-radius:50%;box-shadow:0 0 22px rgba(var(--acc),.4);animation:breathe 6s ease-in-out infinite}
+.breath span{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(1.8rem,4vw,3rem)}
+@keyframes breathe{0%,100%{transform:scale(.55);opacity:.5}50%{transform:scale(1.1);opacity:1}}
+.punch{margin-top:2rem;font-family:'Space Mono',monospace;font-size:clamp(1rem,2.2vw,1.4rem);line-height:1.5;color:#fff;max-width:40ch;opacity:0;animation:logIn .8s var(--ease) 2.4s forwards}
+
+/* readout */
+.log{margin-top:1.8rem;border-top:1px solid rgba(255,255,255,.18);font-family:'Space Mono',monospace;font-size:clamp(.78rem,1.6vw,.95rem)}
+.log div{display:grid;grid-template-columns:11rem 1fr;gap:1rem;padding:.8rem 0;border-bottom:1px solid rgba(255,255,255,.1);opacity:0;transform:translateY(6px);animation:logIn .6s var(--ease) forwards;align-items:center}
+.log dt{color:rgb(var(--cold))}
+.log dd{color:#fff;overflow-wrap:anywhere}
+@keyframes logIn{to{opacity:1;transform:none}}
+.logend{margin-top:1.4rem;font-family:'Space Mono',monospace;font-size:.85rem;color:rgb(var(--cold));opacity:0;animation:logIn .8s var(--ease) forwards}
+.finding{margin-top:2rem;border:1px solid rgba(var(--red-rgb),.7);background:rgba(var(--red-rgb),.07);padding:1.3rem 1.4rem;max-width:62ch;opacity:0;animation:logIn .9s var(--ease) forwards}
+.finding small{display:block;font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.24em;color:var(--red);margin-bottom:.6rem}
+.finding p{font-family:'Space Mono',monospace;font-size:clamp(.95rem,1.9vw,1.15rem);line-height:1.6}
+@media(max-width:600px){.log div{grid-template-columns:1fr;gap:.4rem}}
+
+.fld{margin-bottom:1.1rem}
+.fld>label{display:block;font-size:.9rem;color:var(--t2);margin-bottom:.4rem}
+input[type=text],input[type=email]{width:100%;background:transparent;color:#fff;border:0;border-bottom:1px solid rgba(255,255,255,.4);padding:.7rem 0;font:inherit;font-size:1.25rem;border-radius:0;font-family:'DM Serif Display',serif}
+input[type=text]:focus,input[type=email]:focus{outline:none;border-bottom-color:rgb(var(--acc));box-shadow:0 1px 0 rgb(var(--acc))}
+.chk{display:flex;gap:.8rem;align-items:flex-start;font-size:.9rem;color:var(--t2);margin:.9rem 0}
+.chk input{margin-top:.25rem;accent-color:#fff;width:17px;height:17px;flex:0 0 auto}
+.err{color:#ff8a8a;font-size:.9rem;margin-top:.8rem;min-height:1.2em}
+
+.drop{display:block;border:1px dashed rgba(255,255,255,.4);padding:2.4rem 1.2rem;text-align:center;cursor:pointer;transition:background .25s,border-color .25s}
+.drop:hover,.drop.over{background:rgba(255,255,255,.05);border-color:#fff}
+.drop:focus-within{outline:2px solid #fff;outline-offset:3px}
+.drop b{display:block;font-family:'DM Serif Display',serif;font-weight:400;font-size:1.7rem}
+.drop span{color:var(--t2);font-size:.9rem}
+.thumbs{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.2rem}
+.thumb{position:relative;width:104px;height:104px;border:1px solid var(--glass-b);overflow:hidden;background:#0a0a0a}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb button{position:absolute;top:4px;right:4px;width:26px;height:26px;background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.5);font-size:.9rem;line-height:1}
+.promise{margin-top:1.6rem;padding:1.1rem 1.2rem;border:1px solid rgba(var(--cold),.4);font-size:.9rem;color:var(--t2);max-width:62ch}
+.promise b{color:rgb(var(--cold));font-family:'Space Mono',monospace;font-weight:400;font-size:.78rem;display:block;margin-bottom:.4rem}
+
+.sizes{display:flex;flex-wrap:wrap;gap:.5rem;margin:.4rem 0 .6rem}
+.sizes label{position:relative}
+.sizes input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0;width:100%;height:100%}
+.sizes span{display:block;min-width:52px;text-align:center;padding:.65rem .8rem;border:1px solid var(--glass-b);font-family:'Space Mono',monospace;font-size:.8rem}
+.sizes input:checked+span{background:#fff;color:#000;border-color:#fff}
+.sizes input:focus-visible+span{outline:2px solid #fff;outline-offset:3px}
+.sub{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.14em;color:var(--t3);margin:1.6rem 0 .6rem}
+
+.sum{border-top:1px solid var(--glass-b);margin:1.4rem 0}
+.sum div{display:flex;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--glass-b);font-size:.92rem}
+.sum dt{color:var(--t2)}
+.sum dd{font-family:'Space Mono',monospace;font-size:.78rem;text-align:right;overflow-wrap:anywhere}
+.idcard{border:1px solid rgba(255,255,255,.45);padding:1.5rem;background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.02));font-family:'Space Mono',monospace;max-width:480px;margin:1.6rem 0}
+.idcard small{display:block;font-size:.68rem;letter-spacing:.2em;color:var(--t2)}
+.idcard strong{display:block;font-size:clamp(1.5rem,5vw,2.3rem);letter-spacing:.06em;margin:.5rem 0;font-weight:700}
+
+.hard{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:1.2rem}
+.hard>div{background:#0a0a0a;border:1px solid rgba(255,255,255,.3);padding:1.6rem;width:min(460px,100%);font-size:.95rem;line-height:1.7;color:var(--t2)}
+.hard a{color:#fff}
+.hard h3{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;font-size:1.8rem;color:#fff;line-height:1.1;margin-bottom:.6rem}
+.hard .row-btns{margin-top:1.2rem}
+
+/* hidden system alert */
+.sa{position:absolute;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;padding:1.2rem;background:rgba(0,0,0,.94);opacity:0;pointer-events:none;transition:opacity .2s;--acc:var(--red-rgb)}
+.sa.on{opacity:1;pointer-events:auto}
+.sa-in{width:min(560px,100%);border:1px solid var(--red);background:#080000;box-shadow:0 0 70px rgba(var(--red-rgb),.28),inset 0 0 40px rgba(var(--red-rgb),.07);animation:saIn .4s steps(5)}
+.sa-bar{display:flex;justify-content:space-between;align-items:center;background:var(--red);color:#000;font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.18em;padding:.5rem .9rem}
+.sa-bar i{font-style:normal;animation:blink 1s steps(1) infinite}
+.sa-body{padding:1.5rem 1.4rem 1.7rem}
+.sa-h{font-family:'Space Mono',monospace;font-weight:400;font-size:clamp(1.5rem,5vw,2.1rem);line-height:1.1;margin-bottom:.6rem;animation:gl .45s steps(2) .2s 2}
+.sa-p{font-family:'Space Mono',monospace;font-size:.85rem;color:var(--t2);margin-bottom:1.4rem}
+.sa-q{font-family:'Space Mono',monospace;font-size:clamp(1rem,2.4vw,1.25rem);line-height:1.5;margin-bottom:.4rem}
+.sa .sl-v{font-family:'Space Mono',monospace;font-size:clamp(2.6rem,10vw,4.2rem);text-shadow:0 0 22px rgba(var(--red-rgb),.4)}
+@keyframes saIn{0%{opacity:0;transform:scale(.96)}100%{opacity:1;transform:none}}
+
+/* SOCIAL */
+.sn-social-section{padding:5rem 0 4rem;background:#000;position:relative;overflow:hidden}
+.sn-social-section-label{text-align:center;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--text-muted);margin-bottom:3rem;display:flex;align-items:center;justify-content:center;gap:1.5rem}
+.sn-social-section-label::before,.sn-social-section-label::after{content:'';width:60px;height:1px;background:var(--glass-border)}
+.sn-social-icons-row{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;padding:0 2rem}
+.sn-social-icon-card{display:flex;flex-direction:column;align-items:center;gap:.8rem;padding:1.8rem 2.5rem;background:rgba(255,255,255,.03);border:1px solid var(--glass-border);border-radius:4px;text-decoration:none;color:rgba(255,255,255,.55);transition:all .4s var(--ease);min-width:120px;opacity:0;transform:translateY(24px)}
+.sn-social-icon-card.visible{opacity:1;transform:translateY(0)}
+.sn-social-icon-card:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;transform:translateY(-4px)}
+.sn-social-icon-card.tiktok:hover{border-color:rgba(0,255,200,.4);box-shadow:0 0 30px rgba(0,255,200,.06)}
+.sn-social-icon-card svg{width:28px;height:28px;fill:currentColor}
+.sn-social-icon-name{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase}
+.sn-social-icon-card:nth-child(1){transition-delay:.05s}
+.sn-social-icon-card:nth-child(2){transition-delay:.15s}
+.sn-social-icon-card:nth-child(3){transition-delay:.25s}
+.sn-social-icon-card.instagram:hover{border-color:rgba(70,150,255,.55);box-shadow:0 0 30px rgba(70,150,255,.14);color:#78b0ff}
+.sn-social-icon-card.youtube:hover{border-color:rgba(255,45,45,.55);box-shadow:0 0 30px rgba(255,45,45,.14);color:#ff5252}
+@media(max-width:768px){
+  .sn-social-icons-row{display:flex;flex-wrap:nowrap;justify-content:center;gap:.7rem;max-width:none;padding:0 1rem;margin:0}
+  .sn-social-icon-card{flex:1 1 0;min-width:0;max-width:112px;padding:1.1rem .4rem}
+  .sn-social-icon-card svg{width:22px;height:22px}
+  .sn-social-icon-name{font-size:.52rem;letter-spacing:.1em}
+}
+
+/* FOOTER */
+.sn-footer{position:relative;width:100%;height:80vh;min-height:520px;max-height:900px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;background:#000;isolation:isolate}
+.sn-footer-video-container{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:hidden;z-index:0}
+.sn-footer-video{position:absolute!important;top:50%!important;left:50%!important;width:100%!important;height:100%!important;min-width:100%!important;min-height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;transform:translate(-50%,-50%) scale(1.06)!important;z-index:0}
+.sn-footer-video.mobile-video{display:none}
+@media(max-width:768px){.sn-footer-video.desktop-video{display:none}.sn-footer-video.mobile-video{display:block}}
+.sn-footer-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.55) 0%,rgba(0,0,0,.25) 40%,rgba(0,0,0,.68) 100%);z-index:1}
+.sn-footer-bar{position:relative;z-index:3;padding:2rem 3rem 2.5rem;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem}
+.sn-footer-links{display:flex;flex-direction:column;gap:.85rem}
+.sn-footer-links a{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none;transition:color .25s ease;line-height:1.4}
+.sn-footer-links a:hover{color:rgba(255,255,255,.9)}
+.sn-footer-copy{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);text-align:right;line-height:1.4}
+@media(max-width:768px){
+  .sn-footer{height:82vh;min-height:580px}
+  .sn-footer-bar{padding:1.4rem 1.6rem 1.8rem;flex-direction:column;align-items:flex-start;gap:1.6rem}
+  .sn-footer-links{position:absolute;top:-415px;left:1.6rem;z-index:4}
+  .sn-footer-copy{width:100%;order:2;text-align:left}
+  .sn-footer-links a{font-size:.82rem}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001s!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a href="/" class="brand">Senkisem</a>
+  <nav aria-label="Main">
+    <ul class="links">
+      <li><a href="/" data-i="nav_about">About</a></li>
+      <li><a href="/clothing.html" aria-current="page" data-i="nav_clothing">Clothing</a></li>
+      <li><a href="/books.html" data-i="nav_books">Books</a></li>
+    </ul>
+  </nav>
+  <div class="actions">
+    <a href="/support.html" class="support" data-i="nav_support">Support</a>
+    <div class="langs" role="group" aria-label="Language">
+      <button class="flag" data-lang="hu" aria-label="Magyar" title="Magyar" aria-pressed="false"><svg viewBox="0 0 24 24"><clipPath id="fh"><circle cx="12" cy="12" r="12"/></clipPath><g clip-path="url(#fh)"><rect width="24" height="8" fill="#CD2A3E"/><rect y="8" width="24" height="8" fill="#fff"/><rect y="16" width="24" height="8" fill="#436F4D"/></g></svg></button>
+      <button class="flag" data-lang="en" aria-label="English" title="English" aria-pressed="true"><svg viewBox="0 0 24 24"><clipPath id="fe"><circle cx="12" cy="12" r="12"/></clipPath><g clip-path="url(#fe)"><rect width="24" height="24" fill="#012169"/><path d="M0 0L24 24M24 0L0 24" stroke="#fff" stroke-width="4"/><path d="M0 0L24 24M24 0L0 24" stroke="#C8102E" stroke-width="1.5"/><path d="M12 0V24M0 12H24" stroke="#fff" stroke-width="7"/><path d="M12 0V24M0 12H24" stroke="#C8102E" stroke-width="4"/></g></svg></button>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<nav class="mnav" id="mnav" aria-label="Mobile">
+  <a href="/" data-i="nav_about">About</a>
+  <a href="/clothing.html" data-i="nav_clothing">Clothing</a>
+  <a href="/books.html" data-i="nav_books">Books</a>
+  <a href="/support.html" data-i="nav_support">Support</a>
+</nav>
+
+<main data-barba="container" data-barba-namespace="clothing">
+
+<section class="intro" id="intro" aria-label="ID: Senkisem">
+  <div class="intro-stick">
+    <div class="in-label" id="in-label"><span data-i="in_label">03 / ID: Senkisem</span><i></i></div>
+    <div class="in-frame" id="in-frame" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
+    <div class="in-imgs" aria-hidden="true">
+      <img class="in-img" src="./assets/img/id-sweater-corrupted.png" alt="" onerror="this.remove()">
+      <img class="in-img" src="./assets/img/id-sweater-pixel.png" alt="" onerror="this.remove()">
+      <img class="in-img" src="./assets/img/id-tshirt-corrupted.png" alt="" onerror="this.remove()">
+    </div>
+    <div class="in-copy">
+      <h1 class="in-title">
+        <span class="in-line"><span data-i="in_l1">Your face</span></span>
+        <span class="in-line"><span data-i="in_l2">disappears.</span></span>
+      </h1>
+      <p class="in-sent" id="in-sent" data-i="in_sent">Still completely yours.</p>
+    </div>
+    <div class="in-hint" data-i="in_hint">scroll down</div>
+  </div>
+</section>
+
+<section class="room" id="test" data-tone="soft" aria-label="ID intake">
+  <div class="glow s"></div><div class="glow c"></div><div class="scan"></div><div class="cut" id="cut"></div>
+  <div class="r-frame" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
+  <div class="r-top">
+    <div class="r-prog" aria-hidden="true"><i id="rbar"></i></div>
+    <button type="button" class="r-hard" id="hard-btn" data-i="hard_btn">If things feel heavy</button>
+  </div>
+  <div class="r-main">
+    <div class="r-count" id="rcount" aria-hidden="true"></div>
+    <div class="r-body" id="rbody" tabindex="-1"></div>
+  </div>
+  <div class="r-foot" id="rfoot">
+    <button type="button" class="btn ghost" id="rback" data-i="back">Back</button>
+    <span class="r-hint" id="rhint"></span>
+    <button type="button" class="btn primary sp" id="rnext" data-i="next">Next</button>
+  </div>
+  <div class="r-echo" id="recho" aria-live="polite"><p id="rechot"></p></div>
+  <div class="r-boot" id="rboot" aria-live="polite"><div class="in" id="rbootin"></div></div>
+  <div class="rx" id="rx" role="dialog" aria-modal="true"><div class="rx-in" id="rxin"></div></div>
+  <div class="sa" id="sa" role="alertdialog" aria-modal="true"><div class="sa-in" id="sain"></div></div>
+</section>
+
+</main>
+
+<section class="sn-social-section">
+    <div class="sn-social-section-label" data-i="f_follow">Follow us</div>
+    <div class="sn-social-icons-row" id="sn-social-icons-row">
+        <a href="https://www.tiktok.com/@senkisem.hu" class="sn-social-icon-card tiktok" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.75a8.26 8.26 0 004.83 1.54V6.84a4.85 4.85 0 01-1.06-.15z"/></svg>
+            <span class="sn-social-icon-name">TikTok</span>
+        </a>
+        <a href="https://www.instagram.com/senkisem_hu/" class="sn-social-icon-card instagram" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            <span class="sn-social-icon-name">Instagram</span>
+        </a>
+        <a href="#" class="sn-social-icon-card youtube" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55A3.016 3.016 0 0 0 .501 6.186C0 8.07 0 12 0 12s0 3.93.501 5.814a3.016 3.016 0 0 0 2.122 2.136C4.495 20.5 12 20.5 12 20.5s7.505 0 9.376-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <span class="sn-social-icon-name">YouTube</span>
+        </a>
+    </div>
+</section>
+
+<footer class="sn-footer" id="sn-footer">
+    <div class="sn-footer-video-container">
+        <video id="sn-footer-video-desktop" class="sn-footer-video desktop-video" autoplay loop muted playsinline><source src="./assets/img/merchvid.mp4" type="video/mp4"></video>
+        <video id="sn-footer-video-mobile" class="sn-footer-video mobile-video" autoplay loop muted playsinline><source src="./assets/img/merchvidphone.mp4" type="video/mp4"></video>
+    </div>
+    <div class="sn-footer-overlay"></div>
+    <div class="sn-footer-bar">
+        <div class="sn-footer-links">
+            <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener" data-i="f_terms">Terms &amp; Conditions</a>
+            <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener" data-i="f_priv">Privacy Policy</a>
+        </div>
+        <div class="sn-footer-copy">© 2026 Senkisem L.L.C. <br> <span data-i="f_rights">All rights reserved</span></div>
+    </div>
+</footer>
+
+<div class="hard" id="hard" role="dialog" aria-modal="true" aria-labelledby="hard-t" hidden>
+  <div>
+    <p id="hard-t"></p>
+    <button type="button" class="btn ghost" id="hard-close" data-i="close">Close</button>
+  </div>
+</div>
+
+<div class="hard" id="nomod" role="dialog" aria-modal="true" aria-labelledby="no-t" hidden>
+  <div>
+    <h3 id="no-t"></h3>
+    <p id="no-p"></p>
+    <div class="row-btns">
+      <button type="button" class="btn primary" id="no-stay"></button>
+      <a class="btn ghost" id="no-leave" href="/"></a>
+    </div>
+  </div>
+</div>
+
+<noscript><p style="padding:2rem;text-align:center">ID: Senkisem needs JavaScript.</p></noscript>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const qs = new URLSearchParams(location.search);
+const ls = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch {} };
+const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============================================================
+   CONFIG
+   Sending follows assets/IdModalService.js:
+     POST /api/id-modal-email  (JSON)
+       1) {type:'admin', subject, html, uploadedFiles:[{base64,name}], isCheckout, answers}
+       2) {type:'confirmation', subject, html, customerEmail}
+============================================================ */
+const CFG = {
+  api: '/api/id-modal-email',
+  contactEmail: 'info@senkisem.com',
+  maxPhotos: 3,
+  maxEdge: 1800,        // the photos travel as base64 inside JSON, so they are kept compact
+  quality: .85,
+  storeKey: 'senkisem.idtest.v5',
+  storeDays: 7,
+  consentVersion: 'id-intake-2026-10e',
+  autoAdvanceMs: 480
+};
+
+/* ============================================================
+   AXES (scored from the "would you rather" questions)
+============================================================ */
+const AXES = {
+  time:  { hu:['múlt','jövő'],              en:['past','future'] },
+  truth: { hu:['nyugalom','igazság'],       en:['comfort','truth'] },
+  bond:  { hu:['biztonság','közelség'],     en:['safety','closeness'] },
+  self:  { hu:['mások szemében','önmagam'], en:["in others' eyes",'myself'] }
+};
+const ARCH = {
+  time:  [{ en:'THE ARCHIVIST', hu:'AZ ARCHIVÁLÓ' }, { en:'THE ONE WHO LEFT EARLY', hu:'AKI KORÁN ELINDULT' }],
+  truth: [{ en:'THE SOFT FIREWALL', hu:'A PUHA TŰZFAL' }, { en:'THE OPEN WOUND', hu:'A NYITOTT SEB' }],
+  bond:  [{ en:'THE LOCKED ROOM', hu:'A ZÁRT SZOBA' }, { en:'THE LIGHT LEFT ON', hu:'A KIHAGYOTT FÉNY' }],
+  self:  [{ en:'THE MIRROR HOUSE', hu:'A TÜKÖRHÁZ' }, { en:'THE UNSIGNED ORIGINAL', hu:'AZ ALÁÍRATLAN EREDETI' }]
+};
+
+/* ============================================================
+   THE TEST — 32 questions
+   ty: ab | multi | text | slider.   dim/hi: axis scoring (ab only).
+   rx: reaction after the answer: {echo:{hu,en}} or {card:{...}}
+   Rhythm: I soft/curious -> II the system cuts in -> halfway -> III the face
+============================================================ */
+const E = (hu, en) => ({ echo: { hu, en } });
+const Q = [
+ { id:'q1', key:'minds', dim:'truth', hi:'a', tone:'soft',
+   hu:{ t:'Inkább olvasnál mások gondolataiban, vagy látnád a jövőt?', o:['Mások gondolataiban olvasnék.','Látnám a jövőt.'] },
+   en:{ t:"Would you rather read other people's minds, or see the future?", o:['Read minds.','See the future.'] },
+   rx:{ any:E('// hangos odabent, nem?', "// loud in there, isn't it?") } },
+ { id:'place', key:'place', ty:'multi', tone:'soft',
+   hu:{ t:'Melyik helyen töltenél el szívesen egy egész napot?', o:['Egy zsúfolt nagyvárosban.','Egy tengerparton, emberek nélkül.','Egy idegen ország utcáin.','A saját szobámban, zavartalanul.','Ott, ahol éppen a barátaim vannak.'] },
+   en:{ t:'Where would you happily spend a whole day?', o:['In a crowded city.','On a beach, with no people.','In the streets of a foreign country.','In my own room, undisturbed.','Wherever my friends are.'] } },
+ { id:'flower', key:'flower', ty:'multi', tone:'soft',
+   hu:{ t:'Ha virág lennél, milyen állapotban találnának rád?', o:['Kitépve. Még mindig színes.','Átázva. Nem tudok kinyílni.','Egy csíra. Még senki sem tud rólam.','Elvirágzott. A szirmaim még emlékeznek.'] },
+   en:{ t:'If you were a flower, what state would they find you in?', o:["Torn out. Still colourful.","Soaked through. I can't open.","A seedling. No one knows about me yet.","Wilted. My petals still remember."] },
+   dg:{ en:['torn out, still colourful','soaked, closed','seedling, unseen','wilted, remembering'], hu:['kitépve, még színes','átázva, zárva','csíra, láthatatlan','elvirágzott, emlékező'] } },
+ { id:'q2', key:'memory', dim:'time', hi:'b', tone:'soft',
+   hu:{ t:'Inkább újraélnél egy szép emléket, vagy kitörölnél egy rosszat?', o:['Újraélnék egy szépet.','Kitörölnék egy rosszat.'] },
+   en:{ t:'Would you rather relive a beautiful memory, or erase a bad one?', o:['Relive a beautiful one.','Erase a bad one.'] } },
+ { id:'show', key:'show', ty:'multi', tone:'soft',
+   hu:{ t:'Ha valaki fontos neked, hogyan mutatod ki?', o:['Kimondom.','Időt szánok rá.','Apró dolgokkal figyelek rá.','Ugratással és humorral.','Nem mindig tudom kimutatni.'] },
+   en:{ t:'When someone matters to you, how do you show it?', o:['I say it.','I make time for them.','Small, attentive things.','Teasing and humour.',"I'm not always able to."] } },
+ { id:'title', key:'title', ty:'text', tone:'soft',
+   hu:{ t:'Ha az életednek lenne címe, mi lenne az?', ph:'Egy cím. Pár szó elég.' },
+   en:{ t:'If your life had a title, what would it be?', ph:'A title. A few words are enough.' },
+   rx: a => a && a.v ? E('// reflex azonosítva. nem hiba.', '// reflex identified. not a bug.') : null },
+ { id:'q4', key:'known', dim:'bond', hi:'b', tone:'soft',
+   hu:{ t:'Inkább lennél mindenki által ismert, vagy egyetlen ember által igazán megértett?', o:['Mindenki ismerne.','Egyvalaki igazán megértene.'] },
+   en:{ t:'Would you rather be known by everyone, or truly understood by one person?', o:['Known by everyone.','Truly understood by one.'] } },
+ { id:'q6', key:'feel', dim:'self', hi:'a', tone:'soft',
+   hu:{ t:'Inkább lennél túl érzékeny, vagy teljesen érzéketlen?', o:['Túl érzékeny.','Teljesen érzéketlen.'] },
+   en:{ t:'Would you rather be too sensitive, or completely numb?', o:['Too sensitive.','Completely numb.'] },
+   rx:{
+     a:{ card:{ cls:'soft', h:{ hu:'Az érzékenység nem hiba.', en:"Sensitive isn't broken." }, p:{ hu:'Megérzed a szobát, mielőtt megszólalsz. Ezt tartsd meg.', en:'You feel the room before you speak. Keep that.' } } },
+     b:{ card:{ cls:'cold', tag:'OBSERVATION#06', h:{ hu:'Teljesen?', en:'Completely?' }, p:{ hu:'Semmit sem?', en:'Nothing at all?' }, yes:true } } } },
+ { id:'night', key:'night', ty:'multi', tone:'cold',
+   hu:{ t:'Hajnali 3 óra. Nem alszol. Mit csinálsz?', o:['Újrajátszom dolgokat.','Görgetek.','Írok valamit, amit senki sem fog elolvasni.','Alszom. Nem értem a kérdést.'] },
+   en:{ t:"It's 3 a.m. You're awake. What are you doing?", o:["Replaying things.","Scrolling.","Writing something no one will read.","Sleeping. I don't understand the question."] },
+   dg:{ en:['replaying','avoiding','writing, unsent','asleep (suspicious)'], hu:['újrajátszik','menekül','ír, elküldetlenül','alszik (gyanús)'] },
+   rx:{ any:E('// hajnali 3. a rendszer is ébren van.', '// 3 a.m. the system is awake too.') } },
+ { id:'msg', key:'unanswered', ty:'multi', tone:'cold',
+   hu:{ t:'Melyik üzenet marad legtovább megválaszolatlanul nálad?', o:['Amire nem tudom, mit válaszoljak.','Amire nincs energiám válaszolni.','Amire azt hiszem, már válaszoltam.','Egyik sem, szinte mindig válaszolok.'] },
+   en:{ t:'Which message stays unanswered the longest?', o:["The one I don't know how to answer.","The one I have no energy for.","The one I think I already answered.","None. I almost always reply."] } },
+ { id:'q7', key:'love', dim:'bond', hi:'a', tone:'cold',
+   hu:{ t:'Inkább szeretnél, vagy inkább szeretve lennél?', o:['Szeretnék.','Szeretve lennék.'] },
+   en:{ t:'Would you rather love, or be loved?', o:['Love.','Be loved.'] },
+   rx:{ a:E('// előbb adsz. biztonságosabb, mint kérni.', '// giving first. it is safer than asking.'), b:E('// kiválasztva akarsz lenni. ez megengedett.', '// you want to be chosen. that is allowed.') } },
+ { id:'q8', key:'honest', dim:'truth', hi:'a', tone:'cold',
+   hu:{ t:'Inkább kapnál egy őszinte választ, ami fáj, vagy egy hazugságot, ami megnyugtat?', o:['Az őszinte választ, ami fáj.','A hazugságot, ami megnyugtat.'] },
+   en:{ t:'Would you rather get an honest answer that hurts, or a lie that soothes?', o:['The honest answer that hurts.','The lie that soothes.'] },
+   rx:{
+     a:{ card:{ cls:'alert', tag:'SYSTEM ALERT#02', h:{ hu:'Biztos?', en:'Sure?' }, p:{ hu:'Fájni fog. Ez a lényeg.', en:'It will hurt. That is the point.' }, yes:true } },
+     b:{ card:{ cls:'alert', tag:'SYSTEM ALERT#08', h:{ hu:'Akkor a nyugalom.', en:'Comfort, then.' }, p:{ hu:'Ez is rögzítve van.', en:'That is recorded too.' } } } } },
+ /* ---- halfway pause is inserted after this one ---- */
+ { id:'attn', key:'most_yourself', ty:'multi', tone:'cold',
+   hu:{ t:'Mikor érzed magad a leginkább önmagadnak?', o:['Amikor egyedül vagyok.','A barátaimmal.','Amikor alkotok valamit.','Amikor senkinek sem kell megfelelnem.','Még keresem ezt a pillanatot.'] },
+   en:{ t:'When do you feel most like yourself?', o:['When I am alone.','With my friends.','When I am making something.',"When I don't have to please anyone.",'I am still looking for that moment.'] },
+   dg:{ en:['alone','with friends','while creating',"when nobody needs pleasing",'still searching'], hu:['egyedül','a barátaival','alkotás közben','amikor senkinek sem kell megfelelni','még keresi'] } },
+ { id:'wish', key:'unsaid', ty:'text', tone:'cold',
+   hu:{ t:'Mit szeretnél kimondani, de soha nem mondod ki hangosan?', ph:'Írd ide. Csak Senkisem olvassa.' },
+   en:{ t:'What is it you wish to say, but never really say out loud?', ph:'Write it here. Only Senkisem reads it.' },
+   rx: a => a && a.v ? E('// kimondtad. csak nem hangosan.', '// you said it. just not out loud.') : null },
+ { id:'q11', key:'forgive', dim:'time', hi:'b', tone:'cold',
+   hu:{ t:'Inkább megbocsátanál, vagy elfelejtenéd, ami történt?', o:['Megbocsátanék.','Elfelejteném.'] },
+   en:{ t:'Would you rather forgive, or forget what happened?', o:['Forgive.','Forget.'] },
+   rx:{ a:E('// vagy csak azt akarod, hogy ne fájjon.', '// or you just want it to stop.'), b:E('// ami elfelejtődik, nem tűnik el. csak átköltözik.', "// forgotten things don't leave. they relocate.") } },
+ { id:'never', key:'never_enough', ty:'multi', tone:'cold',
+   hu:{ t:'Mi az, amiből sosem elég?', o:['Szabadság.','Figyelem.','Nyugalom.','Kaland.','Közelség.','Lehetőség.'] },
+   en:{ t:'What is it you never get enough of?', o:['Freedom.','Attention.','Calm.','Adventure.','Closeness.','Possibility.'] } },
+ { id:'voice', key:'voice', ty:'multi', tone:'cold',
+   hu:{ t:'A belső hangod. Miről beszél a legtöbbet?', o:['A szorongásaimról.','A vágyaimról.','Arról, amit gyerekként mondtak nekem.'] },
+   en:{ t:'The voice in your head. What does it talk about most?', o:['My anxieties.','My desires.','What I was told as a child.'] },
+   dg:{ en:['anxiety-driven','desire-driven','inherited. quoting someone older'], hu:['szorongásvezérelt','vágyvezérelt','örökölt. valaki régebbit idéz'] },
+   rx: a => {
+     const extra = {
+       a:{ hu:'Valahol megtanulta a félelmet. Nem tőled.', en:'It learned fear somewhere. Not from you.' },
+       b:{ hu:'Kíván. Te ezt gyengeségnek hívtad.', en:'It wants. You have been calling that weakness.' },
+       c:{ hu:'Idéz. Valakit, aki idősebb nálad.', en:'It is quoting. Someone older than you.' } }[a.v];
+     return { card:{ cls:'wow', tag:'VOICE IDENTIFIED', lines:[ { hu:'Ez nem te vagy.', en:'It is not you.' }, { hu:'De ismer téged.', en:'But it knows you.' }, extra ] } };
+   } },
+ { id:'easy', key:'easy_to_show', ty:'multi', tone:'cold',
+   hu:{ t:'Mennyire könnyű megmutatnod, milyen vagy valójában?', o:['Egyáltalán nem.','Inkább nehéz.','Attól függ, kivel vagyok.','Elég könnyű.','Nem is gondolkodom ezen.'] },
+   en:{ t:'How easy is it for you to show who you really are?', o:['Not at all.','Rather hard.',"Depends on who I'm with.",'Fairly easy.',"I don't even think about it."] } },
+ { id:'q16', key:'seen', dim:'self', hi:'b', tone:'cold',
+   hu:{ t:'Inkább tudnád, hogyan látnak mások, vagy hogyan látnád magad kívülről?', o:['Hogyan látnak mások.','Hogyan látnám magam kívülről.'] },
+   en:{ t:'Would you rather know how others see you, or see yourself from the outside?', o:['How others see me.','Myself from the outside.'] },
+   rx:{ any:E('// két nézőpont. csak az egyik a tiéd.', '// two viewpoints. only one is yours.') } },
+ { id:'shift', key:'shift', ty:'multi', tone:'soft',
+   hu:{ t:'Mennyit változol attól függően, hogy kikkel vagy?', o:['Szinte semmit.','Kicsit alkalmazkodom.','Minden társaságban más oldalam jön elő.','Néha már én sem tudom, melyik vagyok igazán.'] },
+   en:{ t:'How much do you change depending on who you are with?', o:['Hardly at all.','I adapt a little.','Every group brings out a different side.',"Sometimes I don't know which one is really me."] } },
+ { id:'lose', key:'loseface', ty:'multi', tone:'cold',
+   hu:{ t:'Ha elveszítenéd az arcodat, mi hiányozna a legjobban?', o:['Hogy felismernek.','A mosolyom.','Hogy el tudjam rejteni, amit érzek.','Semmi. Talán megkönnyebbülnék.'] },
+   en:{ t:'If you lost your face, what would you miss most?', o:['Being recognised.','My smile.','Being able to hide what I feel.','Nothing. Maybe I would feel relief.'] },
+   dg:{ en:['recognition','the smile','the ability to hide','nothing. relief.'], hu:['a felismerés','a mosoly','az elrejtés képessége','semmi. megkönnyebbülés.'] } },
+ { id:'dist', key:'distortion', ty:'multi', tone:'cold',
+   hu:{ t:'Állítsd be: mennyire tűnjön el az arcod?', o:['Halványan. Még felismerjem magam.','Félig. Mintha rossz lenne a jel.','Messzire. Csak a kontúr marad.','Teljesen. Senki.'] },
+   en:{ t:'Set it: how far should your face disappear?', o:['Faintly. I should still recognise myself.','Halfway. As if the signal was bad.','Far. Only the outline stays.','Completely. Nobody.'] },
+   dg:{ en:['level 1/4 · faint','level 2/4 · half','level 3/4 · outline only','level 4/4 · complete. nobody.'], hu:['1/4 · halvány','2/4 · fél','3/4 · csak a kontúr','4/4 · teljes. senki.'] },
+   rx:{ any:E('// torzítási szint beállítva.', '// distortion level set.') } },
+ { id:'see', key:'see', ty:'multi', tone:'soft', other:3,
+   hu:{ t:'Mit lásson valaki, amikor ránéz a darabra?', o:['Tulajdonképpen semmit.','Valaki mást.','Engem. Anélkül, hogy tudná, hogy én vagyok.','Valami mást:'], oph:'Röviden is elég.' },
+   en:{ t:'What should someone see when they look at the piece?', o:['Nothing, really.','Someone else.','Me. Without knowing it is me.','Something else:'], oph:'A few words are enough.' } },
+ { id:'meaning', key:'meaning', ty:'text', tone:'soft',
+   hu:{ t:'Mit jelent számodra, hogy az arcod eltűnik, és mégis te vagy rajta?', ph:'Pár szó is elég.' },
+   en:{ t:'What does it mean to you that your face disappears, and it is still you on it?', ph:'A few words are enough.' } }
+];
+const NQ = Q.length;
+const PAUSE_AFTER = 12;
+const PRODUCTS = { '602': { hu:'Póló', en:'T-shirt' }, '603': { hu:'Pulóver', en:'Sweater' }, '999': { hu:'Teljes szett', en:'Full set' } };
+const SIZES = ['XS','S','M','L','XL','XXL'];
+
+/* ============================================================
+   UI STRINGS
+============================================================ */
+const T = {
+en: {
+  nav_about:'About', nav_clothing:'Clothing', nav_books:'Books', nav_support:'Support',
+  in_label:'03 / ID: Senkisem', in_l1:'Your face', in_l2:'disappears.', in_sent:'Still completely yours.', in_hint:'scroll down',
+  hard_btn:'If things feel heavy', close:'Close', back:'Back', next:'Next', skip:'Skip',
+  hard_txt:"If things feel heavy right now, you don't have to carry it alone.<br><br>In Hungary: Lelki Elsősegély Telefonszolgálat <a href=\"tel:116123\">116-123</a>, emergencies <a href=\"tel:112\">112</a>.<br>Elsewhere: <a href=\"https://findahelpline.com\" target=\"_blank\" rel=\"noopener\">findahelpline.com</a> lists local helplines.<br><br>This will wait for you.",
+  s_tag:'// ID: SENKISEM · INTAKE',
+  s_h:'{n} questions.<br><em>No wrong answers.</em>',
+  s_p1:'From your answers we build your ID: Senkisem concept. It is yours alone.',
+ s_p2:'It takes about 6 minutes. When you are done, the full concept arrives in your inbox.',
+  b_wait:'Average wait', b_wait_v:'2 weeks', b_sup:'For supporters', b_sup_v:'5 working days', b_sup_link:'Support ↗',
+  s_chance:"Pieces can't be bought right now. But now and then, at a time we don't announce, one sets off toward someone. There is a chance it is you.",
+  s_btn:'Continue', resume:'Continue at question {n}', restart:'Start over',
+  g_tag:'// SYSTEM NOTICE', g_l1:'// protocol: FACE ERASURE', g_l2:'// subject: not yet verified', g_l3:'// side effect: your self-image may shift',
+  g_warn:'Attention. Answering honestly can change the picture you hold of yourself.',
+  g_q:'Ready to see who you are when nobody recognizes you?', g_yes:'Yes. Begin the erasure.', g_no:'No.',
+  no_t:'Not everyone is made for this.', no_p:'I understand. The door stays open.', no_stay:'Stay', no_leave:'Leave',
+  boot1:'// protocol loaded: FACE ERASURE', boot2:'// subject: ID: SENKISEM #{ref}', boot3:'// the system is reading you now.',
+  act1:'CALIBRATION', act2:'ANALYSIS', act3:'THE FACE',
+  q_of:'{n} / {t}', hint_pick:'Tap, or press a number', hint_text:'Optional. Only Senkisem reads it.', hint_slide:'Move the marker.', or:'or',
+  rx_yes:'Yes', rx_think:'Let me think', rx_cont:'Continue',
+  pause_tag:'// HALFWAY', pause_h:'Halfway.', pause_p1:"You haven't done anything wrong. There is nothing here to get wrong.", breathe:'Breathe.',
+  pause_punch:'The first half asked what you would choose. The second half asks who is choosing.', pause_next:'Continue',
+  ro_tag:'// scan complete', ro_h:'Subject analysed.', ro_note:'// not a diagnosis. a mirror. a cold one.', ro_next:'On to the picture', ro_find:'FINDING',
+  ro_unsaid:'One sentence you never say out loud was received. The system does not interpret it. That is not its job.',
+  ro_title_note:'// the system would have chosen a worse one.',
+  ax_time:'TIME', ax_truth:'TRUTH', ax_bond:'BOND', ax_self:'SELF',
+  rk_sub:'SUBJECT', rk_class:'CLASS', rk_perf:'PERFORMANCE', rk_auth:'AUTHENTICITY', rk_voice:'INNER VOICE', rk_night:'03:00 STATE', rk_unobs:'UNOBSERVED', rk_flower:'FLOWER', rk_face:'FACE LOSS', rk_dist:'DISTORTION', rk_title:'YOUR TITLE',
+  photo_t:'Now a picture.', photo_lead:'One to three pictures where you can be seen. A selfie works.',
+  photo_drop:'Drop pictures here', photo_or:'or tap to choose · the camera works too',
+  photo_promise_h:'// about this picture', photo_promise:'Only Senkisem sees it, and only to make your piece. No machine edits it and nothing is generated from it. Within 5 days afterwards it is deleted automatically from our systems. Only the erased ID: SENKISEM remains.',
+  photo_rm:'Remove', bad_type:'That file is not an image. Use JPG, PNG or WebP.', decode:'This image could not be read. HEIC is not supported in most browsers: export it as JPG or PNG and try again.', too_many:'Three pictures at most.',
+  piece_t:'Which piece?', piece_lead:'Black garments only.', pr_602:'T-shirt', pr_603:'Sweater', pr_999:'Full set', pr_602d:'Short sleeve, black.', pr_603d:'Heavy, black.', pr_999d:'T-shirt and sweater. The same erasure on both.', sz_h:'SIZE',
+  contact_t:'Where do we find you?', contact_lead:'Only to write to you about your concept and piece.',
+  c_name:'What should we call you?', c_mail:'Email', c_news:'Also tell me about new pieces and releases. (Optional.)',
+  need_name:'Add a name, any name.', need_mail:'Add a valid email.',
+  send_t:'Last check.', send_lead:'Read it once more. Then send.',
+  sum_ref:'ID: Senkisem', sum_piece:'Piece', sum_size:'Size', sum_photos:'Pictures', sum_answers:'Answers', sum_name:'Name', sum_mail:'Email',
+  c1:'I understand that Senkisem uses my answers and my picture only to make my concept and piece.',
+  c2:'The picture is of me, or the person in it agreed. I am 16 or older.', need_consent:'Tick both boxes first.',
+  send_btn:'Send to Senkisem', sending:'Sending…',
+  send_off:'The connection to Senkisem is not available right now. Nothing is lost: download your answers and send them with the picture to {m}.', send_fail:'Sending failed. Your answers are safe on this device. Try again in a minute.',
+  dl_ans:'Download my answers', mail_ans:'Write an email',
+  done_t:'Received.', done_p:'Senkisem reads your answers and looks at your picture. Your full ID: Senkisem concept arrives by e-mail within 2 weeks (supporters: 5 working days).', done_p2:"A physical piece can't be bought right now. But there is a chance you get one. Stay close.",
+  done_ref:'SENKISEM ID', done_state:'STATE: RECEIVED · FACE: PENDING ERASURE',
+  done_again:'New questions', done_home:'Back to the site', done_sup:'Supporter? 5 working days →',
+  f_follow:'Follow us', f_terms:'Terms & Conditions', f_priv:'Privacy Policy', f_rights:'All rights reserved'
+},
+hu: {
+  nav_about:'Rólunk', nav_clothing:'Ruházat', nav_books:'Könyvek', nav_support:'Támogatás',
+  in_label:'03 / ID: Senkisem', in_l1:'Az arcod', in_l2:'eltűnik.', in_sent:'Mégis teljesen a tied.', in_hint:'görgess lejjebb',
+  hard_btn:'Ha most nehéz', close:'Bezár', back:'Vissza', next:'Tovább', skip:'Átugrom',
+  hard_txt:'Ha most nehéz, nem kell egyedül lenned vele.<br><br>Lelki Elsősegély Telefonszolgálat: <a href="tel:116123">116-123</a><br>Életveszély esetén: <a href="tel:112">112</a><br><br>Ez várni fog rád.',
+  s_tag:'// ID: SENKISEM · FELVÉTEL',
+  s_h:'{n} kérdés.<br><em>Nincs rossz válasz.</em>',
+  s_p1:'A válaszaid alapján elkészítjük az ID: Senkisem koncepciódat. Egyes-egyedül a tiéd.',
+  s_p2:'A kitöltés után e-mailben küldjük el a teljes koncepciót.',
+  b_wait:'Átlagos várakozás', b_wait_v:'2 hét', b_sup:'Támogatóknak', b_sup_v:'5 munkanap', b_sup_link:'Támogatás ↗',
+  s_chance:'Fizikai darabot most nem lehet vásárolni. De néha, előre be nem jelentett időpontban, egy-egy darab elindul valaki felé. Van rá esély, hogy te leszel az.',
+  s_btn:'Tovább', resume:'Folytatom a(z) {n}. kérdésnél', restart:'Újrakezdem',
+  g_tag:'// RENDSZERÜZENET', g_l1:'// protokoll: ARCELTÖRLÉS', g_l2:'// alany: még nincs azonosítva', g_l3:'// mellékhatás: az önképed elmozdulhat',
+  g_warn:'Figyelem. Az őszinte válaszadás megváltoztathatja azt a képet, amit magadról gondolsz.',
+  g_q:'Készen állsz látni, ki vagy, amikor senki sem ismer fel?', g_yes:'Igen. Kezdődjön az eltörlés.', g_no:'Nem.',
+  no_t:'Nem mindenkinek való.', no_p:'Megértem. Az ajtó nyitva marad.', no_stay:'Maradok', no_leave:'Kilépek',
+  boot1:'// protokoll betöltve: ARCELTÖRLÉS', boot2:'// alany: ID: SENKISEM #{ref}', boot3:'// a rendszer most olvas téged.',
+  act1:'KALIBRÁLÁS', act2:'ELEMZÉS', act3:'AZ ARC',
+  q_of:'{n} / {t}', hint_pick:'Koppints, vagy nyomj egy számot', hint_text:'Nem kötelező. Csak Senkisem olvassa.', hint_slide:'Told el a jelölőt.', or:'vagy',
+  rx_yes:'Igen', rx_think:'Hadd gondolkodjam', rx_cont:'Tovább',
+  pause_tag:'// FÉLÚTON', pause_h:'Félúton vagy.', pause_p1:'Nem csináltál semmit rosszul. Itt nincs mit elrontani.', breathe:'Lélegezz.',
+  pause_punch:'Az első fele azt kérdezte, mit választanál. A második azt, hogy ki választ.', pause_next:'Tovább',
+  ro_tag:'// vizsgálat kész', ro_h:'Alany elemezve.', ro_note:'// nem diagnózis. egy tükör. egy hideg.', ro_next:'Tovább a képhez', ro_find:'MEGÁLLAPÍTÁS',
+  ro_unsaid:'Egy mondatot, amit sosem mondasz ki hangosan, megkaptunk. A rendszer nem értelmezi. Nem ez a dolga.',
+  ro_title_note:'// a rendszer rosszabbat választott volna.',
+  ax_time:'IDŐ', ax_truth:'IGAZSÁG', ax_bond:'KAPCSOLAT', ax_self:'ÉN',
+  rk_sub:'ALANY', rk_class:'OSZTÁLY', rk_perf:'MEGJÁTSZÁS', rk_auth:'HITELESSÉG', rk_voice:'BELSŐ HANG', rk_night:'03:00 ÁLLAPOT', rk_unobs:'MEGFIGYELETLEN', rk_flower:'VIRÁG', rk_face:'ARCVESZTÉS', rk_dist:'TORZÍTÁS', rk_title:'A CÍMED',
+  photo_t:'Most egy kép.', photo_lead:'Egy-három kép, amin látszol. Egy szelfi is jó.',
+  photo_drop:'Húzd ide a képeket', photo_or:'vagy koppints a választáshoz · a kamera is jó',
+  photo_promise_h:'// erről a képről', photo_promise:'Csak Senkisem látja, és kizárólag a darabod elkészítéséhez használjuk fel. Gép nem módosítja, és nem generálunk belőle semmit. Ezt követően 5 napon belül automatikusan törlődik a rendszerünkből. Csak az eltörölt ID: SENKISEM marad.',
+  photo_rm:'Eltávolít', bad_type:'Ez a fájl nem kép. Használj JPG, PNG vagy WebP formátumot.', decode:'A képet nem sikerült beolvasni. A HEIC a legtöbb böngészőben nem támogatott: exportáld JPG-be vagy PNG-be, és próbáld újra.', too_many:'Legfeljebb három kép.',
+  piece_t:'Melyik darab?', piece_lead:'Csak fekete ruhák.', pr_602:'Póló', pr_603:'Pulóver', pr_999:'Teljes szett', pr_602d:'Rövid ujjú, fekete.', pr_603d:'Vastag, fekete.', pr_999d:'Póló és pulóver. Mindkettőn ugyanaz az eltüntetés.', sz_h:'MÉRET',
+  contact_t:'Hol találunk meg?', contact_lead:'Csak azért, hogy a koncepciódról és a darabodról írhassunk.',
+  c_name:'Minek szólítsunk?', c_mail:'E-mail', c_news:'Értesítsetek az új darabokról és kiadásokról is. (Nem kötelező.)',
+  need_name:'Adj meg egy nevet, bármilyet.', need_mail:'Adj meg érvényes e-mail-címet.',
+  send_t:'Utolsó ellenőrzés.', send_lead:'Olvasd át még egyszer. Aztán küldd el.',
+  sum_ref:'ID: Senkisem', sum_piece:'Darab', sum_size:'Méret', sum_photos:'Képek', sum_answers:'Válaszok', sum_name:'Név', sum_mail:'E-mail',
+  c1:'Tudomásul veszem, hogy a válaszaimat és a képemet Senkisem kizárólag a koncepcióm és a darabom elkészítéséhez használja.',
+  c2:'A kép rólam készült, vagy az ábrázolt személy hozzájárult. Elmúltam 16 éves.', need_consent:'Előbb pipáld be mindkét jelölőnégyzetet.',
+  send_btn:'Elküldöm Senkisemnek', sending:'Küldés…',
+  send_off:'A kapcsolat Senkisemmel most nem elérhető. Semmi nem vész el: töltsd le a válaszaidat, és küldd el a képpel együtt ide: {m}.', send_fail:'A küldés nem sikerült. A válaszaid biztonságban vannak ezen az eszközön. Próbáld újra egy perc múlva.',
+  dl_ans:'Válaszaim letöltése', mail_ans:'E-mail írása',
+  done_t:'Megkaptuk.', done_p:'Senkisem elolvassa a válaszaidat, és megnézi a képedet. A teljes ID: Senkisem koncepciódat 2 héten belül e-mailben megkapod (támogatóknak: 5 munkanap).', done_p2:'Fizikai darabot most nem lehet vásárolni. De van rá esély, hogy szerezz egyet. Maradj a közelben.',
+  done_ref:'SENKISEM ID', done_state:'ÁLLAPOT: MEGÉRKEZETT · ARC: ELTÖRLÉSRE VÁR',
+  done_again:'Új kérdéssor', done_home:'Vissza az oldalra', done_sup:'Támogató vagy? 5 munkanap →',
+  f_follow:'Kövess minket', f_terms:'Általános szerződési feltételek', f_priv:'Adatkezelési tájékoztató', f_rights:'Minden jog fenntartva'
+}};
+const initial = ['hu','en'].includes(qs.get('lang')) ? qs.get('lang') : (ls('senkisem.lang') === 'hu' ? 'hu' : 'en');
+let LANG = initial;
+const tl = (l, k, v) => { let s = (T[l] && T[l][k]) || T.en[k] || k; if (v) for (const x in v) s = s.split('{' + x + '}').join(v[x]); return s; };
+const t = (k, v) => tl(LANG, k, v);
+
+/* ============================================================
+   STATE
+============================================================ */
+function newRef() {
+  const b = new Uint32Array(2); crypto.getRandomValues(b);
+  const p = n => String(n % 10000).padStart(4, '0');
+  return p(b[0]) + '-' + p(b[1]);
+}
+const S = { i: 0, a: {}, ref: newRef(), size: '', contact: { name: '', email: '', news: false }, files: [], consent: [false, false], busy: false, typeT: 0, auto: 0, res: null, card: false, booting: false };
+const screens = [{ k:'start' }, { k:'gate' }];
+Q.forEach((q, i) => { screens.push({ k:'q', q }); if (i === PAUSE_AFTER - 1) screens.push({ k:'pause' }); });
+['readout','photo','piece','contact','send','done'].forEach(k => screens.push({ k }));
+const IDX = {}; screens.forEach((sc, i) => { if (!['q','start','gate'].includes(sc.k)) IDX[sc.k] = i; });
+const FIRSTQ = 2;
+const qAt = i => Math.max(1, screens.slice(0, i + 1).filter(sc => sc.k === 'q').length);
+const hasA = q => { const a = S.a[q.id]; return !!a && a.v !== undefined && a.v !== ''; };
+
+function save() {
+  if (S.i <= 1 && !Object.keys(S.a).length) return;
+  ls(CFG.storeKey, JSON.stringify({ at: Date.now(), i: Math.min(S.i, IDX.readout), a: S.a, size: S.size, ref: S.ref, contact: S.contact }));
+}
+function load() {
+  try {
+    const d = JSON.parse(ls(CFG.storeKey)); if (!d) return null;
+    if (Date.now() - d.at > CFG.storeDays * 864e5) { ls(CFG.storeKey, null); return null; }
+    return d;
+  } catch { return null; }
+}
+
+/* ============================================================
+   NAV / PRELOADER / LANGUAGE
+============================================================ */
+(function nav() {
+  const n = $('nav'), b = $('burger'), m = $('mnav');
+  addEventListener('scroll', () => n.classList.toggle('scrolled', scrollY > 80), { passive: true });
+  b.addEventListener('click', () => { const o = m.classList.toggle('open'); b.setAttribute('aria-expanded', o); document.body.style.overflow = o ? 'hidden' : ''; });
+  m.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { m.classList.remove('open'); document.body.style.overflow = ''; }));
+})();
+
+function applyLang(l, silent) {
+  LANG = l; ls('senkisem.lang', l);
+  document.documentElement.lang = l;
+  document.querySelectorAll('[data-i]').forEach(e => { const v = T[l][e.dataset.i]; if (v !== undefined) e.textContent = v; });
+  $('hard-t').innerHTML = t('hard_txt');
+  $('no-t').textContent = t('no_t'); $('no-p').textContent = t('no_p'); $('no-stay').textContent = t('no_stay'); $('no-leave').textContent = t('no_leave');
+  document.querySelectorAll('.flag').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === l));
+  document.title = 'ID: Senkisem | Senkisem';
+  if (!silent) { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); if (!S.card && !S.booting && !S.alert) render(); }
+}
+document.querySelectorAll('.flag').forEach(b => b.addEventListener('click', () => { if (b.dataset.lang !== LANG) applyLang(b.dataset.lang); }));
+
+/* ============================================================
+   INTRO SCENE
+============================================================ */
+(function intro() {
+  const wrap = $('intro'); if (!wrap) return;
+  if (REDUCE) { wrap.classList.add('static'); return; }
+  const imgs = [...wrap.querySelectorAll('.in-img')], lines = [...wrap.querySelectorAll('.in-line > span')];
+  const label = $('in-label'), lineEl = label.querySelector('i'), frame = $('in-frame'), sent = $('in-sent');
+  let target = 0, cur = 0, raf = null;
+  const seg = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+  const eo = x => 1 - Math.pow(1 - x, 3), eio = x => x * x * (3 - 2 * x);
+  function measure() { const r = wrap.getBoundingClientRect(), s = wrap.offsetHeight - innerHeight; target = s > 0 ? clamp(-r.top / s, 0, 1) : 0; if (!raf) raf = requestAnimationFrame(render); }
+  function render() {
+    raf = null; cur += (target - cur) * .1; if (Math.abs(target - cur) < .0004) cur = target;
+    const p = cur, N = imgs.length;
+    label.style.opacity = eo(seg(p, 0, .06)) * (1 - eio(seg(p, .9, 1)));
+    lineEl.style.transform = 'scaleX(' + eio(seg(p, .02, .12)).toFixed(3) + ')';
+    frame.style.opacity = eo(seg(p, .04, .14)) * (1 - eio(seg(p, .92, 1)));
+    lines.forEach((l, i) => { const k = eo(seg(p, .08 + i * .06, .24 + i * .06)); l.style.transform = 'translateY(' + ((1 - k) * 105).toFixed(2) + '%)'; });
+    sent.style.opacity = eo(seg(p, .5, .62)) * (1 - eio(seg(p, .92, 1)));
+    const f = clamp((p - .12) / .72, 0, 1) * Math.max(N - 1, 0);
+    imgs.forEach((im, k) => {
+      const d = Math.abs(k - f), m = clamp(1 - d * 1.15, 0, 1) * eo(seg(p, .06, .2)) * (1 - eio(seg(p, .9, 1)));
+      im.style.opacity = (m * .85).toFixed(3); im.style.transform = 'translate3d(0,' + ((k - f) * 18).toFixed(1) + 'px,0) scale(' + (1 + (1 - m) * .04).toFixed(3) + ')';
+    });
+    if (cur !== target) raf = requestAnimationFrame(render);
+  }
+  addEventListener('scroll', measure, { passive: true }); addEventListener('resize', measure); measure();
+})();
+
+/* ============================================================
+   ROOM
+============================================================ */
+const room = $('test'), body = $('rbody'), bar = $('rbar'), count = $('rcount'), foot = $('rfoot'), nextB = $('rnext'), backB = $('rback'), hint = $('rhint'), echoEl = $('recho'), rxEl = $('rx'), bootEl = $('rboot');
+let lastTone = 'soft', echoTimer = 0, echoCb = null, bootTimer = 0;
+
+function setTone(tone) {
+  if (tone !== lastTone) {
+    const c = $('cut'); c.classList.remove('go'); void c.offsetWidth;
+    if (!REDUCE) {
+      c.classList.add('go');
+      if (tone === 'cold') { room.classList.remove('glitch'); void room.offsetWidth; room.classList.add('glitch'); setTimeout(() => room.classList.remove('glitch'), 600); }
+    }
+    lastTone = tone;
+  }
+  room.dataset.tone = tone;
+}
+const qNum = q => Q.indexOf(q) + 1;
+const actKey = n => n <= 8 ? 'act1' : n <= 20 ? 'act2' : 'act3';
+const optIdx = v => 'abcdef'.indexOf(v);
+
+/* answer as text in a language */
+function answerLabel(q, lang) {
+  const a = S.a[q.id]; if (!a || a.v === undefined || a.v === '') return '';
+  const ty = q.ty || 'ab';
+  if (ty === 'text') return String(a.v);
+  if (ty === 'slider') return a.v + '%';
+  const i = optIdx(a.v); let s = (q[lang].o[i] || '');
+  if (q.other === i && a.o) s += ' ' + a.o;
+  return s;
+}
+
+function typeText(el, text, done) {
+  clearInterval(S.typeT);
+  if (REDUCE) { el.textContent = text; done(); return; }
+  let i = 0; const step = Math.max(9, Math.min(26, 1300 / Math.max(text.length, 1)));
+  S.typeDone = () => { clearInterval(S.typeT); el.textContent = text; S.typeDone = null; done(); };
+  S.typeT = setInterval(() => { i++; el.textContent = text.slice(0, i); if (i >= text.length) S.typeDone(); }, step);
+}
+
+function render() {
+  clearInterval(S.typeT); clearTimeout(S.auto); S.typeDone = null;
+  const sc = screens[S.i], k = sc.k;
+  foot.hidden = (k === 'start' || k === 'gate' || k === 'done');
+  backB.style.visibility = 'visible';
+  hint.textContent = '';
+  nextB.textContent = t('next'); nextB.disabled = false; nextB.hidden = false;
+  bar.style.width = (S.i / (screens.length - 1) * 100) + '%';
+  count.textContent = '';
+  if (k === 'start') viewStart();
+  else if (k === 'gate') viewGate();
+  else if (k === 'q') viewQ(sc.q);
+  else if (k === 'pause') viewPause();
+  else if (k === 'readout') viewReadout();
+  else if (k === 'photo') viewPhoto();
+  else if (k === 'piece') viewPiece();
+  else if (k === 'contact') viewContact();
+  else if (k === 'send') viewSend();
+  else if (k === 'done') viewDone();
+  save();
+}
+function go(n, focus = true) {
+  n = clamp(n, 0, screens.length - 1);
+  if (n === IDX.readout && S.i < n && S.alertRef !== S.ref && !S.a.role) { showAlert(() => go(n, focus)); return; }
+  S.i = n; render();
+  if (S.i > 0) toRoom();
+  if (focus) body.focus({ preventScroll: true });
+}
+function toRoom() { const r = room.getBoundingClientRect(); if (r.top < -4 || r.top > 4) room.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth' }); }
+
+/* ---------- start (simple intro) ---------- */
+function viewStart() {
+  setTone('soft'); foot.hidden = true;
+  const d = load(), can = d && d.i > 1;
+  body.innerHTML =
+    '<div class="tag">' + esc(t('s_tag')) + '</div>' +
+    '<h2 class="title-soft">' + t('s_h', { n: NQ }) + '</h2>' +
+    '<p class="lead">' + esc(t('s_p1')) + '</p><p class="lead">' + esc(t('s_p2')) + '</p>' +
+    '<div class="badges">' +
+      '<div class="badge"><small>' + esc(t('b_wait')) + '</small><b>' + esc(t('b_wait_v')) + '</b></div>' +
+      '<div class="badge sup"><small>' + esc(t('b_sup')) + '</small><b>' + esc(t('b_sup_v')) + '</b><a href="/support.html">' + esc(t('b_sup_link')) + '</a></div>' +
+    '</div>' +
+    '<p class="chance">' + esc(t('s_chance')) + '</p>' +
+    '<div class="row-btns"><button type="button" class="btn primary" id="b-begin">' + esc(t('s_btn')) + '</button>' +
+    (can ? '<button type="button" class="btn ghost" id="b-resume">' + esc(t('resume', { n: qAt(d.i) })) + '</button><button type="button" class="btn ghost" id="b-restart">' + esc(t('restart')) + '</button>' : '') + '</div>';
+  $('b-begin').onclick = () => { if (can) { ls(CFG.storeKey, null); S.a = {}; S.size = ''; S.ref = newRef(); } go(1); };
+  if (can) {
+    $('b-resume').onclick = () => { S.a = d.a || {}; S.size = d.size || ''; S.ref = d.ref || S.ref; S.contact = Object.assign(S.contact, d.contact || {}); go(Math.max(FIRSTQ, d.i)); };
+    $('b-restart').onclick = () => { ls(CFG.storeKey, null); S.a = {}; S.size = ''; S.ref = newRef(); render(); };
+  }
+}
+
+/* ---------- gate: system notice, yes / no ---------- */
+function viewGate() {
+  setTone('cold'); foot.hidden = true;
+  const dl = i => 'style="animation-delay:' + (REDUCE ? 0 : 150 + i * 350) + 'ms"';
+  const quick = REDUCE ? ' style="animation-delay:0ms"' : '';
+  body.innerHTML =
+    '<div class="sysbox"><div ' + dl(0) + '>' + esc(t('g_tag')) + '</div><div ' + dl(1) + '>' + esc(t('g_l1')) + '</div><div ' + dl(2) + '>' + esc(t('g_l2')) + '</div><div ' + dl(3) + '>' + esc(t('g_l3')) + '</div></div>' +
+    '<p class="warn"' + quick + '>' + esc(t('g_warn')) + '</p>' +
+    '<h2 class="title-soft gq"' + quick + '>' + esc(t('g_q')) + '</h2>' +
+    '<div class="row-btns gbtn"' + quick + '><button type="button" class="btn alarm" id="g-yes">' + esc(t('g_yes')) + '</button><button type="button" class="btn ghost" id="g-no">' + esc(t('g_no')) + '</button></div>';
+  $('g-yes').onclick = boot;
+  $('g-no').onclick = () => { $('nomod').hidden = false; $('no-stay').focus(); };
+}
+function boot() {
+  S.booting = true;
+  const lines = [t('boot1'), t('boot2', { ref: S.ref }), t('boot3')];
+  $('rbootin').innerHTML = lines.map((l, i) => '<div style="animation-delay:' + (REDUCE ? 0 : i * 520) + 'ms">' + esc(l) + '</div>').join('');
+  bootEl.classList.add('on');
+  const done = () => { clearTimeout(bootTimer); if (!S.booting) return; S.booting = false; bootEl.classList.remove('on'); bootEl.onclick = null; go(FIRSTQ); };
+  bootEl.onclick = done; bootTimer = setTimeout(done, REDUCE ? 500 : 2400);
+}
+
+/* ---------- a question ---------- */
+function viewQ(q) {
+  setTone(q.tone);
+  const L = q[LANG], n = qNum(q), cur = S.a[q.id], ty = q.ty || 'ab';
+  count.textContent = t('q_of', { n: String(n).padStart(2, '0'), t: NQ }) + ' · ' + t(actKey(n));
+  let inner = '';
+  if (ty === 'ab' || ty === 'multi') {
+    const opt = j => '<label class="opt"><input type="radio" name="' + q.id + '" value="' + 'abcdef'[j] + '"' + (cur && cur.v === 'abcdef'[j] ? ' checked' : '') + '><span class="l"><b class="k">' + (j + 1) + '</b>' + esc(L.o[j]) + '</span></label>';
+    const list = L.o.map((_, j) => (ty === 'ab' && j === 1 ? '<div class="or" aria-hidden="true">' + esc(t('or')) + '</div>' : '') + opt(j)).join('');
+    inner = '<div class="opts" role="radiogroup" aria-labelledby="qt">' + list + '</div>';
+    if (q.other !== undefined) inner += '<div class="oth-w" id="othw"' + (cur && optIdx(cur.v) === q.other ? '' : ' hidden') + '><input type="text" class="oth" id="oth" maxlength="80" placeholder="' + esc(L.oph || '') + '" value="' + esc(cur && cur.o || '') + '" aria-label="' + esc(L.o[q.other]) + '"></div>';
+  } else if (ty === 'text') {
+    inner = '<textarea class="tx" id="tx" rows="3" maxlength="400" placeholder="' + esc(L.ph || '') + '" aria-labelledby="qt">' + esc(cur && cur.v || '') + '</textarea>';
+  } else if (ty === 'slider') {
+    const has = cur && typeof cur.v === 'number';
+    inner = '<div class="sl' + (has ? '' : ' idle') + '" id="slw"><div class="sl-v" id="slv">' + (has ? cur.v + '%' : '—') + '</div><input type="range" id="sl" min="0" max="100" step="1" value="' + (has ? cur.v : 50) + '" aria-labelledby="qt"><div class="sl-ax"><span>0%</span><span>100%</span></div></div>';
+  }
+  body.innerHTML =
+    '<h2 class="qt" id="qt"><span class="sr">' + esc(L.t) + '</span><span aria-hidden="true" id="ty"></span><span class="cur" id="cur" aria-hidden="true"></span></h2>' +
+    '<div class="ans" id="ans">' + (L.sub ? '<p class="subq">' + esc(L.sub) + '</p>' : '') + inner + '</div>';
+  const ans = $('ans');
+  typeText($('ty'), L.t, () => { $('cur').classList.add('off'); ans.classList.add('show'); });
+  body.onpointerdown = () => { if (S.typeDone) S.typeDone(); };
+
+  const refresh = () => {
+    nextB.disabled = false; nextB.textContent = hasA(q) ? t('next') : t('skip');
+    hint.textContent = ty === 'text' ? t('hint_text') : ty === 'slider' ? t('hint_slide') : t('hint_pick');
+  };
+  if (ty === 'ab' || ty === 'multi') {
+    const othw = $('othw');
+    ans.querySelectorAll('input[type=radio]').forEach(i => i.addEventListener('change', () => {
+      const isOther = q.other === optIdx(i.value);
+      S.a[q.id] = isOther ? { v: i.value, o: ($('oth') || {}).value || '' } : { v: i.value };
+      if (othw) { othw.hidden = !isOther; if (isOther) $('oth').focus(); }
+      save(); refresh(); clearTimeout(S.auto);
+      if (!isOther) S.auto = setTimeout(() => { const sc = screens[S.i]; if (sc && sc.q === q && !echoCb && !S.typeDone && !S.card) next(); }, CFG.autoAdvanceMs);
+    }));
+    if ($('oth')) $('oth').addEventListener('input', e => { if (S.a[q.id]) { S.a[q.id].o = e.target.value; save(); } });
+  } else if (ty === 'text') {
+    $('tx').addEventListener('input', e => { const v = e.target.value.trim(); if (v) S.a[q.id] = { v: e.target.value }; else delete S.a[q.id]; save(); refresh(); });
+  } else if (ty === 'slider') {
+    const sl = $('sl'), v = $('slv'), w = $('slw');
+    const set = () => { S.a[q.id] = { v: +sl.value }; v.textContent = sl.value + '%'; w.classList.remove('idle'); save(); refresh(); };
+    sl.addEventListener('input', set); sl.addEventListener('change', set);
+  }
+  refresh();
+}
+
+/* ---------- halfway ---------- */
+function viewPause() {
+  setTone('cold');
+  body.innerHTML =
+    '<div class="tag">' + esc(t('pause_tag')) + '</div>' +
+    '<h2 class="title-cold">' + esc(t('pause_h')) + '</h2><p class="lead">' + esc(t('pause_p1')) + '</p>' +
+    '<div class="breath"><i aria-hidden="true"></i><span>' + esc(t('breathe')) + '</span></div>' +
+    '<p class="punch">' + esc(t('pause_punch')) + '</p>';
+  nextB.textContent = t('pause_next');
+}
+
+/* ---------- reactions: echo line / card ---------- */
+function rxOf(q, a) {
+  if (!q.rx || !a) return null;
+  if (typeof q.rx === 'function') return q.rx(a);
+  return q.rx[a.v] || q.rx.any || null;
+}
+function showEcho(text, cb) {
+  $('rechot').textContent = text; echoEl.classList.add('on'); echoCb = cb;
+  const done = () => { clearTimeout(echoTimer); if (!echoCb) return; const f = echoCb; echoCb = null; echoEl.classList.remove('on'); f(); };
+  echoEl.onclick = done; echoTimer = setTimeout(done, REDUCE ? 900 : 1700);
+  S.echoSkip = done;
+}
+function showCard(c, onGo, onThink) {
+  const L = o => o[LANG]; S.card = true;
+  let h = '';
+  if (c.tag) h += '<div class="rx-tag">' + esc(c.tag) + '</div>';
+  if (c.h) h += '<h2 class="rx-h">' + esc(L(c.h)) + '</h2>';
+  if (c.p) h += '<p class="rx-p">' + esc(L(c.p)) + '</p>';
+  let delay = 400;
+  if (c.lines) { c.lines.forEach((l, i) => { h += '<p class="rx-l" style="animation-delay:' + (REDUCE ? 0 : 300 + i * 800) + 'ms">' + esc(L(l)) + '</p>'; }); delay = REDUCE ? 0 : 300 + c.lines.length * 800 + 200; }
+  h += '<div class="rx-btns" style="animation-delay:' + (REDUCE ? 0 : delay) + 'ms">' +
+    (c.yes ? '<button type="button" class="btn primary" id="rx-ok">' + esc(t('rx_yes')) + '</button><button type="button" class="btn ghost" id="rx-think">' + esc(t('rx_think')) + '</button>'
+           : '<button type="button" class="btn primary" id="rx-ok">' + esc(t('rx_cont')) + '</button>') + '</div>';
+  $('rxin').innerHTML = h;
+  rxEl.className = 'rx on ' + (c.cls || 'cold');
+  const close = () => { S.card = false; rxEl.classList.remove('on'); };
+  $('rx-ok').onclick = () => { close(); onGo(); };
+  if ($('rx-think')) $('rx-think').onclick = () => { close(); onThink(); };
+  setTimeout(() => { const b = $('rx-ok'); if (b) b.focus(); }, REDUCE ? 0 : delay + 100);
+}
+
+/* ---------- readout: the scan ---------- */
+function scores() {
+  const out = {};
+  Object.keys(AXES).forEach(d => {
+    let n = 0, hi = 0;
+    Q.filter(q => q.dim === d).forEach(q => { const a = S.a[q.id]; if (a && a.v) { n++; if (a.v === q.hi) hi++; } });
+    out[d] = n ? hi / n : null;
+  });
+  return out;
+}
+function diag(lang) {
+  const X = (en, hu) => lang === 'hu' ? hu : en, L = k => tl(lang, k);
+  const sc = scores(), A = id => S.a[id], rows = [];
+  const dgOf = id => { const a = A(id); if (!a || !a.v) return null; const q = Q.find(x => x.id === id); return q.dg ? q.dg[lang][optIdx(a.v)] : null; };
+  rows.push({ k: L('rk_sub'), v: 'ID: SENKISEM #' + S.ref });
+  let best = null;
+  Object.keys(AXES).forEach(d => { if (sc[d] === null) return; const dev = Math.abs(sc[d] - .5); if (!best || dev > best.dev) best = { d, dev, hi: sc[d] >= .5 ? 1 : 0 }; });
+  rows.push({ k: L('rk_class'), v: best ? ARCH[best.d][best.hi][lang] : X('UNCLASSIFIED', 'BESOROLATLAN') });
+  Object.keys(AXES).forEach(d => { if (sc[d] === null) return; const nm = AXES[d][lang]; rows.push({ k: L('ax_' + d), v: nm[0] + ' ↔ ' + nm[1] + ' · ' + Math.round(sc[d] * 100) + '%', ax: { pos: (6 + sc[d] * 88).toFixed(1), nm } }); });
+  const role = A('role'), perf = role && typeof role.v === 'number' ? role.v : null;
+  const shift = A('shift') ? A('shift').v : null, own = shift ? { a:'b', b:null, c:'a', d:'a' }[shift] : null;
+  if (perf !== null) rows.push({ k: L('rk_perf'), v: perf + '% ' + X('performed', 'szerepben') });
+  if (perf !== null || own) {
+    let a = 70; if (perf !== null) a -= perf * .5; if (own === 'a') a -= 15; if (own === 'b') a += 10; if (sc.self !== null) a += (sc.self - .5) * 30;
+    a = Math.round(clamp(a, 3, 97));
+    const lost = perf !== null && perf >= 75 && own === 'a';
+    rows.push({ k: L('rk_auth'), v: lost ? X('not found', 'nem található') : a + '% · ' + (a < 40 ? X('unstable', 'instabil') : a < 65 ? X('partial', 'részleges') : X('holding', 'stabil')) });
+  }
+  [['voice','rk_voice'],['night','rk_night'],['attn','rk_unobs'],['flower','rk_flower'],['lose','rk_face'],['dist','rk_dist']].forEach(([id, key]) => { const v = dgOf(id); if (v) rows.push({ k: L(key), v }); });
+  const title = A('title') && A('title').v ? String(A('title').v).trim() : '';
+  if (title) rows.push({ k: L('rk_title'), v: '«' + title + '»' });
+  /* the finding: look for a contradiction */
+  const lose = A('lose') ? A('lose').v : null;
+  let finding;
+  if (own === 'b' && perf !== null && perf >= 60) finding = X(`You say you hardly change around people. Yet you play a role ${perf}% of your day. Both cannot be true. The system believes the second one.`, `Azt mondod, alig változol mások mellett. Mégis a napod ${perf}%-ában szerepet játszol. Mindkettő nem lehet igaz. A rendszer a másodikat hiszi el.`);
+  else if (lose === 'd') finding = X('You would not miss your face. That is not nothing. That is the reason this exists.', 'Nem hiányozna az arcod. Ez nem kevés. Pontosan ezért létezik ez az egész.');
+  else if (own === 'a' && perf !== null && perf < 40) finding = X(`You say every group brings out a different you, yet you play a role only ${perf}% of the day. Then those are not roles. Those are all you.`, `Azt mondod, minden társaságban más éned jön elő, mégis csak a napod ${perf}%-ában játszol szerepet. Akkor ezek nem szerepek. Ezek mind te vagy.`);
+  else if (sc.bond !== null && sc.bond > .5 && A('attn') && A('attn').v === 'a') finding = X('You choose closeness. Yet you feel most yourself alone. The two have not been introduced yet.', 'A közelséget választod. Mégis egyedül érzed magad a leginkább önmagadnak. A kettő még nem találkozott.');
+  else finding = X('Nothing in your answers contradicts itself. That is the most suspicious result the system has produced today.', 'A válaszaid egyike sem mond ellent a másiknak. Ez a legkétesebb eredmény, amit a rendszer ma produkált.');
+  return { rows, finding, title, unsaid: !!(A('wish') && A('wish').v) };
+}
+function viewReadout() {
+  setTone('cold');
+  const d = diag(LANG), step = REDUCE ? 0 : 280, base = REDUCE ? 0 : 300;
+  const rowsH = d.rows.map((r, i) => '<div style="animation-delay:' + (base + i * step) + 'ms"><dt>' + esc(r.k) + '</dt><dd>' + (r.ax
+    ? '<span class="ax"><em>' + esc(r.ax.nm[0]) + '</em><i><b style="left:' + r.ax.pos + '%"></b></i><em>' + esc(r.ax.nm[1]) + '</em></span>'
+    : esc(r.v)) + '</dd></div>').join('');
+  const end = base + d.rows.length * step;
+  body.innerHTML =
+    '<div class="tag">' + esc(t('ro_tag')) + '</div><h2 class="title-cold">' + esc(t('ro_h')) + '</h2>' +
+    '<dl class="log">' + rowsH + '</dl>' +
+    '<div class="finding" style="animation-delay:' + (end + (REDUCE ? 0 : 700)) + 'ms"><small>' + esc(t('ro_find')) + '</small><p>' + esc(d.finding) + '</p></div>' +
+    (d.unsaid ? '<p class="logend" style="animation-delay:' + (end + (REDUCE ? 0 : 1800)) + 'ms">' + esc(t('ro_unsaid')) + '</p>' : '') +
+    (d.title ? '<p class="logend" style="animation-delay:' + (end + (REDUCE ? 0 : 2600)) + 'ms">' + esc(t('ro_title_note')) + '</p>' : '') +
+    '<p class="logend" style="animation-delay:' + (end + (REDUCE ? 0 : 3400)) + 'ms">' + esc(t('ro_note')) + '</p>';
+  nextB.textContent = t('ro_next');
+}
+
+/* ---------- photo ---------- */
+function viewPhoto() {
+  setTone('soft');
+  body.innerHTML =
+    '<h2 class="title-soft">' + esc(t('photo_t')) + '</h2><p class="lead">' + esc(t('photo_lead')) + '</p>' +
+    '<div class="ans show" style="margin-top:1.6rem"><label class="drop" id="drop"><input type="file" id="file" class="sr" accept="image/*" multiple><b>' + esc(t('photo_drop')) + '</b><span>' + esc(t('photo_or')) + '</span></label>' +
+    '<div class="thumbs" id="thumbs"></div><div class="err" id="perr" role="status" aria-live="polite"></div></div>' +
+    '<div class="promise"><b>' + esc(t('photo_promise_h')) + '</b>' + esc(t('photo_promise')) + '</div>';
+  const drop = $('drop'), file = $('file');
+  file.onchange = e => addFiles([...e.target.files]);
+  ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => addFiles([...e.dataTransfer.files]));
+  drawThumbs();
+}
+function drawThumbs() {
+  const th = $('thumbs'); if (!th) return;
+  th.innerHTML = S.files.map((f, i) => '<div class="thumb"><img src="' + f.url + '" alt=""><button type="button" data-i="' + i + '" aria-label="' + esc(t('photo_rm')) + '">×</button></div>').join('');
+  th.querySelectorAll('button').forEach(b => b.onclick = () => { const f = S.files.splice(+b.dataset.i, 1)[0]; URL.revokeObjectURL(f.url); drawThumbs(); });
+  nextB.disabled = S.files.length === 0;
+}
+async function addFiles(list) {
+  const err = $('perr'); err.textContent = '';
+  for (const f of list) {
+    if (S.files.length >= CFG.maxPhotos) { err.textContent = t('too_many'); break; }
+    if (!/^image\//.test(f.type) && !/\.(jpe?g|png|webp)$/i.test(f.name)) { err.textContent = t('bad_type'); continue; }
+    try {
+      const bmp = await createImageBitmap(f, { imageOrientation: 'from-image' });
+      const sc = Math.min(1, CFG.maxEdge / Math.max(bmp.width, bmp.height)), c = document.createElement('canvas');
+      c.width = Math.round(bmp.width * sc); c.height = Math.round(bmp.height * sc);
+      c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height); if (bmp.close) bmp.close();   // re-encoding strips EXIF and location
+      const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', CFG.quality));
+      S.files.push({ blob, name: 'photo' + (S.files.length + 1) + '.jpg', url: URL.createObjectURL(blob) });
+    } catch { err.textContent = t('decode'); }
+  }
+  $('file').value = ''; drawThumbs();
+}
+
+/* ---------- piece + size ---------- */
+function viewPiece() {
+  setTone('soft'); const p = S.a.piece ? S.a.piece.v : '';
+  body.innerHTML =
+    '<h2 class="title-soft">' + esc(t('piece_t')) + '</h2><p class="lead">' + esc(t('piece_lead')) + '</p>' +
+    '<div class="ans show"><div class="opts" role="radiogroup" aria-label="' + esc(t('piece_t')) + '">' +
+    ['602','603','999'].map((c, j) => '<label class="opt"><input type="radio" name="piece" value="' + c + '"' + (p === c ? ' checked' : '') + '><span class="l"><b class="k">' + (j + 1) + '</b><span>' + esc(t('pr_' + c)) + '<br><span style="font-family:\'Space Grotesk\',sans-serif;font-size:.9rem;color:var(--t2)">' + esc(t('pr_' + c + 'd')) + '</span></span></span></label>').join('') +
+    '</div><div class="sub">' + esc(t('sz_h')) + '</div><div class="sizes" role="radiogroup" aria-label="' + esc(t('sz_h')) + '">' +
+    SIZES.map(z => '<label><input type="radio" name="size" value="' + z + '"' + (S.size === z ? ' checked' : '') + '><span>' + z + '</span></label>').join('') + '</div></div>';
+  const chk = () => { nextB.disabled = !(S.a.piece && S.size); save(); };
+  body.querySelectorAll('input[name=piece]').forEach(i => i.onchange = () => { S.a.piece = { v: i.value }; chk(); });
+  body.querySelectorAll('input[name=size]').forEach(i => i.onchange = () => { S.size = i.value; chk(); });
+  chk();
+}
+
+/* ---------- contact ---------- */
+function viewContact() {
+  setTone('soft');
+  body.innerHTML =
+    '<h2 class="title-soft">' + esc(t('contact_t')) + '</h2><p class="lead">' + esc(t('contact_lead')) + '</p>' +
+    '<div class="ans show" style="margin-top:1.8rem;max-width:520px"><div class="fld"><label for="cn">' + esc(t('c_name')) + '</label><input type="text" id="cn" autocomplete="given-name" value="' + esc(S.contact.name) + '"></div>' +
+    '<div class="fld"><label for="cm">' + esc(t('c_mail')) + '</label><input type="email" id="cm" autocomplete="email" inputmode="email" value="' + esc(S.contact.email) + '"></div>' +
+    '<label class="chk"><input type="checkbox" id="cnw"' + (S.contact.news ? ' checked' : '') + '><span>' + esc(t('c_news')) + '</span></label><div class="err" id="cerr" role="status" aria-live="polite"></div></div>';
+  const upd = () => { S.contact.name = $('cn').value.trim(); S.contact.email = $('cm').value.trim(); S.contact.news = $('cnw').checked; save(); };
+  ['cn','cm','cnw'].forEach(id => $(id).addEventListener('input', upd));
+}
+const mailOk = s => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
+
+/* ---------- send ---------- */
+function viewSend() {
+  setTone('soft');
+  const answered = Q.filter(hasA).length;
+  body.innerHTML =
+    '<h2 class="title-soft">' + esc(t('send_t')) + '</h2><p class="lead">' + esc(t('send_lead')) + '</p>' +
+    '<dl class="sum">' + [[t('sum_ref'), '#' + S.ref], [t('sum_piece'), PRODUCTS[S.a.piece.v][LANG]], [t('sum_size'), S.size], [t('sum_photos'), S.files.length], [t('sum_answers'), answered + ' / ' + NQ], [t('sum_name'), S.contact.name], [t('sum_mail'), S.contact.email]].map(r => '<div><dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd></div>').join('') + '</dl>' +
+    '<label class="chk"><input type="checkbox" id="k1"' + (S.consent[0] ? ' checked' : '') + '><span>' + esc(t('c1')) + '</span></label>' +
+    '<label class="chk"><input type="checkbox" id="k2"' + (S.consent[1] ? ' checked' : '') + '><span>' + esc(t('c2')) + '</span></label>' +
+    '<div class="err" id="serr" role="status" aria-live="polite"></div><div class="row-btns" id="fb" hidden></div>';
+  $('k1').onchange = e => S.consent[0] = e.target.checked; $('k2').onchange = e => S.consent[1] = e.target.checked;
+  nextB.textContent = t('send_btn');
+}
+
+/* ============================================================
+   MAIL LOGIC — same flow as assets/IdModalService.js
+   (File -> base64, HTML built client-side, POST to the proxy endpoint)
+============================================================ */
+function fileToBase64(blob, name) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve({ base64: String(reader.result).split(',')[1], name: name || 'kep.jpg' });
+    reader.onerror = () => reject(new Error('Fájl olvasási hiba: ' + name));
+    reader.readAsDataURL(blob);
+  });
+}
+function buildPayload() {
+  const d = diag('hu');
+  return { v: 5, ref: S.ref, lang: LANG, ts: new Date().toISOString(), name: S.contact.name, contactEmail: S.contact.email, newsletterOptIn: S.contact.news,
+    product: { code: S.a.piece.v, name: PRODUCTS[S.a.piece.v].hu }, size: S.size, axes: scores(),
+    diagnosis: d.rows.map(r => r.k + ': ' + r.v).concat(['MEGÁLLAPÍTÁS: ' + d.finding]),
+    answers: Q.map(q => ({ id: q.id, key: q.key, type: q.ty || 'ab', question: q.hu.t, answer: answerLabel(q, 'hu'), raw: S.a[q.id] || null })),
+    photos: S.files.length, consentVersion: CFG.consentVersion };
+}
+function buildAnswerTableHTML() {
+  const cell = 'padding:10px 14px;border-bottom:1px solid #e5e5e5;font-size:13px;vertical-align:top;';
+  const row = (k, v) => `<tr><td style="${cell}color:#555;width:45%;">${esc(k)}</td><td style="${cell}color:#111;font-weight:600;">${esc(v || '—')}</td></tr>`;
+    const rows = [...Q, ROLEQ].map((q, i) => row((i + 1) + '. ' + q.hu.t, answerLabel(q, 'hu'))).join('');
+  return `<table role="presentation" style="width:100%;border-collapse:collapse;background:#fff;border-radius:6px;overflow:hidden;">
+    <thead><tr style="background:#000;"><th style="padding:12px 14px;text-align:left;color:#fff;font-size:12px;letter-spacing:.06em;text-transform:uppercase;">Kérdés</th><th style="padding:12px 14px;text-align:left;color:#fff;font-size:12px;letter-spacing:.06em;text-transform:uppercase;">Válasz</th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
+function buildAdminEmailHTML(filesCount, isCheckout) {
+  const now = new Date().toLocaleString('hu-HU', { timeZone: 'Europe/Budapest' });
+  const d = diag('hu');
+  const diagRows = d.rows.map(r => `<tr><td style="padding:6px 0;color:#555;font-size:13px;width:38%;">${esc(r.k)}</td><td style="padding:6px 0;font-size:13px;font-weight:600;">${esc(r.v)}</td></tr>`).join('');
+  return `<!DOCTYPE html>
+<html lang="hu"><head><meta charset="UTF-8"><style>
+body{margin:0;padding:0;font-family:'Segoe UI',Tahoma,sans-serif;background:#f5f5f5;}
+.wrap{max-width:640px;margin:0 auto;background:#fff;}
+.hdr{background:#000;padding:32px 24px;text-align:center;}
+.hdr h1{color:#fff;font-size:22px;letter-spacing:2px;margin:0;text-transform:uppercase;}
+.hdr p{color:rgba(255,255,255,.55);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin:6px 0 0;}
+.body{padding:32px 28px;}
+.badge{display:inline-block;padding:6px 14px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px;background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7;}
+h2{font-size:16px;color:#000;margin:28px 0 12px;border-bottom:1px solid #eee;padding-bottom:8px;}
+.meta{background:#f9f9f9;border-radius:6px;padding:16px 18px;margin-bottom:24px;font-size:13px;color:#333;line-height:1.7;}
+.ftr{background:#111;padding:28px 24px;text-align:center;color:#fff;font-size:12px;letter-spacing:.1em;text-transform:uppercase;}
+</style></head><body><div class="wrap">
+<div class="hdr"><h1>ID: Senkisem — Új Kitöltés</h1><p>${esc(now)}</p></div>
+<div class="body">
+<span class="badge">${isCheckout ? '✅ KONCEPCIÓT KÉR' : '⏳ KÉSŐBB'}</span>
+<div class="meta">
+<strong>Senkisem ID:</strong> #${esc(S.ref)}<br>
+<strong>Név:</strong> ${esc(S.contact.name)}<br>
+<strong>Email:</strong> ${esc(S.contact.email)}<br>
+<strong>Hírlevél:</strong> ${S.contact.news ? 'igen' : 'nem'}<br>
+<strong>Termék:</strong> ${esc(PRODUCTS[S.a.piece.v].hu)} (${esc(S.a.piece.v)})<br>
+<strong>Méret:</strong> ${esc(S.size)}<br>
+<strong>Nyelv:</strong> ${esc(LANG)}<br>
+<strong>Feltöltött kép:</strong> ${filesCount} db
+</div>
+<h2>Diagnózis (amit a kitöltő látott)</h2>
+<table role="presentation" style="width:100%;border-collapse:collapse;">${diagRows}</table>
+<p style="font-size:13px;color:#b71c1c;margin:12px 0 0;"><strong>Megállapítás:</strong> ${esc(d.finding)}</p>
+<h2>Összes válasz</h2>
+${buildAnswerTableHTML()}
+${filesCount > 0 ? `<h2 style="margin-top:32px;">Csatolt képek</h2><p style="font-size:13px;color:#666;">${filesCount} db kép csatolva az email mellé (lásd: attachments). A kép(ek) törlése: elkészülte után 5 napon belül.</p>` : ''}
+</div><div class="ftr">Senkisem &nbsp;|&nbsp; ID Kitöltés Értesítő</div></div></body></html>`;
+}
+function buildConfirmationEmailHTML(lang) {
+  const L = k => tl(lang, k), hu = lang === 'hu';
+  const c = hu ? {
+    h: 'Megkaptuk az adataidat!',
+    p: 'Köszönjük, hogy kitöltötted az ID: Senkisem tesztet. A teljes koncepciódat <strong>2 héten belül</strong> e-mailben elküldjük. Támogatóknak: <strong>5 munkanap</strong>.',
+    box: 'A koncepciót erre az e-mail-címre küldjük',
+    chance: 'Fizikai darabot most nem lehet vásárolni. De van rá esély, hogy szerezz egyet. Maradj a közelben.',
+    photo: 'A képedet kizárólag a ruhadarab elkészítéséhez használjuk, azt követően 5 napon belül automatikusan töröljük. Csak az eltörölt ID: SENKISEM marad.',
+    q: 'Ha bármilyen kérdésed van, írj nekünk:', bye: 'Üdvözlettel,', team: 'A Senkisem Csapata', rights: 'Minden jog fenntartva', tag: 'Nem egy Brand; Üzenet.'
+  } : {
+    h: 'We received your data!',
+    p: 'Thank you for completing the ID: Senkisem test. We will send your full concept by e-mail <strong>within 2 weeks</strong>. Supporters: <strong>5 working days</strong>.',
+    box: 'We will send the concept to this address',
+    chance: "A physical piece can't be bought right now. But there is a chance you get one. Stay close.",
+    photo: 'Your picture is used only to make your piece and is deleted automatically within 5 days afterwards. Only the erased ID: SENKISEM remains.',
+    q: 'If you have any questions, write to us:', bye: 'Regards,', team: 'The Senkisem Team', rights: 'All rights reserved', tag: 'Not a brand; a message.'
+  };
+  return `<!DOCTYPE html>
+<html lang="${lang}"><head><meta charset="UTF-8"><style>
+body{margin:0;padding:0;font-family:'Segoe UI',Tahoma,sans-serif;background:#f5f5f5;}
+.wrap{max-width:600px;margin:0 auto;background:#fff;}
+.hdr{background:#000;padding:40px 24px;text-align:center;}
+.hdr h1{color:#fff;font-size:28px;letter-spacing:3px;margin:0;text-transform:uppercase;}
+.hdr p{color:rgba(255,255,255,.45);font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin:8px 0 0;}
+.body{padding:40px 32px;}
+h2{color:#000;font-size:20px;line-height:1.3;margin:0 0 16px;}
+p{color:#555;font-size:15px;line-height:1.7;margin:0 0 16px;}
+.box{background:#f9f9f9;border-left:3px solid #000;padding:16px 20px;border-radius:0 4px 4px 0;margin:28px 0;}
+.box p{margin:0;font-size:13px;color:#333;}
+.ftr{background:#111;padding:32px 24px;text-align:center;}
+.ftr span{color:rgba(255,255,255,.4);font-size:11px;letter-spacing:.12em;text-transform:uppercase;}
+</style></head><body><div class="wrap">
+<div class="hdr"><h1>Senkisem</h1><p>${esc(c.tag)}</p></div>
+<div class="body">
+<h2>✅ ${esc(c.h)}</h2>
+<p>${c.p}</p>
+<div class="box"><p>ID: SENKISEM #${esc(S.ref)}<br>${esc(c.box)}: <strong>${esc(S.contact.email)}</strong></p></div>
+<p>${esc(c.chance)}</p>
+<p style="font-size:13px;color:#777;">${esc(c.photo)}</p>
+<p style="font-size:13px;color:#999;">${esc(c.q)}<br><a href="mailto:info@senkisem.hu" style="color:#000;font-weight:600;text-decoration:none;">info@senkisem.hu</a></p>
+<p style="margin-top:32px;font-size:14px;color:#333;">${esc(c.bye)}<br><strong>${esc(c.team)}</strong></p>
+</div>
+<div class="ftr"><span>© ${new Date().getFullYear()} Senkisem | ${esc(c.rights)}</span></div>
+</div></body></html>`;
+}
+async function postMail(payload) {
+  const res = await fetch(CFG.api, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+  if (!res.ok) { const e = new Error('[ID Modal] API hiba (' + res.status + ')'); e.status = res.status; throw e; }
+  return res.json().catch(() => ({}));
+}
+function plainText() {
+  const p = buildPayload();
+  return ['SENKISEM / ID', 'ref: #' + p.ref, 'name: ' + p.name, 'email: ' + p.contactEmail, 'piece: ' + p.product.name + ' (' + p.product.code + ')', 'size: ' + p.size, ''].concat(p.diagnosis, [''], p.answers.map(a => a.id + ' · ' + a.question + '\n   ' + (a.answer || '—'))).join('\n');
+}
+async function submit() {
+  if (S.busy) return; const err = $('serr'); err.textContent = ''; err.className = 'err';
+  if (!(S.consent[0] && S.consent[1])) { err.textContent = t('need_consent'); return; }
+  S.busy = true; nextB.disabled = true; nextB.textContent = t('sending');
+  try {
+    const files = [];
+    for (const f of S.files) { try { files.push(await fileToBase64(f.blob, f.name)); } catch (e) { console.warn('⚠️ Kép konvertálási hiba:', e.message); } }
+    const prod = PRODUCTS[S.a.piece.v].hu;
+    const subject = `[ID: Senkisem] Új kitöltés — ${prod} ${S.size} — #${S.ref}`;
+    S.res = await postMail({ type: 'admin', subject, html: buildAdminEmailHTML(files.length, true), uploadedFiles: files, isCheckout: true, answers: buildPayload() });
+    try {
+      await postMail({ type: 'confirmation', subject: LANG === 'hu' ? '✅ Megkaptuk — ID: Senkisem #' + S.ref + ' | Senkisem' : '✅ Received — ID: Senkisem #' + S.ref + ' | Senkisem', html: buildConfirmationEmailHTML(LANG), customerEmail: S.contact.email });
+    } catch (e) { console.warn('[ID Modal] Visszaigazoló email hiba:', e.message); }
+    ls(CFG.storeKey, null); go(IDX.done);
+  } catch (e) {
+    const offline = !e.status || e.status === 404 || e.status === 405;
+    err.textContent = offline ? t('send_off', { m: CFG.contactEmail }) : t('send_fail');
+    if (offline) {
+      const fb = $('fb'); fb.hidden = false;
+      fb.innerHTML = '<button type="button" class="btn ghost" id="fb-dl">' + esc(t('dl_ans')) + '</button><a class="btn ghost" id="fb-mail" href="#">' + esc(t('mail_ans')) + '</a>';
+      $('fb-dl').onclick = () => { const b = new Blob([plainText()], { type: 'text/plain;charset=utf-8' }), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'senkisem-' + S.ref + '.txt'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); };
+      $('fb-mail').href = 'mailto:' + CFG.contactEmail + '?subject=' + encodeURIComponent('ID: Senkisem #' + S.ref) + '&body=' + encodeURIComponent(plainText().slice(0, 1800));
+    }
+    nextB.textContent = t('send_btn'); nextB.disabled = false;
+  }
+  S.busy = false;
+}
+
+/* ---------- done ---------- */
+function viewDone() {
+  setTone('cold'); foot.hidden = true;
+  body.innerHTML =
+    '<h2 class="title-cold">' + esc(t('done_t')) + '</h2><div class="idcard"><small>' + esc(t('done_ref')) + '</small><strong>ID: SENKISEM #' + esc(S.ref) + '</strong><small>' + esc(t('done_state')) + '</small></div>' +
+    '<p class="lead">' + esc(t('done_p')) + '</p><p class="lead">' + esc(t('done_p2')) + '</p>' +
+    '<div class="row-btns"><a class="btn ghost" href="/">' + esc(t('done_home')) + '</a><a class="btn ghost" href="/support.html">' + esc(t('done_sup')) + '</a><button type="button" class="btn ghost" id="again">' + esc(t('done_again')) + '</button></div>';
+  $('again').onclick = () => { S.a = {}; S.size = ''; S.files.forEach(f => URL.revokeObjectURL(f.url)); S.files = []; S.ref = newRef(); S.res = null; S.consent = [false, false]; go(0); };
+}
+
+const ROLEQ = { id:'role', key:'role', ty:'slider',
+  hu:{ t:'A napod hány százalékában játszol szerepet?', sub:'Becsüld meg. Nem kell pontosnak lennie.' },
+  en:{ t:'What percentage of your day do you spend playing a role?', sub:"Estimate. It doesn't have to be exact." } };
+const SA = {
+  hu:{ tag:'SYSTEM ALERT · SCAN LEÁLLÍTVA', h:'Hiányzó mérés.', p:'// a scan nem indulhat el. egy adat kimaradt.', btn:'Rögzítés', skip:'Átugrom' },
+  en:{ tag:'SYSTEM ALERT · SCAN HALTED', h:'Missing measurement.', p:'// scan cannot start. one value is absent.', btn:'Record', skip:'Skip' } };
+function showAlert(done) {
+  S.alert = true; S.alertRef = S.ref;
+  const L = SA[LANG], q = ROLEQ[LANG], sa = $('sa');
+  $('sain').innerHTML = '<div class="sa-bar"><span>' + esc(L.tag) + '</span><i aria-hidden="true">■</i></div><div class="sa-body"><h2 class="sa-h">' + esc(L.h) + '</h2><p class="sa-p">' + esc(L.p) + '</p>' +
+    '<p class="sa-q" id="saq">' + esc(q.t) + '</p><p class="subq">' + esc(q.sub) + '</p>' +
+    '<div class="sl idle" id="saw"><div class="sl-v" id="sav">—</div><input type="range" id="sasl" min="0" max="100" step="1" value="50" aria-labelledby="saq"><div class="sl-ax"><span>0%</span><span>100%</span></div></div>' +
+    '<div class="row-btns"><button type="button" class="btn primary" id="sa-ok" disabled>' + esc(L.btn) + '</button><button type="button" class="btn ghost" id="sa-skip">' + esc(L.skip) + '</button></div></div>';
+  sa.classList.add('on');
+  const sl = $('sasl'), ok = $('sa-ok');
+  const set = () => { S.a.role = { v: +sl.value }; $('sav').textContent = sl.value + '%'; $('saw').classList.remove('idle'); ok.disabled = false; save(); };
+  sl.addEventListener('input', set); sl.addEventListener('change', set);
+  const close = cb => { S.alert = false; sa.classList.remove('on'); cb(); };
+  ok.onclick = () => close(() => showEcho('// ' + S.a.role.v + (LANG === 'hu' ? '% szerepben. a többi: megfigyeletlen.' : '% performed. the rest: unobserved.'), done));
+  $('sa-skip').onclick = () => close(() => { delete S.a.role; done(); });
+  sl.focus();
+}
+
+/* ---------- navigation + keyboard ---------- */
+function next() {
+  const sc = screens[S.i];
+    if (S.card || S.booting || S.alert) return;
+  if (echoCb && S.echoSkip) { S.echoSkip(); return; }
+  if (S.typeDone) { S.typeDone(); return; }
+  clearTimeout(S.auto);
+  if (sc.k === 'q') {
+    const q = sc.q, r = rxOf(q, S.a[q.id]);
+    if (r && r.echo) { showEcho(r.echo[LANG], () => go(S.i + 1)); return; }
+    if (r && r.card) { showCard(r.card, () => go(S.i + 1), () => { delete S.a[q.id]; save(); render(); body.focus({ preventScroll: true }); }); return; }
+    go(S.i + 1); return;
+  }
+  if (sc.k === 'contact') {
+    const err = $('cerr'); err.textContent = '';
+    if (!S.contact.name) { err.textContent = t('need_name'); $('cn').focus(); return; }
+    if (!mailOk(S.contact.email)) { err.textContent = t('need_mail'); $('cm').focus(); return; }
+    go(S.i + 1); return;
+  }
+  if (sc.k === 'send') { submit(); return; }
+  go(S.i + 1);
+}
+nextB.addEventListener('click', next);
+backB.addEventListener('click', () => {
+    if (S.card || S.booting || S.alert) return;
+  clearTimeout(S.auto); if (echoCb && S.echoSkip) S.echoSkip();
+  go(S.i === FIRSTQ ? 0 : S.i - 1);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { if (!$('hard').hidden) $('hard').hidden = true; if (!$('nomod').hidden) $('nomod').hidden = true; return; }
+    if (S.card || S.alert) return;
+  if (S.booting && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); bootEl.click(); return; }
+  const r = room.getBoundingClientRect(); if (r.bottom < 80 || r.top > innerHeight - 80) return;
+  const ae = document.activeElement; if (ae !== document.body && !room.contains(ae)) return;
+  const sc = screens[S.i], tag = (e.target.tagName || '').toLowerCase(), type = e.target.type;
+  if (!sc || sc.k === 'start' || sc.k === 'gate' || sc.k === 'done') return;
+  if (echoCb && S.echoSkip && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); S.echoSkip(); return; }
+  if (e.key === 'Enter' && tag !== 'button' && tag !== 'a' && tag !== 'textarea' && type !== 'file') { e.preventDefault(); if (!nextB.disabled) next(); return; }
+  if (/^[1-9]$/.test(e.key) && tag !== 'textarea' && !(tag === 'input' && (type === 'text' || type === 'email'))) {
+    const el = body.querySelectorAll('.opts input')[+e.key - 1];
+    if (el) { e.preventDefault(); el.click(); }
+  }
+});
+
+/* ---------- dialogs ---------- */
+$('hard-btn').addEventListener('click', () => { $('hard').hidden = false; $('hard-close').focus(); });
+$('hard-close').addEventListener('click', () => { $('hard').hidden = true; $('hard-btn').focus(); });
+$('hard').addEventListener('click', e => { if (e.target === $('hard')) $('hard').hidden = true; });
+$('no-stay').addEventListener('click', () => { $('nomod').hidden = true; });
+$('nomod').addEventListener('click', e => { if (e.target === $('nomod')) $('nomod').hidden = true; });
+
+/* ============================================================
+   FOOTER VIDEO SWAP + SOCIAL REVEAL
+============================================================ */
+(function() {
+  var desktop = $('sn-footer-video-desktop'), mobile = $('sn-footer-video-mobile');
+  if (!desktop || !mobile) return;
+  function swapVideo() {
+    if (window.innerWidth <= 768) { desktop.style.display = 'none'; mobile.style.display = 'block'; mobile.play().catch(function(){}); }
+    else { mobile.style.display = 'none'; desktop.style.display = 'block'; desktop.play().catch(function(){}); }
+  }
+  swapVideo(); window.addEventListener('resize', swapVideo);
+})();
+(function() {
+  var row = $('sn-social-icons-row'); if (!row) return;
+  new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) { if (entry.isIntersecting) entry.target.querySelectorAll('.sn-social-icon-card').forEach(function(c) { c.classList.add('visible'); }); });
+  }, { threshold: 0.2 }).observe(row);
+})();
+
+/* BOOT */
+applyLang(LANG, true);
+render();
+addEventListener('beforeunload', () => { S.files.forEach(f => URL.revokeObjectURL(f.url)); });
+})();
+</script>
+</body>
+</html>
