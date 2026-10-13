@@ -36,6 +36,16 @@
 {"@context":"https://schema.org","@type":"Organization","name":"Senkisem","url":"https://senkisem.hu/","logo":"https://senkisem.hu/img/favicon.svg","description":"Hungarian custom clothing and free-to-read books about self-discovery, with a philosophical view of identity.","email":"info@senkisem.com","sameAs":["https://www.instagram.com/senkisem.hu/","https://www.tiktok.com/@senkisem.hu"]}
 </script>
 
+<script>
+window.addEventListener('click', function (e) {
+  var a = e.target.closest && e.target.closest('.sn-navbar a, .sn-mobile-nav a, .sn-support');
+  if (!a || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  var href = a.getAttribute('href');
+  if (!href || href.charAt(0) === '#') return;
+  e.stopImmediatePropagation();   // a Barba nem látja a kattintást, a böngésző normálisan navigál
+}, true);
+</script>
+
     <!-- Adobe Fonts -->
     <link rel="stylesheet" href="https://use.typekit.net/bxm6vfh.css">
     <!-- Next Net Stylesheets -->
@@ -1737,8 +1747,7 @@
         <header style="display:none!important;"></header>
 
         <!-- ticker -->
-        <section class="position-relative z-3 overflow-clip" data-function="slider" slider data-slider-autoplay="2000">
-            <div class="container text-center">
+<section class="position-relative z-3 overflow-clip">            <div class="container text-center">
                 <div class="grid">
                 </div>
                 <div class="g-start-1 g-col-12    g-row-start-md-1 g-start-md-1 g-col-md-5 d-flex flex-column justify-content-between"></div>
