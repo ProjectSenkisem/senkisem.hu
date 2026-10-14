@@ -1392,7 +1392,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║   🚀 SENKISEM.HU SZERVER — TÁMOGATÓI MODELL           ║
+║      SENKISEM.HU SZERVER — TÁMOGATÓI MODELL           ║
 ╠═══════════════════════════════════════════════════════╣
 ║   Port: ${PORT}
 ║   Támogatás:  ✅ /api/support/*  (HUF / USD)
