@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Thank you | Senkisem</title>
-<link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
+<title>Senkisem </title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" />
 <meta name="description" content="Thank you for being here.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#000000">
@@ -485,7 +485,7 @@ main,.sn-social-section,.sn-footer{position:relative;z-index:1}
             <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener" data-i="fPriv">Privacy Policy</a>
         </div>
         <div class="sn-footer-copy">
-            © 2026 Senkisem L.L.C. <br> <span data-i="fRights">All rights reserved</span>
+            © 2026 Senkisem LLC <br> <span data-i="fRights">All rights reserved</span>
         </div>
     </div>
 </footer>
@@ -536,12 +536,12 @@ var HU={
  ckA:'Elfogadom',ckD:'Elutasítom',ckN:'Csak a szükségesek'
 };
 var DYN={
- en:{title:'Thank you | Senkisem',desc:'Thank you for being here.',min:'Minimum $3.',ph:'5',other:'Other',minL:'minimum',popL:'most popular',
+ en:{title:'Senkisem ',desc:'Thank you for being here.',min:'Minimum $3.',ph:'5',other:'Other',minL:'minimum',popL:'most popular',
   payFail:'Could not start the payment. Nothing was charged. Please try again.',
   verFail:'We could not verify the payment right now. If you paid, the receipt will arrive by e-mail.',
   cancel:'Nothing was charged. No problem.',cardLine:'One of the many.',
   tnotes:'Notes from a Stranger',tsynthetic:'Synthetic Human',readFree:'read free'},
- hu:{title:'Köszönöm | Senkisem',desc:'Köszönöm, hogy itt vagy.',min:'Minimum 1 000 Ft.',ph:'2\u00A0000',other:'Más',minL:'minimum',popL:'legnépszerűbb',
+ hu:{title:'Senkisem ',desc:'Köszönöm, hogy itt vagy.',min:'Minimum 1 000 Ft.',ph:'2\u00A0000',other:'Más',minL:'minimum',popL:'legnépszerűbb',
   payFail:'Nem sikerült elindítani a fizetést. Nem történt terhelés. Kérlek, próbáld újra.',
   verFail:'A fizetést most nem tudtuk ellenőrizni. Ha fizettél, a nyugta e-mailben megérkezik.',
   cancel:'Nem történt terhelés. Semmi baj.',cardLine:'Egy vagy a sok közül.',
@@ -556,7 +556,7 @@ function setLang(l){
   document.documentElement.lang=LANG;
   I18N.forEach(function(e){var k=e.getAttribute('data-i');e.innerHTML=(LANG==='hu'&&HU[k]!=null)?HU[k]:e._en});
   $$('.sn-flag').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.lang===LANG?'true':'false')});
-  document.title=T('title');var d=$('meta[name="description"]');if(d)d.content=T('desc');
+  document.title='Senkisem ';var d=$('meta[name="description"]');if(d)d.content=T('desc');
   onLang.forEach(function(f){f()});
   requestAnimationFrame(Hero.refresh);
 }

@@ -990,18 +990,20 @@ app.post('/api/ident/login', identPingLimiter, async (req, res) => {
     const rid = String((req.body || {}).rid || '');
     if (!RID_RE.test(rid)) return res.json({ ok: true });
     const ref = identRef(rid);
+    let publicId = '';
 
     await withLock(async () => {
       const sheet = await getTab(CONFIG.TABS.IDENT, IDENT_HEADERS);
       const rows = await sheet.getRows();
       const row = rows.find(r => r.get('Azonosító ref') === ref);
       if (!row) return;
+      publicId = String(row.get('Azonosító') || '');
       row.set('Belépések', (parseInt(row.get('Belépések'), 10) || 0) + 1);
       row.set('Utolsó belépés', new Date().toLocaleString('hu-HU', { timeZone: 'Europe/Budapest' }));
       await row.save();
     });
 
-    res.json({ ok: true });
+    res.json({ ok: true, id: publicId });
   } catch (error) {
     console.error('⚠️ Belépés-napló hiba:', error.message);
     res.json({ ok: true });   // a belépést ez soha nem akadályozza
@@ -1095,9 +1097,7 @@ app.post('/create-payment-session', async (req, res) => {
       payment_method_types: ['card'],
       mode: 'payment',
       line_items: lineItems,
-      success_url: isEbook
-        ? `${process.env.DOMAIN}/success2.html?session_id={CHECKOUT_SESSION_ID}`
-        : `${process.env.DOMAIN}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.DOMAIN}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.DOMAIN}/cancel.html`,
       metadata: {
         source: 'senkisem.hu'

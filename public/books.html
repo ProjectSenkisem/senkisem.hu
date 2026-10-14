@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="description" content="Senkisem – read both books free online.">
-<title>Senkisem – Books</title>
-<link rel="icon" type="image/svg+xml" href="./img/favicon.svg">
+<title>Senkisem </title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -215,7 +215,7 @@ h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.7rem,2
             <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener" id="fPriv">Privacy Policy</a>
         </div>
         <div class="sn-footer-copy">
-            © 2026 Senkisem L.L.C. <br> <span id="fRights">All rights reserved</span>
+            © 2026 Senkisem LLC <br> <span id="fRights">All rights reserved</span>
         </div>
     </div>
 </footer>
@@ -253,7 +253,7 @@ function imgFix(img){
   if(i<list.length){img.dataset.i=i;img.src=list[i]}else img.style.display='none'}
 function render(){
   const T=TXT[lang];ls('senkisem.lang',lang);document.documentElement.lang=lang;
-  document.title='Senkisem – '+T.nBooks;document.querySelector('meta[name=description]').content=T.desc;
+  document.title='Senkisem ';document.querySelector('meta[name=description]').content=T.desc;
   ['nAbout','nClothing','nBooks','nCommunity','nSupport','mBack','mAbout','mClothing','mBooks','mCommunity','follow','fTerms','fPriv','fRights','tag','h1','sub','f1'].forEach(k=>$(k).innerHTML=T[k]);
   $('grid').innerHTML=['notes','synthetic'].map((b,i)=>{const X=T[b];return `<a class="card rv" style="--d:${.36+i*.12}s" href="olvaso.html?book=${b}&lang=${lang}" aria-label="${X.t} – ${T.cta}">
     <div class="stage"><img src="${IMG[b][lang][0]}" alt="${X.t}" data-b="${b}" data-l="${lang}" data-i="0" onerror="imgFix(this)"></div>

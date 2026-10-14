@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Contact | Senkisem</title>
-<link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
+<title>Senkisem </title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" />
 <meta name="description" content="Our supporters, the community, the giveaway, and a way to reach us.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#000000">
@@ -299,7 +299,7 @@ textarea.inp:focus{box-shadow:0 0 0 1px rgb(var(--c))}
 .sn-bar a{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none;transition:color .25s}
 .sn-bar a:hover{color:rgba(255,255,255,.95)}
 .sn-copy{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);text-align:right;line-height:1.4}
-@media(max-width:768px){.sn-bar{padding:1.4rem 1.6rem 1.8rem;flex-direction:column;align-items:flex-start}.sn-copy{text-align:left}}
+@media(max-width:768px){.sn-bar{padding:1.4rem 1.6rem 1.8rem;flex-direction:column;align-items:flex-start;gap:2rem}.sn-bar nav{position:absolute;top:-415px;left:1.6rem;z-index:4}.sn-copy{width:100%;order:2;text-align:left}.sn-bar nav a{font-size:.82rem}}
 
 /* ---------- COOKIE ---------- */
 .ck{position:fixed;bottom:1.5rem;left:1.5rem;right:1.5rem;max-width:460px;margin:0 auto;background:rgba(8,8,8,.97);backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:4px;padding:1.6rem;z-index:4000;transform:translateY(100px);opacity:0;transition:all .5s var(--ease);display:none}
@@ -575,7 +575,7 @@ textarea.inp:focus{box-shadow:0 0 0 1px rgb(var(--c))}
       <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener" data-i="f_terms">Terms &amp; Conditions</a>
       <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener" data-i="f_priv">Privacy Policy</a>
     </nav>
-    <div class="sn-copy">© 2026 Senkisem L.L.C.<br><span data-i="f_rights">All rights reserved</span></div>
+    <div class="sn-copy">© 2026 Senkisem LLC<br><span data-i="f_rights">All rights reserved</span></div>
   </div>
 </footer>
 
@@ -632,7 +632,7 @@ var CONTENT=[
 ============================================================ */
 var T={
 en:{
- title:'Contact | Senkisem',
+ title:'Senkisem ',
  nav_about:'About',nav_clothing:'Clothing',nav_books:'Books',nav_community:'Community',nav_contact:'Contact',nav_support:'Support',
  c1:'Supporters',c2:'Community',c3:'Content',c4:'Giveaway',c5:'Supporter draw',c6:'Message',scroll:'scroll down',
  s1_tag:'Our supporters',s1_l1:'Without you,',s1_l2:"it wouldn't work.",s1_cap:'Every dot is a person.',
@@ -689,7 +689,7 @@ en:{
  ck_t:'Cookies & Privacy',ck_p:'We use essential cookies to make the site work. With your consent we also load anonymous analytics. Details in our Privacy Policy.',ck_a:'Accept',ck_d:'Decline',ck_n:'Necessary only'
 },
 hu:{
- title:'Kapcsolat | Senkisem',
+ title:'Senkisem ',
  nav_about:'Rólunk',nav_clothing:'Ruházat',nav_books:'Könyvek',nav_community:'Közösség',nav_contact:'Kapcsolat',nav_support:'Támogatás',
  c1:'Támogatóink',c2:'Közösség',c3:'Tartalom',c4:'Sorsolás',c5:'Támogatói sorsolás',c6:'Üzenet',scroll:'görgess lejjebb',
  s1_tag:'Támogatóink',s1_l1:'Nélkületek',s1_l2:'nem menne.',s1_cap:'Minden pont egy ember.',
@@ -762,7 +762,7 @@ function rngf(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var x=Math.
 
 function setLang(l){
   LANG=l==='hu'?'hu':'en';ls('senkisem.lang',LANG);
-  document.documentElement.lang=LANG;document.title=t('title');
+ document.documentElement.lang=LANG;document.title='Senkisem ';
   $$('[data-i]').forEach(function(e){e.textContent=t(e.getAttribute('data-i'))});
   $$('[data-ih]').forEach(function(e){e.innerHTML=t(e.getAttribute('data-ih'))});
   $$('[data-ph]').forEach(function(e){e.placeholder=t(e.getAttribute('data-ph'))});

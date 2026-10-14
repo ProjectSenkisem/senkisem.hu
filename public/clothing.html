@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<title>ID: Senkisem | Senkisem</title>
+<title>Senkisem </title>
 <meta name="description" content="ID: Senkisem – a short personality test. Answer, send one photo, and receive your own ID: Senkisem concept by e-mail. No generator, no template, no two alike.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://senkisem.hu/clothing.html">
-<link rel="icon" type="image/svg+xml" href="./img/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Senkisem">
 <meta property="og:title" content="ID: Senkisem">
@@ -457,7 +457,7 @@ input[type=text]:focus,input[type=email]:focus{outline:none;border-bottom-color:
             <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener" data-i="f_terms">Terms &amp; Conditions</a>
             <a href="assets/ÁSZF.pdf" target="_blank" rel="noopener" data-i="f_priv">Privacy Policy</a>
         </div>
-        <div class="sn-footer-copy">© 2026 Senkisem L.L.C. <br> <span data-i="f_rights">All rights reserved</span></div>
+        <div class="sn-footer-copy">© 2026 Senkisem LLC <br> <span data-i="f_rights">All rights reserved</span></div>
     </div>
 </footer>
 
@@ -789,7 +789,7 @@ function applyLang(l, silent) {
   $('hard-t').innerHTML = t('hard_txt');
   $('no-t').textContent = t('no_t'); $('no-p').textContent = t('no_p'); $('no-stay').textContent = t('no_stay'); $('no-leave').textContent = t('no_leave');
   document.querySelectorAll('.flag').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === l));
-  document.title = 'ID: Senkisem | Senkisem';
+  document.title = 'Senkisem ';
   if (!silent) { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); if (!S.card && !S.booting && !S.alert) render(); }
 }
 document.querySelectorAll('.flag').forEach(b => b.addEventListener('click', () => { if (b.dataset.lang !== LANG) applyLang(b.dataset.lang); }));

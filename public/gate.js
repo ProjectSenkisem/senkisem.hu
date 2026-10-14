@@ -1,7 +1,7 @@
 /* ============================================================
-   SENKISEM · gate.js — helyi azonosító (nem valódi regisztráció)
-   - Az azonosító soha nem megy a szerverre, és nem állítható vissza.
-   - Belépés: azonosító + e-mail. Böngészőnként külön él.
+   SENKISEM · gate.js — szerver által kiadott nyilvános azonosító
+   - A nyilvános azonosítót a regisztrációs végpont adja vissza.
+   - A belépési kulcs helyben marad; belépés: azonosító + e-mail.
    ============================================================ */
 (function () {
 'use strict';
@@ -28,16 +28,16 @@ var qs = new URLSearchParams(location.search), LANG;
 /* ---------- szövegek ---------- */
 var T = {
 en: {
-  h: 'Your ID', sub: 'This is not an account. It lives only in this browser.', tl: 'Log in', tr: 'Create ID',
+  h: 'Your ID', sub: 'Your public ID is stored with your registration. Your login key stays in this browser.', tl: 'Log in', tr: 'Create ID',
   idl: 'ID', mail: 'E-mail', name: 'Name (optional)', anon: 'I would rather stay anonymous',
   c1: 'I accept the <a href="' + TERMS + '" target="_blank" rel="noopener">Terms</a> and the <a href="' + TERMS + '" target="_blank" rel="noopener">Privacy Policy</a>.',
-  c2: 'I understand my ID is stored only in this browser and can NOT be restored. If I lose it, everything tied to it is gone, and I can only create a new one.',
+  c2: 'I understand my login key is stored only in this browser and cannot be restored. If I lose it, I will need to create a new ID.',
   c3: 'I am 16 or older.', c4: 'Also tell me about new releases. (Optional.)',
   go: 'Log in', mk: 'Create my ID', back: '← Back to the homepage',
-  yours: 'This is your ID', warn: 'Write it down now. We do not store it and cannot show it again.',
+  yours: 'This is your ID', warn: 'Save this ID. It is recorded with your registration and can be used to contact you through the community form.',
   copy: 'Copy', copied: 'Copied', dlf: 'Download .txt', saved: 'I saved it somewhere safe.', cont: 'Continue',
-  eBad: 'No match in this browser. IDs live only in the browser where they were created. If you lost yours, it cannot be restored. Create a new one.',
-  eMail: 'Enter a valid e-mail.', eCons: 'Tick the required boxes first.', eId: 'Enter your full ID (SNK-XXXX-XXXX-XXXX).',
+  eBad: 'No matching login key was found in this browser. Create a new ID in this browser if you no longer have the original login key.',
+  eMail: 'Enter a valid e-mail.', eCons: 'Tick the required boxes first.', eId: 'Enter your ID (ID-Senkisem XXXXXX).',
   eNet: 'Could not reach the server. Try again in a minute.', busy: 'One moment…',
   noStore: 'Your browser blocks local storage (private mode?). The ID needs it. Open the site in a normal window.',
   noCrypto: 'This browser cannot do secure local login. Use a current browser over HTTPS.',
@@ -45,16 +45,16 @@ en: {
   delQ: 'Delete this ID from this browser and from our records? This cannot be undone.'
 },
 hu: {
-  h: 'Az azonosítód', sub: 'Ez nem fiók. Csak ebben a böngészőben él.', tl: 'Belépés', tr: 'Azonosító létrehozása',
+  h: 'Az azonosítód', sub: 'A nyilvános azonosítót a regisztrációddal együtt tároljuk. A belépési kulcsod csak ebben a böngészőben marad.', tl: 'Belépés', tr: 'Azonosító létrehozása',
   idl: 'Azonosító', mail: 'E-mail', name: 'Név (nem kötelező)', anon: 'Inkább anonim maradnék',
   c1: 'Elfogadom az <a href="' + TERMS + '" target="_blank" rel="noopener">ÁSZF-et</a> és az <a href="' + TERMS + '" target="_blank" rel="noopener">Adatkezelési tájékoztatót</a>.',
-  c2: 'Tudomásul veszem, hogy az azonosítóm csak ebben a böngészőben tárolódik, és NEM állítható vissza. Ha elveszítem, minden elvész, ami hozzá kötődik, és csak újat hozhatok létre.',
+  c2: 'Tudomásul veszem, hogy a belépési kulcsom csak ebben a böngészőben tárolódik, és nem állítható vissza. Ha elveszítem, új azonosítót kell létrehoznom.',
   c3: 'Elmúltam 16 éves.', c4: 'Értesítsetek az új kiadásokról is. (Nem kötelező.)',
   go: 'Belépés', mk: 'Létrehozom az azonosítómat', back: '← Vissza a főoldalra',
-  yours: 'Ez az azonosítód', warn: 'Írd fel most. Nem tároljuk, és nem tudjuk újra megmutatni.',
+  yours: 'Ez az azonosítód', warn: 'Mentsd el ezt az azonosítót. A regisztrációddal együtt tároljuk, és a közösségi űrlapon kapcsolatfelvételre használható.',
   copy: 'Másolás', copied: 'Másolva', dlf: '.txt letöltése', saved: 'Elmentettem valahová biztonságosan.', cont: 'Tovább',
-  eBad: 'Nincs találat ebben a böngészőben. Az azonosítók csak abban a böngészőben élnek, ahol létrehozták őket. Ha elvesztetted, nem állítható vissza. Hozz létre újat.',
-  eMail: 'Adj meg érvényes e-mail-címet.', eCons: 'Előbb pipáld be a kötelező jelölőnégyzeteket.', eId: 'Add meg a teljes azonosítót (SNK-XXXX-XXXX-XXXX).',
+  eBad: 'Ebben a böngészőben nem található a belépési kulcs. Ha már nincs meg az eredeti kulcs, hozz létre új azonosítót ebben a böngészőben.',
+  eMail: 'Adj meg érvényes e-mail-címet.', eCons: 'Előbb pipáld be a kötelező jelölőnégyzeteket.', eId: 'Add meg az azonosítódat (ID-Senkisem XXXXXX).',
   eNet: 'A szerver nem érhető el. Próbáld újra egy perc múlva.', busy: 'Egy pillanat…',
   noStore: 'A böngésződ blokkolja a helyi tárolást (privát mód?). Az azonosítóhoz ez kell. Nyisd meg az oldalt normál ablakban.',
   noCrypto: 'Ez a böngésző nem tud biztonságos helyi belépést. Használj friss böngészőt, HTTPS-en.',
@@ -74,11 +74,11 @@ function derive(idn, mail, salt) {
   }).then(hex);
 }
 var AL = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-function newId() { var r = rnd(12), s = ''; for (var i = 0; i < 12; i++) s += AL[r[i] % 32]; return 'SNK-' + s.slice(0, 4) + '-' + s.slice(4, 8) + '-' + s.slice(8); }
-function normId(v) {
-  var s = String(v).toUpperCase().replace(/[^A-Z0-9]/g, '');
-  if (s.indexOf('SNK') === 0) s = s.slice(3);
-  return s.length === 12 ? 'SNK-' + s.slice(0, 4) + '-' + s.slice(4, 8) + '-' + s.slice(8) : '';
+function validId(v) {
+  var s = String(v || '').trim();
+  var m = /^ID[-\s:]?SENKISEM[-\s:]*([A-Z0-9]{6})$/i.exec(s);
+  if (m) return /[A-Z]/i.test(m[1]) && /[0-9]/.test(m[1]) ? 'ID-Senkisem ' + m[1].toUpperCase() : '';
+  return s.length > 0 && s.length <= 60 ? s : '';
 }
 function normMail(v) { return String(v).trim().toLowerCase(); }
 var MAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -92,7 +92,7 @@ function pickAcct(a) { var l = jget(AK, []); for (var i = 0; i < l.length; i++) 
 /* ---------- már be van lépve? ---------- */
 var ses = storageOk ? jget(SK, null) : null, acct = ses ? pickAcct(ses.a) : null;
 window.SenkisemAuth = {
-  user: function () { var a = storageOk && jget(SK, null) ? pickAcct(jget(SK, null).a) : null; return a ? { id: a.a, name: a.anon ? null : a.name, anonymous: !!a.anon } : null; },
+  user: function () { var a = storageOk && jget(SK, null) ? pickAcct(jget(SK, null).a) : null; return a ? { id: a.id || a.a, name: a.anon ? null : a.name, anonymous: !!a.anon } : null; },
   ns: function () { var s = jget(SK, null); return s ? s.a : null; },
   logout: function () { try { localStorage.removeItem(SK); } catch (e) {} location.reload(); }
 };
@@ -166,7 +166,7 @@ function render() {
     var tabs = '<div class="g-tabs" role="tablist"><button role="tab" data-m="login" aria-selected="' + (mode === 'login') + '">' + t('tl') + '</button><button role="tab" data-m="reg" aria-selected="' + (mode === 'reg') + '">' + t('tr') + '</button></div>';
     var form;
     if (mode === 'login') {
-      form = '<form id="g-form" novalidate><div class="g-f"><label for="g-id-in">' + t('idl') + '</label><input type="text" id="g-id-in" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="SNK-XXXX-XXXX-XXXX"></div>' +
+      form = '<form id="g-form" novalidate><div class="g-f"><label for="g-id-in">' + t('idl') + '</label><input type="text" id="g-id-in" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ID-Senkisem XXXXXX"></div>' +
         '<div class="g-f"><label for="g-mail">' + t('mail') + '</label><input type="email" id="g-mail" autocomplete="email"></div><div class="g-err" id="g-err" role="alert"></div>' +
         '<button class="g-btn" type="submit">' + t('go') + '</button></form>';
     } else {
@@ -214,19 +214,31 @@ function bind() {
 function setBusy(on) { busy = on; var b = root.querySelector('.g-btn'); if (b) b.disabled = on; if (on) err(null); }
 
 function doLogin() {
-  var idn = normId($('#g-id-in').value), mail = normMail($('#g-mail').value);
+  var idn = validId($('#g-id-in').value), mail = normMail($('#g-mail').value);
   if (!idn) return err('eId');
   if (!MAIL_RE.test(mail)) return err('eMail');
   setBusy(true);
   var list = jget(AK, []), i = 0;
+  function finish(a, publicId) {
+    var saveKey = publicId ? derive(publicId, mail, a.salt).then(function (k) {
+      a.id = publicId; a.k = k;
+      var accounts = jget(AK, []);
+      for (var n = 0; n < accounts.length; n++) if (accounts[n].a === a.a) { accounts[n] = a; break; }
+      jset(AK, accounts);
+    }).catch(function () {}) : Promise.resolve();
+    saveKey.then(function () {
+      jset(SK, { a: a.a, at: Date.now() });
+      setTimeout(function () { location.reload(); }, 150);
+    });
+  }
   (function next() {
     if (i >= list.length) { setBusy(false); return err('eBad'); }
     var a = list[i++];
     derive(idn, mail, a.salt).then(function (k) {
       if (k !== a.k) return next();
-      jset(SK, { a: a.a, at: Date.now() });
-      post('/api/ident/login', { rid: a.rid }).catch(function () {});
-      setTimeout(function () { location.reload(); }, 150);
+      post('/api/ident/login', { rid: a.rid }).then(function (response) {
+        finish(a, validId(response && response.id));
+      }).catch(function () { finish(a, null); });
     }).catch(function () { setBusy(false); err('eBad'); });
   })();
 }
@@ -237,14 +249,16 @@ function doRegister() {
   if (!($('#g-c1').checked && $('#g-c2').checked && $('#g-c3').checked)) return err('eCons');
   var news = $('#g-c4').checked;
   setBusy(true); err(null);
-  var id = newId(), salt = hex(rnd(16)), rid = hex(rnd(16)), a = hex(rnd(4));
-  derive(id, mail, salt).then(function (k) {
-    return post('/api/ident/register', {
+  var salt = hex(rnd(16)), rid = hex(rnd(16)), a = hex(rnd(4));
+  post('/api/ident/register', {
       rid: rid, name: name, anonymous: anon, email: mail, lang: LANG, newsletter: news,
       consent: { terms: true, local: true, age: true }, consentVersion: CV
-    }).then(function () { return k; });
-  }).then(function (k) {
-    var acct = { a: a, salt: salt, k: k, rid: rid, name: name, anon: anon, at: Date.now() }, list = jget(AK, []);
+    }).then(function (response) {
+    var id = validId(response && response.id);
+    if (!id) throw new Error('missing-issued-id');
+    return derive(id, mail, salt).then(function (k) { return { id: id, k: k }; });
+  }).then(function (issued) {
+    var id = issued.id, acct = { a: a, id: id, salt: salt, k: issued.k, rid: rid, name: name, anon: anon, at: Date.now() }, list = jget(AK, []);
     list.push(acct);
     if (!jset(AK, list)) throw new Error('storage');
     done = { id: id, acct: acct }; mode = 'done'; busy = false; render();
@@ -255,7 +269,7 @@ function doRegister() {
 function chip(a) {
   var c = document.createElement('button');
   c.id = 'sn-chip'; c.type = 'button';
-  c.textContent = t('me') + ' · ' + (a.anon || !a.name ? 'SNK-••••' : a.name);
+  c.textContent = t('me') + ' · ' + (a.anon || !a.name ? (a.id || 'ID-Senkisem') : a.name);
   c.onclick = function () {
     var d = document.createElement('div'); d.id = 'sn-dlg';
     d.innerHTML = '<div class="g-dlg"><button class="g-btn" data-a="out" type="button">' + t('out') + '</button>' +
