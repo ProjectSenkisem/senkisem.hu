@@ -1,5 +1,8 @@
 // ============================================================
 // server.js — SENKISEM (webshop → támogatói modell)
+// + egységes ID-Senkisem azonosítók (foglaltság-ellenőrzéssel)
+// + kapcsolati űrlap (e-mail továbbítás, cím nélkül)
+// + közösségi feed (támogatói szalag)
 // ============================================================
 require('dotenv').config();
 const express = require('express');
@@ -67,6 +70,7 @@ const CONFIG = {
   TABS: {
     SUPPORT: 'Támogatók',
     IDENT: 'Azonosítók',
+    CONTACT: 'Üzenetek',
   },
   SHIPPING: {
     FOXPOST_COST: 899,
@@ -74,16 +78,21 @@ const CONFIG = {
   },
   EMAIL: {
     FROM: process.env.RESEND_FROM_EMAIL,
-    BCC: 'bellerzoltanezra@gmail.com',
+    BCC: 'bellerzoltanezra@gmail.com',          // MARAD
+    CONTACT_TO: process.env.CONTACT_TO || 'hello@senkisem.hu',   // kapcsolati űrlap címzettje
   },
+  // Támogatók rangsorolásához: 1 USD hány forint (csak a "heti legnagyobb" összehasonlításhoz)
+  FX_HUF_PER_USD: Number(process.env.SUPPORT_FX_HUF_PER_USD) || 330,
   DOMAIN: process.env.DOMAIN
 };
 
-const SUPPORT_HEADERS = ['Sorszám', 'Dátum', 'Session ID', 'Összeg', 'Pénznem', 'Nyelv', 'Email', 'Státusz'];
+const SUPPORT_HEADERS = ['Sorszám', 'Dátum', 'Session ID', 'Összeg', 'Pénznem', 'Nyelv', 'Email', 'Státusz', 'Időbélyeg'];
 const IDENT_HEADERS = [
   'Dátum', 'Azonosító ref', 'Név', 'Anonim', 'Email', 'Nyelv', 'Hírlevél',
-  'Hozzájárulás verzió', 'Hozzájárulás ideje', 'Belépések', 'Utolsó belépés', 'Státusz'
+  'Hozzájárulás verzió', 'Hozzájárulás ideje', 'Belépések', 'Utolsó belépés', 'Státusz',
+  'Azonosító'   // ÚJ: a nyilvános azonosító (ID-Senkisem XXXXXX vagy a választott név)
 ];
+const CONTACT_HEADERS = ['Ref', 'Dátum', 'Név / ID', 'Regisztrált azonosító', 'Tárgy', 'Nyelv', 'Üzenet', 'Státusz'];
 
 // ============================================
 // TERMÉKEK + TÁMOGATÁSI BEÁLLÍTÁSOK BETÖLTÉSE
@@ -137,6 +146,33 @@ async function getSheet(sheetId) {
   return sheet;
 }
 
+// Meglévő munkalap fejlécének kiegészítése új oszlopokkal (egyszer fut le folyamatonként)
+const _headersChecked = new Set();
+async function ensureHeaders(sheet, headers) {
+  if (_headersChecked.has(sheet.title)) return;
+  try {
+    let have = [];
+    try {
+      await sheet.loadHeaderRow();
+      have = (sheet.headerValues || []).filter(Boolean);
+    } catch (e) {
+      have = [];   // üres fejlécsor
+    }
+    const missing = headers.filter(h => !have.includes(h));
+    if (missing.length) {
+      const all = have.concat(missing);
+      if (sheet.columnCount < all.length) {
+        await sheet.resize({ rowCount: sheet.rowCount, columnCount: all.length });
+      }
+      await sheet.setHeaderRow(all);
+      console.log(`✅ Új oszlop(ok) a(z) ${sheet.title} munkalapon: ${missing.join(', ')}`);
+    }
+    _headersChecked.add(sheet.title);
+  } catch (e) {
+    console.error(`⚠️ Fejléc-ellenőrzés hiba (${sheet.title}):`, e.message);
+  }
+}
+
 // Tetszőleges munkalap lekérése; ha nincs, létrehozza a fejlécekkel
 async function getTab(title, headers) {
   const doc = new GoogleSpreadsheet(CONFIG.SHEETS.ORDERS, getGoogleAuth());
@@ -144,7 +180,10 @@ async function getTab(title, headers) {
   let sheet = doc.sheetsByTitle[title];
   if (!sheet) {
     sheet = await doc.addSheet({ title, headerValues: headers });
+    _headersChecked.add(title);
     console.log(`✅ Új munkalap létrehozva: ${title}`);
+  } else {
+    await ensureHeaders(sheet, headers);
   }
   return sheet;
 }
@@ -161,6 +200,10 @@ function withLock(fn) {
 function cell(v) {
   v = String(v == null ? '' : v).replace(/[\u0000-\u001f]/g, ' ').trim();
   return /^[=+\-@]/.test(v) ? "'" + v : v;
+}
+
+function escHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
 // ============================================
@@ -348,6 +391,93 @@ async function saveOrderToSheets(orderData, sessionId) {
 }
 
 // ============================================
+// AZONOSÍTÓ (ID-SENKISEM) — egységes formátum + foglaltság
+// Formátum: "ID-Senkisem XXXXXX" (6 karakter, kötelezően van benne szám ÉS betű)
+// Az ábécéből kimaradnak az összetéveszthető karakterek (0, O, 1, I).
+// ============================================
+const ID_PREFIX = 'ID-Senkisem';
+const ID_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';   // 32 elem → egyenletes eloszlás bájtból
+const IDENT_CONSENT_VERSION_MAX = 40;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const IDENT_PEPPER = process.env.IDENT_PEPPER || process.env.STRIPE_WEBHOOK_SECRET;
+const RID_RE = /^[a-f0-9]{32}$/;
+
+function idSuffixOk(s) { return /[A-Z]/.test(s) && /[2-9]/.test(s); }
+
+function randomIdSuffix() {
+  for (;;) {
+    let s = '';
+    for (let i = 0; i < 6; i++) s += ID_ALPHABET[crypto.randomInt(ID_ALPHABET.length)];
+    if (idSuffixOk(s)) return s;
+  }
+}
+
+// Determinisztikus változat (pl. egy támogatás Session ID-jából): ugyanabból mindig ugyanaz
+function derivedIdSuffix(seed) {
+  for (let n = 0; ; n++) {
+    const h = crypto.createHmac('sha256', IDENT_PEPPER).update(seed + '|' + n).digest();
+    let s = '';
+    for (let i = 0; i < 6; i++) s += ID_ALPHABET[h[i] % ID_ALPHABET.length];
+    if (idSuffixOk(s)) return s;
+  }
+}
+
+// "id senkisem a7k29x" / "ID-Senkisem-A7K29X" → "ID-Senkisem A7K29X" (különben null)
+function canonicalId(input) {
+  const m = /^id[-\s_]?senkisem[-\s_]?([a-z0-9]{6})$/i.exec(String(input || '').trim());
+  return m ? `${ID_PREFIX} ${m[1].toUpperCase()}` : null;
+}
+
+// Összehasonlítási kulcs: kis/nagybetű, ékezet, szóköz, elválasztók nem számítanak
+// ("Réka", "reka", "R.É.K.A" ugyanaz → nem adható ki kétszer)
+function identKey(s) {
+  return String(s == null ? '' : s)
+    .replace(/^'/, '')
+    .normalize('NFKD').replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/[\s._\-]+/g, '');
+}
+
+const RESERVED_HANDLES = new Set(['senkisem', 'senki', 'nobody', 'anonim', 'anonymous', 'admin', 'administrator', 'moderator', 'support', 'hello', 'team', 'staff']);
+const HANDLE_RE = /^[\p{L}\p{N}][\p{L}\p{N} ._-]*[\p{L}\p{N}]$/u;
+
+// null = rendben, különben hibakód
+function validateHandle(name) {
+  const n = String(name || '').trim();
+  if (n.length < 3 || n.length > 24 || !HANDLE_RE.test(n)) return 'bad-name';
+  const k = identKey(n);
+  if (k.startsWith('idsenkisem') || RESERVED_HANDLES.has(k)) return 'name-reserved';
+  return null;
+}
+
+// Az eddig foglalt azonosítók kulcsai (új "Azonosító" oszlop + a régi, névvel regisztráltak "Név" oszlopa)
+function takenSet(rows) {
+  const taken = new Set();
+  rows.forEach(r => {
+    const a = identKey(r.get('Azonosító'));
+    if (a) taken.add(a);
+    const n = String(r.get('Név') || '');
+    if (n && n !== 'Anonim' && n !== '-') taken.add(identKey(n));
+  });
+  return taken;
+}
+
+// Azonosító → regisztrált sor (a kapcsolati űrlaphoz: tudjunk válaszolni)
+async function findIdentity(handle) {
+  const key = identKey(canonicalId(handle) || handle);
+  if (!key) return null;
+  const sheet = await getTab(CONFIG.TABS.IDENT, IDENT_HEADERS);
+  const rows = await sheet.getRows();
+  const row = rows.find(r => identKey(r.get('Azonosító')) === key);
+  if (!row) return null;
+  const email = String(row.get('Email') || '').replace(/^'/, '');
+  return { email: EMAIL_RE.test(email) ? email : null };
+}
+
+// Szerver által kiadott, még nem használt ID-k (belső hivatkozásokhoz: pl. ID: Senkisem kitöltés, olvasó példány)
+const issuedIds = new Set();
+
+// ============================================
 // TÁMOGATÓK NYILVÁNTARTÁSA (Sheets, idempotens)
 // ============================================
 let supporterCache = { count: null, at: 0 };
@@ -372,9 +502,11 @@ async function recordSupporter(session) {
       'Nyelv': (session.metadata && session.metadata.lang) || '-',
       'Email': cell((session.customer_details && session.customer_details.email) || '-'),
       'Státusz': 'Fizetve ✅',
+      'Időbélyeg': new Date().toISOString(),
     });
 
     supporterCache = { count: n, at: Date.now() };
+    feedCache = { at: 0, data: null };
     console.log(`💛 Új támogató: #${n} (${session.id})`);
     return n;
   });
@@ -391,19 +523,64 @@ async function getSupporterCount() {
   return count;
 }
 
-// ============================================
-// AZONOSÍTÓ (IDENTIFIER) RENDSZER — szerveroldal
-// Az azonosító és a jelszó jellegű adat SOHA nem kerül a szerverre.
-// Csak egy véletlen "rid" fogantyú érkezik, amit HMAC-oljuk. Ebből belépni nem lehet.
-// ============================================
-const IDENT_CONSENT_VERSION_MAX = 40;
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const IDENT_PEPPER = process.env.IDENT_PEPPER || process.env.STRIPE_WEBHOOK_SECRET;
+// ---- Közösségi feed: heti legnagyobb + 2 legfrissebb támogató (e-mail/név SOHA nem kerül ki) ----
+let feedCache = { at: 0, data: null };
 
-function identRef(rid) {
-  return crypto.createHmac('sha256', IDENT_PEPPER).update(String(rid)).digest('hex').slice(0, 20);
+// A régi sorok "2026. 10. 13. 14:05:33" formátumú dátumát próbáljuk visszafejteni (Budapest ≈ UTC+1/+2)
+function parseHuDate(s) {
+  const m = /(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?/.exec(String(s || ''));
+  if (!m) return 0;
+  const [Y, Mo, D, h, mi] = [m[1], m[2], m[3], m[4], m[5]].map(Number);
+  const se = m[6] ? Number(m[6]) : 0;
+  const offset = (Mo >= 4 && Mo <= 10) ? 2 : 1;
+  return Date.UTC(Y, Mo - 1, D, h, mi, se) - offset * 3600000;
 }
-const RID_RE = /^[a-f0-9]{32}$/;
+
+function parseAmount(v) {
+  const n = parseFloat(String(v == null ? '' : v).replace(/[\s\u00a0]/g, '').replace(',', '.'));
+  return Number.isFinite(n) ? n : 0;
+}
+
+async function getFeed() {
+  if (feedCache.data && Date.now() - feedCache.at < 45 * 1000) return feedCache.data;
+
+  const sheet = await getTab(CONFIG.TABS.SUPPORT, SUPPORT_HEADERS);
+  const rows = await sheet.getRows();
+
+  const paid = rows
+    .filter(r => /Fizetve/.test(String(r.get('Státusz') || '')))
+    .map(r => {
+      const iso = Date.parse(String(r.get('Időbélyeg') || ''));
+      const at = Number.isFinite(iso) ? iso : parseHuDate(r.get('Dátum'));
+      const cur = String(r.get('Pénznem') || '').toUpperCase();
+      const amount = parseAmount(r.get('Összeg'));
+      return {
+        sid: String(r.get('Session ID') || ''),
+        at, cur, amount,
+        usd: cur === 'HUF' ? amount / CONFIG.FX_HUF_PER_USD : amount,
+      };
+    })
+    .filter(p => p.sid && p.at && p.amount > 0);
+
+  const weekAgo = Date.now() - 7 * 24 * 3600 * 1000;
+  const week = paid.filter(p => p.at >= weekAgo);
+
+  let top = null;
+  week.forEach(p => { if (!top || p.usd > top.usd || (p.usd === top.usd && p.at > top.at)) top = p; });
+
+  const label = sid => `${ID_PREFIX} ${derivedIdSuffix('sup|' + sid)}`;
+  const recent = paid.slice().sort((a, b) => b.at - a.at).slice(0, 2)
+    .map(p => ({ id: label(p.sid), at: new Date(p.at).toISOString() }));
+
+  const data = {
+    supporters: await getSupporterCount().catch(() => 0),
+    week: week.length,
+    top: top ? { id: label(top.sid), amount: top.amount, currency: top.cur } : null,
+    recent,
+  };
+  feedCache = { at: Date.now(), data };
+  return data;
+}
 
 // ============================================
 // MIDDLEWARE
@@ -432,6 +609,14 @@ const supportLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+const feedLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 60,
+  message: { error: 'too-many-requests' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 const identRegisterLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 15,
@@ -443,6 +628,22 @@ const identRegisterLimiter = rateLimit({
 const identPingLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 120,
+  message: { error: 'too-many-requests' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const contactLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 4,
+  message: { error: 'too-many-requests' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const contactDayLimiter = rateLimit({
+  windowMs: 24 * 60 * 60 * 1000,
+  max: 15,
   message: { error: 'too-many-requests' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -546,8 +747,166 @@ app.get('/api/support/stats', supportLimiter, async (req, res) => {
 });
 
 // ============================================
+// ROUTES — KÖZÖSSÉG (contact.html: támogatói szalag)
+// Csak anonimizált adat: ID-Senkisem címke, összeg (csak a heti legnagyobbnál), idő.
+// ============================================
+app.get('/api/community/feed', feedLimiter, async (req, res) => {
+  try {
+    res.set('Cache-Control', 'public, max-age=30');
+    res.json(await getFeed());
+  } catch (error) {
+    console.error('❌ Közösségi feed hiba:', error.message);
+    res.status(503).json({});
+  }
+});
+
+// ============================================
+// ROUTES — KAPCSOLAT (űrlap → hello@senkisem.hu; a cím sosem kerül a kliensre)
+// ============================================
+const CONTACT_SUBJECTS = {
+  pay: 'Támogatás / fizetés',
+  id: 'ID-Senkisem / belépés',
+  concept: 'A koncepcióm',
+  book: 'Könyvek / olvasó',
+  tech: 'Technikai hiba',
+  other: 'Egyéb',
+};
+
+function contactRef() {
+  return 'K-' + crypto.randomBytes(3).toString('hex').toUpperCase();
+}
+
+app.post('/api/contact', contactLimiter, contactDayLimiter, async (req, res) => {
+  try {
+    const b = req.body || {};
+
+    // Botcsapdák: kitöltött rejtett mező, vagy emberileg lehetetlenül gyors beküldés → "sikeres" válasz, de nem megy el semmi
+    const elapsed = Number(b.t) || 0;
+    if (String(b.hp || '').trim() || elapsed < 1500) {
+      return res.json({ ok: true, ref: contactRef() });
+    }
+
+    const name = String(b.name || '').replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60);
+    const subjectKey = String(b.subject || '');
+    const message = String(b.message || '')
+      .replace(/\r\n/g, '\n')
+      .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '')
+      .trim()
+      .slice(0, 2000);
+    const lang = b.lang === 'hu' ? 'hu' : 'en';
+
+    if (name.length < 2) return res.status(400).json({ error: 'bad-name' });
+    if (!CONTACT_SUBJECTS[subjectKey]) return res.status(400).json({ error: 'bad-subject' });
+    if (message.length < 10) return res.status(400).json({ error: 'bad-message' });
+
+    const ref = contactRef();
+    const subjectLabel = CONTACT_SUBJECTS[subjectKey];
+
+    // Ha a megadott név/ID regisztrált, a válasz-cím a regisztrált e-mail lesz (a feladó nem látja, mi sem mutatjuk ki)
+    let found = null;
+    try { found = await findIdentity(name); } catch (e) { console.error('⚠️ Azonosító-keresés hiba:', e.message); }
+
+    const now = new Date().toLocaleString('hu-HU', { timeZone: 'Europe/Budapest' });
+    const html = `<!DOCTYPE html><html lang="hu"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#f5f5f5;font-family:'Segoe UI',Tahoma,sans-serif;">
+<div style="max-width:620px;margin:0 auto;background:#fff;">
+<div style="background:#000;padding:26px 24px;text-align:center;">
+<h1 style="color:#fff;font-size:20px;letter-spacing:2px;margin:0;text-transform:uppercase;">Kapcsolat — új üzenet</h1>
+<p style="color:rgba(255,255,255,.55);font-size:12px;margin:6px 0 0;">${escHtml(ref)} · ${escHtml(now)}</p></div>
+<div style="padding:28px;">
+<table role="presentation" style="width:100%;border-collapse:collapse;font-size:14px;color:#222;">
+<tr><td style="padding:6px 0;color:#777;width:34%;">Név / ID</td><td style="padding:6px 0;font-weight:600;">${escHtml(name)}</td></tr>
+<tr><td style="padding:6px 0;color:#777;">Regisztrált azonosító</td><td style="padding:6px 0;">${found ? (found.email ? 'igen — a válasz-cím be van állítva (Reply-To)' : 'igen, de nincs érvényes e-mail') : 'nem található → nem tudunk válaszolni'}</td></tr>
+<tr><td style="padding:6px 0;color:#777;">Tárgy</td><td style="padding:6px 0;font-weight:600;">${escHtml(subjectLabel)}</td></tr>
+<tr><td style="padding:6px 0;color:#777;">Nyelv</td><td style="padding:6px 0;">${escHtml(lang)}</td></tr>
+</table>
+<h2 style="font-size:15px;margin:24px 0 10px;border-bottom:1px solid #eee;padding-bottom:8px;">Üzenet</h2>
+<div style="font-size:14px;line-height:1.7;color:#111;white-space:pre-wrap;word-wrap:break-word;">${escHtml(message)}</div>
+<p style="font-size:11px;color:#999;margin-top:28px;">Az azonosító létezése nem jelent hitelesítést: bárki beírhat egy nyilvános ID-t. Fizetési / személyes ügyekben kérdezz vissza.</p>
+</div></div></body></html>`;
+
+    const mail = {
+      from: `Senkisem Kapcsolat <${CONFIG.EMAIL.FROM}>`,
+      to: CONFIG.EMAIL.CONTACT_TO,
+      subject: `[Kapcsolat] ${subjectLabel} — ${ref}`,
+      html,
+    };
+    if (found && found.email) mail.replyTo = found.email;
+
+    const sent = await resend.emails.send(mail);
+    if (sent && sent.error) throw new Error(sent.error.message || 'resend-error');
+
+    // Naplózás (nem blokkoló)
+    withLock(async () => {
+      const sheet = await getTab(CONFIG.TABS.CONTACT, CONTACT_HEADERS);
+      await sheet.addRow({
+        'Ref': ref,
+        'Dátum': now,
+        'Név / ID': cell(name),
+        'Regisztrált azonosító': found ? 'igen' : 'nem',
+        'Tárgy': subjectLabel,
+        'Nyelv': lang,
+        'Üzenet': cell(message),
+        'Státusz': 'Új',
+      });
+    }).catch(e => console.error('⚠️ Üzenet-napló hiba:', e.message));
+
+    console.log(`✉️ Kapcsolati üzenet elküldve: ${ref}`);
+    res.json({ ok: true, ref });
+
+  } catch (error) {
+    console.error('❌ Kapcsolati üzenet hiba:', error.message);
+    res.status(502).json({ error: 'send-failed' });
+  }
+});
+
+// ============================================
 // ROUTES — AZONOSÍTÓ (belépés-napló, GDPR-hozzájárulások)
 // ============================================
+
+// Foglaltság-ellenőrzés (gépelés közben hívható). Alternatívát SOHA nem javasol.
+app.get('/api/ident/check', identPingLimiter, async (req, res) => {
+  try {
+    const name = String(req.query.name || '').trim();
+    const bad = validateHandle(name);
+    if (bad) return res.json({ available: false, reason: bad });
+
+    const sheet = await getTab(CONFIG.TABS.IDENT, IDENT_HEADERS);
+    const rows = await sheet.getRows();
+    const taken = takenSet(rows).has(identKey(name));
+    res.json(taken ? { available: false, reason: 'name-taken' } : { available: true });
+  } catch (error) {
+    console.error('❌ Azonosító-ellenőrzési hiba:', error.message);
+    res.status(500).json({ error: 'check-failed' });
+  }
+});
+
+// Új, egyedi ID-Senkisem kiadása belső hivatkozásokhoz (kitöltési ref, olvasó-példány stb.)
+app.get('/api/ident/new-id', identPingLimiter, async (req, res) => {
+  try {
+    let taken = new Set();
+    try {
+      const sheet = await getTab(CONFIG.TABS.IDENT, IDENT_HEADERS);
+      taken = takenSet(await sheet.getRows());
+    } catch (e) { /* a memóriabeli lista akkor is véd */ }
+
+    let id;
+    do { id = `${ID_PREFIX} ${randomIdSuffix()}`; }
+    while (taken.has(identKey(id)) || issuedIds.has(identKey(id)));
+
+    if (issuedIds.size > 20000) issuedIds.clear();
+    issuedIds.add(identKey(id));
+    res.json({ id });
+  } catch (error) {
+    console.error('❌ ID-kiadási hiba:', error.message);
+    res.status(500).json({ error: 'id-failed' });
+  }
+});
+
+// Regisztráció. A belépési adatok (jelszó jellegű) SOHA nem kerülnek a szerverre — ez változatlan.
+// Új: a szerver adja ki a nyilvános azonosítót, és visszaadja: { ok:true, id }.
+//   - anonim (vagy név nélküli) → "ID-Senkisem XXXXXX"
+//   - választott név/felhasználónév → foglaltság-ellenőrzés; foglalt esetén 409 {error:'name-taken'} (alternatíva nélkül)
 app.post('/api/ident/register', identRegisterLimiter, async (req, res) => {
   try {
     const b = req.body || {};
@@ -562,18 +921,42 @@ app.post('/api/ident/register', identRegisterLimiter, async (req, res) => {
     }
 
     const anonymous = b.anonymous === true;
-    const name = anonymous ? 'Anonim' : (cell(String(b.name || '').slice(0, 60)) || '-');
+    const rawName = String(b.name || '').replace(/\s+/g, ' ').trim();
+    const wantsName = !anonymous && rawName.length > 0;
+
+    if (wantsName) {
+      const bad = validateHandle(rawName);
+      if (bad) return res.status(400).json({ error: bad });
+    }
+
     const lang = b.lang === 'hu' ? 'hu' : 'en';
     const ver = String(b.consentVersion || '').slice(0, IDENT_CONSENT_VERSION_MAX);
     const now = new Date().toLocaleString('hu-HU', { timeZone: 'Europe/Budapest' });
 
+    let handle = '';
+    let conflict = false;
+
+    // a lock alatt ellenőrzünk ÉS írunk: két egyidejű kérés sem kaphatja ugyanazt
     await withLock(async () => {
       const sheet = await getTab(CONFIG.TABS.IDENT, IDENT_HEADERS);
+      const rows = await sheet.getRows();
+      const taken = takenSet(rows);
+
+      if (wantsName) {
+        if (taken.has(identKey(rawName))) { conflict = true; return; }
+        handle = rawName;
+      } else {
+        let g;
+        do { g = `${ID_PREFIX} ${randomIdSuffix()}`; }
+        while (taken.has(identKey(g)) || issuedIds.has(identKey(g)));
+        handle = g;
+      }
+
       await sheet.addRow({
         'Dátum': now,
         'Azonosító ref': identRef(rid),
-        'Név': name,
-        'Anonim': anonymous ? 'igen' : 'nem',
+        'Név': wantsName ? cell(handle) : 'Anonim',
+        'Anonim': wantsName ? 'nem' : 'igen',
         'Email': cell(email),
         'Nyelv': lang,
         'Hírlevél': b.newsletter === true ? 'igen' : 'nem',
@@ -582,17 +965,24 @@ app.post('/api/ident/register', identRegisterLimiter, async (req, res) => {
         'Belépések': 0,
         'Utolsó belépés': '-',
         'Státusz': 'Aktív',
+        'Azonosító': cell(handle),
       });
     });
 
+    if (conflict) return res.status(409).json({ error: 'name-taken' });
+
     console.log('🆔 Új azonosító regisztrálva');
-    res.json({ ok: true });
+    res.json({ ok: true, id: handle, generated: !wantsName });
 
   } catch (error) {
     console.error('❌ Azonosító regisztrációs hiba:', error.message);
     res.status(500).json({ error: 'register-failed' });
   }
 });
+
+function identRef(rid) {
+  return crypto.createHmac('sha256', IDENT_PEPPER).update(String(rid)).digest('hex').slice(0, 20);
+}
 
 // Belépés-napló: a kliens csak explicit belépéskor (nem minden oldalbetöltéskor) jelez
 app.post('/api/ident/login', identPingLimiter, async (req, res) => {
@@ -619,6 +1009,7 @@ app.post('/api/ident/login', identPingLimiter, async (req, res) => {
 });
 
 // Törlési jog (GDPR 17. cikk): a fiók törlésekor a Sheets-sor is törlődik
+// (az azonosító ilyenkor újra szabaddá válik)
 app.post('/api/ident/erase', identPingLimiter, async (req, res) => {
   try {
     const rid = String((req.body || {}).rid || '');
@@ -883,6 +1274,7 @@ app.get('/download/:token', downloadLimiter, async (req, res) => {
 
 // ============================================
 // ID: SENKISEM KITÖLTÉS — email küldés (clothing.html)
+// (változatlan: az admin értesítő továbbra is bellerzoltanezra@gmail.com-ra megy)
 // ============================================
 app.post('/api/id-modal-email', async (req, res) => {
   const { type, subject, html, uploadedFiles, customerEmail } = req.body;
@@ -938,17 +1330,21 @@ app.get('/health', (req, res) => {
     bcc_address: CONFIG.EMAIL.BCC,
     shop_enabled: SHOP_ENABLED,
     support_enabled: true,
-    ident_enabled: true
+    ident_enabled: true,
+    contact_enabled: true,
+    community_enabled: true
   });
 });
 
 // ============================================
 // BELÉPÉS-KAPU (GATE) — minden HTML oldalba beinjektáljuk a /gate.js-t,
-// kivéve az index.html-t. Így a meglévő oldalakat nem kell átírni.
+// kivéve a felsoroltakat. Így a meglévő oldalakat nem kell átírni.
+// A contact.html kivétel: a belépési gonddal küzdők is elérjék az ügyintézést.
+// (Visszaállítás: GATE_EXEMPT=/,/index.html)
 // ============================================
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const GATE_EXEMPT = new Set(
-  (process.env.GATE_EXEMPT || '/,/index.html').split(',').map(s => s.trim()).filter(Boolean)
+  (process.env.GATE_EXEMPT || '/,/index.html,/contact.html').split(',').map(s => s.trim()).filter(Boolean)
 );
 // A <style> addig rejti az oldalt, amíg a gate.js nem engedi tovább (nincs "villanás")
 const GATE_SNIPPET = '<style id="sn-lock">html{visibility:hidden!important}</style><script src="/gate.js"></script>';
@@ -1000,10 +1396,12 @@ app.listen(PORT, () => {
 ╠═══════════════════════════════════════════════════════╣
 ║   Port: ${PORT}
 ║   Támogatás:  ✅ /api/support/*  (HUF / USD)
-║   Azonosító:  ✅ /api/ident/*    (+ gate.js injektálás)
+║   Azonosító:  ✅ /api/ident/*    (ID-Senkisem + foglaltság)
+║   Kapcsolat:  ✅ /api/contact    (→ ${CONFIG.EMAIL.CONTACT_TO})
+║   Közösség:   ✅ /api/community/feed
 ║   Webshop:    ${SHOP_ENABLED ? '✅ BE ' : '⛔ KI '}(SHOP_ENABLED)
 ║   Webhook:    ✅ AKTÍV
-║   Sheets:     2026 · ${CONFIG.TABS.SUPPORT} · ${CONFIG.TABS.IDENT}
+║   Sheets:     2026 · ${CONFIG.TABS.SUPPORT} · ${CONFIG.TABS.IDENT} · ${CONFIG.TABS.CONTACT}
 ╚═══════════════════════════════════════════════════════╝
   `);
 });

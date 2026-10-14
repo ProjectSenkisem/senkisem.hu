@@ -143,6 +143,7 @@ h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.7rem,2
             <li><a href="/" id="nAbout">About</a></li>
             <li><a href="/clothing.html" id="nClothing">Clothing</a></li>
             <li><a href="/books.html" id="nBooks" aria-current="page">Books</a></li>
+            <li><a href="/community.html" id="nCommunity">Community</a></li>
         </ul>
     </nav>
     <div class="sn-navbar-actions">
@@ -167,6 +168,7 @@ h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.7rem,2
     <a href="/" id="mAbout" onclick="snCloseMobileNav()">About</a>
     <a href="/clothing.html" id="mClothing" onclick="snCloseMobileNav()">Clothing</a>
     <a href="/books.html" id="mBooks" onclick="snCloseMobileNav()">Books</a>
+    <a href="/community.html" id="mCommunity" onclick="snCloseMobileNav()">Community</a>
 </nav>
 
 <main data-barba="container" data-barba-namespace="books">
@@ -220,7 +222,7 @@ h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.7rem,2
 
 <script>
 const TXT={
- hu:{nAbout:'Rólunk',nClothing:'Ruházat',nBooks:'Könyvek',nSupport:'Támogatás',mBack:'← Vissza',mAbout:'Rólunk',mClothing:'Ruházat',mBooks:'Könyvek',
+ hu:{nAbout:'Rólunk',nClothing:'Ruházat',nBooks:'Könyvek',nCommunity:'Közösség',nSupport:'Támogatás',mBack:'← Vissza',mAbout:'Rólunk',mClothing:'Ruházat',mBooks:'Könyvek',mCommunity:'Közösség',
   follow:'Kövess minket',fTerms:'Általános szerződési feltételek',fPriv:'Adatkezelési tájékoztató',fRights:'Minden jog fenntartva',
   tag:'// Olvasás — hozzáférés: nyitva',eye:'Könyvek',
   h1:'Olvasd el<br><em> teljesen ingyen.</em>',sub:'A két könyv teljes tartalmát megnyithatod itt, a böngészőben. <br> A Jegyzetek egy Idegentől lapjaira bele is írhatsz.',
@@ -228,7 +230,7 @@ const TXT={
   desc:'Senkisem — Olvasd el ingyen. Két könyv, teljes tartalom, a böngésződben.',
   notes:{lbl:'Senkisem I.',t:'Jegyzetek egy Idegentől',d:'Nem egy szokványos könyv. Nem mesél történetet. Nem ad tanácsokat.<br>Kérdez. Szétszed. Majd újrarendez.',pill:'Ingyen olvasható és kitölthető',sys:''},
   synthetic:{lbl:'Senkisem II.',t:'Szintetikus Ember',d:'Ez nem önfejlesztés. Ez feltárás.<br>A felismerés, hogy a személyiséged algoritmus. A döntéseid túlélési protokollok.',pill:'Ingyen olvasható',sys:''}},
- en:{nAbout:'About',nClothing:'Clothing',nBooks:'Books',nSupport:'Support',mBack:'← Back',mAbout:'About',mClothing:'Clothing',mBooks:'Books',
+ en:{nAbout:'About',nClothing:'Clothing',nBooks:'Books',nCommunity:'Community',nSupport:'Support',mBack:'← Back',mAbout:'About',mClothing:'Clothing',mBooks:'Books',mCommunity:'Community',
   follow:'Follow us',fTerms:'Terms &amp; Conditions',fPriv:'Privacy Policy',fRights:'All rights reserved',
   tag:'// Reading — access: open',eye:'Books',
   h1:'Read it<br><em>completely free.</em>',sub:'You can open both books right here in your browser.<br> Inside Notes from a Stranger, you can write on the pages.',
@@ -252,7 +254,7 @@ function imgFix(img){
 function render(){
   const T=TXT[lang];ls('senkisem.lang',lang);document.documentElement.lang=lang;
   document.title='Senkisem – '+T.nBooks;document.querySelector('meta[name=description]').content=T.desc;
-  ['nAbout','nClothing','nBooks','nSupport','mBack','mAbout','mClothing','mBooks','follow','fTerms','fPriv','fRights','tag','h1','sub','f1'].forEach(k=>$(k).innerHTML=T[k]);
+  ['nAbout','nClothing','nBooks','nCommunity','nSupport','mBack','mAbout','mClothing','mBooks','mCommunity','follow','fTerms','fPriv','fRights','tag','h1','sub','f1'].forEach(k=>$(k).innerHTML=T[k]);
   $('grid').innerHTML=['notes','synthetic'].map((b,i)=>{const X=T[b];return `<a class="card rv" style="--d:${.36+i*.12}s" href="olvaso.html?book=${b}&lang=${lang}" aria-label="${X.t} – ${T.cta}">
     <div class="stage"><img src="${IMG[b][lang][0]}" alt="${X.t}" data-b="${b}" data-l="${lang}" data-i="0" onerror="imgFix(this)"></div>
     <div class="body"><div class="lbl">${X.lbl}</div><h2>${X.t}</h2><p class="desc">${X.d}</p>
