@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "npm run dev:server",
     "dev:server": "nodemon server.js",
+    "build": "node -e \"console.log('Static HTML/Express app: no frontend build required')\"",
     "server": "node server.js",
     "start": "node server.js",
     "deploy": "npm run start"
