@@ -2886,7 +2886,7 @@ window.addEventListener('click', function (e) {
                     <div class="sn-end-typing" id="sn-end-typing" aria-live="polite"></div>
                 </div>
 
-                <a href="/clothing.html" class="sn-end-btn" id="sn-end-btn">Enter</a>
+                    <a href="/clothing.html" class="sn-end-btn" id="sn-end-btn">Enter</a>
             </div>
         </section>
     </div>
@@ -2900,6 +2900,21 @@ window.addEventListener('click', function (e) {
     var btn   = document.getElementById('sn-end-btn');
     var ghost = document.querySelector('.sn-end-ghost');
     if (!scene || !el || !btn) return;
+
+    // Keep navigation working even if another page script interferes with the anchor,
+    // and carry the currently selected language to the destination page.
+    btn.addEventListener('click', function (event) {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        var destination = new URL(btn.getAttribute('href'), document.baseURI);
+        var lang = window.SN_LANG;
+        if (lang !== 'hu' && lang !== 'en') {
+            try { lang = localStorage.getItem('senkisem.lang'); } catch (e) {}
+        }
+        if (lang === 'hu' || lang === 'en') destination.searchParams.set('lang', lang);
+        window.location.assign(destination.href);
+    }, true);
 
     var TXT = {
         en: {

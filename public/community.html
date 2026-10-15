@@ -3,32 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Senkisem </title>
+<title>Community | Senkisem</title>
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" />
-<meta name="description" content="Our supporters, the community, the giveaway, and a way to reach us.">
+<meta name="description" content="Supporters, anonymous notes, community posts, and the Senkisem giveaway.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#000000">
-<link rel="canonical" href="https://senkisem.hu/contact.html">
+<link rel="canonical" href="https://senkisem.hu/community.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Senkisem">
-<meta property="og:title" content="Contact | Senkisem">
+<meta property="og:title" content="Community | Senkisem">
 <meta property="og:image" content="https://senkisem.hu/img/og-image.jpg">
 
 <!--
-  SENKISEM · contact.html  (v2 — scroll-story)
-  Szerver oldali végpontok (server.js):
+  SENKISEM · community.html  (v4)
+  Szerver oldali végpontok (server.js + server-draw-patch.js):
     GET  /api/community/feed  -> {supporters, week, top:{id,amount,currency}|null, recent:[{id,at}]}
-    GET  /api/draw/status     -> {now, epoch, cycle, next, round}      (a másodperc-pontos időzítő szerveridőhöz igazodik)
-    POST /api/draw/enter      {link|image, name, email, consent, lang, hp, t} -> {ok, ref, next}
-    POST /api/contact         {name, subject, message, lang, hp, t} -> {ok, ref}
+    GET  /api/draw/status     -> {now, next, round, entries, last:{round,at,entries,label}|null}
+    POST /api/draw/enter      {link|image, name, email, consent, lang, hp, t} -> {ok, ref, next, round, count, limit}
   Az e-mail-cím SOHA nincs az oldalban.
 
-  Kézzel frissíthető: CONTENT tömb (Tartalom), CFG.DRAW (sorsolás kezdőpontja, ha a szerver nem érhető el), CFG.SIMULATE.
+  Heti sorsolás: minden szombat 00:00 (Europe/Budapest). Az első: 2026-10-24 00:00 (CEST) = 2026-10-23 22:00 UTC.
+  Kézzel frissíthető: CONTENT tömb (Tartalom), CFG.SIMULATE.
+
+  v4: a sorsolás + támogatói sorsolás szekció új designt kapott (csillagos háttér: #sky / #skyCv).
 -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;600&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 
 <style>
@@ -86,7 +88,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .chap a.on i{background:var(--cc,#fff);border-color:var(--cc,#fff);transform:scale(1.35);box-shadow:0 0 12px var(--cc,#fff)}
 @media(max-width:900px){.chap{right:.55rem}.chap a span{display:none}}
 
-/* ---------- SCENE-ALAP (mint az index) ---------- */
+/* ---------- SCENE-ALAP ---------- */
 .scene{position:relative;background:#000}
 .stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#000}
 .fr{position:absolute;inset:84px 28px 28px;z-index:6;pointer-events:none}
@@ -113,12 +115,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(2.6rem,6.4vw,5.8rem);line-height:.95;letter-spacing:-.03em;margin:.9rem 0 1.2rem}
 .h2 em{font-style:italic;color:var(--t2)}
 .lead{max-width:48ch;color:var(--t2);font-size:1.05rem}
+.rise{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
+.rise.in{opacity:1;transform:none}
 
 /* ---------- 1 · HERO (részecskék) ---------- */
 #heroCv{position:absolute;inset:0;width:100%;height:100%;display:block}
 .cap{position:absolute;left:0;right:0;bottom:16%;text-align:center;z-index:5;font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(1.4rem,3.2vw,2.6rem);color:rgba(255,255,255,.9);opacity:0;pointer-events:none}
 .lb{position:absolute;z-index:5;transform:translateX(-50%);text-align:center;opacity:0;pointer-events:none;width:max-content;max-width:78vw}
-.lb small{display:block;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(var(--red),1);color:#ff6a73;margin-bottom:.35rem}
+.lb small{display:block;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:#ff6a73;margin-bottom:.35rem}
 .lb b{display:block;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.4rem,3vw,2.4rem);line-height:1.05}
 .lb em{display:block;margin-top:.2rem;font-style:normal;font-family:'Space Mono',monospace;font-size:.78rem;color:var(--t2)}
 #lbTop b{font-size:clamp(1.8rem,4.2vw,3.6rem)}
@@ -127,32 +131,55 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hero-end .btn{--c:var(--red)}
 @media(max-width:700px){.hero-end{bottom:9%}.cap{bottom:20%}}
 
-/* ---------- 2 · JEGYZETEK (görgetésre gépelődnek) ---------- */
-#nStick{--c:var(--pink)}
-#nStick[data-tone="cold"]{--c:var(--mint)}
-.glow{position:absolute;inset:0;pointer-events:none;transition:background 1s;background:radial-gradient(ellipse at 18% 28%,rgba(var(--c),.13),transparent 58%),radial-gradient(ellipse at 84% 74%,rgba(var(--c),.08),transparent 60%)}
-.scan{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 4px)}
-#nStick[data-tone="cold"] .scan{opacity:1}
-.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:9}
-.flash.go{animation:flash .22s steps(3)}
-@keyframes flash{0%{opacity:0}35%{opacity:.16}100%{opacity:0}}
-.n-title{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 1.2rem}
-.n-title h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(3rem,10vw,9rem);line-height:.92;letter-spacing:-.035em}
-.n-title h2 em{font-style:italic;color:rgb(var(--pink))}
-.n-title p{margin-top:1.4rem;color:var(--t2);max-width:40ch}
-.n-box{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 clamp(1.4rem,8vw,9rem)}
-.n-grid{display:grid;width:min(980px,100%)}
-.n-ghost,.n-typed{grid-area:1/1;text-align:center;line-height:1.28}
-.n-ghost{visibility:hidden}
-#nStick[data-tone="soft"] .n-ghost,#nStick[data-tone="soft"] .n-typed{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(1.7rem,4.4vw,3.8rem);line-height:1.1;letter-spacing:-.02em}
-#nStick[data-tone="cold"] .n-ghost,#nStick[data-tone="cold"] .n-typed{font-family:'Space Mono',monospace;font-size:clamp(1.05rem,2.3vw,1.8rem);line-height:1.6;text-transform:none}
-.n-typed .cur{display:inline-block;width:.5em;height:1em;margin-left:.12em;vertical-align:-.12em;background:rgb(var(--c));animation:blink 1s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-.n-sig{margin-top:2rem;font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.14em;color:rgb(var(--c));opacity:0}
-.n-live{position:absolute;left:2.4rem;bottom:2.2rem;z-index:7;display:inline-flex;align-items:center;gap:.6rem;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.1em;color:var(--t2)}
-.n-live i{width:7px;height:7px;border-radius:50%;background:rgb(var(--red));box-shadow:0 0 10px rgb(var(--red));animation:pulse 2.4s ease-in-out infinite}
-.n-cta{position:absolute;right:2.4rem;bottom:2rem;z-index:7;font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.12em;color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:.3rem;opacity:0;visibility:hidden}
-@media(max-width:700px){.n-live{left:1.2rem;bottom:1.4rem}.n-cta{right:1.2rem;bottom:1.4rem}}
+/* ---------- 2 · JEGYZETEK ---------- */
+.notes-sec{position:relative;padding:8rem 0 6.5rem;border-top:1px solid var(--line);background:radial-gradient(ellipse 60% 45% at 50% 58%,rgba(255,214,170,.07),transparent 70%),#000}
+.nt-head{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-bottom:3.6rem}
+.live{display:inline-flex;align-items:center;gap:.6rem;padding:.55rem 1rem;border:1px solid var(--line);border-radius:999px;color:var(--t2);font-size:.92rem}
+.live i{width:7px;height:7px;border-radius:50%;background:rgb(var(--red));box-shadow:0 0 10px rgb(var(--red));animation:pulse 2.4s ease-in-out infinite}
+.nt-stage{outline-offset:12px}
+.nt-wrap{position:relative;width:min(780px,100%);margin:0 auto;touch-action:pan-y;filter:drop-shadow(0 34px 44px rgba(0,0,0,.7));-webkit-user-select:none;user-select:none}
+.sheet{
+  --tint:#f1e6cd;
+  background-color:var(--tint);
+  background-image:
+    linear-gradient(103deg,transparent 31%,rgba(60,40,10,.09) 31.4%,rgba(255,255,255,.16) 32.2%,transparent 33.4%),
+    linear-gradient(-64deg,transparent 58%,rgba(60,40,10,.08) 58.4%,rgba(255,255,255,.15) 59.3%,transparent 60.6%),
+    radial-gradient(ellipse at 50% 50%,transparent 58%,rgba(70,45,10,.30) 100%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='700'><filter id='c' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.011 .016' numOctaves='5' seed='11' result='n'/><feDiffuseLighting in='n' lighting-color='%23ffffff' surfaceScale='5' diffuseConstant='1.12'><feDistantLight azimuth='235' elevation='56'/></feDiffuseLighting></filter><rect width='100%25' height='100%25' filter='url(%23c)'/></svg>");
+  background-size:100% 100%,100% 100%,100% 100%,cover;
+  background-blend-mode:normal,normal,multiply,multiply;
+  clip-path:polygon(.8% 2.2%,11% .6%,27% 2.4%,43% .4%,60% 1.9%,78% .3%,92% 1.7%,99.4% 3.2%,98.5% 18%,100% 36%,98.7% 55%,99.8% 74%,98.3% 92%,95.8% 99.2%,80% 98%,62% 99.7%,44% 98.2%,27% 99.8%,10% 98.4%,1.4% 99.2%,.3% 80%,1.4% 60%,0 40%,1.3% 20%);
+}
+.sheet.b1,.sheet.b2{position:absolute;inset:0}
+.sheet.b1{transform:rotate(2.7deg) translate(12px,8px);filter:brightness(.8);--tint:#e9dfc8}
+.sheet.b2{transform:rotate(-2.3deg) translate(-10px,12px);filter:brightness(.66);--tint:#e2d8c2}
+.paper{position:relative;z-index:2;min-height:clamp(340px,46vw,440px);padding:clamp(2.6rem,5vw,3.8rem) clamp(1.7rem,5.5vw,4.2rem) clamp(1.8rem,4vw,2.6rem);color:var(--ink,#1f1d4a);display:flex;flex-direction:column;justify-content:center;transform:rotate(var(--r,-1deg))}
+.tape{position:absolute;z-index:3;top:-16px;left:50%;width:128px;height:36px;transform:translateX(-50%) rotate(-3deg);background:rgba(var(--tp,var(--pink)),.62);box-shadow:0 2px 6px rgba(0,0,0,.35);clip-path:polygon(0 8%,3% 0,7% 12%,11% 0,15% 10%,100% 0,98% 30%,100% 55%,97% 78%,100% 100%,8% 92%,5% 100%,2% 88%,0 100%)}
+.nt-text{font-family:'Caveat',cursive;font-weight:500;font-size:clamp(1.9rem,4.6vw,3.1rem);line-height:1.16;transform:rotate(-.5deg)}
+.nt-text span{display:inline-block;opacity:0;filter:blur(2.5px);transform:translateY(3px);animation:ink .55s ease forwards;animation-delay:calc(var(--i) * 75ms + 380ms)}
+@keyframes ink{to{opacity:1;filter:none;transform:none}}
+.nt-sig{margin-top:1.6rem;align-self:flex-end;font-family:'Caveat',cursive;font-weight:600;font-size:clamp(1.3rem,2.6vw,1.7rem);opacity:0;animation:ink .8s ease forwards;animation-delay:var(--sd,2s)}
+.paper.out-l{animation:outL .42s cubic-bezier(.5,0,.8,.3) forwards}
+.paper.out-r{animation:outR .42s cubic-bezier(.5,0,.8,.3) forwards}
+.paper.in-l{animation:inL .75s var(--ease) both}
+.paper.in-r{animation:inR .75s var(--ease) both}
+@keyframes outL{to{transform:translate(-110px,30px) rotate(-11deg) scale(.93);opacity:0}}
+@keyframes outR{to{transform:translate(110px,30px) rotate(11deg) scale(.93);opacity:0}}
+@keyframes inL{from{transform:translate(-100px,-14px) rotate(-8deg) scale(.95);opacity:0}to{transform:rotate(var(--r,-1deg));opacity:1}}
+@keyframes inR{from{transform:translate(100px,-14px) rotate(8deg) scale(.95);opacity:0}to{transform:rotate(var(--r,-1deg));opacity:1}}
+.nt-nav{display:flex;align-items:center;justify-content:center;gap:1.4rem;margin-top:3.2rem}
+.nt-arrow{width:48px;height:48px;border:1px solid rgba(255,255,255,.35);border-radius:50%;display:grid;place-items:center;transition:background .25s,border-color .25s,transform .25s var(--ease)}
+.nt-arrow svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.nt-arrow:hover{background:rgba(255,255,255,.1);border-color:#fff}
+.nt-arrow.p:hover{transform:translateX(-3px)}.nt-arrow.n:hover{transform:translateX(3px)}
+.nt-dots{display:flex;gap:.55rem;align-items:center}
+.nt-dot{width:18px;height:3px;background:rgba(255,255,255,.22);transition:width .4s,background .4s;padding:0;border-radius:2px}
+.nt-dot.on{width:38px;background:rgba(255,255,255,.9)}
+.nt-dot:hover{background:rgba(255,255,255,.55)}
+.nt-count{font-family:'Caveat',cursive;font-weight:600;font-size:1.5rem;color:var(--t2);min-width:3.6rem;text-align:center}
+.wall-cta{margin-top:2.6rem;text-align:center;color:var(--t2)}
+.wall-cta a{color:#fff;text-underline-offset:.3em}
+@media(max-width:700px){.notes-sec{padding:6rem 0 5rem}.nt-arrow{width:44px;height:44px}.nt-nav{gap:.9rem}}
 
 /* ---------- 3 · TARTALOM (vízszintes) ---------- */
 #s-hz .stick{background:radial-gradient(ellipse at 70% 40%,rgba(255,255,255,.05),transparent 60%),#000}
@@ -175,7 +202,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hz-bar{position:absolute;left:8vw;right:8vw;bottom:2.4rem;height:1px;background:rgba(255,255,255,.18);z-index:7}
 .hz-bar i{display:block;height:1px;width:0;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.7)}
 
-/* ---------- 4 · SORSOLÁS ---------- */
+/* ---------- 4 · SORSOLÁS: történet ---------- */
 .story .stick{--c:var(--mint);background:radial-gradient(ellipse at 50% 55%,rgba(var(--c),.09),transparent 62%),#000}
 .bt{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 1.4rem;opacity:0;visibility:hidden}
 .bt .bl{display:block;overflow:hidden;padding:.06em .08em}
@@ -186,89 +213,231 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .sk{position:relative;display:inline-block}
 .sk::after{content:'';position:absolute;left:-3%;top:56%;height:.07em;width:106%;background:rgb(var(--c,var(--mint)));box-shadow:0 0 14px rgba(var(--c,var(--mint)),.8);transform:scaleX(var(--s,0));transform-origin:left}
 .hash{color:rgb(var(--c,var(--mint)));text-shadow:0 0 40px rgba(var(--c,var(--mint)),.55)}
-.draw{padding:7rem 0 8rem;position:relative;border-top:1px solid var(--line);--c:var(--mint)}
-.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,6rem);align-items:start}
-.rules{list-style:none;margin-top:2rem;display:grid;gap:.9rem;max-width:48ch}
-.rules li{position:relative;padding-left:1.7rem;color:var(--t2);font-size:.98rem}
-.rules li::before{content:'';position:absolute;left:0;top:.72em;width:.9rem;height:1px;background:rgb(var(--c))}
-.win{margin-top:1.8rem;padding:.9rem 1.1rem;border-left:2px solid rgb(var(--c));background:rgba(var(--c),.06);font-size:.98rem}
 
-/* ---------- IDŐZÍTŐ ---------- */
-.timer{--c:var(--mint);display:flex;gap:clamp(.6rem,2vw,1.6rem);margin:1.4rem 0 1rem;flex-wrap:wrap}
-.timer.red{--c:var(--red)}
-.tg{display:flex;flex-direction:column;align-items:center;min-width:3.6ch}
-.dg{display:block;font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:clamp(3.2rem,8.4vw,7rem);line-height:1;font-feature-settings:'tnum';font-variant-numeric:tabular-nums;letter-spacing:-.04em;color:rgb(var(--c));text-shadow:0 0 34px rgba(var(--c),.5)}
-.dg.tk{animation:tick .45s var(--ease)}
-@keyframes tick{from{transform:translateY(32%);opacity:0}to{transform:none;opacity:1}}
-.tg small{margin-top:.5rem;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t3)}
-.tsep{align-self:flex-start;font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:clamp(2.6rem,6.6vw,5.4rem);line-height:1.1;color:rgba(var(--c),.4)}
-.tbar{height:1px;background:rgba(255,255,255,.16);max-width:560px}
-.tbar i{display:block;height:1px;width:0;background:rgb(var(--c));box-shadow:0 0 10px rgba(var(--c),.8)}
-.tnote{margin-top:.8rem;min-height:1.5em;font-size:.88rem;color:var(--t3)}
+/* ============================================================
+   4b + 5 · SORSOLÁSOK — közös csillagos háttér (v4)
+   A canvas fix a nézethez, a wrapper clip-path-ja vágja le: csak e két szekció mögött látszik.
+   A tartalom sötét, finoman elmosott "üvegpaneleken" ül, így a csillagok sosem folynak a szöveggel össze.
+============================================================ */
+.sky{position:relative;isolation:isolate;background:#000;clip-path:inset(0)}
+#skyCv{position:fixed;left:0;top:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0;transition:opacity .9s ease}
+.sky.on #skyCv{opacity:1}
+.sky::before,.sky::after{content:'';position:absolute;left:0;right:0;height:min(16rem,26vh);pointer-events:none;z-index:0}
+.sky::before{top:0;background:linear-gradient(#000,rgba(0,0,0,0))}
+.sky::after{bottom:0;background:linear-gradient(rgba(0,0,0,0),#000)}
 
-/* ---------- ŰRLAPOK ---------- */
-.form{position:relative;border:1px solid var(--line);background:rgba(255,255,255,.025);padding:clamp(1.4rem,3vw,2.5rem)}
-.form::before,.form::after{content:'';position:absolute;width:26px;height:26px;border:0 solid rgb(var(--c))}
-.form::before{top:-1px;left:-1px;border-top-width:2px;border-left-width:2px}
-.form::after{bottom:-1px;right:-1px;border-bottom-width:2px;border-right-width:2px}
-.fld{margin-bottom:1.7rem;border:0}
-.fld>label,.fld>legend{display:block;font-size:.95rem;font-weight:400;color:rgb(var(--c));margin-bottom:.45rem;padding:0}
-.inp{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.4);color:#fff;font:400 1.3rem 'DM Serif Display',serif;padding:.55rem 0;border-radius:0}
+.pn{background:rgba(3,3,3,.8);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.16)}
+
+/* ---- heti sorsolás ---- */
+.gw{--c:var(--mint);position:relative;z-index:1;padding:clamp(5.5rem,11vw,10rem) 0 clamp(3rem,6vw,5rem)}
+.gw-head{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:1.4rem clamp(2rem,6vw,6rem);align-items:end}
+.gw-head h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(3rem,8vw,7.6rem);line-height:.93;letter-spacing:-.04em;text-shadow:0 0 50px #000,0 0 18px #000}
+.gw-head p{max-width:34ch;padding-bottom:.7rem;color:var(--t2);font-size:1.08rem;text-shadow:0 0 18px #000}
+
+.cp{margin-top:clamp(2.4rem,6vw,4.4rem);padding:clamp(1.2rem,2.6vw,1.9rem) clamp(1.1rem,3.4vw,3rem) clamp(1.3rem,3vw,2.2rem)}
+.cp-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.2rem 1.2rem;font-size:.92rem;color:var(--t3)}
+.cp-top b{font-family:'DM Serif Display',serif;font-weight:400;font-size:1.25rem;color:#fff;margin-right:.5rem}
+.clk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(1rem,3vw,2rem)}
+.cu{position:relative;text-align:center;font-size:clamp(3.1rem,13vw,10.4rem);padding:0 .1rem}
+.cu b{display:block;font-family:'DM Serif Display',serif;font-weight:400;font-size:1em;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
+.cu small{display:block;margin-top:.5rem;font-size:.86rem;line-height:1.2;color:var(--t3)}
+.cu+.cu::before{content:':';position:absolute;left:0;top:0;transform:translateX(-50%);font-family:'DM Serif Display',serif;font-size:.7em;line-height:1.43;color:rgba(255,255,255,.28)}
+.cu:last-child b{color:rgb(var(--c))}
+.cu b.tk{animation:tick .5s var(--ease)}
+@keyframes tick{from{transform:translateY(14%);opacity:.25}to{transform:none;opacity:1}}
+
+.wk{position:relative;height:3rem;margin:1.6rem .6rem 0}
+.wk-line{position:absolute;left:0;right:0;top:.3rem;height:9px;border-left:1px solid rgba(255,255,255,.45);border-right:1px solid rgba(255,255,255,.45);background:linear-gradient(rgba(255,255,255,.3),rgba(255,255,255,.3)) center/100% 1px no-repeat,repeating-linear-gradient(90deg,rgba(255,255,255,.38) 0 1px,transparent 1px calc(100%/7))}
+.wk-line i{position:absolute;left:0;top:50%;height:1px;width:0;background:rgb(var(--c));box-shadow:0 0 8px rgba(var(--c),.8)}
+.wk-line u{position:absolute;top:50%;left:0;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:#000;border:1px solid rgb(var(--c));box-shadow:inset 0 0 0 2.5px #000,inset 0 0 0 6px rgb(var(--c)),0 0 14px rgba(var(--c),.7)}
+.wk-d{list-style:none;position:absolute;inset:0}
+.wk-d li{position:absolute;top:1.5rem;left:calc(var(--i) * 100% / 7);transform:translateX(-50%);font-size:.74rem;letter-spacing:.02em;color:var(--t3);white-space:nowrap;transition:color .3s}
+.wk-d li.on{color:#fff}
+.wk-d li:last-child{color:rgb(var(--c))}
+.tnote{margin-top:.7rem;min-height:1.5em;font-size:.9rem;color:var(--t2)}
+
+.fx{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:1.3rem;border-top:1px solid var(--line)}
+.fx>div{padding:1.1rem 1.4rem 0 0}
+.fx>div+div{padding-left:1.4rem;border-left:1px solid var(--line)}
+.fx dt{font-size:.82rem;color:var(--t3);margin-bottom:.35rem}
+.fx dd{font-family:'DM Serif Display',serif;font-size:clamp(1.2rem,2.3vw,1.65rem);line-height:1.2;overflow-wrap:anywhere}
+
+.gw-grid{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:clamp(1.2rem,3vw,2.4rem);margin-top:clamp(1.2rem,3vw,2.4rem);align-items:start}
+.gw-rules{position:sticky;top:90px;padding:clamp(1.4rem,3vw,2.2rem)}
+.hand-tag{font-family:'Caveat',cursive;font-weight:600;font-size:2.1rem;line-height:1;display:inline-block;transform:rotate(-2deg);color:rgb(var(--c));margin-bottom:1rem}
+.rl{list-style:none}
+.rl li{position:relative;padding:.95rem 0 .95rem 1.7rem;border-top:1px solid var(--line);color:var(--t2);font-size:.98rem}
+.rl li::before{content:'';position:absolute;left:.15rem;top:1.5rem;width:7px;height:7px;border-radius:50%;background:rgb(var(--c));box-shadow:0 0 10px rgba(var(--c),.85)}
+.rl-win{margin-top:.6rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.92rem;color:#fff}
+
+/* beküldés */
+.entry{padding:clamp(.4rem,1.5vw,1rem) clamp(1.2rem,3.4vw,2.6rem)}
+.st{position:relative;display:grid;grid-template-columns:1.7rem minmax(0,1fr);column-gap:clamp(.8rem,2vw,1.4rem);padding:1.7rem 0;border-bottom:1px solid var(--line)}
+.st:last-child{border-bottom:0}
+.st-n{display:block;position:relative;width:1.35rem;height:1.35rem;margin-top:.15rem;border-radius:50%;border:1px solid rgba(255,255,255,.42);transition:background .35s,border-color .35s,box-shadow .35s}
+.st-n::after{content:'';position:absolute;left:.4rem;top:.22rem;width:.32rem;height:.6rem;border:solid #000;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .3s var(--ease)}
+.st.done .st-n{background:rgb(var(--c));border-color:rgb(var(--c));box-shadow:0 0 14px rgba(var(--c),.55)}
+.st.done .st-n::after{transform:rotate(45deg) scale(1)}
+.st-t{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.45rem,3vw,1.95rem);line-height:1.1;margin-bottom:1.2rem}
+.st-t small{display:block;margin-top:.4rem;font-family:'Space Grotesk',sans-serif;font-size:.88rem;line-height:1.5;color:var(--t3)}
+.seg{display:inline-grid;grid-auto-flow:column;gap:2px;margin-bottom:1.4rem;padding:3px;border:1px solid rgba(255,255,255,.3);border-radius:999px}
+.seg label{position:relative;display:block}
+.seg input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}
+.seg span{display:block;padding:.5rem 1.3rem;border-radius:999px;font-size:.92rem;transition:background .2s,color .2s}
+.seg input:checked+span{background:#fff;color:#000}
+.seg input:focus-visible+span{outline:2px solid #fff;outline-offset:2px}
+.fld{margin-bottom:1.5rem;border:0}
+.fld:last-child{margin-bottom:.4rem}
+.fld>label{display:block;font-size:.86rem;color:var(--t3);margin-bottom:.3rem}
+.inp{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.36);color:#fff;font:400 1.25rem 'DM Serif Display',serif;padding:.5rem 0;border-radius:0;-webkit-appearance:none;appearance:none}
 .inp::placeholder{color:rgba(255,255,255,.3)}
-textarea.inp{font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:1.05rem;line-height:1.65;resize:vertical;min-height:170px;border:1px solid rgba(255,255,255,.28);padding:.9rem 1rem;background:rgba(0,0,0,.35)}
 .inp:focus{outline:none;border-color:rgb(var(--c));box-shadow:0 1px 0 rgb(var(--c))}
-textarea.inp:focus{box-shadow:0 0 0 1px rgb(var(--c))}
-.hint2{min-height:1.5em;margin-top:.5rem;font-size:.86rem;color:var(--t3)}
-.hint2.ok{color:#7ee0a8}.hint2.bad{color:#ff8a92}
-.chips{display:flex;flex-wrap:wrap;gap:.55rem}
-.chip{position:relative}
-.chip input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}
-.chip span{display:block;padding:.55rem 1.05rem;border:1px solid rgba(255,255,255,.32);border-radius:999px;font-size:.95rem;transition:background .2s,color .2s,border-color .2s}
-.chip:hover span{border-color:#fff}
-.chip input:checked+span{background:#fff;color:#000;border-color:#fff}
-.chip input:focus-visible+span{outline:2px solid #fff;outline-offset:2px}
+.hint2{min-height:1.5em;margin-top:.5rem;font-size:.84rem;line-height:1.5;color:var(--t3)}
 .drop{display:block;border:1px dashed rgba(255,255,255,.4);padding:1.6rem 1rem;text-align:center;cursor:pointer;transition:background .25s,border-color .25s}
 .drop:hover,.drop.over{background:rgba(255,255,255,.05);border-color:rgb(var(--c))}
 .drop:focus-within{outline:2px solid #fff;outline-offset:3px}
-.drop b{display:block;font-family:'DM Serif Display',serif;font-weight:400;font-size:1.4rem}
+.drop b{display:block;font-family:'DM Serif Display',serif;font-weight:400;font-size:1.35rem}
 .drop span{color:var(--t2);font-size:.9rem}
 .thumb{margin-top:.9rem;display:flex;align-items:center;gap:.9rem}
 .thumb img{width:84px;height:84px;object-fit:cover;border:1px solid var(--line)}
-.chk{display:flex;gap:.8rem;align-items:flex-start;font-size:.9rem;color:var(--t2);margin:.4rem 0 1.6rem}
-.chk input{margin-top:.25rem;accent-color:rgb(var(--c));width:17px;height:17px;flex:0 0 auto}
-.cnt{font-size:.82rem;color:var(--t3);text-align:right;margin-top:.35rem}
+.chk{display:flex;gap:.8rem;align-items:flex-start;font-size:.9rem;line-height:1.55;color:var(--t2);margin:0 0 1.5rem}
+.chk input{margin-top:.25rem;accent-color:rgb(var(--c));width:18px;height:18px;flex:0 0 auto}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.btns{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
+.entry .btn{width:100%;justify-content:center}
+.entry .btn.w{--c:var(--mint)}
 .msg{min-height:1.5em;margin-top:1.1rem;font-size:.95rem;color:#ff8a92}
-.sent{text-align:center;padding:1.2rem 0}
-.sent .seal{display:inline-block;transform:rotate(-8deg);border:3px solid rgb(var(--c));color:rgb(var(--c));padding:.3rem 1.2rem;border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:.14em;animation:seal .55s cubic-bezier(.2,1.8,.4,1) both}
-@keyframes seal{from{transform:rotate(-8deg) scale(2.4);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
-.sent h3{font-family:'DM Serif Display',serif;font-weight:400;font-size:2.2rem;line-height:1.05;margin:1.5rem 0 .8rem}
-.sent p{color:var(--t2);max-width:40ch;margin:0 auto 1.6rem}
-.sent .ref{font-family:'Space Mono',monospace;color:#fff}
+.sent{padding:2.2rem 0 1.4rem}
+.sent .seal{display:inline-block;transform:rotate(-6deg);border:2px solid rgb(var(--c));color:rgb(var(--c));padding:.2rem 1rem;border-radius:3px;font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.14em;animation:seal .55s cubic-bezier(.2,1.8,.4,1) both}
+@keyframes seal{from{transform:rotate(-6deg) scale(2.2);opacity:0}to{transform:rotate(-6deg) scale(1);opacity:1}}
+.sent h3{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.9rem,4vw,2.6rem);line-height:1.05;margin:1.4rem 0 .6rem}
+.sent>p{color:var(--t2);max-width:40ch;margin-bottom:1.4rem}
+.rcpt{border-top:1px dashed rgba(255,255,255,.35);margin-bottom:1.6rem}
+.rcpt div{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:.8rem;padding:.7rem 0;border-bottom:1px dashed rgba(255,255,255,.2);font-size:.92rem}
+.rcpt dt{font-size:.82rem;color:var(--t3);padding-top:.1rem}
+.rcpt dd{color:#fff;overflow-wrap:anywhere}
+.rcpt dd.mono{font-family:'Space Mono',monospace}
 
-/* ---------- 5 · TÁMOGATÓI SORSOLÁS (piros) ---------- */
-.sd .stick{--c:var(--red);background:radial-gradient(ellipse at 50% 60%,rgba(var(--c),.16),transparent 62%),#000}
-.sd .stick::before{content:'';position:absolute;left:0;right:0;height:1px;top:0;background:linear-gradient(90deg,transparent,rgba(var(--c),.8),transparent);animation:sweep 6s linear infinite;opacity:.5}
-@keyframes sweep{from{top:0}to{top:100%}}
-.sd-stmt{margin-top:1.4rem;font-family:'Space Mono',monospace;font-size:clamp(.78rem,1.5vw,1rem);letter-spacing:.08em;color:#fff;max-width:56ch;line-height:1.7}
-.sd-stmt b{color:#ff6a73;font-weight:700}
-.legal{position:relative;padding:5rem 0 7rem;border-top:1px solid var(--line);--c:var(--red)}
-.lg{max-width:900px;margin:0 auto;border:1px solid rgba(var(--c),.55);background:rgba(var(--c),.05);padding:clamp(1.6rem,4vw,3rem)}
-.lg h3{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.8rem,4vw,3rem);line-height:1.02;letter-spacing:-.02em;margin-bottom:1.2rem}
-.lg .pull{font-family:'Space Mono',monospace;font-size:clamp(.95rem,1.9vw,1.2rem);line-height:1.6;padding:1rem 1.1rem;border-left:3px solid rgb(var(--c));background:rgba(0,0,0,.4);margin-bottom:1.6rem}
-.lg ol{counter-reset:l;list-style:none;display:grid;gap:1rem}
-.lg li{counter-increment:l;position:relative;padding-left:2.6rem;color:var(--t2);font-size:.98rem}
-.lg li::before{content:counter(l);position:absolute;left:0;top:.05rem;width:1.7rem;height:1.7rem;border:1px solid rgba(var(--c),.8);border-radius:50%;display:grid;place-items:center;font-family:'Space Mono',monospace;font-size:.72rem;color:#ff6a73}
-.lg li strong{color:#fff;font-weight:500}
-.lg .cta{margin-top:2rem;display:flex;gap:.9rem;flex-wrap:wrap}
-.lg .cta .btn{--c:var(--red)}
+@media(max-width:900px){
+  .gw-head{grid-template-columns:1fr}
+  .gw-head p{padding-bottom:0}
+  .gw-grid{grid-template-columns:1fr}
+  .gw-rules{position:static}
+}
+@media(max-width:620px){
+  .fx{grid-template-columns:1fr}
+  .fx>div,.fx>div+div{padding:1rem 0;border-left:0;border-bottom:1px solid var(--line)}
+  .fx>div:last-child{border-bottom:0;padding-bottom:0}
+  .wk{margin:1.5rem .5rem 0}
+  .wk-d li{font-size:.64rem;letter-spacing:0}
+  .cu small{font-size:.74rem}
+  .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:100%;text-align:center}
+  .rcpt div{grid-template-columns:1fr;gap:.1rem}
+  .st{grid-template-columns:1.4rem minmax(0,1fr);padding:1.5rem 0}
+}
 
-/* ---------- 6 · ÜZENET ---------- */
-.cx-sec{position:relative;padding:7rem 0 8rem;border-top:1px solid var(--line);--c:var(--pink)}
-.cx{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,6vw,6rem);align-items:start}
-.cx .rules{margin-top:2rem}
-@media(max-width:900px){.dgrid,.cx{grid-template-columns:1fr}.draw,.cx-sec{padding:5rem 0}}
+/* ---- támogatói sorsolás ---- */
+.sp{--c:var(--red);position:relative;z-index:1;padding:clamp(3rem,6vw,5rem) 0 clamp(6rem,12vw,10rem)}
+.sp-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:1.6rem clamp(2rem,6vw,6rem);align-items:end}
+.sp-head h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(2.8rem,6.6vw,6rem);line-height:.96;letter-spacing:-.035em;text-shadow:0 0 50px #000,0 0 18px #000}
+.sp-side{padding-bottom:.6rem;text-shadow:0 0 18px #000}
+.sp-note{max-width:34ch;color:var(--t2);font-size:1.08rem}
+.sp-n{display:flex;align-items:baseline;gap:.8rem;margin-top:1.4rem}
+.sp-n b{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(2.4rem,5vw,3.4rem);line-height:1;color:#ff6a73}
+.sp-n span{font-size:.9rem;color:var(--t3)}
+.sp-time{margin-top:1.2rem;font-size:.9rem;color:var(--t3);max-width:34ch}
+.sp-h{margin:clamp(2.4rem,6vw,4rem) 0 1rem;font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(1.4rem,2.6vw,1.9rem);color:var(--t2);text-shadow:0 0 18px #000}
+.sp-grid{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(255,255,255,.2);border-left:1px solid rgba(255,255,255,.2)}
+.sp-grid>li{padding:clamp(1.3rem,2.4vw,2rem);border-right:1px solid rgba(255,255,255,.2);border-bottom:1px solid rgba(255,255,255,.2);background:rgba(3,3,3,.8);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);color:var(--t2);font-size:.96rem;line-height:1.65}
+.sp-grid strong{display:block;margin-bottom:.55rem;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.35rem,2.2vw,1.75rem);line-height:1.1;color:#fff}
+.sp-grid>li.sp-dis{display:flex;flex-direction:column;justify-content:space-between;gap:1.4rem;background:linear-gradient(160deg,rgba(var(--red),.22),rgba(3,3,3,.86) 70%);color:#fff;box-shadow:inset 0 2px 0 rgb(var(--red))}
+.sp-dis b{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.35rem,2.2vw,1.75rem);line-height:1.15}
+.sp-link{display:inline-flex;gap:.6rem;align-items:center;align-self:flex-start;color:#fff;font-size:.95rem;text-underline-offset:.3em}
+@media(max-width:900px){
+  .sp-head{grid-template-columns:1fr}
+  .sp-side{padding-bottom:0}
+  .sp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  .sp-grid{grid-template-columns:1fr}
+}
+
+/* ---------- attached #senkisem draw design ---------- */
+#draw,#s-sd{--draw-red:#ff2a3c;--draw-glass:rgba(255,255,255,.055);--draw-line:rgba(255,255,255,.14)}
+#draw{padding:clamp(4rem,9vw,7rem) 0 clamp(3rem,6vw,5rem);background:radial-gradient(900px 500px at 50% 0%,rgba(255,42,60,.12),transparent 72%)}
+#draw .gw-head{display:block;text-align:center}
+#draw .gw-head h2{font-family:'Bricolage Grotesque','Space Grotesk',sans-serif;font-weight:800;font-size:clamp(2.4rem,6.4vw,4.75rem);line-height:.98;letter-spacing:-.035em;color:var(--draw-red);text-shadow:0 0 40px rgba(255,42,60,.4)}
+#draw .gw-head p{max-width:none;padding:0;margin:.85rem auto 0;color:var(--t2)}
+#draw .cp{max-width:860px;margin:clamp(2rem,5vw,3.25rem) auto 0;padding:clamp(1.2rem,3vw,2rem);border-radius:24px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.025));border:1px solid var(--draw-line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 18px 50px -20px rgba(255,42,60,.55)}
+#draw .cp-top{font-size:.82rem;color:var(--t2)}
+#draw .cp-top b{font-family:'Space Grotesk',sans-serif;color:#fff}
+#draw .clk{gap:clamp(8px,2vw,18px);margin-top:1.2rem}
+#draw .cu{overflow:hidden;border-radius:18px;padding:clamp(1rem,2.8vw,1.7rem) 4px 1rem;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.025));border:1px solid var(--draw-line);box-shadow:inset 0 1px 0 rgba(255,255,255,.14);font-size:clamp(2.6rem,8vw,6.4rem)}
+#draw .cu+.cu::before{display:none}
+#draw .cu b{font-family:'Bricolage Grotesque','Space Grotesk',sans-serif;font-weight:800;color:#fff;text-shadow:0 0 26px rgba(255,42,60,.6)}
+#draw .cu:last-child b{color:#fff}
+#draw .cu small{font-family:'Space Grotesk',sans-serif;color:#ff7a85;font-weight:600;letter-spacing:.08em}
+#draw .wk{height:1.3rem;margin:1.2rem .2rem 0}
+#draw .wk-line{top:.3rem;height:4px;border:0;border-radius:4px;background:rgba(255,255,255,.08)}
+#draw .wk-line i{height:100%;border-radius:4px;background:linear-gradient(90deg,transparent,#ff2a3c);box-shadow:0 0 14px #ff2a3c}
+#draw .wk-line u,#draw .wk-d{display:none}
+#draw .tnote,#draw .fx{display:none}
+#draw .gw-grid{grid-template-columns:minmax(0,.7fr) minmax(0,1fr);gap:clamp(1.2rem,4vw,3rem);max-width:960px;margin:clamp(2rem,5vw,3.5rem) auto 0;align-items:center}
+#draw .gw-rules{position:relative;top:auto;padding:42px 30px 34px;transform:rotate(-1.6deg);border:0;border-radius:3px 3px 12px 3px;color:#34343a;background:linear-gradient(90deg,transparent 26px,rgba(210,60,70,.45) 26px,rgba(210,60,70,.45) 27.5px,transparent 27.5px),repeating-linear-gradient(180deg,transparent 0 29px,rgba(70,90,140,.22) 29px 30px),#eee8d7;box-shadow:0 2px 0 #d9d2bd,0 30px 60px -18px rgba(0,0,0,.8)}
+#draw .hand-tag{font-size:2rem;color:#25252b}
+#draw .rl li{border-color:rgba(70,90,140,.2);color:#34343a;padding:.7rem 0 .7rem 1.3rem}
+#draw .rl li::before{content:'–';top:.6rem;width:auto;height:auto;border-radius:0;background:none;box-shadow:none;color:#c4202e}
+#draw .rl-win{border-color:rgba(70,90,140,.2);color:#c4202e}
+#draw .entry{padding:26px;border-radius:26px;background:linear-gradient(155deg,rgba(255,255,255,.10),rgba(255,255,255,.03));border:1px solid var(--draw-line);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 40px 80px -30px rgba(0,0,0,.9),0 0 90px -30px #ff2a3c}
+#draw .st{border-color:rgba(255,255,255,.1)}
+#draw .st-t{font-family:'Space Grotesk',sans-serif}
+#draw .seg{border:0;border-radius:14px;background:rgba(0,0,0,.32);padding:4px}
+#draw .seg span{border-radius:10px}
+#draw .seg input:checked+span{background:#ff2a3c;color:#fff}
+#draw .inp{font:500 1rem 'Space Grotesk',sans-serif;border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px 15px;background:rgba(0,0,0,.28)}
+#draw .inp:focus{box-shadow:0 0 0 3px rgba(255,42,60,.25)}
+#draw .drop{border-radius:14px;background:rgba(0,0,0,.22)}
+#draw .entry .btn.w{--c:255,42,60;background:linear-gradient(135deg,#ff4252,#e0112a);border-radius:16px;box-shadow:0 14px 34px -10px rgba(255,42,60,.8)}
+#draw .sent{padding:2rem 0 1rem}
+
+#s-sd{padding:clamp(4rem,9vw,7rem) 0;background:radial-gradient(ellipse at 50% 20%,rgba(255,182,46,.08),transparent 68%)}
+#s-sd .sp-head{display:block;text-align:center}
+#s-sd .sp-head h2{font-family:'Bricolage Grotesque','Space Grotesk',sans-serif;font-weight:800;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1;color:#ffb62e;text-shadow:0 0 36px rgba(255,182,46,.35)}
+#s-sd .sp-side{padding:0;margin-top:1rem}
+#s-sd .sp-note,#s-sd .sp-time{margin-left:auto;margin-right:auto}
+#s-sd .sp-h{text-align:center;margin-top:3rem}
+#s-sd .sp-grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;border:0}
+#s-sd .sp-grid>li{min-height:116px;padding:18px;border:1px solid var(--draw-line);border-radius:18px;background:var(--draw-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-size:.9rem}
+#s-sd .sp-grid strong{font-family:'Space Grotesk',sans-serif;font-weight:700;color:#ffe08a;font-size:1.1rem}
+#s-sd .sp-grid>li.sp-dis{background:linear-gradient(160deg,rgba(255,42,60,.18),rgba(255,255,255,.035));box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+#s-sd .sp-dis b{font-family:'Space Grotesk',sans-serif;font-size:1.1rem}
+#s-sd{padding:1.5rem 0 clamp(4rem,8vw,6rem);margin-top:-1.5rem;background:radial-gradient(ellipse 80% 70% at 50% 20%,rgba(255,42,60,.18),transparent 72%)}
+#s-sd .sp-head{display:block;text-align:center}
+#s-sd .sp-head h2{font-family:'Bricolage Grotesque','Space Grotesk',sans-serif;font-weight:800;font-size:clamp(2.2rem,5.4vw,4.1rem);line-height:.98;letter-spacing:-.035em;color:#ffb62e;text-shadow:0 0 38px rgba(255,182,46,.5)}
+#s-sd .sp-side{padding:0;margin:1rem 0 0}
+#s-sd .sp-note{max-width:58ch;margin:0 auto;font-size:1.08rem;color:#ffe08a}
+#s-sd .sp-n{justify-content:center;color:#ffe08a}
+#s-sd .sp-n b{color:#ffe08a}
+#s-sd .sp-grid,#s-sd .sp-h{display:none}
+#s-sd .support-clock{max-width:860px;margin:clamp(1.5rem,3vw,2rem) auto 0}
+#s-sd .support-clock .cu{border-color:rgba(255,224,138,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 18px 50px -22px rgba(255,182,46,.4)}
+#s-sd .support-clock .cu b{color:#ffe08a;text-shadow:0 0 26px rgba(255,182,46,.55)}
+#s-sd .support-clock .cu:last-child b{color:#ffe08a}
+#s-sd .support-clock .cu small{color:#ffe08a}
+#s-sd .support-warning{margin:1.35rem auto 0;text-align:center;color:#ff2a3c;font-weight:800;font-size:clamp(1rem,2.4vw,1.25rem)}
+.winner-check{display:inline-flex;justify-content:center;align-items:center;gap:.5rem;padding:.65rem 1rem;border:1px solid rgba(255,42,60,.45);border-radius:999px;background:rgba(255,42,60,.12);color:#fff;font-size:.86rem;text-align:center}
+#draw .winner-check{margin-top:1rem}
+#s-sd .support-winner{display:flex;width:fit-content;max-width:100%;margin:1rem auto 0}
+@media(max-width:620px){#draw .gw-grid{grid-template-columns:1fr}#draw .gw-rules{transform:rotate(-.8deg)}#draw .entry{padding:20px;border-radius:24px}}
+/* Countdown and supporter heading float cleanly over the star field. */
+#draw .cp{padding:1rem 0 0;border:0;border-radius:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
+#draw .cu,#s-sd .support-clock .cu{overflow:visible;border:0;border-radius:0;padding:clamp(.35rem,1.2vw,.8rem) 0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
+#draw .cp-top{border:0;background:none}
+#s-sd .sp-note{display:none}
+#s-sd .sp-head h2{margin-top:.3rem}
+.supporter-mark{display:block;width:max-content;margin:0 auto .6rem;color:#ffe08a;font:800 clamp(2rem,5vw,3rem)/1 'Bricolage Grotesque',sans-serif;text-shadow:0 0 10px rgba(255,224,138,.9),0 0 28px rgba(255,182,46,.8);animation:crown-beat 2.2s ease-in-out infinite}
+@keyframes crown-beat{0%,100%{transform:scale(1);filter:brightness(1)}45%{transform:scale(1.12);filter:brightness(1.35)}60%{transform:scale(1.04)}}
+@media(max-width:520px){#draw .cp{padding-top:.65rem}#draw .clk{gap:clamp(4px,1.8vw,8px)}#draw .cu{font-size:clamp(2.15rem,11.5vw,3.4rem)}#draw .cu small,#s-sd .support-clock .cu small{font-size:.62rem;letter-spacing:.01em}#draw .gw-head h2{font-size:clamp(2.1rem,10vw,3.3rem)}#s-sd .sp-head h2{font-size:clamp(2rem,9vw,3rem)}#s-sd .support-clock{margin-top:1rem}}
+@media(prefers-reduced-motion:reduce){.supporter-mark{animation:none}}
 
 /* ---------- SOCIAL + FOOTER ---------- */
 .sn-social-section{padding:5rem 0 4rem;background:#000;overflow:hidden;border-top:1px solid var(--line)}
@@ -354,7 +523,6 @@ textarea.inp:focus{box-shadow:0 0 0 1px rgb(var(--c))}
   <a href="#s-hz" style="--cc:#fff"><span data-i="c3">Content</span><i></i></a>
   <a href="#s-story" style="--cc:rgb(12,236,153)"><span data-i="c4">Giveaway</span><i></i></a>
   <a href="#s-sd" style="--cc:rgb(224,33,43)"><span data-i="c5">Supporter draw</span><i></i></a>
-  <a href="#message" style="--cc:rgb(255,70,140)"><span data-i="c6">Message</span><i></i></a>
 </nav>
 
 <main>
@@ -376,18 +544,36 @@ textarea.inp:focus{box-shadow:0 0 0 1px rgb(var(--c))}
 </section>
 
 <!-- ================= 2 · KÖZÖSSÉG ================= -->
-<section class="scene" id="s-notes" aria-label="Community">
-  <div class="stick" id="nStick" data-tone="soft">
-    <div class="glow"></div><div class="scan"></div><div class="flash" id="nFlash"></div>
-    <div class="fr" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
-    <div class="lab"><span data-i="s2_tag">Community</span><i></i></div>
-    <div class="n-title" id="nTitle"><h2 data-ih="s2_h">What others<br><em>wrote here.</em></h2><p data-i="s2_p">Small, anonymous notes from the books.</p></div>
-    <div class="n-box" id="nBox">
-      <div class="n-grid"><div class="n-ghost" id="nGhost" aria-hidden="true"></div><div class="n-typed" id="nTyped" aria-live="off"></div></div>
-      <div class="n-sig" id="nSig"></div>
+<section class="notes-sec" id="s-notes" aria-labelledby="nt-h">
+  <div class="wrap">
+    <div class="nt-head rise">
+      <div>
+        <p class="tag" data-i="s2_tag">Community</p>
+        <h2 class="h2" id="nt-h" data-ih="s2_h">What others<br><em>wrote here.</em></h2>
+        <p class="lead" data-i="s2_p">Small, anonymous notes from the books.</p>
+      </div>
+      <div class="live" role="status"><i aria-hidden="true"></i><span id="liveT"></span></div>
     </div>
-    <div class="n-live" role="status"><i aria-hidden="true"></i><span id="liveT"></span></div>
-    <a class="n-cta" id="nCta" href="/books.html" data-i="s2_cta">Write your own in the book</a>
+
+    <div class="nt-stage" id="ntStage" tabindex="0" role="group" aria-roledescription="carousel" data-ial="nt_label" aria-label="Notes">
+      <div class="nt-wrap" id="ntWrap">
+        <div class="sheet b2" aria-hidden="true"></div>
+        <div class="sheet b1" aria-hidden="true"></div>
+        <span class="tape" id="ntTape" aria-hidden="true"></span>
+        <article class="sheet paper" id="ntPaper" aria-live="polite">
+          <p class="nt-text" id="ntText"></p>
+          <p class="nt-sig" id="ntSig"></p>
+        </article>
+      </div>
+    </div>
+
+    <div class="nt-nav">
+      <button class="nt-arrow p" id="ntPrev" type="button" data-ial="nt_prev" aria-label="Previous note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="nt-dots" id="ntDots"></div>
+      <span class="nt-count" id="ntCount" aria-hidden="true"></span>
+      <button class="nt-arrow n" id="ntNext" type="button" data-ial="nt_next" aria-label="Next note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <p class="wall-cta"><a href="/books.html" data-i="s2_cta">Write your own in the book</a></p>
   </div>
 </section>
 
@@ -414,147 +600,153 @@ textarea.inp:focus{box-shadow:0 0 0 1px rgb(var(--c))}
 
     <div class="bt" data-a=".02" data-b=".21"><h2><span class="bl"><span data-i="st1a">Want your own</span></span><span class="bl"><span data-i="st1b">ID: Senkisem collection</span></span></h2></div>
     <div class="bt" data-a=".19" data-b=".37"><h2><span class="bl"><span data-i="st2a">or the books</span></span><span class="bl"><span data-i="st2b">in physical form?</span></span></h2></div>
-    <div class="bt" data-a=".35" data-b=".58"><div class="stk"><span class="bl"><span data-ih="st3a">There is no <span class="sk">shop</span>.</span></span><span class="bl"><span data-ih="st3b">No <span class="sk">cart</span>.</span></span><span class="bl"><span data-ih="st3c">No <span class="sk">“buy” button</span>.</span></span></div></div>
-    <div class="bt" data-a=".56" data-b=".7"><h2><span class="bl"><span data-i="st4a">You only have to</span></span><span class="bl"><span data-i="st4b">add one thing.</span></span></h2></div>
-    <div class="bt" data-a=".68" data-b=".8"><h2><span class="bl"><span data-i="st5">Show yourself.</span></span></h2><p class="mid" data-i="st5b">How you are when you are Senkisem.</p></div>
-    <div class="bt" data-a=".78" data-b=".87"><h2><span class="bl"><span data-i="st6">Post.</span></span></h2></div>
-    <div class="bt" data-a=".85" data-b=".93"><h2><span class="bl"><span data-i="st7">Put up a story.</span></span></h2></div>
-    <div class="bt" data-a=".91" data-b="1" data-keep><h2><span class="bl"><span data-i="st8a">Tag it:</span></span><span class="bl"><span class="hash">#senkisem</span></span></h2></div>
+    <div class="bt" data-a=".35" data-b=".60"><div class="stk"><span class="bl"><span data-ih="st3a">There is no <span class="sk">shop</span>.</span></span><span class="bl"><span data-ih="st3b">No <span class="sk">cart</span>.</span></span><span class="bl"><span data-ih="st3c">No <span class="sk">“buy” button</span>.</span></span></div></div>
+    <div class="bt" data-a=".58" data-b=".71"><h2><span class="bl"><span data-i="st4a">You only have to</span></span><span class="bl"><span data-i="st4b">add one thing.</span></span></h2></div>
+    <div class="bt" data-a=".69" data-b=".81"><h2><span class="bl"><span data-i="st5">Show yourself.</span></span></h2><p class="mid" data-i="st5b">How you are when you are Senkisem.</p></div>
+    <div class="bt" data-a=".79" data-b=".88"><h2><span class="bl"><span data-i="st6">Post.</span></span></h2></div>
+    <div class="bt" data-a=".86" data-b=".94"><h2><span class="bl"><span data-i="st7">Put up a story.</span></span></h2></div>
+    <div class="bt" data-a=".92" data-b="1" data-keep><h2><span class="bl"><span data-i="st8a">Tag it:</span></span><span class="bl"><span class="hash">#senkisem</span></span></h2></div>
 
     <div class="hint" id="stHint"><span data-i="scroll">scroll down</span><i></i></div>
   </div>
 </section>
 
-<section class="draw" id="draw" aria-labelledby="d-h">
-  <div class="wrap dgrid">
-    <div>
-      <p class="tag" data-i="d_tag">Until the next draw</p>
-      <h2 class="h2" id="d-h" data-ih="d_h">Show yourself.<br><em>Get in the circle.</em></h2>
-      <div class="timer" data-timer role="timer" aria-label="Countdown">
-        <div class="tg"><b class="dg" data-u="d">00</b><small data-i="u_d">days</small></div><span class="tsep" aria-hidden="true">:</span>
-        <div class="tg"><b class="dg" data-u="h">00</b><small data-i="u_h">hours</small></div><span class="tsep" aria-hidden="true">:</span>
-        <div class="tg"><b class="dg" data-u="m">00</b><small data-i="u_m">min</small></div><span class="tsep" aria-hidden="true">:</span>
-        <div class="tg"><b class="dg" data-u="s">00</b><small data-i="u_s">sec</small></div>
-      </div>
-      <div class="tbar" aria-hidden="true"><i data-bar></i></div>
-      <p class="tnote" data-tnote></p>
-      <ul class="rules">
-        <li data-i="d_r1">Post it publicly and add #senkisem. A link or a screenshot is enough.</li>
-        <li data-i="d_r2">One post is one chance. At most 3 per person in a round.</li>
-        <li data-i="d_r3">The winner is drawn by pure chance from everything sent in during the round.</li>
-        <li data-i="d_r4">You must be 16 or older.</li>
-      </ul>
-      <p class="win" data-i="d_win">We notify the winners by e-mail.</p>
-    </div>
+<!-- ================= 4b + 5 · SORSOLÁSOK (közös csillagos háttéren) ================= -->
+<div class="sky" id="sky">
+  <canvas id="skyCv" aria-hidden="true"></canvas>
 
-    <div class="form" id="dBox">
-      <form id="df" novalidate>
-        <fieldset class="fld">
-          <legend data-i="df_mode">What are you sending?</legend>
-          <div class="chips" role="radiogroup">
-            <label class="chip"><input type="radio" name="mode" value="link" checked><span data-i="df_link">A link</span></label>
-            <label class="chip"><input type="radio" name="mode" value="img"><span data-i="df_img">An image</span></label>
+  <!-- ---- HETI SORSOLÁS ---- -->
+  <section class="gw" id="draw" aria-labelledby="gw-h">
+    <div class="wrap">
+
+      <div class="gw-head rise">
+        <h2 id="gw-h" data-ih="gw_h">Saturday midnight.<br>One of you wins.</h2>
+        <p data-i="gw_p">Once a week.</p>
+      </div>
+
+      <div class="cp pn rise">
+        <div class="cp-top">
+          <span><b>№ <span id="gwRound">001</span></b><span data-i="d_tag">Weekly draw</span></span>
+          <span data-i="gw_when">Saturday 00:00 · Budapest</span>
+        </div>
+
+        <div class="clk" id="clk" role="timer" aria-label="Countdown">
+          <div class="cu"><b data-u="d">00</b><small data-i="u_d">days</small></div>
+          <div class="cu"><b data-u="h">00</b><small data-i="u_h">hours</small></div>
+          <div class="cu"><b data-u="m">00</b><small data-i="u_m">min</small></div>
+          <div class="cu"><b data-u="s">00</b><small data-i="u_s">sec</small></div>
+        </div>
+
+        <div class="wk" aria-hidden="true">
+          <div class="wk-line"><i id="wkBar"></i><u id="wkNeedle"></u></div>
+          <ol class="wk-d" id="wkDays"></ol>
+        </div>
+        <p class="tnote" id="gwNote"></p>
+
+        <dl class="fx">
+          <div><dt data-i="fx_in">Entries this round</dt><dd id="fxIn">–</dd></div>
+          <div><dt data-i="fx_last">Last winner</dt><dd id="fxLast">–</dd></div>
+          <div><dt data-i="fx_how">How</dt><dd data-i="fx_howv">Pure chance.</dd></div>
+        </dl>
+      </div>
+
+      <div class="gw-grid">
+        <aside class="gw-rules pn rise">
+          <p class="hand-tag" data-i="d_hand">Get in the circle.</p>
+          <ul class="rl">
+            <li data-i="d_r1">Post it publicly.</li>
+            <li data-i="d_r2">One post is one chance.</li>
+            <li data-i="d_r3">Pure chance.</li>
+            <li data-i="d_r4">16 or older.</li>
+          </ul>
+          <p class="rl-win winner-check" data-i="d_win">Check back every Saturday: we post the winner’s name or ID here.</p>
+        </aside>
+
+        <div class="entry pn rise" id="dBox">
+          <form id="df" novalidate>
+
+            <section class="st" aria-labelledby="st1-t">
+              <span class="st-n" aria-hidden="true"></span>
+              <div>
+                <h3 class="st-t" id="st1-t"><span data-i="fs1">The post</span><small data-i="fs1h"></small></h3>
+                <div class="seg" role="radiogroup" data-ial="df_mode" aria-label="What are you sending?">
+                  <label><input type="radio" name="mode" value="link" checked><span data-i="df_link">A link</span></label>
+                  <label><input type="radio" name="mode" value="img"><span data-i="df_img">An image</span></label>
+                </div>
+                <div class="fld" id="dLinkW">
+                  <label for="dLink" data-i="df_linkl">Link to your post or story</label>
+                  <input class="inp" id="dLink" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="300" data-ph="df_linkph">
+                </div>
+                <div class="fld" id="dImgW" hidden>
+                  <label for="dFile" data-i="df_imgl">Screenshot or photo of your post</label>
+                  <label class="drop" id="dDrop"><input type="file" id="dFile" class="sr" accept="image/*"><b data-i="df_drop">Choose an image</b><span data-i="df_drop2">or drop it here</span></label>
+                  <div class="thumb" id="dThumb" hidden><img alt=""><button type="button" class="btn g" id="dRm" data-i="df_rm">Remove</button></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="st" aria-labelledby="st2-t">
+              <span class="st-n" aria-hidden="true"></span>
+              <div>
+                <h3 class="st-t" id="st2-t"><span data-i="fs2">You</span><small data-i="fs2h"></small></h3>
+                <div class="fld">
+                  <label for="dName" data-i="df_name">Senkisem ID / name</label>
+                  <input class="inp" id="dName" type="text" maxlength="60" autocomplete="off" autocapitalize="off" spellcheck="false" data-ph="df_nameph">
+                </div>
+                <div class="fld">
+                  <label for="dMail" data-i="df_mail">E-mail</label>
+                  <input class="inp" id="dMail" type="email" maxlength="254" autocomplete="email" inputmode="email" data-ph="df_mailph">
+                  <p class="hint2" id="dMailH"></p>
+                </div>
+              </div>
+            </section>
+
+            <section class="st" aria-labelledby="st3-t">
+              <span class="st-n" aria-hidden="true"></span>
+              <div>
+                <h3 class="st-t" id="st3-t"><span data-i="fs3">Send</span><small data-i="fs3h"></small></h3>
+                <label class="chk"><input type="checkbox" id="dOk"><span data-i="df_ok">I am 16 or older.</span></label>
+                <div class="hp" aria-hidden="true"><label>Website<input type="text" id="dHp" tabindex="-1" autocomplete="off"></label></div>
+                <button class="btn w" type="submit" id="dSend" data-i="df_send">Enter the draw</button>
+                <p class="msg" id="dOut" role="alert"></p>
+              </div>
+            </section>
+
+          </form>
+
+          <div class="sent" id="dSent" hidden>
+            <span class="seal" data-i="ok_seal">Sent</span>
+            <h3 data-i="dok_h">You're in the circle.</h3>
+            <p data-i="dok_p">We have your entry.</p>
+            <dl class="rcpt">
+              <div><dt data-i="r_ref">Reference</dt><dd class="mono" id="dRef"></dd></div>
+              <div><dt data-i="r_round">Round</dt><dd id="dRound"></dd></div>
+              <div><dt data-i="r_draw">Draw</dt><dd id="dWhen"></dd></div>
+              <div><dt data-i="r_cnt">Your entries this round</dt><dd id="dCnt"></dd></div>
+            </dl>
+            <button class="btn g" type="button" id="dAgain" data-i="dok_again">Send another post</button>
           </div>
-        </fieldset>
-        <div class="fld" id="dLinkW">
-          <label for="dLink" data-i="df_linkl">Link to your post or story</label>
-          <input class="inp" id="dLink" type="url" inputmode="url" autocomplete="off" maxlength="300" data-ph="df_linkph">
         </div>
-        <div class="fld" id="dImgW" hidden>
-          <label for="dFile" data-i="df_imgl">Screenshot or photo of your post</label>
-          <label class="drop" id="dDrop"><input type="file" id="dFile" class="sr" accept="image/*"><b data-i="df_drop">Choose an image</b><span data-i="df_drop2">or drop it here</span></label>
-          <div class="thumb" id="dThumb" hidden><img alt=""><button type="button" class="btn g" id="dRm" data-i="df_rm">Remove</button></div>
-        </div>
-        <div class="fld">
-          <label for="dName" data-i="df_name">Senkisem ID / name</label>
-          <input class="inp" id="dName" type="text" maxlength="60" autocomplete="off" autocapitalize="off" spellcheck="false" data-ph="f_name_ph">
-        </div>
-        <div class="fld">
-          <label for="dMail" data-i="df_mail">E-mail (for the winner notice)</label>
-          <input class="inp" id="dMail" type="email" maxlength="254" autocomplete="email" inputmode="email" data-ph="df_mailph">
-          <p class="hint2" id="dMailH" data-i="df_mailh">You can skip it if you enter a registered ID-Senkisem. With a plain name it is required.</p>
-        </div>
-        <label class="chk"><input type="checkbox" id="dOk"><span data-i="df_ok">I am 16 or older, the post is mine, and I agree that Senkisem uses this data only for the draw and to contact me if I win.</span></label>
-        <div class="hp" aria-hidden="true"><label>Website<input type="text" id="dHp" tabindex="-1" autocomplete="off"></label></div>
-        <div class="btns"><button class="btn w" type="submit" id="dSend" data-i="df_send">Enter the draw</button></div>
-        <p class="msg" id="dOut" role="alert"></p>
-      </form>
-      <div class="sent" id="dSent" hidden>
-        <span class="seal" data-i="ok_seal">Sent</span>
-        <h3 data-i="dok_h">You're in the circle.</h3>
-        <p><span data-i="dok_p">We have your entry. Reference:</span> <span class="ref" id="dRef"></span></p>
-        <button class="btn g" type="button" id="dAgain" data-i="dok_again">Send another post</button>
       </div>
+
+    </div>
+  </section>
+
+  <!-- ---- TÁMOGATÓI SORSOLÁS ---- -->
+  <div class="sp" id="s-sd" aria-labelledby="sd-h">
+    <div class="wrap">
+      <div class="sp-head rise">
+        <span class="supporter-mark" aria-hidden="true">♛</span>
+        <h2 id="sd-h" data-ih="sd_h">We also draw among our supporters.</h2>
+        <div class="sp-side">
+          <div class="sp-n" id="spNw" hidden><b id="spN">0</b><span data-i="sp_n">supporters so far</span></div>
+        </div>
+      </div>
+
+
     </div>
   </div>
-</section>
-
-<!-- ================= 5 · TÁMOGATÓI SORSOLÁS ================= -->
-<section class="scene sd" id="s-sd" aria-label="Supporter draw">
-  <div class="stick">
-    <div class="fr" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
-    <div class="lab"><span data-i="s5_tag">Supporter draw</span><i></i></div>
-
-    <div class="bt" data-a=".02" data-b=".38"><h2><span class="bl"><span data-i="sd1a">We draw among</span></span><span class="bl"><span data-i="sd1b">our supporters, too.</span></span></h2></div>
-    <div class="bt" data-a=".34" data-b=".66"><h2><span class="bl"><span data-i="sd2a">Irregularly.</span></span><span class="bl"><span data-i="sd2b">Pure chance.</span></span></h2><p class="mid" data-i="sd2c">Products, once in a while.</p></div>
-    <div class="bt" data-a=".62" data-b="1" data-keep>
-      <p class="tag" style="--c:var(--red);color:#ff6a73" data-i="sd3_tag">Until the next supporter draw</p>
-      <div class="timer red" data-timer role="timer" aria-label="Countdown">
-        <div class="tg"><b class="dg" data-u="d">00</b><small data-i="u_d">days</small></div><span class="tsep" aria-hidden="true">:</span>
-        <div class="tg"><b class="dg" data-u="h">00</b><small data-i="u_h">hours</small></div><span class="tsep" aria-hidden="true">:</span>
-        <div class="tg"><b class="dg" data-u="m">00</b><small data-i="u_m">min</small></div><span class="tsep" aria-hidden="true">:</span>
-        <div class="tg"><b class="dg" data-u="s">00</b><small data-i="u_s">sec</small></div>
-      </div>
-      <p class="sd-stmt" data-ih="sd3_stmt"><b>Support does not guarantee a win.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 6 · ÜZENET ================= -->
-<section class="cx-sec" id="message" aria-labelledby="msg-h">
-  <div class="wrap cx">
-    <div>
-      <p class="tag" data-i="s6_tag">Problems and questions</p>
-      <h2 class="h2" id="msg-h" data-ih="s6_h">Something wrong?<br><em>Tell us.</em></h2>
-      <p class="lead" data-i="s6_p">A payment that didn't go through, a lost ID, a question about your concept. Write it here and it lands with us.</p>
-      <ul class="rules">
-        <li data-i="s6_r1">There's no public e-mail address. Every message arrives through this form.</li>
-        <li data-i="s6_r2">Want an answer? Enter your ID-Senkisem. A plain name can't be answered.</li>
-        <li data-i="s6_r3">We read everything. Replies can take a few days.</li>
-      </ul>
-    </div>
-    <div class="form" id="formBox">
-      <form id="cf" novalidate>
-        <div class="fld">
-          <label for="cName" data-i="f_name">Name or ID</label>
-          <input class="inp" id="cName" type="text" maxlength="60" autocomplete="off" autocapitalize="off" spellcheck="false" data-ph="f_name_ph" aria-describedby="idHint">
-          <p class="hint2" id="idHint" aria-live="polite"></p>
-        </div>
-        <fieldset class="fld">
-          <legend data-i="f_subj">Subject</legend>
-          <div class="chips" id="chips" role="radiogroup"></div>
-        </fieldset>
-        <div class="fld">
-          <label for="cMsg" data-i="f_msg">Message</label>
-          <textarea class="inp" id="cMsg" maxlength="2000" data-ph="f_msg_ph"></textarea>
-          <p class="cnt" id="cnt">0 / 2000</p>
-        </div>
-        <div class="hp" aria-hidden="true"><label>Website<input type="text" id="cHp" tabindex="-1" autocomplete="off"></label></div>
-        <div class="btns">
-          <button class="btn w" type="submit" id="cSend" data-i="b_send">Send</button>
-          <button class="btn g" type="button" id="cClear" data-i="b_clear">Clear</button>
-        </div>
-        <p class="msg" id="cMsgOut" role="alert"></p>
-      </form>
-      <div class="sent" id="sent" hidden>
-        <span class="seal" data-i="ok_seal">Sent</span>
-        <h3 data-i="ok_h">It's with us.</h3>
-        <p><span data-i="ok_p">Your message arrived. Keep this reference:</span> <span class="ref" id="refOut"></span></p>
-        <button class="btn g" type="button" id="again" data-i="ok_again">Write another</button>
-      </div>
-    </div>
-  </div>
-</section>
+</div>
 
 </main>
 
@@ -602,19 +794,18 @@ var CFG={
   FEED:'/api/community/feed',
   STATUS:'/api/draw/status',
   ENTER:'/api/draw/enter',
-  CONTACT:'/api/contact',
   /* 'fallback' = valós adat, ha van; ami hiányzik, azt szimulálja | 'always' = mindig szimulált | 'off' = csak valós */
   SIMULATE:'fallback',
-  /* 7 napos kör. Ha a szerver nem érhető el, innen számol. 2026-10-19 18:00 (Budapest, CEST) = 16:00 UTC */
-  DRAW:{epoch:Date.UTC(2026,9,19,16,0,0),cycle:7*24*3600*1000},
+  /* Az első sorsolás: 2026-10-24 (szombat) 00:00 budapesti idő (CEST) = 2026-10-23 22:00 UTC. Utána minden szombat 00:00. */
+  FIRST:Date.UTC(2026,9,23,22,0,0),
   GA_ID:'G-9GKMR41DYX'
 };
+var WEEK=7*24*3600*1000,TZ='Europe/Budapest';
 
 /* ============================================================
    TARTALOM — ITT FRISSÍTSD KÉZZEL
    p: 'youtube' | 'tiktok' | 'instagram' | 'other'
    d: dátum (ÉÉÉÉ-HH-NN). A legfrissebb kerül előre; 7 napon belül "Új" jelölést kap.
-   Most csak próba-linkek (cicás keresések) — cseréld le a valósakra.
 ============================================================ */
 var CONTENT=[
   {p:'youtube',  d:'2026-10-12', u:'https://www.youtube.com/results?search_query=funny+cats',
@@ -632,116 +823,118 @@ var CONTENT=[
 ============================================================ */
 var T={
 en:{
- title:'Senkisem ',
- nav_about:'About',nav_clothing:'Clothing',nav_books:'Books',nav_community:'Community',nav_contact:'Contact',nav_support:'Support',
- c1:'Supporters',c2:'Community',c3:'Content',c4:'Giveaway',c5:'Supporter draw',c6:'Message',scroll:'scroll down',
- s1_tag:'Our supporters',s1_l1:'Without you,',s1_l2:"it wouldn't work.",s1_cap:'Every dot is a person.',
+ nav_about:'About',nav_clothing:'Clothing',nav_books:'Books',nav_community:'Community',nav_support:'Support',
+ c1:'Supporters',c2:'Community',c3:'Content',c4:'Giveaway',c5:'Supporter draw',scroll:'scroll down',
+ s1_tag:'Our supporters',s1_l1:'Without you,',s1_l2:"it wouldn't work.",s1_m1:'Without|you,',s1_m2:'it wouldn’t|work.',s1_cap:'Every dot is a person.',
  s1_cta:'Step in',wk:'{n} people stepped in this week.',wk1:'1 person stepped in this week.',
  lb_top:'Biggest supporter of the week',lb_new:'Latest',
  ago0:'just now',agoM:'{n} min ago',agoH:'{n} h ago',agoD:'{n} d ago',none:'nobody yet',
  s2_tag:'Community',s2_h:'What others<br><em>wrote here.</em>',s2_p:"Small, anonymous notes from the books. The name doesn't matter here.",
  live:'{n} reading now',s2_cta:'Write your own in the book',
+ nt_label:'Notes',nt_prev:'Previous note',nt_next:'Next note',nt_dot:'Note {n}',
  s3_tag:'Content',s3_h:'On air<br><em>right now.</em>',s3_p:'Our latest videos and posts in one place, updated by hand.',g_new:'New',g_open:'Open',
  s4_tag:'Giveaway',
  st1a:'Want your own',st1b:'ID: Senkisem collection',st2a:'or the books',st2b:'in physical form?',
  st3a:'There is no <span class="sk">shop</span>.',st3b:'No <span class="sk">cart</span>.',st3c:'No <span class="sk">“buy” button</span>.',
  st4a:'You only have to',st4b:'add one thing.',st5:'Show yourself.',st5b:'How you are when you are Senkisem.',
  st6:'Post.',st7:'Put up a story.',st8a:'Tag it:',
- d_tag:'Until the next draw',d_h:'Show yourself.<br><em>Get in the circle.</em>',
- u_d:'days',u_h:'hours',u_m:'min',u_s:'sec',
- d_r1:'Post it publicly and add #senkisem. A link or a screenshot is enough.',
- d_r2:'One post is one chance. At most 3 per person in a round.',
- d_r3:'The winner is drawn by pure chance from everything sent in during the round.',
- d_r4:'You must be 16 or older.',d_win:'We notify the winners by e-mail.',
+ /* heti sorsolás */
+ d_tag:'Weekly draw',gw_when:'Every Saturday, 00:00 · Budapest',
+ gw_h:'Saturday midnight.<br>One of you wins.',
+ gw_p:'Post yourself with #senkisem, send us the link, and you are in. Once a week, pure chance picks one entry from everything sent that week.',
+ u_d:'days',u_h:'hours',u_m:'minutes',u_s:'seconds',
+ tn_left:'Drawing on {d}',tn_new:'The round just closed. A new one has started.',
+ fx_in:'Entries this round',fx_last:'Last winner',fx_how:'How',fx_howv:'Only chance. One entry, one ticket.',
+ fx_none:'No draw yet. The first one is on {d}',fx_empty:'Nobody entered the last round.',fx_of:'out of {n} entries',
+ d_hand:'How to get in',
+ d_r1:'Post it publicly and write #senkisem next to it. A post, a story or a screenshot is enough.',
+ d_r2:'One post, one chance. We accept at most 3 entries per person in a round.',
+ d_r3:'The winner is picked by chance from everything sent in during the round. No jury, no scoring.',
+ d_r4:'You must be 16 or older.',d_win:'If you win, we write to you by e-mail.',
+ fs1:'Your post',fs1h:'A public link or a screenshot, with #senkisem on it.',
+ fs2:'Who are you',fs2h:'Your Senkisem ID or any name, so we know who it is if you win.',
+ fs3:'Send it',fs3h:'One tick, one button.',
  df_mode:'What are you sending?',df_link:'A link',df_img:'An image',df_linkl:'Link to your post or story',df_linkph:'https://',
  df_imgl:'Screenshot or photo of your post',df_drop:'Choose an image',df_drop2:'or drop it here',df_rm:'Remove',
- df_name:'Senkisem ID / name',df_mail:'E-mail (for the winner notice)',df_mailph:'you@example.com',
- df_mailh:'You can skip it if you enter a registered ID-Senkisem. With a plain name it is required.',
+ df_name:'Senkisem ID / name',df_nameph:'ID-Senkisem ABC123, or your name',df_mail:'E-mail',df_mailph:'you@example.com',
+ df_mailh_id:'Not needed with a registered ID. We use the e-mail of your ID.',
+ df_mailh_n:'Required with a plain name. We only write here if you win.',
  df_ok:'I am 16 or older, the post is mine, and I agree that Senkisem uses this data only for the draw and to contact me if I win.',
- df_send:'Enter the draw',df_sending:'Sending…',
- de_link:'Add a link that starts with https://.',de_img:'Choose an image first.',de_imgbad:"That file couldn't be read as an image.",de_mail:'Add a valid e-mail so we can reach you.',de_ok:'Tick the box to take part.',
+ df_send:"I'm in",df_sending:'Sending…',
+ de_link:'Add a link that starts with https://.',de_host:'That does not look like a public social post. Use an Instagram, TikTok, YouTube, Facebook, X, Threads, Reddit or Bluesky link.',
+ de_img:'Choose an image first.',de_imgbad:"That file couldn't be read as an image.",de_mail:'Add a valid e-mail so we can reach you.',de_ok:'Tick the box to take part.',
  de_dup:'This post is already in the round.',de_limit:'You reached the limit for this round (3 entries).',
- dok_h:"You're in the circle.",dok_p:'We have your entry. Reference:',dok_again:'Send another post',
- tn_left:'Round ends {d}',tn_new:'The last round just closed. A new one has started.',
- s5_tag:'Supporter draw',sd1a:'We draw among',sd1b:'our supporters, too.',sd2a:'Irregularly.',sd2b:'Pure chance.',sd2c:'Products, once in a while.',
- sd3_tag:'Until the next supporter draw',sd3_stmt:'<b>Support does not guarantee a win.',
- lg_h:'Before you support',lg_pull:'<b>Support does not guarantee a win.</b>',
- lg1:'<strong>Voluntary.</strong> Support is a voluntary donation. It is not a purchase, not an entry fee and not a stake.',
- lg2:'<strong>No guarantee.</strong> Supporting does not promise a prize, and does not mean you will ever win.',
- lg3:'<strong>Equal chance.</strong> The amount, and the number of times you support, do not raise your chance.',
- lg4:'<strong>Irregular.</strong> Draws happen irregularly, and pure chance decides among supporters. The countdown shows the next round. It is not a promise that a winner will be announced then.',
- lg5:'<strong>Free alternatives.</strong> The books stay free, and the giveaway above is open without any support.',
- lg6:"<strong>Notice.</strong> We notify a winner at the e-mail address given during the support. If you don't want to take part, tell us through the form below.",
- lg_q:'Questions? Write to us',
- s6_tag:'Problems and questions',s6_h:'Something wrong?<br><em>Tell us.</em>',
- s6_p:"A payment that didn't go through, a lost ID, a question about your concept. Write it here and it lands with us.",
- s6_r1:"There's no public e-mail address. Every message arrives through this form.",
- s6_r2:"Want an answer? Enter your ID-Senkisem. A plain name can't be answered.",
- s6_r3:'We read everything. Replies can take a few days.',
- f_name:'Name or ID',f_name_ph:'ID-Senkisem 7K2P9Q, or a name',f_subj:'Subject',f_msg:'Message',f_msg_ph:'What happened? The more exact, the faster we can help.',
- sub_pay:'Payment or support',sub_id:'ID-Senkisem or login',sub_concept:'My concept',sub_book:'Books and reader',sub_tech:'Technical issue',sub_other:'Something else',
- h_name:"A name works, but we can't answer it. For an answer, use your ID-Senkisem.",h_idok:'Valid ID format. We can answer this one.',h_idbad:"That doesn't look like an ID-Senkisem. It has 6 letters and numbers.",
- b_send:'Send',b_sending:'Sending…',b_clear:'Clear',
- e_name:'Add your name or ID (at least 2 characters).',e_subj:'Pick a subject.',e_msg:'Write at least 10 characters.',
- e_rate:'Too many attempts in a short time. Try again in a few minutes.',e_bad:"The server didn't accept this. Check the fields.",e_net:"It didn't go through. Your text is still here. Try again in a minute.",
- ok_seal:'Sent',ok_h:"It's with us.",ok_p:'Your message arrived. Keep this reference:',ok_again:'Write another',
+ e_name:'Add your ID or a name (at least 2 characters).',e_rate:'Too many tries. Wait a little.',e_bad:'The entry could not be saved. Check your details.',e_net:'Could not reach the server. Try again.',
+ ok_seal:'Sent',dok_h:"You're in the circle.",dok_p:'We have your entry. Keep the reference below.',dok_again:'Send another post',
+ r_ref:'Reference',r_round:'Round',r_draw:'Draw',r_cnt:'Your entries this round',
+ /* támogatói */
+ s5_tag:'Supporter draw',sd_h:'We also draw<br>among our supporters.',sd2c:'Now and then, with no announcement, we raffle off a product among them. Pure chance decides.',
+ sd3_stmt:'Support does not guarantee a win. This is not gambling.',sd_more:'Details on the Support page',
+ sp_n:'supporters so far',sp_t:'There is no countdown, and we do not promise a date.',
+ lg_h:'Before you support, know this',
+ lg1:'<strong>It is voluntary.</strong>Support is a donation. It is not a purchase, an entry fee or a stake.',
+ lg2:'<strong>No promise.</strong>Supporting does not guarantee a prize, and does not mean you will ever win.',
+ lg3:'<strong>Equal chances.</strong>Neither the amount nor the number of times you support raises your chance.',
+ lg4:'<strong>No schedule.</strong>Draws happen irregularly, and among supporters pure chance decides.',
+ lg5:'<strong>Free ways in.</strong>The books stay free, and the weekly giveaway above is open to everyone, with no support needed.',
  f_follow:'Follow us',f_terms:'Terms & Conditions',f_priv:'Privacy Policy',f_rights:'All rights reserved',
  ck_t:'Cookies & Privacy',ck_p:'We use essential cookies to make the site work. With your consent we also load anonymous analytics. Details in our Privacy Policy.',ck_a:'Accept',ck_d:'Decline',ck_n:'Necessary only'
 },
 hu:{
- title:'Senkisem ',
- nav_about:'Rólunk',nav_clothing:'Ruházat',nav_books:'Könyvek',nav_community:'Közösség',nav_contact:'Kapcsolat',nav_support:'Támogatás',
- c1:'Támogatóink',c2:'Közösség',c3:'Tartalom',c4:'Sorsolás',c5:'Támogatói sorsolás',c6:'Üzenet',scroll:'görgess lejjebb',
- s1_tag:'Támogatóink',s1_l1:'Nélkületek',s1_l2:'nem menne.',s1_cap:'Minden pont egy ember.',
+ nav_about:'Rólunk',nav_clothing:'Ruházat',nav_books:'Könyvek',nav_community:'Közösség',nav_support:'Támogatás',
+ c1:'Támogatóink',c2:'Közösség',c3:'Tartalom',c4:'Sorsolás',c5:'Támogatói sorsolás',scroll:'görgess lejjebb',
+ s1_tag:'Támogatóink',s1_l1:'Nélkületek',s1_l2:'nem menne.',s1_m1:'Nélkületek',s1_m2:'nem|menne.',s1_cap:'Minden pont egy ember.',
  s1_cta:'Beszállok',wk:'Ezen a héten {n} ember szállt be.',wk1:'Ezen a héten 1 ember szállt be.',
  lb_top:'A hét legnagyobb támogatója',lb_new:'Legfrissebb',
  ago0:'most',agoM:'{n} perce',agoH:'{n} órája',agoD:'{n} napja',none:'még senki',
  s2_tag:'Közösség',s2_h:'Amit mások<br><em>ide írtak.</em>',s2_p:'Apró, névtelen jegyzetek a könyvekből. A név itt nem számít.',
  live:'{n} olvassa most',s2_cta:'Írd meg a sajátodat a könyvben',
+ nt_label:'Jegyzetek',nt_prev:'Előző jegyzet',nt_next:'Következő jegyzet',nt_dot:'{n}. jegyzet',
  s3_tag:'Tartalom',s3_h:'Most<br><em>adásban.</em>',s3_p:'A legfrissebb videóink és posztjaink egy helyen, kézzel frissítve.',g_new:'Új',g_open:'Megnyitás',
  s4_tag:'Sorsolás',
  st1a:'Szeretnéd a saját',st1b:'ID: Senkisem kollekciódat',st2a:'vagy a könyveket',st2b:'fizikai formátumban?',
  st3a:'Nincs <span class="sk">bolt</span>.',st3b:'Nincs <span class="sk">kosár</span>.',st3c:'Nincs <span class="sk">„megveszem” gomb</span>.',
  st4a:'Egyetlen dolgot',st4b:'kell tenned hozzá.',st5:'Mutasd meg magad.',st5b:'Milyen vagy, amikor Senkisem vagy.',
  st6:'Posztolj.',st7:'Rakj ki sztorit.',st8a:'#-eld be:',
- d_tag:'A következő sorsolásig',d_h:'Mutasd meg magad.<br><em>Kerülj a körbe.</em>',
- u_d:'nap',u_h:'óra',u_m:'perc',u_s:'mp',
- d_r1:'Posztold nyilvánosan, és tedd mellé: #senkisem. Egy link vagy egy képernyőkép elég.',
- d_r2:'Egy poszt egy esély. Egy körben legfeljebb 3 személyenként.',
- d_r3:'A nyertest puszta véletlen választja ki a körben beküldöttek közül.',
- d_r4:'Legalább 16 évesnek kell lenned.',d_win:'A nyerteseket e-mailben értesítjük.',
- df_mode:'Mit küldesz?',df_link:'Linket',df_img:'Képet',df_linkl:'A poszt vagy a sztori linkje',df_linkph:'https://',
+ /* heti sorsolás */
+ d_tag:'Heti sorsolás',gw_when:'Minden szombat 00:00 · Budapest',
+ gw_h:'Szombat éjfélkor<br>egyikőtök nyer.',
+ gw_p:'Posztolj magadról #senkisem címkével, küldd be a linket, és benne vagy. Hetente egyszer a véletlen kiválaszt egyet a héten beküldöttek közül.',
+ u_d:'nap',u_h:'óra',u_m:'perc',u_s:'másodperc',
+ tn_left:'Ekkor húzunk: {d}',tn_new:'A kör épp most zárult. Elindult egy új.',
+ fx_in:'Beküldés ebben a körben',fx_last:'Legutóbbi nyertes',fx_how:'Hogyan',fx_howv:'Csak a véletlen. Egy beküldés, egy esély.',
+ fx_none:'Még nem volt húzás. Az első: {d}',fx_empty:'Az előző körben nem volt beküldés.',fx_of:'{n} beküldésből',
+ d_hand:'Így kerülsz be',
+ d_r1:'Tedd ki nyilvánosan, és írd mellé: #senkisem. Elég egy poszt, egy sztori vagy egy képernyőkép.',
+ d_r2:'Egy poszt, egy esély. Egy körben személyenként legfeljebb 3 beküldést fogadunk el.',
+ d_r3:'A nyertest a véletlen választja ki a körben beküldöttek közül. Nincs zsűri, nincs pontozás.',
+ d_r4:'Legalább 16 évesnek kell lenned.',d_win:'Ha te nyersz, e-mailben írunk neked.',
+ fs1:'A posztod',fs1h:'Nyilvános link vagy képernyőkép, rajta a #senkisem.',
+ fs2:'Ki vagy te',fs2h:'A Senkisem ID-d vagy bármilyen név, hogy tudjuk, kiről van szó, ha nyersz.',
+ fs3:'Küldés',fs3h:'Egy pipa, egy gomb.',
+ df_mode:'Mit küldesz?',df_link:'Link',df_img:'Kép',df_linkl:'A poszt vagy a sztori linkje',df_linkph:'https://',
  df_imgl:'Képernyőkép vagy fotó a postodról',df_drop:'Válassz képet',df_drop2:'vagy húzd ide',df_rm:'Eltávolít',
- df_name:'Senkisem ID / név',df_mail:'E-mail (a nyertes értesítéséhez)',df_mailph:'te@példa.hu',
- df_mailh:'Kihagyhatod, ha regisztrált ID-Senkisemmel jelentkezel. Egyszerű névvel kötelező.',
+ df_name:'Senkisem ID / név',df_nameph:'ID-Senkisem 7K2P9Q vagy egy név',df_mail:'E-mail',df_mailph:'te@példa.hu',
+ df_mailh_id:'Regisztrált ID-vel nem kell. Az ID-d e-mail-címét használjuk.',
+ df_mailh_n:'Egyszerű névvel kötelező. Csak akkor írunk ide, ha nyertél.',
  df_ok:'Elmúltam 16 éves, a poszt az enyém, és hozzájárulok, hogy Senkisem ezeket az adatokat kizárólag a sorsoláshoz és a nyertes értesítéséhez használja.',
- df_send:'Beküldöm',df_sending:'Küldés…',
- de_link:'Adj meg egy https://-sel kezdődő linket.',de_img:'Előbb válassz egy képet.',de_imgbad:'Ezt a fájlt nem sikerült képként beolvasni.',de_mail:'Adj meg érvényes e-mail-címet, hogy elérhessünk.',de_ok:'A részvételhez pipáld be a jelölőnégyzetet.',
+ df_send:'Benne vagyok',df_sending:'Küldés…',
+ de_link:'Adj meg egy https://-sel kezdődő linket.',de_host:'Ez nem tűnik nyilvános közösségi posztnak. Instagram, TikTok, YouTube, Facebook, X, Threads, Reddit vagy Bluesky link kell.',
+ de_img:'Előbb válassz egy képet.',de_imgbad:'Ezt a fájlt nem sikerült képként beolvasni.',de_mail:'Adj meg érvényes e-mail-címet, hogy elérhessünk.',de_ok:'A részvételhez pipáld be a jelölőnégyzetet.',
  de_dup:'Ez a poszt már a körben van.',de_limit:'Elérted a körre vonatkozó határt (3 beküldés).',
- dok_h:'Benne vagy a körben.',dok_p:'Megkaptuk a beküldésedet. Hivatkozás:',dok_again:'Újabb poszt küldése',
- tn_left:'A kör zárul: {d}',tn_new:'Az előző kör épp most zárult. Elindult egy új.',
- s5_tag:'Támogatói sorsolás',sd1a:'A támogatóink között',sd1b:'is sorsolunk.',sd2a:'Rendszertelenül.',sd2b:'Puszta véletlenből.',sd2c:'Termékeket, időnként.',
- sd3_tag:'A következő támogatói sorsolásig hátralévő idő',sd3_stmt:'<b>A támogatás nem garantálja a nyerést.',
- lg_h:'Mielőtt támogatsz',lg_pull:'<b>A támogatás nem garantálja a nyerést.</b>',
- lg1:'<strong>Önkéntes.</strong> A támogatás önkéntes adomány. Nem vásárlás, nem részvételi díj és nem tét.',
- lg2:'<strong>Nincs garancia.</strong> A támogatás nem ígér nyereményt, és nem jelenti azt, hogy valaha nyerni fogsz.',
- lg3:'<strong>Egyenlő esély.</strong> Az összeg és a támogatások száma nem növeli az esélyedet.',
- lg4:'<strong>Rendszertelen.</strong> A sorsolás rendszertelenül történik, a támogatók között puszta véletlen dönt. A visszaszámláló a következő kört jelzi, nem ígéret arra, hogy ekkor nyertest hirdetünk.',
- lg5:'<strong>Ingyenes lehetőségek.</strong> A könyvek ingyenesek maradnak, a fenti nyereményjáték pedig támogatás nélkül is nyitva áll.',
- lg6:'<strong>Értesítés.</strong> A nyertest a támogatáskor megadott e-mail-címen értesítjük. Ha nem szeretnél részt venni, jelezd az alábbi űrlapon.',
- lg_q:'Kérdésed van? Írj nekünk',
- s6_tag:'Problémák, kérdések',s6_h:'Valami nem stimmel?<br><em>Írd meg.</em>',
- s6_p:'Egy fizetés, ami nem ment át, egy elveszett azonosító, egy kérdés a koncepciódról. Írd ide, és hozzánk érkezik.',
- s6_r1:'Nincs nyilvános e-mail-cím. Minden üzenet ezen az űrlapon érkezik hozzánk.',
- s6_r2:'Választ szeretnél? Add meg az ID-Senkisemedet. Egy névre nem tudunk válaszolni.',
- s6_r3:'Mindent elolvasunk. A válasz pár napot is igénybe vehet.',
- f_name:'Név vagy ID',f_name_ph:'ID-Senkisem 7K2P9Q, vagy egy név',f_subj:'Tárgy',f_msg:'Üzenet',f_msg_ph:'Mi történt? Minél pontosabb vagy, annál gyorsabban tudunk segíteni.',
- sub_pay:'Támogatás, fizetés',sub_id:'ID-Senkisem, belépés',sub_concept:'A koncepcióm',sub_book:'Könyvek, olvasó',sub_tech:'Technikai hiba',sub_other:'Egyéb',
- h_name:'Egy név megteszi, de arra nem tudunk válaszolni. Válaszhoz az ID-Senkisemedet add meg.',h_idok:'Érvényes ID-formátum. Erre tudunk válaszolni.',h_idbad:'Ez nem tűnik ID-Senkisemnek. 6 betűből és számból áll.',
- b_send:'Küldés',b_sending:'Küldés…',b_clear:'Törlés',
- e_name:'Add meg a neved vagy az ID-d (legalább 2 karakter).',e_subj:'Válassz tárgyat.',e_msg:'Írj legalább 10 karaktert.',
- e_rate:'Túl sok próbálkozás rövid idő alatt. Próbáld újra pár perc múlva.',e_bad:'A szerver nem fogadta el. Nézd át a mezőket.',e_net:'Nem sikerült elküldeni. A szöveged megmaradt. Próbáld újra egy perc múlva.',
- ok_seal:'Elküldve',ok_h:'Nálunk van.',ok_p:'Az üzeneted megérkezett. Őrizd meg ezt a hivatkozást:',ok_again:'Újabb üzenet',
+ e_name:'Add meg az ID-det vagy egy nevet (legalább 2 karakter).',e_rate:'Túl sok próbálkozás. Várj egy kicsit.',e_bad:'A beküldést nem sikerült menteni. Ellenőrizd az adatokat.',e_net:'Nem sikerült elérni a szervert. Próbáld újra.',
+ ok_seal:'Elküldve',dok_h:'Benne vagy a körben.',dok_p:'Megkaptuk a beküldésedet. Őrizd meg az alábbi hivatkozást.',dok_again:'Újabb poszt küldése',
+ r_ref:'Hivatkozás',r_round:'Kör',r_draw:'Húzás',r_cnt:'Beküldéseid ebben a körben',
+ /* támogatói */
+ s5_tag:'Támogatói sorsolás',sd_h:'A támogatóink<br>között is sorsolunk.',sd2c:'Időnként, előre be nem jelentve, egy-egy terméket kisorsolunk közöttük. A véletlen dönt.',
+ sd3_stmt:'A támogatás nem garantálja a nyerést. Ez nem szerencsejáték.',sd_more:'Részletek a Támogatás oldalon',
+ sp_n:'támogató eddig',sp_t:'Ehhez nincs visszaszámláló, és időpontot sem ígérünk.',
+ lg_h:'Mielőtt támogatsz, ezt tudd',
+ lg1:'<strong>Önkéntes.</strong>A támogatás adomány. Nem vásárlás, nem részvételi díj és nem tét.',
+ lg2:'<strong>Nincs ígéret.</strong>A támogatás nem garantál nyereményt, és nem jelenti azt, hogy valaha nyerni fogsz.',
+ lg3:'<strong>Egyenlő esély.</strong>Sem az összeg, sem a támogatások száma nem növeli az esélyedet.',
+ lg4:'<strong>Nincs menetrend.</strong>A sorsolás rendszertelen, a támogatók között a véletlen dönt.',
+ lg5:'<strong>Ingyenes utak.</strong>A könyvek ingyenesek maradnak, a fenti heti sorsolás pedig támogatás nélkül is mindenkinek nyitva áll.',
  f_follow:'Kövess minket',f_terms:'Általános szerződési feltételek',f_priv:'Adatkezelési tájékoztató',f_rights:'Minden jog fenntartva',
  ck_t:'Sütik és adatvédelem',ck_p:'Csak az oldal működéséhez elengedhetetlen sütiket használjuk. Hozzájárulásoddal anonim analitikát is betöltünk. Részletek az Adatkezelési tájékoztatóban.',ck_a:'Elfogadom',ck_d:'Elutasítom',ck_n:'Csak a szükségesek'
 }};
@@ -750,6 +943,17 @@ var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function $(s,r){return (r||document).querySelector(s)}
 function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+T.en.d_win='Check back every Saturday: we post the winner’s name and Senkisem ID here.';
+T.hu.d_win='Nézz vissza szombatonként: itt tesszük közzé a nyertes nevét és Senkisem-azonosítóját.';
+T.en.sd2c='';T.hu.sd2c='';T.en.sp_t='';T.hu.sp_t='';
+T.en.sd3_stmt='Support does not guarantee a win.';
+T.hu.sd3_stmt='A támogatás nem garantálja a nyerést.';
+T.en.fs2h='Your Senkisem ID or name, so we can identify the winner in the Saturday announcement.';
+T.hu.fs2h='A Senkisem ID-d vagy egy neved, hogy be tudjuk azonosítani a szombati nyertes közzétételekor.';
+T.en.df_mailh_n='Required with a plain name. Winner details are posted here on Saturdays.';
+T.hu.df_mailh_n='Egyszerű névvel kötelező. A nyertes adatait szombatonként itt tesszük közzé.';
+T.en.df_ok='I am 16 or older, the post is mine, and I agree that Senkisem uses this data only to manage the draw.';
+T.hu.df_ok='Elmúltam 16 éves, a poszt az enyém, és hozzájárulok, hogy Senkisem ezeket az adatokat kizárólag a sorsolás lebonyolításához használja.';
 function t(k,v){var s=(T[LANG]&&T[LANG][k])||T.en[k]||k;if(v)for(var x in v)s=s.split('{'+x+'}').join(v[x]);return s}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function pad(n,l){return String(n).padStart(l||2,'0')}
@@ -762,10 +966,11 @@ function rngf(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var x=Math.
 
 function setLang(l){
   LANG=l==='hu'?'hu':'en';ls('senkisem.lang',LANG);
- document.documentElement.lang=LANG;document.title='Senkisem ';
+  document.documentElement.lang=LANG;document.title=LANG==='hu'?'Közösség | Senkisem':'Community | Senkisem';
   $$('[data-i]').forEach(function(e){e.textContent=t(e.getAttribute('data-i'))});
   $$('[data-ih]').forEach(function(e){e.innerHTML=t(e.getAttribute('data-ih'))});
   $$('[data-ph]').forEach(function(e){e.placeholder=t(e.getAttribute('data-ph'))});
+  $$('[data-ial]').forEach(function(e){e.setAttribute('aria-label',t(e.getAttribute('data-ial')))});
   $$('.flag').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.lang===LANG?'true':'false')});
   onLang.forEach(function(f){f()});
   relayout();
@@ -773,7 +978,7 @@ function setLang(l){
 $$('.flag').forEach(function(b){b.addEventListener('click',function(){if(b.dataset.lang!==LANG)setLang(b.dataset.lang)})});
 
 /* ============================================================
-   SCENE-MOTOR: görgetés → 0..1 haladás (simított), mint az index jelenetei
+   SCENE-MOTOR: görgetés → 0..1 haladás (simított)
 ============================================================ */
 var scenes=[];
 function addScene(el,o){
@@ -798,14 +1003,20 @@ function relayout(){scenes.forEach(function(s){s.layout()})}
 addEventListener('scroll',function(){scenes.forEach(function(s){s.measure()})},{passive:true});
 addEventListener('resize',relayout);addEventListener('load',relayout);
 
-/* beat-alapú jelenetek (sorsolás, támogatói sorsolás) */
+/* beat-alapú jelenet (sorsolás-történet).
+   FONTOS: a sorokat és az áthúzásokat minden képkockán újra lekérdezzük, mert nyelvváltáskor
+   az innerHTML cseréje új .sk elemeket hoz létre — a régi, gyorsítótárazott elemekre állított
+   --s érték miatt nem futott le az áthúzás. */
 function beats(root,p){
   $$('.bt',root).forEach(function(b){
-    if(b._a===undefined){b._a=+b.dataset.a;b._e=+b.dataset.b;b._k=b.hasAttribute('data-keep');b._ls=$$('.bl>span',b);b._sk=$$('.sk',b)}
+    if(b._a===undefined){b._a=+b.dataset.a;b._e=+b.dataset.b;b._k=b.hasAttribute('data-keep')}
     var inn=eo(seg(p,b._a,b._a+.045)),out=b._k?0:eio(seg(p,b._e-.045,b._e)),op=inn*(1-out);
     b.style.opacity=op.toFixed(3);b.style.visibility=op<.005?'hidden':'visible';
-    b._ls.forEach(function(l,i){var k=eo(seg(p,b._a+i*.02,b._a+.06+i*.02));l.style.transform='translateY('+((1-k)*105-out*18).toFixed(2)+'%)'});
-    b._sk.forEach(function(s,i){s.style.setProperty('--s',eo(seg(p,b._a+.08+i*.03,b._a+.12+i*.03)).toFixed(3))});
+    $$('.bl>span',b).forEach(function(l,i){var k=eo(seg(p,b._a+i*.02,b._a+.06+i*.02));l.style.transform='translateY('+((1-k)*105-out*18).toFixed(2)+'%)'});
+    $$('.sk',b).forEach(function(s,i){
+      var a0=b._a+.06+i*.03;
+      s.style.setProperty('--s',eo(seg(p,a0,a0+.04)).toFixed(3));
+    });
   });
 }
 
@@ -820,52 +1031,100 @@ var NAMES={
 function handle(r){return r()<.72?'ID-Senkisem '+suffix(r):NAMES[LANG][Math.floor(r()*NAMES[LANG].length)]}
 
 /* ============================================================
-   IDŐ-SZINKRON + 7 NAPOS SORSOLÁSI IDŐZÍTŐ (másodperc-pontos)
+   IDŐ: szerver-szinkron + "következő szombat 00:00 (Europe/Budapest)"
+   A nyári/téli időszámítás-váltást is helyesen kezeli (nem fix 7×24 óra).
 ============================================================ */
-var skew=0,DR={epoch:CFG.DRAW.epoch,cycle:CFG.DRAW.cycle};
-function nowMs(){return Date.now()+skew}
+var skew=0,dtf=null;
+try{dtf=new Intl.DateTimeFormat('en-US',{timeZone:TZ,hourCycle:'h23',weekday:'short',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'})}catch(e){}
+function bp(ms){var o={};dtf.formatToParts(new Date(ms)).forEach(function(p){o[p.type]=p.value});return o}
+function offAt(ms){var p=bp(ms);return Date.UTC(+p.year,+p.month-1,+p.day,(+p.hour)%24,+p.minute,+p.second)-Math.floor(ms/1000)*1000}
+function midnight(y,m,d){var g=Date.UTC(y,m-1,d),u=g-offAt(g);return g-offAt(u)}
+var WD={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
 function nextDraw(n){
-  if(n<DR.epoch)return DR.epoch;
-  return DR.epoch+(Math.floor((n-DR.epoch)/DR.cycle)+1)*DR.cycle;
+  if(n<CFG.FIRST)return CFG.FIRST;
+  if(!dtf)return CFG.FIRST+(Math.floor((n-CFG.FIRST)/WEEK)+1)*WEEK;
+  var p=bp(n),add=(6-WD[p.weekday]+7)%7,c=midnight(+p.year,+p.month,+p.day+add);
+  if(c<=n)c=midnight(+p.year,+p.month,+p.day+add+7);
+  return c;
 }
-fetch(CFG.STATUS,{credentials:'same-origin'}).then(function(r){return r.ok?r.json():null}).then(function(d){
-  if(!d||!isFinite(d.now))return;
-  skew=d.now-Date.now();
-  if(isFinite(d.epoch)&&isFinite(d.cycle)&&d.cycle>0){DR.epoch=+d.epoch;DR.cycle=+d.cycle}
-  tickTimers();
-}).catch(function(){});
+function nowMs(){return Date.now()+skew}
+function roundNo(nx){return Math.max(1,Math.round((nx-CFG.FIRST)/WEEK)+1)}
+function fmt(opts,ms){
+  try{return new Intl.DateTimeFormat(LANG==='hu'?'hu-HU':'en-GB',Object.assign({timeZone:TZ},opts)).format(new Date(ms))}
+  catch(e){return new Date(ms).toISOString().slice(0,10)}
+}
+function fmtFull(ms){return fmt({weekday:'long',year:'numeric',month:'long',day:'numeric'},ms)+' · 00:00'}
+function fmtShort(ms){return fmt({month:'long',day:'numeric'},ms).replace(/\.$/,'')}
 
-var timers=$$('[data-timer]').map(function(root){
-  var cells={};$$('[data-u]',root).forEach(function(e){cells[e.dataset.u]=e});
-  var host=root.parentElement,bar=$('[data-bar]',host),note=$('[data-tnote]',host);
-  return {cells:cells,last:{},bar:bar,note:note};
-});
-function setCell(tm,u,v){
-  if(tm.last[u]===v)return;
-  var e=tm.cells[u];e.textContent=v;tm.last[u]=v;
+var G={entries:null,last:null};
+function pullStatus(){
+  fetch(CFG.STATUS,{credentials:'same-origin',cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(d){
+    if(!d||!isFinite(d.now))return;
+    skew=d.now-Date.now();
+    G.entries=typeof d.entries==='number'?d.entries:null;
+    G.last=d.last||null;
+    renderGw();tickTimers();
+  }).catch(function(){});
+}
+
+var cu={},cuLast={},daysEl=$('#wkDays'),dayLis=[],lastNx=0,freshUntil=0,noteKey='';
+['d','h','m','s'].forEach(function(u){cu[u]=$('#clk [data-u="'+u+'"]')});
+function setCell(u,v){
+  if(cuLast[u]===v)return;
+  var e=cu[u];e.textContent=v;cuLast[u]=v;
+  $$('.support-clock [data-counter-value="'+u+'"]').forEach(function(copy){
+    copy.textContent=v;
+    if(!reduce){copy.classList.remove('tk');void copy.offsetWidth;copy.classList.add('tk')}
+  });
   if(!reduce){e.classList.remove('tk');void e.offsetWidth;e.classList.add('tk')}
 }
+/* The supporter draw reuses the weekly countdown, with its own gold treatment. */
+(function(){
+  var copy=$('#clk').cloneNode(true),side=$('#s-sd .sp-side');
+  copy.removeAttribute('id');copy.classList.add('support-clock');
+  copy.querySelectorAll('[id]').forEach(function(e){e.removeAttribute('id')});
+  copy.querySelectorAll('[data-u]').forEach(function(e){e.dataset.counterValue=e.dataset.u});
+  side.appendChild(copy);
+  var warning=document.createElement('p');warning.className='support-warning';warning.dataset.i='sd3_stmt';
+  side.appendChild(warning);
+})();
+function buildDays(){
+  var L=LANG==='hu'?['Szo','Va','Hé','Ke','Sze','Cs','Pé','Szo']:['Sat','Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  daysEl.innerHTML=L.map(function(x,i){return '<li style="--i:'+i+'">'+x+'</li>'}).join('');
+  dayLis=$$('li',daysEl);
+}
+function renderGw(){
+  var nx=nextDraw(nowMs());
+  $('#gwRound').textContent=pad(roundNo(nx),3);
+  $('#fxIn').textContent=G.entries==null?'–':G.entries;
+  var L=G.last,el=$('#fxLast');
+  if(L&&L.label)el.textContent=L.label+' · '+fmtShort(L.at)+(L.entries?' · '+t('fx_of',{n:L.entries}):'');
+  else if(L)el.textContent=t('fx_empty');
+  else el.textContent=t('fx_none',{d:fmtShort(CFG.FIRST)});
+}
 function tickTimers(){
-  var n=nowMs(),nx=nextDraw(n),rem=Math.max(0,nx-n),start=nx-DR.cycle;
+  var n=nowMs(),nx=nextDraw(n),rem=Math.max(0,nx-n),start=nx-WEEK;
+  if(lastNx&&nx!==lastNx&&n>=lastNx&&n-lastNx<5000){freshUntil=n+90000;setTimeout(pullStatus,6000);setTimeout(pullStatus,45000);renderGw()}
+  lastNx=nx;
   var s=Math.floor(rem/1000),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),sc=s%60;
-  var frac=clamp((n-start)/DR.cycle,0,1),fresh=(n-start)<90000&&n>=DR.epoch;
-  timers.forEach(function(tm){
-    setCell(tm,'d',pad(d));setCell(tm,'h',pad(h));setCell(tm,'m',pad(m));setCell(tm,'s',pad(sc));
-    if(tm.bar)tm.bar.style.width=(frac*100).toFixed(3)+'%';
-    if(tm.note){
-      var dt=new Date(nx);
-      var ds=(LANG==='hu'?dt.getFullYear()+'.'+pad(dt.getMonth()+1)+'.'+pad(dt.getDate())+'.':dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate()))+' '+pad(dt.getHours())+':'+pad(dt.getMinutes());
-      tm.note.textContent=fresh?t('tn_new'):t('tn_left',{d:ds});
-    }
-  });
+  setCell('d',pad(d));setCell('h',pad(h));setCell('m',pad(m));setCell('s',pad(sc));
+  var frac=clamp((n-start)/WEEK,0,1);
+  $('#wkBar').style.width=(frac*100).toFixed(3)+'%';
+  $('#wkNeedle').style.left=(frac*100).toFixed(3)+'%';
+  var di=Math.min(6,Math.floor(frac*7));
+  dayLis.forEach(function(li,i){li.classList.toggle('on',i===di)});
+  var fresh=n<freshUntil,nk=LANG+'|'+nx+'|'+fresh;
+  if(nk!==noteKey){noteKey=nk;$('#gwNote').textContent=fresh?t('tn_new'):t('tn_left',{d:fmtFull(nx)})}
 }
 (function loop(){tickTimers();setTimeout(loop,1000-(nowMs()%1000)+8)})();
-onLang.push(function(){timers.forEach(function(tm){tm.last={}});tickTimers()});
+onLang.push(function(){buildDays();cuLast={};noteKey='';renderGw();tickTimers()});
+buildDays();
+pullStatus();setInterval(pullStatus,60000);
 
 /* ============================================================
    1 · HERO: részecskék → szöveg → mező → támogatók
 ============================================================ */
-var S={top:null,recent:[],week:0,realTop:false,realRecent:0};
+var S={top:null,recent:[],week:0,realTop:false,realRecent:0,sup:0};
 function weekSeed(){var d=new Date(),y=d.getUTCFullYear();return y*100+Math.floor((d-Date.UTC(y,0,1))/604800000)}
 var HUF=[12000,15000,20000,25000,30000],USD=[40,50,60,75,100];
 function simTop(){var r=rngf(weekSeed()),id=handle(r),i=Math.floor(r()*HUF.length);return{id:id,huf:HUF[i],usd:USD[i]}}
@@ -895,6 +1154,7 @@ function renderSup(){
   setLb(lbA,rec[0]?rec[0].id:t('none'),rec[0]?ago(rec[0].at):'');
   setLb(lbB,rec[1]?rec[1].id:t('none'),rec[1]?ago(rec[1].at):'');
   $('#wk').textContent=S.week===1?t('wk1'):t('wk',{n:S.week});
+  if(S.sup>0){$('#spN').textContent=group(S.sup);$('#spNw').hidden=false}
 }
 function initSim(){
   if(CFG.SIMULATE==='off')return;
@@ -908,6 +1168,7 @@ function applyFeed(d){
   var rr=(Array.isArray(d.recent)?d.recent:[]).slice(0,2).map(function(x){return{id:String(x.id),at:Date.parse(x.at)||Date.now()}});
   S.realRecent=rr.length;S.recent=rr;
   if(typeof d.week==='number'&&d.week>0)S.week=d.week;
+  if(typeof d.supporters==='number'&&d.supporters>0)S.sup=d.supporters;
   initSim();renderSup();
 }
 function pull(){fetch(CFG.FEED,{credentials:'same-origin'}).then(function(r){return r.ok?r.json():null}).then(function(d){if(d)applyFeed(d)}).catch(function(){})}
@@ -928,37 +1189,58 @@ var Hero=(function(){
   var el=$('#s-hero'),cv=$('#heroCv'),cx=cv.getContext('2d'),W=0,H=0,dpr=1,P=[],T0=performance.now(),mouse={x:-9999,y:-9999},vis=true,raf=0,p=0,ready=false;
   var cap=$('#heroCap'),hint=$('#heroHint'),endEl=$('#heroEnd'),labs=[lbTop,lbA,lbB];
   var pos=[{k:'top',a:.46,b:.6,fx:.5,fy:.44,r:15},{k:'A',a:.63,b:.72,fx:.22,fy:.7,r:7},{k:'B',a:.75,b:.84,fx:.78,fy:.3,r:7}];
+  /* minden rácscellában megnézzük, van-e festett pixel, így a vékony betűszárak sem esnek ki */
+  function sample(data,gap){
+    var pts=[];
+    for(var y=0;y<H;y+=gap){
+      for(var x=0;x<W;x+=gap){
+        var x1=Math.min(x+gap,W),y1=Math.min(y+gap,H),sx=0,sy=0,n=0,g=0;
+        for(var yy=y;yy<y1;yy+=2){for(var xx=x;xx<x1;xx+=2){
+          var i=(yy*W+xx)*4;
+          if(data[i+3]>90){sx+=xx;sy+=yy;n++;if(data[i+1]<128)g=1}
+        }}
+        if(n>0)pts.push([sx/n,sy/n,g]);
+      }
+    }
+    return pts;
+  }
+  function fnt(r,f){return (r?'italic ':'')+f+'px "DM Serif Display",serif'}
   function build(){
     dpr=Math.min(devicePixelRatio||1,2);
     var host=cv.parentElement;W=host.clientWidth;H=host.clientHeight;
     cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
     var off=document.createElement('canvas');off.width=W;off.height=H;var o=off.getContext('2d');
-    var l1=t('s1_l1'),l2=t('s1_l2'),fs=Math.min(W*.2,H*.21,210);
-    o.font=fs+'px "DM Serif Display",serif';var w1=o.measureText(l1).width;
-    o.font='italic '+fs+'px "DM Serif Display",serif';var w2=o.measureText(l2).width;
-    var mw=Math.max(w1,w2);if(mw>W*.88)fs*=W*.88/mw;
-    o.textAlign='center';o.textBaseline='middle';
-    var cy=H*.47,lh=fs*.98;
-    o.fillStyle='#fff';o.font=fs+'px "DM Serif Display",serif';o.fillText(l1,W/2,cy-lh/2);
-    o.fillStyle='#f00';o.font='italic '+fs+'px "DM Serif Display",serif';o.fillText(l2,W/2,cy+lh/2);
-    var data=o.getImageData(0,0,W,H).data,gap=W<700?5:6,pts;
-    for(;;){
-      pts=[];
-      for(var y=0;y<H;y+=gap)for(var x=0;x<W;x+=gap){var i=(y*W+x)*4;if(data[i+3]>128)pts.push([x,y,data[i+1]<128?1:0])}
-      if(pts.length<=3400||gap>14)break;gap++;
-    }
-    var mx=Math.max(W,H);P=[];
+    var mob=W<700;
+    /* telefonon a szöveg több, rövid sorba tördelődik, így sokkal nagyobb betűméret fér el */
+    var l1=t(mob?'s1_m1':'s1_l1').split('|'),l2=t(mob?'s1_m2':'s1_l2').split('|');
+    var lines=l1.map(function(s){return{s:s,r:0}}).concat(l2.map(function(s){return{s:s,r:1}}));
+    var fs=Math.min(W*(mob?.3:.2),H*(mob?.16:.21),mob?140:210),lim=W*(mob?.9:.88),mw=0;
+    lines.forEach(function(L){o.font=fnt(L.r,fs);mw=Math.max(mw,o.measureText(L.s).width)});
+    if(mw>lim)fs*=lim/mw;
+    var lk=mob?1.02:.98,lh=fs*lk;
+    if(lh*lines.length>H*.62){fs*=H*.62/(lh*lines.length);lh=fs*lk}
+    o.textAlign='center';o.textBaseline='middle';o.lineJoin='round';
+    var cy=H*.47,lw=Math.max(2,fs*(mob?.028:.018)),y0=cy-lh*lines.length/2+lh/2;
+    o.lineWidth=lw;
+    lines.forEach(function(L,i){
+      var col=L.r?'#f00':'#fff',y=y0+i*lh;
+      o.fillStyle=col;o.strokeStyle=col;o.font=fnt(L.r,fs);
+      o.fillText(L.s,W/2,y);o.strokeText(L.s,W/2,y);
+    });
+    var data=o.getImageData(0,0,W,H).data,gap=mob?4:6,cap2=mob?5600:3600,pts;
+    for(;;){pts=sample(data,gap);if(pts.length<=cap2||gap>14)break;gap++}
+    var mx=Math.max(W,H),sz=mob?1.15:1;P=[];
     pts.forEach(function(q){
       var ang=Math.random()*6.2832,dist=(.4+Math.random()*.7)*mx;
-      P.push({tx:q[0]+(Math.random()-.5)*gap*.6,ty:q[1]+(Math.random()-.5)*gap*.6,sx:W/2+Math.cos(ang)*dist,sy:H/2+Math.sin(ang)*dist,
-        fx:Math.random()*W,fy:Math.random()*H,s:(.8+Math.random()*1.1),g:q[2],dl:Math.random()*900,sp:.6+Math.random()*1.2,ph:Math.random()*6.28});
+      P.push({tx:q[0]+(Math.random()-.5)*gap*.4,ty:q[1]+(Math.random()-.5)*gap*.4,sx:W/2+Math.cos(ang)*dist,sy:H/2+Math.sin(ang)*dist,
+        fx:Math.random()*W,fy:Math.random()*H,s:(.8+Math.random()*1.1)*sz,g:q[2],dl:Math.random()*900,sp:.6+Math.random()*1.2,ph:Math.random()*6.28});
     });
     var amb=Math.round(Math.min(700,W*H/2600));
     for(var k=0;k<amb;k++){
       var ax=Math.random()*W,ay=Math.random()*H;
       P.push({tx:ax,ty:ay,sx:ax,sy:ay,fx:Math.random()*W,fy:Math.random()*H,s:.6+Math.random()*.9,g:2,dl:Math.random()*900,sp:.4+Math.random()*1,ph:Math.random()*6.28});
     }
-    var mob=W<700;pos[1].fx=mob?.3:.22;pos[1].fy=mob?.72:.7;pos[2].fx=mob?.7:.78;pos[2].fy=mob?.26:.3;
+    pos[1].fx=mob?.3:.22;pos[1].fy=mob?.72:.7;pos[2].fx=mob?.7:.78;pos[2].fy=mob?.26:.3;
     ready=true;kick();
   }
   function frame(now){
@@ -983,7 +1265,6 @@ var Hero=(function(){
       cx.fill();
     }
     cx.globalAlpha=1;
-    /* támogatók: piros pontok */
     for(var j=0;j<pos.length;j++){
       var c=pos[j],sc=eo(seg(p,c.a,c.b));
       labs[j].style.left=(c.fx*W)+'px';labs[j].style.top=(c.fy*H+c.r*sc+16)+'px';
@@ -1003,7 +1284,7 @@ var Hero=(function(){
   addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top});
   document.addEventListener('pointerleave',function(){mouse.x=mouse.y=-9999});
   var rt=0;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){if(ready)build()},200)});
-  var sc=addScene(el,{extra:430,render:function(v){
+  var sc=addScene(el,{extra:250,render:function(v){
     p=v;
     cap.style.opacity=(eo(seg(v,.3,.4))*(1-eio(seg(v,.44,.52)))).toFixed(3);
     hint.style.opacity=(1-seg(v,0,.05)).toFixed(3);
@@ -1019,7 +1300,52 @@ var Hero=(function(){
 })();
 
 /* ============================================================
-   2 · KÖZÖSSÉG: a jegyzetek görgetésre gépelődnek
+   SORSOLÁSOK HÁTTERE: csillagmező (ugyanaz a hangulat, mint a nyitó rész pontjai, szöveg nélkül)
+   - fix vászon, a .sky wrapper vágja le → csak a két sorsolás-szekció mögött látszik
+   - mélységi parallax a görgetéssel, finom pislákolás, ~30 fps, csak látható állapotban fut
+============================================================ */
+var Sky=(function(){
+  var wrap=$('#sky'),cv=$('#skyCv'),cx=cv.getContext('2d'),W=0,H=0,dpr=1,st=[],vis=false,raf=0,last=0;
+  function build(){
+    dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+    var r=rngf(20261024),n=Math.round(clamp(W*H/3000,150,460));st=[];
+    for(var i=0;i<n;i++){
+      var z=.15+r()*.85,k=r();
+      st.push({x:r()*W,y:r()*H,z:z,s:.5+z*1.25,a:.2+z*.5,ph:r()*6.28,sp:.5+r()*1.6,c:k<.07?'255,96,106':(k<.12?'12,236,153':'255,255,255')});
+    }
+    draw(performance.now());
+  }
+  function draw(now){
+    cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
+    var off=pageYOffset,lc='';
+    for(var i=0;i<st.length;i++){
+      var q=st[i],y=(q.y-off*q.z*.28)%H;if(y<0)y+=H;
+      var tw=reduce?1:.62+.38*Math.sin(now*.001*q.sp+q.ph);
+      if(q.c!==lc){cx.fillStyle='rgb('+q.c+')';lc=q.c}
+      cx.globalAlpha=q.a*tw;
+      if(q.s<1.1)cx.fillRect(q.x-q.s/2,y-q.s/2,q.s,q.s);
+      else{cx.beginPath();cx.arc(q.x,y,q.s/2,0,6.2832);cx.fill()}
+    }
+    cx.globalAlpha=1;
+  }
+  function frame(now){
+    raf=0;if(!vis)return;
+    if(now-last>=32){last=now;draw(now)}
+    if(!reduce)raf=requestAnimationFrame(frame);
+  }
+  new IntersectionObserver(function(es){
+    vis=es[0].isIntersecting;wrap.classList.toggle('on',vis);
+    if(vis){draw(performance.now());if(!raf&&!reduce)raf=requestAnimationFrame(frame)}
+  }).observe(wrap);
+  if(reduce)addEventListener('scroll',function(){if(vis)draw(performance.now())},{passive:true});
+  /* mobilon a címsor ki-be csúszása is resize-t okoz: csak valódi méretváltozásra építünk újra */
+  var rt=0;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){if(innerWidth!==W||Math.abs(innerHeight-H)>160)build()},200)});
+  build();
+})();
+
+/* ============================================================
+   2 · JEGYZETEK
 ============================================================ */
 var NA={
 hu:["Nem a magány fáj. Hanem hogy tele van a telefonom emberekkel, és mégsem tudom, kit hívjak.",
@@ -1063,33 +1389,79 @@ en:["It’s not being alone that hurts. It’s that my phone is full of people a
 "One day I’d tell someone everything, just to see if they stay.",
 "What I like least about myself is that I apologize constantly, even for the air."]};
 var Notes=(function(){
-  var el=$('#s-notes'),st=$('#nStick'),ghost=$('#nGhost'),typed=$('#nTyped'),sig=$('#nSig'),title=$('#nTitle'),box=$('#nBox'),flash=$('#nFlash'),cta=$('#nCta'),N=5,list=[],lastK=-1;
+  var paper=$('#ntPaper'),txt=$('#ntText'),sig=$('#ntSig'),dotsEl=$('#ntDots'),cnt=$('#ntCount'),stage=$('#ntStage'),tape=$('#ntTape'),sec=$('#s-notes');
+  var N=6,list=[],k=0,timer=0,hold=false,vis=false,busy=false;
+  var TINTS=['#f1e6cd','#ebe3d1','#f0e0cf','#e8e7de'],INKS=['#1f1d4a','#202a3c','#2b2034','#1c2f2b'],TAPES=['255,70,140','12,236,153','255,200,90','150,180,255'];
   function pick(){
     var pool=NA[LANG].slice().sort(function(){return Math.random()-.5}).slice(0,N);
-    list=pool.map(function(x){return{t:x,n:handle(Math.random)}});lastK=-1;
+    list=pool.map(function(x){return{t:x,n:handle(Math.random)}});k=0;
   }
-  function render(p){
-    var tp=eio(seg(p,.07,.15));
-    title.style.opacity=(1-tp).toFixed(3);title.style.transform='translateY('+(-tp*30).toFixed(1)+'px)';title.style.visibility=tp>=1?'hidden':'visible';
-    if(p<.11){box.style.opacity=0;ghost.textContent='';typed.textContent='';lastK=-1;cta.style.opacity=0;cta.style.visibility='hidden';return}
-    var q=seg(p,.12,.985)*N,k=Math.min(N-1,Math.floor(q)),u=q-k;
-    if(k!==lastK){
-      lastK=k;st.dataset.tone=k%2?'cold':'soft';ghost.textContent=list[k].t;sig.textContent='— '+list[k].n;
-      flash.classList.remove('go');void flash.offsetWidth;if(!reduce)flash.classList.add('go');
-    }
-    var len=list[k].t.length,n=Math.floor(seg(u,.08,.66)*len);
-    typed.innerHTML=esc(list[k].t.slice(0,n))+(n<len||u<.9?'<span class="cur"></span>':'');
-    sig.style.opacity=eo(seg(u,.7,.82)).toFixed(3);
-    var last=k===N-1,fade=last?1:1-eio(seg(u,.9,1));
-    box.style.opacity=(eo(seg(u,0,.06))*fade).toFixed(3);
-    var c=last&&u>.82;cta.style.opacity=c?1:0;cta.style.visibility=c?'visible':'hidden';
+  function words(s){return s.split(' ').map(function(w,i){return '<span style="--i:'+i+'">'+esc(w)+'</span> '}).join('')}
+  function dots(){
+    dotsEl.innerHTML=list.map(function(_,i){return '<button type="button" class="nt-dot'+(i===k?' on':'')+'" data-k="'+i+'" aria-label="'+esc(t('nt_dot',{n:i+1}))+'"></button>'}).join('');
+    $$('.nt-dot',dotsEl).forEach(function(b){b.addEventListener('click',function(){goTo(+b.dataset.k)})});
+    cnt.textContent=pad(k+1)+' / '+pad(N);
   }
-  pick();
-  var sc=addScene(el,{extra:560,render:render});
-  onLang.push(function(){pick();sc.measure()});
+  function paint(){
+    var n=list[k];
+    txt.innerHTML=words(n.t);
+    sig.textContent='— '+n.n;
+    sig.style.setProperty('--sd',(n.t.split(' ').length*75+700)+'ms');
+    paper.style.setProperty('--tint',TINTS[k%TINTS.length]);
+    paper.style.setProperty('--ink',INKS[k%INKS.length]);
+    paper.style.setProperty('--r',((k%2?1:-1)*(.5+(k%3)*.45)).toFixed(2)+'deg');
+    tape.style.setProperty('--tp',TAPES[k%TAPES.length]);
+    tape.style.transform='translateX(-50%) rotate('+((k%2?3:-3))+'deg)';
+    dots();
+  }
+  function schedule(){
+    clearTimeout(timer);if(reduce)return;
+    var dur=6200+list[k].t.length*58;
+    timer=setTimeout(function(){if(hold||!vis||document.hidden||busy){schedule();return}move(1)},dur);
+  }
+  function move(d,target){
+    if(busy)return;busy=true;
+    var dir=d>0?1:-1,nk=target!==undefined?target:(k+d+N)%N;
+    if(reduce){k=nk;paint();busy=false;schedule();return}
+    paper.classList.remove('in-l','in-r');
+    paper.classList.add(dir>0?'out-l':'out-r');
+    setTimeout(function(){
+      k=nk;paint();
+      paper.classList.remove('out-l','out-r');
+      void paper.offsetWidth;
+      paper.classList.add(dir>0?'in-r':'in-l');
+      setTimeout(function(){paper.classList.remove('in-l','in-r');busy=false;schedule()},760);
+    },430);
+  }
+  function goTo(i){if(i===k||busy)return;move(i>k?1:-1,i)}
+  $('#ntPrev').addEventListener('click',function(){move(-1)});
+  $('#ntNext').addEventListener('click',function(){move(1)});
+  stage.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'){e.preventDefault();move(1)}else if(e.key==='ArrowLeft'){e.preventDefault();move(-1)}
+  });
+  var sx=null,sy=0;
+  stage.addEventListener('pointerdown',function(e){sx=e.clientX;sy=e.clientY;hold=true});
+  addEventListener('pointerup',function(e){
+    if(sx===null)return;var dx=e.clientX-sx,dy=e.clientY-sy;sx=null;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.3)move(dx<0?1:-1);
+    setTimeout(function(){hold=stage.matches(':hover')||stage.contains(document.activeElement)},0);
+  });
+  stage.addEventListener('pointerenter',function(){hold=true});
+  stage.addEventListener('pointerleave',function(){if(sx===null)hold=stage.contains(document.activeElement)});
+  stage.addEventListener('focusin',function(){hold=true});
+  stage.addEventListener('focusout',function(){hold=false});
+  new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis)schedule()}).observe(sec);
+  pick();paint();
+  onLang.push(function(){pick();paint();schedule()});
 })();
 
-/* élő "olvassa most" (szimulált; később cserélhető valós számlálóra) */
+/* általános "feljövő" animáció minden .rise elemre */
+(function(){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});
+  $$('.rise').forEach(function(el){io.observe(el)});
+})();
+
+/* élő "olvassa most" (szimulált) */
 var HOURLY=[14,11,10,10,12,16,24,34,42,48,52,56,60,58,56,58,64,76,92,108,114,98,64,32],LMIN=9,LMAX=172;
 var live=null;try{live=JSON.parse(sessionStorage.getItem('senkisem.live'))}catch(e){}
 if(!live||!isFinite(live.n))live={n:clamp(HOURLY[new Date().getHours()]+Math.round(Math.random()*16-6),LMIN,LMAX),s:0};
@@ -1149,25 +1521,47 @@ var Hz=(function(){
 })();
 
 /* ============================================================
-   4 · SORSOLÁS: történet + űrlap
+   4 · SORSOLÁS: történet + beküldés
 ============================================================ */
 addScene($('#s-story'),{extra:640,render:function(p){
   beats($('#stStick'),p);$('#stHint').style.opacity=(1-seg(p,0,.04)).toFixed(3);
 }});
-addScene($('#s-sd'),{extra:260,render:function(p){beats($('#s-sd .stick'),p)}});
 
 var ID_RE=/^id[-\s_]?senkisem[-\s_]?([a-z0-9]{6})$/i;
 function canon(v){var m=ID_RE.exec(v.trim());return m?'ID-Senkisem '+m[1].toUpperCase():v.trim()}
 var MAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+var LINK_RE=/^https:\/\/[^\s.]+\.[^\s]+$/i;
 (function(){
   var f=$('#df'),mode='link',file=null,out=$('#dOut'),send=$('#dSend'),T0=Date.now();
   var linkW=$('#dLinkW'),imgW=$('#dImgW'),thumb=$('#dThumb'),drop=$('#dDrop'),fi=$('#dFile');
-  function err(k){out.textContent=t(k)}
-  $$('input[name=mode]',f).forEach(function(r){r.addEventListener('change',function(){mode=r.value;linkW.hidden=mode!=='link';imgW.hidden=mode!=='img';out.textContent=''})});
-  function rm(){file=null;fi.value='';thumb.hidden=true;drop.hidden=false;var im=$('img',thumb);if(im.src)URL.revokeObjectURL(im.src);im.removeAttribute('src')}
+  var linkI=$('#dLink'),nameI=$('#dName'),mailI=$('#dMail'),okI=$('#dOk'),steps=$$('.st',f),au=null;
+  /* ha be van lépve (gate.js), az ID-t előre kitöltjük */
+  try{au=window.SenkisemAuth&&window.SenkisemAuth.user&&window.SenkisemAuth.user()}catch(e){}
+  if(au&&au.id&&!nameI.value)nameI.value=String(au.id);
+
+  function err(k){out.textContent=k?t(k):''}
+  function isAuthName(){return !!(au&&au.id&&nameI.value.trim().toLowerCase()===String(au.id).toLowerCase())}
+  function needMail(){return !(ID_RE.test(nameI.value.trim())||isAuthName())}
+  function v1(){return mode==='link'?LINK_RE.test(linkI.value.trim()):!!file}
+  function v2(){
+    var n=nameI.value.trim(),m=mailI.value.trim();
+    if(n.length<2)return false;
+    if(m&&!MAIL_RE.test(m))return false;
+    return needMail()?MAIL_RE.test(m):true;
+  }
+  function v3(){return okI.checked}
+  function paint(){
+    [v1(),v2(),v3()].forEach(function(ok,i){steps[i].classList.toggle('done',ok)});
+    $('#dMailH').textContent=t(needMail()?'df_mailh_n':'df_mailh_id');
+  }
+  f.addEventListener('input',paint);f.addEventListener('change',paint);
+  onLang.push(paint);
+
+  $$('input[name=mode]',f).forEach(function(r){r.addEventListener('change',function(){mode=r.value;linkW.hidden=mode!=='link';imgW.hidden=mode!=='img';err();paint()})});
+  function rm(){file=null;fi.value='';thumb.hidden=true;drop.hidden=false;var im=$('img',thumb);if(im.src)URL.revokeObjectURL(im.src);im.removeAttribute('src');paint()}
   $('#dRm').addEventListener('click',rm);
   function take(fl){
-    if(!fl)return;out.textContent='';
+    if(!fl)return;err();
     createImageBitmap(fl,{imageOrientation:'from-image'}).then(function(bmp){
       var sc=Math.min(1,1600/Math.max(bmp.width,bmp.height)),c=document.createElement('canvas');
       c.width=Math.round(bmp.width*sc);c.height=Math.round(bmp.height*sc);
@@ -1175,7 +1569,7 @@ var MAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
       c.toBlob(function(b){
         if(!b){err('de_imgbad');return}
         file={blob:b,name:'poszt.jpg'};
-        $('img',thumb).src=URL.createObjectURL(b);thumb.hidden=false;drop.hidden=true;
+        $('img',thumb).src=URL.createObjectURL(b);thumb.hidden=false;drop.hidden=true;paint();
       },'image/jpeg',.82);
     }).catch(function(){err('de_imgbad')});
   }
@@ -1184,15 +1578,15 @@ var MAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   ['dragleave','drop'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove('over')})});
   drop.addEventListener('drop',function(e){take(e.dataTransfer.files[0])});
   function b64(blob){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){ok(String(r.result).split(',')[1])};r.onerror=no;r.readAsDataURL(blob)})}
+
   f.addEventListener('submit',function(e){
-    e.preventDefault();out.textContent='';
-    var link=$('#dLink').value.trim(),name=$('#dName').value.trim(),mail=$('#dMail').value.trim();
-    if(mode==='link'&&!/^https:\/\/[^\s.]+\.[^\s]+$/i.test(link)){err('de_link');$('#dLink').focus();return}
+    e.preventDefault();err();
+    var link=linkI.value.trim(),name=nameI.value.trim(),mail=mailI.value.trim();
+    if(mode==='link'&&!LINK_RE.test(link)){err('de_link');linkI.focus();return}
     if(mode==='img'&&!file){err('de_img');return}
-    if(name.length<2){err('e_name');$('#dName').focus();return}
-    var isId=ID_RE.test(name);
-    if((!isId&&!MAIL_RE.test(mail))||(mail&&!MAIL_RE.test(mail))){err('de_mail');$('#dMail').focus();return}
-    if(!$('#dOk').checked){err('de_ok');return}
+    if(name.length<2){err('e_name');nameI.focus();return}
+    if((needMail()&&!MAIL_RE.test(mail))||(mail&&!MAIL_RE.test(mail))){err('de_mail');mailI.focus();return}
+    if(!okI.checked){err('de_ok');return}
     send.disabled=true;send.setAttribute('aria-busy','true');send.textContent=t('df_sending');
     var prep=mode==='img'?b64(file.blob).then(function(b){return{base64:b,name:file.name}}):Promise.resolve(null);
     prep.then(function(img){
@@ -1200,66 +1594,28 @@ var MAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
         body:JSON.stringify({link:mode==='link'?link:'',image:img,name:canon(name),email:mail,consent:true,lang:LANG,hp:$('#dHp').value,t:Date.now()-T0})});
     }).then(function(r){
       if(r.status===409)throw'de_dup';if(r.status===429)throw'e_rate';
-      if(r.status===400)return r.json().then(function(j){throw(j&&j.error==='need-email'?'de_mail':j&&j.error==='limit'?'de_limit':'e_bad')},function(){throw'e_bad'});
+      if(r.status===400)return r.json().then(function(j){
+        var c=j&&j.error;
+        throw(c==='need-email'?'de_mail':c==='limit'?'de_limit':c==='bad-link'?'de_host':c==='bad-image'?'de_imgbad':c==='bad-name'?'e_name':'e_bad');
+      },function(){throw'e_bad'});
       if(!r.ok)throw'e_net';return r.json();
     }).then(function(d){
       if(!d||!d.ok)throw'e_net';
-      $('#dRef').textContent=d.ref||'';f.hidden=true;$('#dSent').hidden=false;
+      var nx=isFinite(d.next)?d.next:nextDraw(nowMs());
+      $('#dRef').textContent=d.ref||'';
+      $('#dRound').textContent='№ '+pad(d.round||roundNo(nx),3);
+      $('#dWhen').textContent=fmtFull(nx);
+      $('#dCnt').textContent=(d.count||1)+' / '+(d.limit||3);
+      f.hidden=true;$('#dSent').hidden=false;
+      if(G.entries!=null){G.entries++;renderGw()}
+      pullStatus();
     }).catch(function(k){err(typeof k==='string'?k:'e_net')})
     .then(function(){send.disabled=false;send.removeAttribute('aria-busy');send.textContent=t('df_send')});
   });
   $('#dAgain').addEventListener('click',function(){
-    $('#dSent').hidden=true;f.hidden=false;$('#dLink').value='';rm();$('#dOk').checked=false;$('#dLink').focus();
+    $('#dSent').hidden=true;f.hidden=false;linkI.value='';rm();okI.checked=false;paint();(mode==='link'?linkI:fi).focus();
   });
-})();
-
-/* ============================================================
-   6 · ÜZENET
-============================================================ */
-(function(){
-  var form=$('#cf'),nameI=$('#cName'),msgI=$('#cMsg'),hpI=$('#cHp'),outEl=$('#cMsgOut'),sendB=$('#cSend'),idh=$('#idHint'),chipsEl=$('#chips'),cnt=$('#cnt');
-  var SUBJ=['pay','id','concept','book','tech','other'],T0=Date.now(),DK='senkisem.contact.draft',curSubj='';
-  function buildChips(){
-    chipsEl.innerHTML=SUBJ.map(function(k){
-      return '<label class="chip"><input type="radio" name="subj" value="'+k+'"'+(curSubj===k?' checked':'')+'><span>'+esc(t('sub_'+k))+'</span></label>';
-    }).join('');
-    $$('input',chipsEl).forEach(function(i){i.addEventListener('change',function(){curSubj=i.value;saveDraft()})});
-  }
-  function idHint(){
-    var v=nameI.value.trim();
-    if(/^id[-\s_]?sen/i.test(v)){
-      if(ID_RE.test(v)){idh.textContent=t('h_idok');idh.className='hint2 ok'}
-      else{idh.textContent=t('h_idbad');idh.className='hint2 bad'}
-    }else{idh.textContent=t('h_name');idh.className='hint2'}
-  }
-  function saveDraft(){ls(DK,JSON.stringify({n:nameI.value,m:msgI.value,s:curSubj}))}
-  function loadDraft(){try{var d=JSON.parse(ls(DK));if(d){nameI.value=d.n||'';msgI.value=d.m||'';curSubj=SUBJ.indexOf(d.s)>-1?d.s:''}}catch(e){}}
-  function upd(){cnt.textContent=msgI.value.length+' / 2000'}
-  function err(k){outEl.textContent=t(k)}
-  loadDraft();upd();
-  onLang.push(function(){buildChips();idHint()});
-  nameI.addEventListener('input',function(){idHint();saveDraft()});
-  msgI.addEventListener('input',function(){upd();saveDraft()});
-  $('#cClear').addEventListener('click',function(){nameI.value='';msgI.value='';curSubj='';outEl.textContent='';ls(DK,'');buildChips();idHint();upd();nameI.focus()});
-  form.addEventListener('submit',function(e){
-    e.preventDefault();outEl.textContent='';
-    var name=nameI.value.trim(),m=msgI.value.trim();
-    if(name.length<2){err('e_name');nameI.focus();return}
-    if(!curSubj){err('e_subj');return}
-    if(m.length<10){err('e_msg');msgI.focus();return}
-    sendB.disabled=true;sendB.setAttribute('aria-busy','true');sendB.textContent=t('b_sending');
-    fetch(CFG.CONTACT,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name:canon(name),subject:curSubj,message:m,lang:LANG,hp:hpI.value,t:Date.now()-T0})})
-    .then(function(r){
-      if(r.status===429)throw'e_rate';if(r.status===400)throw'e_bad';if(!r.ok)throw'e_net';return r.json();
-    }).then(function(d){
-      if(!d||!d.ok)throw'e_net';
-      $('#refOut').textContent=d.ref||'';form.hidden=true;$('#sent').hidden=false;
-      ls(DK,'');nameI.value='';msgI.value='';curSubj='';upd();
-    }).catch(function(k){err(typeof k==='string'?k:'e_net')})
-    .then(function(){sendB.disabled=false;sendB.removeAttribute('aria-busy');sendB.textContent=t('b_send')});
-  });
-  $('#again').addEventListener('click',function(){$('#sent').hidden=true;form.hidden=false;buildChips();idHint();nameI.focus()});
+  paint();
 })();
 
 /* ============================================================
@@ -1273,14 +1629,12 @@ var MAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   $$('a',m).forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open');document.body.style.overflow=''})});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){m.classList.remove('open');document.body.style.overflow=''}});
 
-  /* fejezet-pontok: az aktuális jelenet kiemelése */
-  var ids=['s-hero','s-notes','s-hz','s-story','s-sd','message'],links=$$('#chap a');
+  var ids=['s-hero','s-notes','s-hz','s-story','s-sd'],links=$$('#chap a');
   function act(){
     var cur=0,mid=innerHeight*.5;
     ids.forEach(function(id,i){var e=document.getElementById(id);if(e&&e.getBoundingClientRect().top<=mid)cur=i});
-    /* a sorsolás-űrlap és a jogi szöveg a saját fejezetükhöz tartozik */
+    /* A heti sorsolás szekció a történetrész fejezetéhez tartozik. */
     var dr=document.getElementById('draw');if(dr&&dr.getBoundingClientRect().top<=mid&&cur<4)cur=3;
-    var lg=document.getElementById('legal');if(lg&&lg.getBoundingClientRect().top<=mid&&cur<5)cur=4;
     links.forEach(function(a,i){a.classList.toggle('on',i===cur)});
   }
   addEventListener('scroll',act,{passive:true});act();
@@ -1288,7 +1642,6 @@ var MAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     var id=a.getAttribute('href').slice(1),tgt=document.getElementById(id);if(!tgt)return;
     e.preventDefault();scrollTo({top:tgt.getBoundingClientRect().top+pageYOffset,behavior:reduce?'auto':'smooth'});
   })});
-  $$('a[href="#message"]').forEach(function(a){if(a.closest('#chap'))return;a.addEventListener('click',function(e){e.preventDefault();$('#message').scrollIntoView({behavior:reduce?'auto':'smooth'})})});
 
   var row=$('#socRow');
   new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)$$('.sn-card',e.target).forEach(function(c){c.classList.add('visible')})})},{threshold:.2}).observe(row);

@@ -3,6 +3,7 @@
 // + egységes ID-Senkisem azonosítók (foglaltság-ellenőrzéssel)
 // + kapcsolati űrlap (e-mail továbbítás, cím nélkül)
 // + közösségi feed (támogatói szalag)
+// + HETI SORSOLÁS (szombat 00:00, Europe/Budapest) — ugyanabban a táblázatban
 // ============================================================
 require('dotenv').config();
 const express = require('express');
@@ -71,6 +72,8 @@ const CONFIG = {
     SUPPORT: 'Támogatók',
     IDENT: 'Azonosítók',
     CONTACT: 'Üzenetek',
+    DRAW_ENTRIES: 'Sorsolás beküldések',
+    DRAW_RESULTS: 'Sorsolás eredmények',
   },
   SHIPPING: {
     FOXPOST_COST: 899,
@@ -93,6 +96,14 @@ const IDENT_HEADERS = [
   'Azonosító'   // ÚJ: a nyilvános azonosító (ID-Senkisem XXXXXX vagy a választott név)
 ];
 const CONTACT_HEADERS = ['Ref', 'Dátum', 'Név / ID', 'Regisztrált azonosító', 'Tárgy', 'Nyelv', 'Üzenet', 'Státusz'];
+const DRAW_ENTRY_HEADERS = [
+  'Ref', 'Dátum', 'Időbélyeg', 'Kör', 'Kör sorszám', 'Azonosító / név', 'Email', 'Regisztrált',
+  'Beküldés', 'Link', 'Kép fájl', 'Kép hash', 'Nyelv', 'IP (hash)', 'Státusz'
+];
+const DRAW_RESULT_HEADERS = [
+  'Kör', 'Kör sorszám', 'Húzás ideje', 'Beküldések', 'Személyek', 'Nyertesek száma',
+  'Nyertes ref', 'Nyertes azonosító', 'Nyertes e-mail', 'Értesítve', 'Megjegyzés'
+];
 
 // ============================================
 // TERMÉKEK + TÁMOGATÁSI BEÁLLÍTÁSOK BETÖLTÉSE
@@ -583,6 +594,224 @@ async function getFeed() {
 }
 
 // ============================================
+// HETI SORSOLÁS — segédek (szombat 00:00, Europe/Budapest)
+// A beküldések és az eredmények ugyanabba a táblázatba kerülnek, mint minden más
+// (CONFIG.TABS.DRAW_ENTRIES / DRAW_RESULTS munkalapok, automatikusan létrejönnek).
+// ============================================
+const DRAW_TZ = 'Europe/Budapest';
+// Az első sorsolás: 2026-10-24 (szombat) 00:00 CEST = 2026-10-23 22:00 UTC
+const DRAW_FIRST = Date.UTC(2026, 9, 23, 22, 0, 0);
+const DRAW_WEEK = 7 * 24 * 3600 * 1000;
+const DRAW_WINNERS = Math.max(1, Number(process.env.DRAW_WINNERS) || 1);
+const DRAW_MAX_PER_PERSON = 3;
+const DRAW_UPLOAD_DIR = process.env.DRAW_UPLOAD_DIR || path.join(__dirname, 'draw-uploads');
+const DRAW_HOSTS = (process.env.DRAW_HOSTS ||
+  'instagram.com,tiktok.com,youtube.com,youtu.be,facebook.com,fb.com,fb.watch,x.com,twitter.com,threads.net,threads.com,reddit.com,bsky.app,snapchat.com,pinterest.com')
+  .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+
+const _drawDtf = new Intl.DateTimeFormat('en-US', {
+  timeZone: DRAW_TZ, hourCycle: 'h23', weekday: 'short',
+  year: 'numeric', month: '2-digit', day: '2-digit',
+  hour: '2-digit', minute: '2-digit', second: '2-digit'
+});
+const _WD = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+function _bp(ms) { const o = {}; _drawDtf.formatToParts(new Date(ms)).forEach(p => { o[p.type] = p.value; }); return o; }
+function _off(ms) {
+  const p = _bp(ms);
+  return Date.UTC(+p.year, +p.month - 1, +p.day, (+p.hour) % 24, +p.minute, +p.second) - Math.floor(ms / 1000) * 1000;
+}
+function _mid(y, m, d) { const g = Date.UTC(y, m - 1, d); const u = g - _off(g); return g - _off(u); }
+
+// a következő szombat 00:00 (budapesti idő) — szigorúan a megadott időpont UTÁN (nyári/téli váltás-biztos)
+function satAfter(ms) {
+  const p = _bp(ms);
+  const add = (6 - _WD[p.weekday] + 7) % 7;
+  let c = _mid(+p.year, +p.month, +p.day + add);
+  if (c <= ms) c = _mid(+p.year, +p.month, +p.day + add + 7);
+  return c;
+}
+function drawNext(ms) { return ms < DRAW_FIRST ? DRAW_FIRST : satAfter(ms); }
+function drawKey(ms) { const p = _bp(ms); return `${p.year}-${p.month}-${p.day}`; }       // pl. 2026-10-24
+function drawRoundNo(ms) { return Math.max(1, Math.round((ms - DRAW_FIRST) / DRAW_WEEK) + 1); }
+
+const drawCache = { count: { key: '', at: 0, n: 0 }, last: { at: 0, data: null } };
+const drawRef = () => 'S-' + crypto.randomBytes(3).toString('hex').toUpperCase();
+const unq = v => String(v == null ? '' : v).replace(/^'/, '');
+
+function drawHostOk(host) {
+  host = String(host || '').toLowerCase().replace(/^www\./, '');
+  return DRAW_HOSTS.some(d => host === d || host.endsWith('.' + d));
+}
+function normLink(u) {
+  try {
+    const x = new URL(u);
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'igsh', 'igshid', 'si', 'fbclid', 's', 't']
+      .forEach(k => x.searchParams.delete(k));
+    return x.hostname.replace(/^www\.|^m\./, '').toLowerCase() + x.pathname.replace(/\/+$/, '') + (x.search || '');
+  } catch (e) { return ''; }
+}
+function publicLabel(name) {
+  const c = canonicalId(name);
+  if (c) return c;
+  const s = String(name || '').trim();
+  return s ? s.slice(0, 2) + '•••' : '';
+}
+function personKeyOf(name, email) {
+  const m = unq(email).toLowerCase();
+  return m ? 'm:' + m : 'n:' + identKey(name);
+}
+function ipHash(req) {
+  return crypto.createHmac('sha256', IDENT_PEPPER).update(String(req.ip || '')).digest('hex').slice(0, 16);
+}
+
+async function drawEntryCount(key) {
+  const c = drawCache.count;
+  if (c.key === key && Date.now() - c.at < 20 * 1000) return c.n;
+  const sheet = await getTab(CONFIG.TABS.DRAW_ENTRIES, DRAW_ENTRY_HEADERS);
+  const rows = await sheet.getRows();
+  const n = rows.filter(r => r.get('Kör') === key && /^(Érvényes|NYERTES)$/.test(String(r.get('Státusz') || ''))).length;
+  drawCache.count = { key, at: Date.now(), n };
+  return n;
+}
+
+async function drawLast() {
+  const c = drawCache.last;
+  if (c.data && Date.now() - c.at < 60 * 1000) return c.data;
+  const sheet = await getTab(CONFIG.TABS.DRAW_RESULTS, DRAW_RESULT_HEADERS);
+  const rows = await sheet.getRows();
+  let best = null;
+  rows.forEach(r => {
+    const at = Date.parse(String(r.get('Húzás ideje') || ''));
+    if (Number.isFinite(at) && (!best || at > best.at)) best = { at, r };
+  });
+  let data = null;
+  if (best) {
+    const labels = String(best.r.get('Nyertes azonosító') || '').split(' | ').map(publicLabel).filter(Boolean);
+    data = {
+      round: parseInt(best.r.get('Kör sorszám'), 10) || null,
+      at: best.at,
+      entries: parseInt(best.r.get('Beküldések'), 10) || 0,
+      label: labels.join(', ')
+    };
+  }
+  drawCache.last = { at: Date.now(), data };
+  return data;
+}
+
+// A húzás: kriptográfiai véletlennel, egy beküldés = egy esély, egy személy egy körben legfeljebb egyszer nyerhet
+async function runDrawForRound(key, drawMs) {
+  let winners = [], total = 0, people = 0, resRow = null;
+
+  const did = await withLock(async () => {
+    const resTab = await getTab(CONFIG.TABS.DRAW_RESULTS, DRAW_RESULT_HEADERS);
+    const resRows = await resTab.getRows();
+    if (resRows.some(r => r.get('Kör') === key)) return false;          // ezt a kört már lehúztuk
+
+    const entTab = await getTab(CONFIG.TABS.DRAW_ENTRIES, DRAW_ENTRY_HEADERS);
+    const rows = (await entTab.getRows()).filter(r => r.get('Kör') === key && r.get('Státusz') === 'Érvényes');
+    total = rows.length;
+    people = new Set(rows.map(r => personKeyOf(r.get('Azonosító / név'), r.get('Email')))).size;
+
+    const pool = rows.slice(), picked = [], used = new Set();
+    while (picked.length < DRAW_WINNERS && pool.length) {
+      const r = pool.splice(crypto.randomInt(pool.length), 1)[0];
+      const pk = personKeyOf(r.get('Azonosító / név'), r.get('Email'));
+      if (used.has(pk)) continue;
+      used.add(pk); picked.push(r);
+    }
+
+    winners = picked.map(r => ({
+      ref: r.get('Ref'),
+      name: r.get('Azonosító / név'),
+      email: unq(r.get('Email')),
+      lang: r.get('Nyelv') === 'hu' ? 'hu' : 'en',
+      link: r.get('Link'),
+      img: r.get('Kép fájl')
+    }));
+
+    // ELŐSZÖR az eredményt rögzítjük (így összeomlás esetén sem húzunk újra más nyertest)
+    resRow = await resTab.addRow({
+      'Kör': key,
+      'Kör sorszám': drawRoundNo(drawMs),
+      'Húzás ideje': new Date().toISOString(),
+      'Beküldések': total,
+      'Személyek': people,
+      'Nyertesek száma': winners.length,
+      'Nyertes ref': winners.map(w => w.ref).join(' | '),
+      'Nyertes azonosító': winners.map(w => cell(w.name)).join(' | '),
+      'Nyertes e-mail': winners.map(w => cell(w.email)).join(' | '),
+      'Értesítve': winners.length ? 'folyamatban' : '-',
+      'Megjegyzés': winners.length ? '' : 'Nem volt beküldés ebben a körben.'
+    });
+    for (const r of picked) { r.set('Státusz', 'NYERTES'); await r.save(); }
+    return true;
+  });
+
+  if (!did) return;
+  drawCache.count = { key: '', at: 0, n: 0 };
+  drawCache.last = { at: 0, data: null };
+  console.log(`🎉 Sorsolás lefutott: kör ${key}, ${total} beküldés, ${winners.length} nyertes`);
+
+  // értesítések a záron kívül
+  let status = '-';
+  try {
+    for (const w of winners) {
+      const hu = w.lang === 'hu';
+      const body = hu
+        ? `<p>Szia!</p><p>Gratulálunk, <b>te nyerted</b> a Senkisem heti sorsolását (${escHtml(key)}). A beküldésed hivatkozása: <b>${escHtml(w.ref)}</b>.</p>
+<p>Válaszolj erre az e-mailre 14 napon belül, és megbeszéljük a nyereményt.</p><p>— Senkisem</p>`
+        : `<p>Hi!</p><p>Congratulations, <b>you won</b> the Senkisem weekly draw (${escHtml(key)}). Your entry reference: <b>${escHtml(w.ref)}</b>.</p>
+<p>Reply to this e-mail within 14 days and we will arrange the prize.</p><p>— Senkisem</p>`;
+      const sent = await resend.emails.send({
+        from: `Senkisem <${CONFIG.EMAIL.FROM}>`,
+        to: w.email,
+        bcc: CONFIG.EMAIL.BCC,
+        replyTo: CONFIG.EMAIL.CONTACT_TO,
+        subject: hu ? 'Nyertél a Senkisem szombati sorsolásán 🎉' : 'You won the Senkisem Saturday draw 🎉',
+        html: body
+      });
+      if (sent && sent.error) throw new Error(sent.error.message || 'resend-error');
+    }
+    if (winners.length) status = 'igen';
+  } catch (e) {
+    status = 'HIBA: ' + e.message;
+    console.error('❌ Nyertes-értesítés hiba:', e.message);
+  }
+
+  try {
+    const lines = winners.length
+      ? winners.map(w => `<li><b>${escHtml(w.name)}</b> · ${escHtml(w.ref)} · ${escHtml(w.email)} · ${w.link ? `<a href="${escHtml(w.link)}">${escHtml(w.link)}</a>` : escHtml(w.img || 'kép')}</li>`).join('')
+      : '<li>Nem volt beküldés.</li>';
+    await resend.emails.send({
+      from: `Senkisem Sorsolás <${CONFIG.EMAIL.FROM}>`,
+      to: CONFIG.EMAIL.CONTACT_TO,
+      subject: `[Sorsolás] Kör ${key} lezárult — ${winners.length} nyertes, ${total} beküldés`,
+      html: `<p>Kör: <b>${escHtml(key)}</b> (№ ${drawRoundNo(drawMs)})<br>Beküldés: ${total} · személy: ${people}<br>Nyertes-értesítés: ${escHtml(status)}</p><ul>${lines}</ul>`
+    });
+  } catch (e) { console.error('⚠️ Sorsolás admin összegző e-mail hiba:', e.message); }
+
+  if (resRow && winners.length) {
+    try { resRow.set('Értesítve', status); await resRow.save(); } catch (e) { console.error('⚠️ Értesítés-állapot mentése:', e.message); }
+  }
+}
+
+let _drawDone = '';
+async function drawTick() {
+  try {
+    const now = Date.now();
+    if (now < DRAW_FIRST) return;
+    const due = [];
+    for (let t = DRAW_FIRST; t <= now; t = satAfter(t)) due.push([drawKey(t), t]);
+    const lastKey = due[due.length - 1][0];
+    if (_drawDone === lastKey) return;
+    for (const [k, t] of due.slice(-12)) await runDrawForRound(k, t);   // kiesett hetek pótlása is
+    _drawDone = lastKey;
+  } catch (e) {
+    console.error('❌ Sorsolás-ütemező hiba:', e.message);   // a következő tickben újrapróbálja
+  }
+}
+
+// ============================================
 // MIDDLEWARE
 // ============================================
 app.use(cors());
@@ -644,6 +873,30 @@ const contactLimiter = rateLimit({
 const contactDayLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000,
   max: 15,
+  message: { error: 'too-many-requests' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const drawLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 8,
+  message: { error: 'too-many-requests' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const drawDayLimiter = rateLimit({
+  windowMs: 24 * 60 * 60 * 1000,
+  max: 40,
+  message: { error: 'too-many-requests' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const drawStatusLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 120,
   message: { error: 'too-many-requests' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -747,7 +1000,7 @@ app.get('/api/support/stats', supportLimiter, async (req, res) => {
 });
 
 // ============================================
-// ROUTES — KÖZÖSSÉG (contact.html: támogatói szalag)
+// ROUTES — KÖZÖSSÉG (community.html: támogatói szalag)
 // Csak anonimizált adat: ID-Senkisem címke, összeg (csak a heti legnagyobbnál), idő.
 // ============================================
 app.get('/api/community/feed', feedLimiter, async (req, res) => {
@@ -757,6 +1010,145 @@ app.get('/api/community/feed', feedLimiter, async (req, res) => {
   } catch (error) {
     console.error('❌ Közösségi feed hiba:', error.message);
     res.status(503).json({});
+  }
+});
+
+// ============================================
+// ROUTES — HETI SORSOLÁS (community.html)
+// ============================================
+
+// Státusz: szerveridő + beküldésszám + legutóbbi nyertes (személyes adat nélkül)
+app.get('/api/draw/status', drawStatusLimiter, async (req, res) => {
+  const now = Date.now();
+  const next = drawNext(now);
+  let entries = null, last = null;
+  try { entries = await drawEntryCount(drawKey(next)); } catch (e) { console.error('⚠️ Sorsolás-státusz (beküldések):', e.message); }
+  try { last = await drawLast(); } catch (e) { console.error('⚠️ Sorsolás-státusz (utolsó):', e.message); }
+  res.set('Cache-Control', 'no-store');
+  res.json({ now, next, round: drawRoundNo(next), entries, last });
+});
+
+// Beküldés: minden beküldés bekerül a "Sorsolás beküldések" munkalapra
+app.post('/api/draw/enter', drawLimiter, drawDayLimiter, async (req, res) => {
+  try {
+    const b = req.body || {};
+
+    // botcsapda: kitöltött rejtett mező vagy emberileg lehetetlenül gyors → "siker", de nem mentünk semmit
+    if (String(b.hp || '').trim() || (Number(b.t) || 0) < 3000) {
+      const nx = drawNext(Date.now());
+      return res.json({ ok: true, ref: drawRef(), next: nx, round: drawRoundNo(nx), count: 1, limit: DRAW_MAX_PER_PERSON });
+    }
+
+    if (b.consent !== true) return res.status(400).json({ error: 'consent-required' });
+
+    const name = String(b.name || '').replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60);
+    if (name.length < 2) return res.status(400).json({ error: 'bad-name' });
+    const handle = canonicalId(name) || name;
+    const lang = b.lang === 'hu' ? 'hu' : 'en';
+
+    const email = String(b.email || '').trim().toLowerCase();
+    if (email && (!EMAIL_RE.test(email) || email.length > 254)) return res.status(400).json({ error: 'need-email' });
+
+    // regisztrált azonosító? akkor a regisztrált e-mail is megfelel
+    let found = null;
+    try { found = await findIdentity(handle); } catch (e) { console.error('⚠️ Azonosító-keresés hiba:', e.message); }
+    const useEmail = email || (found && found.email) || '';
+    if (!useEmail) return res.status(400).json({ error: 'need-email' });
+
+    // link vagy kép
+    let link = '', imgBuf = null, imgHash = '';
+    const img = b.image && typeof b.image === 'object' ? b.image : null;
+    if (img && img.base64) {
+      imgBuf = Buffer.from(String(img.base64), 'base64');
+      const jpeg = imgBuf.length > 3 && imgBuf[0] === 0xff && imgBuf[1] === 0xd8 && imgBuf[2] === 0xff;
+      if (imgBuf.length < 2048 || imgBuf.length > 6 * 1024 * 1024 || !jpeg) return res.status(400).json({ error: 'bad-image' });
+      imgHash = crypto.createHash('sha256').update(imgBuf).digest('hex').slice(0, 24);
+    } else {
+      link = String(b.link || '').trim();
+      let u;
+      try { u = new URL(link); } catch (e) { return res.status(400).json({ error: 'bad-link' }); }
+      if (u.protocol !== 'https:' || link.length > 300 || u.username || u.password || u.pathname.length < 2 || !drawHostOk(u.hostname)) {
+        return res.status(400).json({ error: 'bad-link' });
+      }
+    }
+
+    const ref = drawRef();
+    const ihash = ipHash(req);
+    let outcome = null;
+
+    // a lock alatt ellenőrzünk ÉS írunk (és a húzás is ugyanezt a zárat használja → nincs versenyhelyzet)
+    await withLock(async () => {
+      const nowMs = Date.now();
+      const next = drawNext(nowMs);
+      const key = drawKey(next);
+      const sheet = await getTab(CONFIG.TABS.DRAW_ENTRIES, DRAW_ENTRY_HEADERS);
+      const rows = (await sheet.getRows()).filter(r => r.get('Kör') === key && r.get('Státusz') !== 'Érvénytelen');
+
+      const myName = identKey(handle), myMail = useEmail.toLowerCase();
+      const mine = rows.filter(r => identKey(r.get('Azonosító / név')) === myName || unq(r.get('Email')).toLowerCase() === myMail).length;
+      if (mine >= DRAW_MAX_PER_PERSON) { outcome = { status: 400, body: { error: 'limit' } }; return; }
+
+      if (link) {
+        const n = normLink(link);
+        if (n && rows.some(r => r.get('Link') && normLink(r.get('Link')) === n)) { outcome = { status: 409, body: { error: 'duplicate' } }; return; }
+      } else if (rows.some(r => r.get('Kép hash') === imgHash)) {
+        outcome = { status: 409, body: { error: 'duplicate' } }; return;
+      }
+
+      let fileName = '';
+      if (imgBuf) {
+        try {
+          await fs.promises.mkdir(DRAW_UPLOAD_DIR, { recursive: true });
+          fileName = `${ref}.jpg`;
+          await fs.promises.writeFile(path.join(DRAW_UPLOAD_DIR, fileName), imgBuf);
+        } catch (e) { console.error('⚠️ Kép mentési hiba:', e.message); fileName = '(csak e-mailben)'; }
+      }
+
+      await sheet.addRow({
+        'Ref': ref,
+        'Dátum': new Date(nowMs).toLocaleString('hu-HU', { timeZone: DRAW_TZ }),
+        'Időbélyeg': new Date(nowMs).toISOString(),
+        'Kör': key,
+        'Kör sorszám': drawRoundNo(next),
+        'Azonosító / név': cell(handle),
+        'Email': cell(useEmail),
+        'Regisztrált': found ? 'igen' : 'nem',
+        'Beküldés': imgBuf ? 'kép' : 'link',
+        'Link': cell(link),
+        'Kép fájl': fileName,
+        'Kép hash': imgHash,
+        'Nyelv': lang,
+        'IP (hash)': ihash,
+        'Státusz': 'Érvényes'
+      });
+
+      drawCache.count = { key: '', at: 0, n: 0 };
+      outcome = { status: 200, body: { ok: true, ref, next, round: drawRoundNo(next), count: mine + 1, limit: DRAW_MAX_PER_PERSON }, key };
+    });
+
+    if (outcome.status !== 200) return res.status(outcome.status).json(outcome.body);
+
+    // admin értesítő (nem blokkoló; a képet mellékletként is elküldjük, mert a szerver lemeze ideiglenes lehet)
+    (async () => {
+      const mail = {
+        from: `Senkisem Sorsolás <${CONFIG.EMAIL.FROM}>`,
+        to: CONFIG.EMAIL.CONTACT_TO,
+        subject: `[Sorsolás] Új beküldés ${ref} · kör ${outcome.key}`,
+        html: `<p><b>${escHtml(ref)}</b> · kör ${escHtml(outcome.key)} (№ ${outcome.body.round})</p>
+<p>Azonosító / név: <b>${escHtml(handle)}</b> (${found ? 'regisztrált' : 'nem regisztrált'})<br>
+Beküldés: ${imgBuf ? 'kép (melléklet)' : `<a href="${escHtml(link)}">${escHtml(link)}</a>`}</p>`
+      };
+      if (imgBuf) mail.attachments = [{ filename: `${ref}.jpg`, content: imgBuf }];
+      const sent = await resend.emails.send(mail);
+      if (sent && sent.error) throw new Error(sent.error.message || 'resend-error');
+    })().catch(e => console.error('⚠️ Sorsolás admin e-mail hiba:', e.message));
+
+    console.log(`🎟️ Sorsolás-beküldés: ${ref} (kör ${outcome.key})`);
+    res.json(outcome.body);
+
+  } catch (error) {
+    console.error('❌ Sorsolás-beküldési hiba:', error.message);
+    res.status(500).json({ error: 'enter-failed' });
   }
 });
 
@@ -1332,7 +1724,8 @@ app.get('/health', (req, res) => {
     support_enabled: true,
     ident_enabled: true,
     contact_enabled: true,
-    community_enabled: true
+    community_enabled: true,
+    draw_enabled: true
   });
 });
 
@@ -1399,9 +1792,16 @@ app.listen(PORT, () => {
 ║   Azonosító:  ✅ /api/ident/*    (ID-Senkisem + foglaltság)
 ║   Kapcsolat:  ✅ /api/contact    (→ ${CONFIG.EMAIL.CONTACT_TO})
 ║   Közösség:   ✅ /api/community/feed
+║   Sorsolás:   ✅ /api/draw/*     (hetente, szombat 00:00)
 ║   Webshop:    ${SHOP_ENABLED ? '✅ BE ' : '⛔ KI '}(SHOP_ENABLED)
 ║   Webhook:    ✅ AKTÍV
 ║   Sheets:     2026 · ${CONFIG.TABS.SUPPORT} · ${CONFIG.TABS.IDENT} · ${CONFIG.TABS.CONTACT}
+║               ${CONFIG.TABS.DRAW_ENTRIES} · ${CONFIG.TABS.DRAW_RESULTS}
 ╚═══════════════════════════════════════════════════════╝
   `);
+
+  // Heti sorsolás ütemező: 30 mp-enként ellenőrzi, esedékes-e egy húzás
+  setTimeout(drawTick, 20 * 1000);
+  setInterval(drawTick, 30 * 1000);
+  console.log(`🎟️ Következő sorsolás: ${new Date(drawNext(Date.now())).toISOString()} (kör ${drawKey(drawNext(Date.now()))})`);
 });
