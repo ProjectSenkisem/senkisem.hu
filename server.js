@@ -1666,7 +1666,7 @@ app.get('/download/:token', downloadLimiter, async (req, res) => {
 
 // ============================================
 // ID: SENKISEM KITÖLTÉS — email küldés (clothing.html)
-// (az admin értesítő a hello@senkisem.com címre megy)
+// (az admin értesítő a bellerzoltanezra@gmail.com címre megy)
 // ============================================
 app.post('/api/id-modal-email', async (req, res) => {
   const { type, subject, html, uploadedFiles, customerEmail } = req.body;
@@ -1682,7 +1682,7 @@ app.post('/api/id-modal-email', async (req, res) => {
 
       await resend.emails.send({
         from:        `Senkisem <${process.env.RESEND_FROM_EMAIL}>`,
-        to:          ['hello@senkisem.com'],
+        to:          ['bellerzoltanezra@gmail.com'],
         subject:     subject,
         html:        html,
         attachments,
