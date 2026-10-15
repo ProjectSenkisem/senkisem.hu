@@ -11,7 +11,7 @@
 const CONFIG = {
   BRAND_NAME: 'Senkisem',
   TAGLINE: 'Nem egy Brand; Üzenet.',
-  SUPPORT_EMAIL: process.env.RESEND_FROM_EMAIL || 'info@senkisem.hu',
+  SUPPORT_EMAIL: process.env.CONTACT_TO || 'hello@senkisem.com',
   CURRENT_YEAR: new Date().getFullYear()
 };
 
@@ -220,7 +220,7 @@ function templateDigitalProduct1(orderData, totalAmount, downloadLinks) {
       
       <!-- Támogatás -->
       <p style="color: #666666; font-size: 14px; line-height: 1.6; margin-top: 30px;">
-        Segítségre van szükséged? Írj nekünk: <a href="mailto:info@senkisem.hu" style="color: #667eea; text-decoration: none; font-weight: 600;">${CONFIG.SUPPORT_EMAIL}</a>
+        Segítségre van szükséged? Írj nekünk: <a href="mailto:hello@senkisem.com" style="color: #667eea; text-decoration: none; font-weight: 600;">${CONFIG.SUPPORT_EMAIL}</a>
       </p>
       
       <p style="color: #333333; font-size: 15px; margin-top: 30px;">
@@ -306,7 +306,7 @@ function templateDigitalProduct2(orderData, totalAmount, downloadLinks) {
       
       <!-- Támogatás -->
       <p style="color: #666666; font-size: 14px; line-height: 1.6; margin-top: 30px;">
-        Segítségre van szükséged? Írj nekünk: <a href="mailto:info@senkisem.hu" style="color: #667eea; text-decoration: none; font-weight: 600;">${CONFIG.SUPPORT_EMAIL}</a>
+        Segítségre van szükséged? Írj nekünk: <a href="mailto:hello@senkisem.com" style="color: #667eea; text-decoration: none; font-weight: 600;">${CONFIG.SUPPORT_EMAIL}</a>
       </p>
       
       <p style="color: #333333; font-size: 15px; margin-top: 30px;">
@@ -546,25 +546,25 @@ function generateEmail(templateType, orderData, totalAmount, downloadLinks = nul
   switch (templateType) {
     case 'digitalProduct1':
       return {
-        subject: '✅ Az E-könyved Készen Áll - Senkisem.hu',
+        subject: '✅ Az E-könyved Készen Áll - Senkisem.com',
         html: templateDigitalProduct1(orderData, totalAmount, downloadLinks)
       };
     
     case 'digitalProduct2':
       return {
-        subject: '✅ Az E-könyved Készen Áll - Senkisem.hu',
+        subject: '✅ Az E-könyved Készen Áll - Senkisem.com',
         html: templateDigitalProduct2(orderData, totalAmount, downloadLinks)
       };
     
     case 'digitalBundle':
       return {
-        subject: '✅ Az E-könyveid Készen Állnak - Senkisem.hu',
+        subject: '✅ Az E-könyveid Készen Állnak - Senkisem.com',
         html: templateDigitalBundle(orderData, totalAmount, downloadLinks)
       };
     
     case 'physicalProduct':
       return {
-        subject: '✅ Rendelés Megerősítve - Senkisem.hu',
+        subject: '✅ Rendelés Megerősítve - Senkisem.com',
         html: templatePhysicalProduct(orderData, totalAmount)
       };
     

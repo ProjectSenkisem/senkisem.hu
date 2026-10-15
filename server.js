@@ -81,8 +81,8 @@ const CONFIG = {
   },
   EMAIL: {
     FROM: process.env.RESEND_FROM_EMAIL,
-    BCC: 'bellerzoltanezra@gmail.com',          // MARAD
-    CONTACT_TO: process.env.CONTACT_TO || 'hello@senkisem.hu',   // kapcsolati űrlap címzettje
+    BCC: 'hello@senkisem.com',
+    CONTACT_TO: process.env.CONTACT_TO || 'hello@senkisem.com',   // kapcsolati űrlap címzettje
   },
   // Támogatók rangsorolásához: 1 USD hány forint (csak a "heti legnagyobb" összehasonlításhoz)
   FX_HUF_PER_USD: Number(process.env.SUPPORT_FX_HUF_PER_USD) || 330,
@@ -283,7 +283,7 @@ async function sendOrderEmail(orderData, totalAmount, invoiceNumber, downloadLin
     const { subject, html } = generateEmail(templateType, orderData, totalAmount, downloadLinks);
 
     const result = await resend.emails.send({
-      from: `Senkisem.hu <${CONFIG.EMAIL.FROM}>`,
+      from: `Senkisem.com <${CONFIG.EMAIL.FROM}>`,
       to: customerData.email,
       bcc: CONFIG.EMAIL.BCC,
       subject: subject,
@@ -943,7 +943,7 @@ app.post('/api/support/checkout', supportLimiter, async (req, res) => {
       success_url: `${process.env.DOMAIN}/support.html?s={CHECKOUT_SESSION_ID}&lang=${l}`,
       cancel_url: `${process.env.DOMAIN}/support.html?c=1&lang=${l}`,
       locale: l,
-      metadata: { type: 'support', lang: l, source: 'senkisem.hu' },
+      metadata: { type: 'support', lang: l, source: 'senkisem.com' },
     });
 
     res.json({ url: session.url });
@@ -1153,7 +1153,7 @@ Beküldés: ${imgBuf ? 'kép (melléklet)' : `<a href="${escHtml(link)}">${escHt
 });
 
 // ============================================
-// ROUTES — KAPCSOLAT (űrlap → hello@senkisem.hu; a cím sosem kerül a kliensre)
+// ROUTES — KAPCSOLAT (űrlap → hello@senkisem.com; a cím sosem kerül a kliensre)
 // ============================================
 const CONTACT_SUBJECTS = {
   pay: 'Támogatás / fizetés',
@@ -1492,7 +1492,7 @@ app.post('/create-payment-session', async (req, res) => {
       success_url: `${process.env.DOMAIN}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.DOMAIN}/cancel.html`,
       metadata: {
-        source: 'senkisem.hu'
+        source: 'senkisem.com'
       },
       customer_email: customerData.email,
     });
@@ -1666,7 +1666,7 @@ app.get('/download/:token', downloadLimiter, async (req, res) => {
 
 // ============================================
 // ID: SENKISEM KITÖLTÉS — email küldés (clothing.html)
-// (változatlan: az admin értesítő továbbra is bellerzoltanezra@gmail.com-ra megy)
+// (az admin értesítő a hello@senkisem.com címre megy)
 // ============================================
 app.post('/api/id-modal-email', async (req, res) => {
   const { type, subject, html, uploadedFiles, customerEmail } = req.body;
@@ -1682,7 +1682,7 @@ app.post('/api/id-modal-email', async (req, res) => {
 
       await resend.emails.send({
         from:        `Senkisem <${process.env.RESEND_FROM_EMAIL}>`,
-        to:          ['bellerzoltanezra@gmail.com'],
+        to:          ['hello@senkisem.com'],
         subject:     subject,
         html:        html,
         attachments,
@@ -1785,7 +1785,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║      SENKISEM.HU SZERVER — TÁMOGATÓI MODELL           ║
+║      SENKISEM.COM SZERVER — TÁMOGATÓI MODELL           ║
 ╠═══════════════════════════════════════════════════════╣
 ║   Port: ${PORT}
 ║   Támogatás:  ✅ /api/support/*  (HUF / USD)

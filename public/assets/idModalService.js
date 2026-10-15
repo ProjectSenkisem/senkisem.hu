@@ -176,7 +176,7 @@ function buildConfirmationEmailHTML(customerEmail) {
     </div>
     <p style="font-size:13px;color:#999;">
       Ha bármilyen kérdésed van, írj nekünk:<br>
-      <a href="mailto:info@senkisem.hu" style="color:#000;font-weight:600;text-decoration:none;">info@senkisem.hu</a>
+      <a href="mailto:hello@senkisem.com" style="color:#000;font-weight:600;text-decoration:none;">hello@senkisem.com</a>
     </p>
     <p style="margin-top:32px;font-size:14px;color:#333;">
       Üdvözlettel,<br>
