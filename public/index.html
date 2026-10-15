@@ -2826,23 +2826,11 @@ window.addEventListener('click', function (e) {
 }
 
 .sn-end-cursor {
-    position: relative;
-}
-.sn-end-cursor::after {
-    content: '█';
-    position: absolute;
-    left: 100%;
-    top: 0;
+    display: inline-block;
+    margin-left: 2px;
     color: #00ffff;
     animation: snEndBlink 1s infinite;
 }
-.sn-end-typing .w { display: inline; }
-.sn-end-typing .c { opacity: 0; position: relative; }
-.sn-end-typing .c.on { opacity: 1; }
-.sn-end-typing .c.cur::after,
-.sn-end-typing .lt.cur::after { content: '█'; position: absolute; left: 100%; top: 0; color: #00ffff; animation: snEndBlink 1s infinite; }
-.sn-end-typing .lt { opacity: 0; }
-.sn-end-typing .lt.on { opacity: 1; }
 @keyframes snEndBlink {
     0%, 50%   { opacity: 1; }
     51%, 100% { opacity: 0; }
@@ -2880,12 +2868,9 @@ window.addEventListener('click', function (e) {
 .sn-end-btn:hover i { transform: translateX(5px); }
 
 @media (max-width: 768px) {
-    .sn-end-scene { height: 300vh; height: 300svh; }
     .sn-end-inner { gap: 2.8rem; }
-    .sn-end-ghost { display: none; }
-    .sn-end-typing .w { display: inline-block; white-space: nowrap; position: relative; }
-    .sn-end-typing .lt { position: absolute; left: 100%; white-space: pre; }
-    .sn-end-typing { font-size: min(.8rem, calc((100vw - 2.4rem) / 28)); line-height: 1.6; letter-spacing: 0; animation: none; text-shadow: 0 0 8px rgba(0,255,255,.45); }
+    .sn-end-ghost,
+    .sn-end-typing { font-size: 0.78rem; line-height: 1.6; }
     .sn-end-btn { padding: 0.95rem 2.1rem; font-size: 0.72rem; }
 }
 </style>
@@ -2896,7 +2881,7 @@ window.addEventListener('click', function (e) {
         <section class="sn-end" id="sn-end">
             <div class="sn-end-inner">
                 <div class="sn-end-typing-wrap">
-                    <div class="sn-end-ghost" aria-hidden="true"></div>
+                    <div class="sn-end-ghost" aria-hidden="true">This is not just clothing.<br>This is a declaration.<br>A statement. A heartbeat for the future<br><br>Welcome to the new paradigm<br>Welcome to Senkisem</div>
 
                     <div class="sn-end-typing" id="sn-end-typing" aria-live="polite"></div>
                 </div>
@@ -2913,6 +2898,7 @@ window.addEventListener('click', function (e) {
     var scene = document.getElementById('sn-end-scene');
     var el    = document.getElementById('sn-end-typing');
     var btn   = document.getElementById('sn-end-btn');
+    var ghost = document.querySelector('.sn-end-ghost');
     if (!scene || !el || !btn) return;
 
     // Keep navigation working even if another page script interferes with the anchor,
@@ -2957,59 +2943,21 @@ window.addEventListener('click', function (e) {
         } catch (e) { return 'en'; }
     }
 
-    var fullText, insertPos, LEN, chars = [], heartEl = null, shown = 0, cursorEl = null;
+    var fullText, insertPos, LEN;
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var CFG_D = { ease:.07, p1:[.06,.38], beat:[.38,.42,.46], p2:[.46,.84], btn:.90 };
-    var CFG_M = { ease:1, p1:[.02,.40], beat:[.40,.44,.48], p2:[.48,.80], btn:.70 };
-    var mobileQuery = window.matchMedia('(max-width:768px)');
-    var cfg = mobileQuery.matches ? CFG_M : CFG_D;
-    var target = 0, cur = 0, raf = null;
-    var lastWidth = document.documentElement.clientWidth;
+    var EASE = 0.07;
+    var P1 = [0.06, 0.38];
+    var BEAT = [0.38, 0.42, 0.46];
+    var P2 = [0.46, 0.84];
+    var BTN_AT = 0.90;
+
+    var target = 0, cur = 0, raf = null, lastKey = null;
 
     function clamp(v, a, b) { return Math.min(Math.max(v, a), b); }
     function seg(p, a, b)   { return clamp((p - a) / (b - a), 0, 1); }
 
-    function build() {
-        el.textContent = '';
-        chars = []; heartEl = null; cursorEl = null;
-        for (var i = 0; i < LEN;) {
-            if (fullText.charAt(i) === '\n') { el.appendChild(document.createElement('br')); chars.push(null); i++; continue; }
-            if (fullText.charAt(i) === ' ') { el.appendChild(document.createTextNode(' ')); chars.push(null); i++; continue; }
-            var start = i;
-            while (i < LEN && fullText.charAt(i) !== ' ' && fullText.charAt(i) !== '\n') i++;
-            var word = document.createElement('span'); word.className = 'w';
-            for (var j = start; j < i; j++) {
-                var ch = document.createElement('span'); ch.className = 'c';
-                ch.setAttribute('aria-hidden', 'true'); ch.textContent = fullText.charAt(j);
-                word.appendChild(ch); chars[j] = ch;
-            }
-            if (i === insertPos) {
-                heartEl = document.createElement('span'); heartEl.className = 'lt';
-                heartEl.setAttribute('aria-hidden', 'true'); heartEl.textContent = '\u00a0<';
-                word.appendChild(heartEl);
-            }
-            el.appendChild(word);
-        }
-        el.setAttribute('aria-label', fullText);
-        shown = 0;
-        if (chars.length) { cursorEl = chars[0]; cursorEl.classList.add('cur'); }
-        updateShown(0, false);
-    }
-
-    function updateShown(next, heartOn) {
-        next = clamp(next, 0, LEN);
-        var lo = Math.min(shown, next), hi = Math.max(shown, next);
-        for (var i = lo; i < hi; i++) if (chars[i]) chars[i].classList.toggle('on', i < next);
-        shown = next;
-        if (heartEl) heartEl.classList.toggle('on', !!heartOn);
-        var nextCursor = heartOn && heartEl ? heartEl : null;
-        for (var c = Math.min(next - 1, LEN - 1); !nextCursor && c >= 0; c--) nextCursor = chars[c] || null;
-        if (!nextCursor) nextCursor = chars.find ? chars.find(function (item) { return !!item; }) : chars[0];
-        if (nextCursor !== cursorEl) {
-            if (cursorEl) cursorEl.classList.remove('cur');
-            cursorEl = nextCursor;
-            if (cursorEl) cursorEl.classList.add('cur');
-        }
+    function render(text) {
+        el.innerHTML = text.replace(/\n/g, '<br>') + '<span class="sn-end-cursor">█</span>';
     }
 
     function setLang(l) {
@@ -3017,43 +2965,45 @@ window.addEventListener('click', function (e) {
         fullText  = c.text;
         insertPos = fullText.indexOf(c.heart) + c.heart.length;
         LEN       = fullText.length;
-        build();
+        if (ghost) ghost.innerHTML = fullText.replace(/\n/g, '<br>');
+        lastKey = null;
         measure();
     }
     window.snEndSetLang = setLang;
 
     function measure() {
         var rect = scene.getBoundingClientRect();
-        var sticky = scene.querySelector('.sn-end-sticky');
-        var scrollable = scene.offsetHeight - (sticky ? sticky.offsetHeight : 0);
+        var scrollable = scene.offsetHeight - window.innerHeight;
         target = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
         if (!raf) raf = requestAnimationFrame(update);
     }
 
     function update() {
         raf = null;
-        cur += (target - cur) * (reduce ? 1 : cfg.ease);
+        cur += (target - cur) * (reduce ? 1 : EASE);
         if (Math.abs(target - cur) < 0.0003) cur = target;
-        var p = cur, count, heartOn = false;
-        if (reduce) count = LEN;
-        else if (p < cfg.beat[0]) count = Math.floor(seg(p, cfg.p1[0], cfg.p1[1]) * insertPos);
-        else if (p < cfg.beat[1]) { count = insertPos; heartOn = true; }
-        else if (p < cfg.beat[2]) count = insertPos;
-        else count = insertPos + Math.floor(seg(p, cfg.p2[0], cfg.p2[1]) * (LEN - insertPos));
-        updateShown(count, heartOn);
-        btn.classList.toggle('show', reduce || p > cfg.btn);
+        var p = cur, text;
+
+        if (reduce) {
+            text = fullText;
+        } else if (p < BEAT[0]) {
+            text = fullText.substring(0, Math.floor(seg(p, P1[0], P1[1]) * insertPos));
+        } else if (p < BEAT[1]) {
+            text = fullText.substring(0, insertPos) + " <";
+        } else if (p < BEAT[2]) {
+            text = fullText.substring(0, insertPos);
+        } else {
+            text = fullText.substring(0, insertPos + Math.floor(seg(p, P2[0], P2[1]) * (LEN - insertPos)));
+        }
+
+        if (text !== lastKey) { lastKey = text; render(text); }
+        btn.classList.toggle('show', reduce || p > BTN_AT);
 
         if (cur !== target) raf = requestAnimationFrame(update);
     }
 
     window.addEventListener('scroll', measure, { passive: true });
-    function updateConfig() { cfg = mobileQuery.matches ? CFG_M : CFG_D; if (!raf) raf = requestAnimationFrame(update); }
-    if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', updateConfig);
-    else if (mobileQuery.addListener) mobileQuery.addListener(updateConfig);
-    window.addEventListener('resize', function () {
-        var width = document.documentElement.clientWidth;
-        if (width !== lastWidth) { lastWidth = width; measure(); }
-    });
+    window.addEventListener('resize', measure);
     window.addEventListener('load', measure);
     setLang(storedLang());
 })();
